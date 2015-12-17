@@ -84,3 +84,8 @@ write.csv(metadata.ORF,"metadata.ORF.csv",row.names = F)
 
 save(metadata,metadata.ORF,metadata.simple, file = "save/metadata.rda")
 save.image("save/assembly.RData")
+
+# compress CSV files to save disk space
+system("gzip --force metadata.csv")
+system("gzip --force metadata.ORF.csv")
+system("gzip --force metadata.simple.csv")
