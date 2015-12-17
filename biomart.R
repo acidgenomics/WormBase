@@ -8,15 +8,13 @@ load("save/GeneID.rda")
 # external_gene_name = ensembl public name
 # wormbase_locus = wormbase public name
 # use wormbase_gene_seq_name for clean sequence ID
+
 # hs.mart <- useMart("ensembl","hsapiens_gene_ensembl")
 # mm.mart <- useMart("ensembl","mmusculus_gene_ensembl")
 
-# future additions:
-# kegg_enzyme
-
 mart <- useMart("ensembl","celegans_gene_ensembl")
 biomart.options <- listAttributes(mart)
-write.csv(biomart.options,"biomart.csv")
+write.csv(biomart.options,"biomart.csv",row.names = F)
 
 # simple gene length info without duplicates
 df <- getBM(mart = mart,
