@@ -1,22 +1,69 @@
 rm(list = ls(all.names = T))
+pkg <- c("RCurl")
+lapply(pkg,require,character.only = T)
+
+# everything here is automatic, no need to request a certain WormBase WS release or PANTHER version
+
 if (!file.exists("downloads")) { dir.create("downloads") }
 setwd("downloads")
 
-# wormbase
-# ftp://ftp.wormbase.org/pub/wormbase/
+# WormBase ====================================================================
 # http://www.wormbase.org/about/release_schedule
-download.file("ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/geneIDs/c_elegans.PRJNA13758.WS251.geneIDs.txt.gz","geneIDs.txt.gz")
-download.file("ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/functional_descriptions/c_elegans.PRJNA13758.WS250.functional_descriptions.txt.gz","functional_descriptions.txt.gz")
-download.file("ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/orthologs/c_elegans.PRJNA13758.WS251.orthologs.txt.gz","orthologs.txt.gz")
-download.file("ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/affy_oligo_mapping/c_elegans.PRJNA13758.WS251.affy_oligo_mapping.txt.gz","affy_oligo_mapping.txt.gz")
-download.file("ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/agil_oligo_mapping/c_elegans.PRJNA13758.WS251.agil_oligo_mapping.txt.gz","agil_oligo_mapping.txt.gz")
-download.file("ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/best_blast_hits/c_elegans.PRJNA13758.WS251.best_blastp_hits.txt.gz","best_blastp_hits.txt.gz")
-download.file("ftp://ftp.wormbase.org/pub/wormbase/releases/WS251/ONTOLOGY/rnai_phenotypes_quick.WS251.wb","rnai.phenotypes.txt")
+files <- c("affy_oligo_mapping",
+					 "agil_oligo_mapping",
+					 "geneIDs",
+					 "functional_descriptions",
+					 "orthologs")
+for (i in 1:length(files)) {
+	file <- paste(c("ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/",files[i],"/c_elegans.canonical_bioproject.current.",files[i],".txt.gz"), collapse = "")
+	save <- paste(c(files[i],".txt.gz"), collapse = "")
+	download.file(file,save)
+}
+
+# BLASTP (doesn't match folder, so request manually instead)
+download.file("ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/best_blast_hits/c_elegans.canonical_bioproject.current.best_blastp_hits.txt.gz","best_blastp_hits.txt.gz")
+
+# RNAi phenotypes
+dir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/ONTOLOGY/"
+ls <- getURL(dir, dirlistonly = T, verbose = T)
+ls <- strsplit(ls, "\n")
+ls <- ls[[1]]
+grep <- grep("rnai_phenotypes_quick", ls, value = T)
+file <- paste(c(dir,grep), collapse = "")
+download.file(file,"rnai.phenotypes.txt")
 system("gzip --force rnai.phenotypes.txt")
 
-# panther
-# ftp://ftp.pantherdb.org//sequence_classifications/current_release
-download.file("ftp://ftp.pantherdb.org/sequence_classifications/10.0/PANTHER_Sequence_Classification_files/PTHR10.0_nematode_worm","panther.txt")
+# Wormpep IDs used for BLASTP matching
+#ftp://ftp.wormbase.org//pub/wormbase/releases/WS251/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS251.wormpep_package.tar.gz
+dir <- "ftp://ftp.wormbase.org//pub/wormbase/releases/current-production-release/species/c_elegans/PRJNA13758/"
+ls <- getURL(dir, dirlistonly = T, verbose = T)
+ls <- strsplit(ls, "\n")
+ls <- ls[[1]]
+grep <- grep("wormpep_package", ls, value = T)
+file <- paste(c(dir,grep), collapse = "")
+download.file(file,"wormpep.tar.gz")
+system("tar -ztvf wormpep.tar.gz")
+system("tar -xzf wormpep.tar.gz wormpep.table*")
+file.remove("wormpep.tar.gz")
+file <- list.files(pattern = "wormpep.table")
+file.rename(file, "wormpep.txt")
+system("gzip --force wormpep.txt")
+
+# wormpep.table
+system("tar -zxvf wormpep.tar.gz")
+
+# PANTHER =====================================================================
+dir <- "ftp://ftp.pantherdb.org/sequence_classifications/current_release/PANTHER_Sequence_Classification_files/"
+ls <- getURL(dir, dirlistonly = T, verbose = T)
+ls <- strsplit(ls, "\n")
+ls <- ls[[1]]
+grep <- grep("nematode_worm", ls, value = T)
+file <- paste(c(dir,grep), collapse = "")
+download.file(file,"panther.txt")
 system("gzip --force panther.txt")
+
+# ORFeome RNAi library ========================================================
+# http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai/
+download.file("http://dharmacon.gelifesciences.com/uploadedFiles/Resources/cernai-feeding-library.xlsx","cernai-feeding-library.xlsx")
 
 setwd("../")

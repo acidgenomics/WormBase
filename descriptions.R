@@ -5,8 +5,7 @@ df <- read.delim("downloads/functional_descriptions.txt.gz",
 								 comment.char = "#", # unneeded with skip (below)
 								 header = F,
 								 skip = 4, # bad header tag delims, set manually
-								 na.strings = "none available",
-								 sep = "\t")
+								 na.strings = "none available")
 
 # fix the column headers
 header <- readLines("downloads/functional_descriptions.txt.gz",n = 4)
