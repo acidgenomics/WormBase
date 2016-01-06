@@ -1,7 +1,7 @@
 rm(list = ls(all.names = T))
 pkg <- c("biomaRt","plyr")
 lapply(pkg,require,character.only = T)
-load("save/GeneID.rda")
+load("rda/GeneID.rda")
 
 # biomaRt with ensembl
 # entrezgene for entrez ID
@@ -14,7 +14,6 @@ load("save/GeneID.rda")
 
 mart <- useMart("ensembl","celegans_gene_ensembl")
 biomart.options <- listAttributes(mart)
-write.csv(biomart.options,"biomart.csv",row.names = F)
 
 # simple gene length info without duplicates
 df <- getBM(mart = mart,
@@ -111,5 +110,4 @@ df <- as.data.frame(apply(df,2,function(x) gsub("(.*),$","\\1",x,perl = T))) # t
 biomart <- df
 rm(df)
 
-save(biomart, file = "save/biomart.rda")
-save.image("save/biomart.RData")
+save(biomart, file = "rda/biomart.rda")

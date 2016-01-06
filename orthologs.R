@@ -1,9 +1,9 @@
 rm(list = ls(all.names = T))
 pkg <- c("readr","stringr")
 lapply(pkg,require,character.only = T)
-load("save/GeneID.rda")
+load("rda/GeneID.rda")
 
-file <- read_file("downloads/orthologs.txt.gz")
+file <- read_file("sources/orthologs.txt.gz")
 # convert the layout to data.frame
 file <- gsub("\t"," | ",file)
 file <- gsub("\n"," // ",file)
@@ -85,7 +85,7 @@ for (i in 1:nrow(df)) {
 	}
 }
 rm(i,split1,split2)
-load("save/GeneID.rda")
+
 hsapiens <- as.data.frame(cbind(hsapiens.id,hsapiens.name))
 #!!! length(hsapiens.all)
 rownames(hsapiens) <- names(hsapiens.all)
@@ -100,5 +100,4 @@ colnames(orthologs) <- c("hsapiens.homolog.wormbase.id",
 												 "mmusculus.homolog.wormbase.id",
 												 "mmusculus.homolog.wormbase.name")
 
-save(orthologs, file = "save/orthologs.rda")
-save.image("save/orthologs.RData")
+save(orthologs, file = "rda/orthologs.rda")

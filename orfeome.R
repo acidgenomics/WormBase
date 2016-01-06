@@ -2,10 +2,9 @@ rm(list = ls(all.names = T))
 pkg <- c("openxlsx")
 lapply(pkg,require,character.only = T)
 
-load("save/metadata.rda")
+load("rda/metadata.rda")
 
-input <- read.xlsx("downloads/cernai-feeding-library.xlsx", sheet = 2)
-save(input, file = "save/cernai.feeding.library.rda")
+input <- read.xlsx("sources/cernai-feeding-library.xlsx", sheet = 2)
 df <- input
 df <- subset(df, !is.na(`ORF.ID.(WS112)`))
 df <- subset(df, `ORF.ID.(WS112)` != "no match in WS112")
@@ -40,9 +39,7 @@ for (i in 1:length(orf)) {
 }
 rownames(info) <- rownames(df)
 info <- info[,c(2,1,3)] # flip ORF and GeneID order
-ORFeome.RNAi.pheno <- df$WormB.RNAi.Pheno
-info <- cbind(info,ORFeome.RNAi.pheno)
 orfeome <- info
-save(orfeome, file = "save/orfeome.rda")
 
-save.image("save/orfeome.RData")
+save(orfeome, file = "rda/orfeome.rda")
+write.csv(orfeome, "csv/orfeome.csv")
