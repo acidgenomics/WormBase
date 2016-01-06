@@ -5,7 +5,7 @@
 
 *C. elegans* metadata automatically built into data frames using the current information available on [WormBase](http://www.wormbase.org), [Ensembl](http://www.ensembl.org/Caenorhabditis_elegans/Info/Index), and [PANTHER](http://pantherdb.org). 
 
-Last built on 2015-01-06 (initial release)  
+Last built on 2016-01-06 (initial release)  
 WormBase WS251, Ensembl 83, PANTHER 10  
 50,915 GeneIDs (from WormBase)
 
