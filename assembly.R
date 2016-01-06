@@ -19,9 +19,9 @@ source("sources.R")
 datasets <- c("GeneID",
 							"description",
 							"rnai.phenotypes",
-							"biomart",
 							"blastp",
 							"orthologs",
+							"biomart",
 							"panther")
 
 for (i in 1:length(datasets)) {
