@@ -3,43 +3,67 @@ pkg <- c("openxlsx")
 lapply(pkg,require,character.only = T)
 
 load("rda/metadata.rda")
+rm(metadata,metadata.simple)
 
 input <- read.xlsx("sources/cernai-feeding-library.xlsx", sheet = 2)
-df <- input
-df <- subset(df, !is.na(`ORF.ID.(WS112)`))
-df <- subset(df, `ORF.ID.(WS112)` != "no match in WS112")
-cols <- c("Plate","Row","Col")
-df$id
+df <- input[,c("ORF.ID.(WS112)",
+							 "Plate",
+							 "Row",
+							 "Col",
+							 "RNAi.well",
+							 "Nonv",
+							 "Vpep",
+							 "Simmer")]
+names(df)[names(df) == "ORF.ID.(WS112)"] <- "ORF"
 
-vec <- do.call(paste, c(df[cols], sep = "-"))
-vec <- gsub("^([0-9]{5})-(.*)$", "\\1@\\2", vec, perl = T, ignore.case = F)
-vec <- gsub("^(.*)-([0-9]{1})$", "\\10\\2", vec, perl = T, ignore.case = F) # pad zeros for sorting later
-vec <- gsub("^(.*)-([0-9]{2})$", "\\1\\2", vec, perl = T, ignore.case = F)
-head(vec)
-rownames(df) <- vec
-# remove columns from original df
-#!!! for (co in cols) data[co] <- NULL
+censored <- subset(df, is.na(RNAi.well))
+no.match <- subset(df, ORF == "no match in WS112")
 
-# get info for duplicate clones
-dupes <- df[duplicated(df$`ORF.ID.(WS112)`),]
+# subset the censors
+df <- subset(df, !is.na(RNAi.well))
+df <- subset(df, ORF != "no match in WS112")
+input.clean <- df
 
-# ORF cleanup for matching
-vec <- as.vector(df$`ORF.ID.(WS112)`)
-# strip any isoform annotations off the end for proper matching!
-vec <- gsub("^(.*)[a-z]{1}$", "\\1", vec, perl = T, ignore.case = F)
-head(vec)
-orf <- vec
+# set plate IDs as rownames
+col <- c("Plate","Row","Col")
+ORFeomeID <- do.call(paste, c(df[col], sep = "-"))
+rm(col)
+ORFeomeID[1]
+ORFeomeID <- gsub("^(.*)-([0-9]{1})$", "\\1-0\\2", ORFeomeID, perl = T, ignore.case = F) # pad zeros
+ORFeomeID[1]
+ORFeomeID <- gsub("^([0-9]{5})-([A-Z]{1})-([0-9]{2})$", "\\1@\\2\\3", ORFeomeID, perl = T, ignore.case = F)
+ORFeomeID[1]
+df <- cbind(ORFeomeID,df)
+rownames(df) <- df$ORFeomeID
+orfeome.valid <- df
 
 # since there are duplicate ORFs per well, we must set a loop and pull from metadata.ORF
-# alternate approach to use lapply somehow would be faster?
-info <- data.frame(matrix(nrow = 0, ncol = 3))
-colnames(info) <- colnames(metadata.ORF)
+list <- list()
+orf <- as.vector(df$ORF)
 for (i in 1:length(orf)) {
-	info <- rbind(info, metadata.ORF[orf[i],])
+	list[[i]] <- metadata.ORF[orf[i],c(2,3)]
 }
-rownames(info) <- rownames(df)
-info <- info[,c(2,1,3)] # flip ORF and GeneID order
-orfeome <- info
+df <- data.frame(do.call("rbind", list)) # cpu expensive -- takes 4 minutes on my Mac
+rownames(df) <- NULL
+orf.to.GeneID <- df
 
-save(orfeome, file = "rda/orfeome.rda")
+# bind the matches back to the valid orfeome df
+df <- cbind(orf.to.GeneID,orfeome.valid)
+rownames(df) <- as.vector(df$ORFeomeID)
+df$ORFeomeID <- NULL
+colnames(df)
+df <- df[,c("RNAi.well",
+						"ORF",
+						"GeneID",
+						"public.name",
+						"Nonv",
+						"Vpep",
+						"Simmer")]
+orfeome <- df
+
+orfeome.unmatched <- orfeome[is.na(orfeome$GeneID),]
+orfeome.simple <- orfeome[,c(2:4)]
+orfeome.unique <- unique(as.vector(orfeome$ORF))
+
+save(orfeome,orfeome.simple, file = "rda/orfeome.rda")
 write.csv(orfeome, "csv/orfeome.csv")
