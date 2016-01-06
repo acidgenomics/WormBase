@@ -37,9 +37,12 @@ WormBase WS251, Ensembl 83, PANTHER 10
 - biomart.interpro
 - biomart.interpro.short.description
 - biomart.interpro.description
-- blastp.PepID
-- blastp.ensembl
-- blastp.p
+- blastp.wormbase.peptide.id
+- blastp.ensembl.peptide.id
+- blastp.e.val
+- blastp.ensembl.gene.id
+- blastp.external.gene.name
+- blastp.description
 - orthologs.hsapiens.homolog.wormbase.id
 - orthologs.hsapiens.homolog.wormbase.name
 - orthologs.mmusculus.homolog.wormbase.id
@@ -53,3 +56,4 @@ WormBase WS251, Ensembl 83, PANTHER 10
 - panther.go.cc
 - panther.pc
 - panther.pathway
+
