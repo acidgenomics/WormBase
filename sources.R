@@ -2,10 +2,8 @@ rm(list = ls(all.names = T))
 pkg <- c("RCurl")
 lapply(pkg,require,character.only = T)
 
-# everything here is automatic, no need to request a certain WormBase WS release or PANTHER version
-
-if (!file.exists("downloads")) { dir.create("downloads") }
-setwd("downloads")
+if (!file.exists("sources")) { dir.create("sources") }
+setwd("sources")
 
 # WormBase ====================================================================
 # http://www.wormbase.org/about/release_schedule
