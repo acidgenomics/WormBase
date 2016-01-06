@@ -43,6 +43,9 @@ colnames(df) <- gsub("GeneID.", "", colnames(df))
 # done, now export
 metadata <- df
 write.csv(metadata, "csv/metadata.csv", row.names = F)
+colnames <- colnames(metadata)
+colnames
+write(colnames,"colnames.txt",sep = "\n")
 
 # simple version
 metadata.simple <- df[,c("GeneID","ORF","public.name")]
