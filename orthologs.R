@@ -95,6 +95,7 @@ mmusculus <- as.data.frame(cbind(mmusculus.id,mmusculus.name))
 rownames(mmusculus) <- names(mmusculus.all)
 mmusculus <- mmusculus[GeneID.vec,]
 orthologs <- cbind(hsapiens,mmusculus)
+rownames(orthologs) <- GeneID.vec
 colnames(orthologs) <- c("hsapiens.homolog.wormbase.id",
 												 "hsapiens.homolog.wormbase.name",
 												 "mmusculus.homolog.wormbase.id",
