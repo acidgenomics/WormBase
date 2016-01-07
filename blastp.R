@@ -70,5 +70,6 @@ colnames(df) <- gsub("_",".",colnames(df)) # clean up titles
 
 # set rows to metadata df
 blastp <- df[GeneID.vec,]
+rownames(blastp) <- GeneID.vec
 
 save(blastp, file = "rda/blastp.rda")

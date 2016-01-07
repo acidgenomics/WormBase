@@ -102,6 +102,7 @@ df <- cbind(basic,
 						homology,
 						go.terms,
 						interpro)
+rownames(df) <- GeneID.vec
 colnames(df) <- gsub("_",".",colnames(df)) # clean up titles
 colnames(df)[colnames(df) == "description"] <- "ensembl.description"
 # leading and trailing comma cleanup

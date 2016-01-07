@@ -116,6 +116,8 @@ df <- df[!duplicated(df$GeneID),]
 rownames(df) <- df$GeneID
 df$GeneID <- NULL
 df <- df[GeneID.vec,]
+rownames(df) <- GeneID.vec
 panther <- df
+rm(df)
 
 save(panther, file = "rda/panther.rda")
