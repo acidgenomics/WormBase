@@ -62,12 +62,10 @@ save(metadata,metadata.ORF,metadata.simple, file = "rda/metadata.rda")
 
 # create CSV subsets
 for (i in 1:length(datasets)) {
-	col <- colnames(mget(datasets[i]))
-	df <- metadata[,col]
+	df <- mget(datasets[i])[[1]]
 	file <- paste(c("csv/",datasets[i],".csv"), collapse = "")
 	write.csv(df, file)
 }
-rm(col,df)
 
 # update ORFome RNAi metadata for screening info
 # be sure to run last -- CPU intensive and requires compiled metadata.rda
