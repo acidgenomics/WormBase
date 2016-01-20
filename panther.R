@@ -1,25 +1,25 @@
 rm(list = ls(all.names = T))
-pkg <- c("plyr","stringr")
-lapply(pkg,require,character.only = T)
+pkg <- c("plyr", "stringr")
+lapply(pkg, require, character.only = T)
 load("rda/GeneID.rda")
 
 df <- read.delim("sources/panther.txt.gz", header = F)
 colnames(df) <- c("id",
-									"protein",
-									"sf.id",
-									"family.name",
-									"subfamily.name",
-									"go.mf",
-									"go.bp",
-									"go.cc",
-									"pc",
-									"pathway")
+                  "protein",
+                  "sf.id",
+                  "family.name",
+                  "subfamily.name",
+                  "go.mf",
+                  "go.bp",
+                  "go.cc",
+                  "pc",
+                  "pathway")
 df$protein <- NULL
 id <- df$id # cleanup and split below
 df$id <- NULL # now safe to remove
 id <- gsub("CAEEL\\|", "", id)
 
-# fix incorrect ID mapping in PANTHER 10
+# fix incorrect ID mapping in PANTHER
 # ORF to WBGeneID =============================================================
 id <- gsub("Gene=B0303.5\\|", "WormBase=WBGene00015127\\|", id)
 id <- gsub("Gene=C13B9.1\\|", "WormBase=WBGene00015732\\|", id)
@@ -74,7 +74,7 @@ id <- gsub("Gene=WormBase=Y65B4A.2c\\|", "WormBase=WBGene00022026\\|", id)
 id <- gsub("Gene=WormBase=Y65B4A.9a\\|", "WormBase=WBGene00022032\\|", id)
 id <- gsub("Gene=WormBase=Y65B4BL.5c\\|", "WormBase=WBGene00022037\\|", id)
 id <- gsub("Gene=WormBase=Y65B4BR.2d\\|", "WormBase=WBGene00002393\\|", id)
-id <- gsub("Gene=WormBase=Y65B4BR.5c\\|", "WormBase=WBGene00022042\\|", id) # duplicate!
+id <- gsub("Gene=WormBase=Y65B4BR.5c\\|", "WormBase=WBGene00022042\\|", id) # dupe
 id <- gsub("Gene=WormBase=Y71G12B.31a\\|", "WormBase=WBGene00044348\\|", id)
 id <- gsub("Gene=WormBase=Y73B6BL.26b\\|", "WormBase=WBGene00022247\\|", id)
 id <- gsub("Gene=WormBase=Y92H12A.1b\\|", "WormBase=WBGene00005077\\|", id)
@@ -106,16 +106,16 @@ id <- gsub("GeneID=2565705\\|", "WormBase=WBGene00010963\\|", id) # MTCE.25
 
 # fix the ID mapping
 id <- as.data.frame(str_split_fixed(id, "\\|", 2))
-colnames(id) <- c("GeneID","uniprot.kb")
-id <- as.data.frame(apply(id,2,function(x) gsub("WormBase=","",x,perl = T)))
-id <- as.data.frame(apply(id,2,function(x) gsub("UniProtKB=","",x,perl = T)))
+colnames(id) <- c("GeneID", "uniprot.kb")
+id <- as.data.frame(apply(id, 2, function(x) gsub("WormBase=", "", x, perl = T)))
+id <- as.data.frame(apply(id, 2, function(x) gsub("UniProtKB=", "", x, perl = T)))
 head(id)
 # recombine then remove duplicates from df, take out UniProtKB, then add back
-df <- cbind(id,df)
-df <- df[!duplicated(df$GeneID),]
+df <- cbind(id, df)
+df <- df[!duplicated(df$GeneID), ]
 rownames(df) <- df$GeneID
 df$GeneID <- NULL
-df <- df[GeneID.vec,]
+df <- df[GeneID.vec, ]
 rownames(df) <- GeneID.vec
 panther <- df
 rm(df)
