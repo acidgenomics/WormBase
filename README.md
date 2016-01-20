@@ -1,4 +1,4 @@
-# metadata.elegans
+# metadata-elegans
 
 [Michael J. Steinbaugh, PhD](http://mike.steinbaugh.com)  
 [Joslin Diabetes Center](http://www.joslin.org)
