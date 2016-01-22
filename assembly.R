@@ -10,7 +10,7 @@ biocLite(c("biomaRt", "plyr", "RCurl", "readr", "stringr"))
 # openxlsx is needed to load the ORFeome RNAi information
 install.packages("openxlsx", dependencies = T)
 
-# Build the datasets ----------------------------------------------------------
+# Build the datasets -----------------------------------------------------------
 datasets <- c("GeneID", "description", "rnai_phenotypes", "blastp",
               "orthologs", "biomart", "panther")
 
@@ -30,7 +30,7 @@ lapply(seq(along = datasets), function(i) {
   load(file, .GlobalEnv)
 })
 
-# Compile the master metadata data.frame --------------------------------------
+# Compile the master metadata data.frame ---------------------------------------
 df <- data.frame()
 df <- do.call(cbind, mget(datasets))
 colnames(df) <- gsub("GeneID.", "", colnames(df))
