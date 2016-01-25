@@ -5,19 +5,25 @@ load("rda/GeneID.rda")
 
 df <- read.delim("sources/rnai_phenotypes.txt.gz", header = F, row.names = 1)
 colnames(df) <- c("ORF", "rnai.phenotypes")
-rnai <- vector()
-#!!! USE OTHER METHOD
-for (i in 1:nrow(df)) {
+
+rnai.ordered <- lapply(seq(along = rownames(df)), function(i) {
   gene <- rownames(df)[i]
   split <- strsplit(as.character(df[i, "rnai.phenotypes"]), ", ")
   vec <- split[[1]]
   vec <- unique(vec)
   vec <- sort(vec)
-  rnai[i] <- paste(vec, collapse = " // ")
-}
-df <- cbind(df, rnai)
-df <- df[GeneID.vec, ]
-df <- df[, "rnai"]
+  paste(vec, collapse = " // ")
+})
+rnai.ordered <- data.frame(do.call("rbind", rnai.ordered))
+colnames(rnai.ordered) <- "rnai.phenotypes"
 
+df$rnai.phenotypes <- NULL
+df <- cbind(df, rnai.ordered)
+rm(rnai.ordered)
+df <- df[GeneID.vec, ]
+rownames(df) <- GeneID.vec
+df$ORF <- NULL
 rnai.phenotypes <- df
+rm(df)
+
 save(rnai.phenotypes, file = "rda/rnai_phenotypes.rda")
