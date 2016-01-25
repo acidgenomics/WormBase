@@ -5,7 +5,7 @@ lapply(pkg, require, character.only = T)
 load("rda/metadata.rda")
 rm(metadata, metadata.simple)
 
-input <- read.xlsx("sources/cernai-feeding-library.xlsx", sheet = 2)
+input <- read.xlsx("sources/orfeome.xlsx", sheet = 2)
 df <- input[, c("ORF.ID.(WS112)",
                 "Plate",
                 "Row",
@@ -16,15 +16,16 @@ df <- input[, c("ORF.ID.(WS112)",
                 "Simmer")]
 names(df)[names(df) == "ORF.ID.(WS112)"] <- "ORF"
 
+# Censors or wells without match
 censored <- subset(df, is.na(RNAi.well))
 no.match <- subset(df, ORF == "no match in WS112")
 
-# subset the censors
+# Subset the censors
 df <- subset(df, !is.na(RNAi.well))
 df <- subset(df, ORF != "no match in WS112")
 input.clean <- df
 
-# set plate IDs as rownames
+# Set plate IDs as rownames
 col <- c("Plate", "Row", "Col")
 ORFeomeID <- do.call(paste, c(df[col], sep = "-"))
 rm(col)
@@ -37,13 +38,14 @@ df <- cbind(ORFeomeID, df)
 rownames(df) <- df$ORFeomeID
 orfeome.valid <- df
 
-# since there are duplicate ORFs per well, we must set a loop and pull from metadata.ORF
-list <- list()
+# Since there are duplicate ORFs per well, we must loop from metadata.ORF
 orf <- as.vector(df$ORF)
-for (i in 1:length(orf)) {
-  list[[i]] <- metadata.ORF[orf[i], c(2, 3)]
-}
-df <- data.frame(do.call("rbind", list)) # cpu expensive -- takes 4 minutes on my Mac
+list <- list()
+list <- lapply(seq(along = orf), function(i) {
+  metadata.ORF[orf[i], c(2, 3)]
+})
+# This step is cpu expensive, any way to speed up?
+df <- data.frame(do.call("rbind", list))
 rownames(df) <- NULL
 orf.to.GeneID <- df
 
@@ -52,13 +54,8 @@ df <- cbind(orf.to.GeneID, orfeome.valid)
 rownames(df) <- as.vector(df$ORFeomeID)
 df$ORFeomeID <- NULL
 colnames(df)
-df <- df[, c("RNAi.well",
-             "ORF",
-             "GeneID",
-             "public.name",
-             "Nonv",
-             "Vpep",
-             "Simmer")]
+df <- df[, c("RNAi.well", "ORF", "GeneID", "public.name",
+             "Nonv", "Vpep", "Simmer")]
 orfeome <- df
 
 orfeome.unmatched <- orfeome[is.na(orfeome$GeneID), ]
