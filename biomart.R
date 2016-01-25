@@ -3,9 +3,6 @@ pkg <- c("biomaRt", "plyr")
 lapply(pkg, require, character.only = T)
 load("rda/GeneID.rda")
 
-# musculus <- useMart("ensembl","mmusculus_gene_ensembl")
-# sapiens <- useMart("ensembl","hsapiens_gene_ensembl")
-
 # entrezgene = entrez ID
 # external_gene_name = ensembl public name
 # wormbase_locus = wormbase public name
@@ -14,7 +11,10 @@ load("rda/GeneID.rda")
 mart <- useMart("ensembl", "celegans_gene_ensembl")
 biomart.options <- listAttributes(mart)
 
-# Simple gene length info -----------------------------------------------------
+# musculus <- useMart("ensembl","mmusculus_gene_ensembl")
+# sapiens <- useMart("ensembl","hsapiens_gene_ensembl")
+
+# Simple gene length info ------------------------------------------------------
 df <- getBM(mart = mart,
             attributes = c("ensembl_gene_id",
                            "gene_biotype",
@@ -28,9 +28,10 @@ df$ensembl_gene_id <- NULL
 basic <- df[GeneID.vec, ]
 rm(df)
 
-# Entrez IDs ------------------------------------------------------------------
+# Entrez IDs -------------------------------------------------------------------
 df <- getBM(mart = mart,
-            attributes = c("ensembl_gene_id", "entrezgene"))
+            attributes = c("ensembl_gene_id",
+                           "entrezgene"))
 df <- ddply(df, .(ensembl_gene_id), summarize,
             entrezgene = paste(sort(unique(entrezgene)), collapse = ","))
 rownames(df) <- df$ensembl_gene_id
@@ -38,7 +39,7 @@ df$ensembl_gene_id <- NULL
 entrezgene <- df[GeneID.vec, ]
 rm(df)
 
-# UniProt IDs -----------------------------------------------------------------
+# UniProt IDs ------------------------------------------------------------------
 df <- getBM(mart = mart,
             attributes = c("ensembl_gene_id",
                            "uniprot_sptrembl",
@@ -51,20 +52,18 @@ df$ensembl_gene_id <- NULL
 uniprot <- df[GeneID.vec, ]
 rm(df)
 
-# Homology --------------------------------------------------------------------
+# Homology ---------------------------------------------------------------------
 df <- getBM(mart = mart,
             attributes = c("ensembl_gene_id",
-                           "hsapiens_homolog_ensembl_gene",
-                           "mmusculus_homolog_ensembl_gene"))
+                           "hsapiens_homolog_ensembl_gene"))
 df <- ddply(df, .(ensembl_gene_id), summarize,
-            hsapiens_homolog_ensembl_gene = paste(sort(unique(hsapiens_homolog_ensembl_gene)), collapse = ","),
-            mmusculus_homolog_ensembl_gene = paste(sort(unique(mmusculus_homolog_ensembl_gene)), collapse = ","))
+            hsapiens_homolog_ensembl_gene = paste(sort(unique(hsapiens_homolog_ensembl_gene)), collapse = ","))
 rownames(df) <- df$ensembl_gene_id
 df$ensembl_gene_id <- NULL
 homology <- df[GeneID.vec, ]
 rm(df)
 
-# GO terms --------------------------------------------------------------------
+# GO terms ---------------------------------------------------------------------
 df <- getBM(mart = mart,
             attributes = c("ensembl_gene_id",
                            "go_id",
@@ -78,7 +77,7 @@ colnames(df) <- c("ensembl.go.id", "ensembl.go.names")
 go.terms <- df[GeneID.vec, ]
 rm(df)
 
-# Interpro --------------------------------------------------------------------
+# Interpro ---------------------------------------------------------------------
 df <- getBM(mart = mart,
             attributes = c("ensembl_gene_id",
                            "interpro",
@@ -93,13 +92,14 @@ df$ensembl_gene_id <- NULL
 interpro <- df[GeneID.vec, ]
 rm(df)
 
-# Merge everything together ---------------------------------------------------
+# Merge everything together ----------------------------------------------------
 df <- cbind(basic, entrezgene, uniprot, homology, go.terms, interpro)
 rownames(df) <- GeneID.vec
 colnames(df) <- gsub("_", ".", colnames(df))
 colnames(df)[colnames(df) == "description"] <- "ensembl.description"
-df <- as.data.frame(apply(df, 2, function(x) gsub("^,(.*)", "\\1", x, perl = T))) # Fix leading comma
-df <- as.data.frame(apply(df,2,function(x) gsub("(.*),$", "\\1", x, perl = T))) # Fix trailing comma
+# Fix leading and trailing commas
+df <- as.data.frame(apply(df, 2, function(x) gsub("^,(.*)", "\\1", x, perl = T)))
+df <- as.data.frame(apply(df,2,function(x) gsub("(.*),$", "\\1", x, perl = T)))
 biomart <- df
 rm(df)
 

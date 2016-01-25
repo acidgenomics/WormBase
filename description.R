@@ -25,7 +25,6 @@ df <- df[, c("gene.class.description",
             "automated.description")]
 # clean up column names
 colnames(df) <- gsub(".description", "", colnames(df))
-
 df <- df[GeneID.vec, ]
 description <- df
 rm(df)
