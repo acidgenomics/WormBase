@@ -1,4 +1,3 @@
-rm(list = ls(all.names = T))
 pkg <- c("openxlsx")
 lapply(pkg, require, character.only = T)
 
