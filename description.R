@@ -1,4 +1,3 @@
-rm(list = ls(all.names = T))
 load("rda/GeneID.rda")
 
 df <- read.delim("sources/functional_descriptions.txt.gz",
