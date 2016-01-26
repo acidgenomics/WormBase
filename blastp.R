@@ -1,4 +1,3 @@
-rm(list = ls(all.names = T))
 pkg <- c("biomaRt", "plyr")
 lapply(pkg, require, character.only = T)
 load("rda/GeneID.rda")

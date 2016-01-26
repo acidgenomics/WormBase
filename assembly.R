@@ -1,7 +1,3 @@
-rm(list = ls(all.names = T))
-if (!file.exists("csv")) { dir.create("csv") }
-if (!file.exists("rda")) { dir.create("rda") }
-
 source("http://bioconductor.org/biocLite.R")
 biocLite()
 biocLite("BiocUpgrade")
@@ -10,17 +6,23 @@ biocLite(c("biomaRt", "plyr", "RCurl", "readr", "stringr"))
 # openxlsx is needed to load the ORFeome RNAi information
 install.packages("openxlsx", dependencies = T)
 
-# Build the datasets -----------------------------------------------------------
-datasets <- c("GeneID", "description", "rnai_phenotypes", "blastp",
-              "orthologs", "biomart", "panther")
+# Start assembly!
+rm(list = ls(all.names = T))
+if (!file.exists("csv")) { dir.create("csv") }
+if (!file.exists("rda")) { dir.create("rda") }
 
 # Download current files from WormBase and PANTHER -----------------------------
 source("sources.R")
 
+# Build the datasets -----------------------------------------------------------
+datasets <- c("GeneID", "description", "rnai_phenotypes", "blastp",
+              "orthologs", "biomart", "panther")
+datasets.gsub <- gsub("_", ".", datasets)
+
 # Source the .R code files -----------------------------------------------------
 lapply(seq(along = datasets), function(i) {
   file <- paste(c(datasets[i], ".R"), collapse = "")
-  source(file)
+  source(file, verbose = T)
 })
 
 # Load the saved .rda files for compile ----------------------------------------
@@ -31,7 +33,7 @@ lapply(seq(along = datasets), function(i) {
 
 # Compile the master metadata data.frame ---------------------------------------
 df <- data.frame()
-df <- do.call(cbind, mget(datasets))
+df <- do.call(cbind, mget(datasets.gsub))
 colnames(df) <- gsub("GeneID.", "", colnames(df))
 metadata <- df
 write.csv(metadata, "csv/metadata.csv", row.names = F)
@@ -56,14 +58,14 @@ save(metadata, metadata.ORF, metadata.simple, file = "rda/metadata.rda")
 
 # Create CSV subsets -----------------------------------------------------------
 lapply(seq(along = datasets), function(i) {
-  df <- mget(datasets[i])[[1]]
+  df <- mget(datasets.gsub[i], envir = .GlobalEnv)[[1]]
   file <- paste(c("csv/", datasets[i], ".csv"), collapse = "")
   write.csv(df, file)
 })
 
 # Update ORFome RNAi metadata for screening info -------------------------------
 # Be sure to run last! CPU intensive and requires compiled metadata.rda
-source("orfeome.R")
+source("orfeome.R", verbose = T)
 
 # gzip CSV files to save disk space --------------------------------------------
 system("gzip --force csv/*.csv")
