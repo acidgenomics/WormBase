@@ -1,28 +1,34 @@
 pkg <- c("plyr", "stringr")
-lapply(pkg, require, character.only = T)
+lapply(pkg, require, character.only = TRUE)
 load("rda/GeneID.rda")
 
-df <- read.delim("sources/rnai_phenotypes.txt.gz", header = F, row.names = 1)
-colnames(df) <- c("ORF", "rnai.phenotypes")
+input <- read.delim("sources/rnai_phenotypes.txt.gz", header = FALSE, row.names = 1)
+colnames(input) <- c("ORF", "rnai.phenotypes")
 
-rnai.ordered <- lapply(seq(along = rownames(df)), function(i) {
-  gene <- rownames(df)[i]
-  split <- strsplit(as.character(df[i, "rnai.phenotypes"]), ", ")
+# Sort RNAi phenotypes alphabetically
+x <- input
+x <- lapply(seq(along = rownames(x)), function(i) {
+  split <- strsplit(as.character(x[i, "rnai.phenotypes"]), ", ")
   vec <- split[[1]]
   vec <- unique(vec)
   vec <- sort(vec)
   paste(vec, collapse = " // ")
 })
-rnai.ordered <- data.frame(do.call("rbind", rnai.ordered))
-colnames(rnai.ordered) <- "rnai.phenotypes"
+x <- data.frame(do.call("rbind", x))
+colnames(x) <- "rnai.phenotypes"
+sorted <- x
+rm(x)
 
-df$rnai.phenotypes <- NULL
-df <- cbind(df, rnai.ordered)
-rm(rnai.ordered)
-df <- df[GeneID.vec, ]
-rownames(df) <- GeneID.vec
-df$ORF <- NULL
-rnai.phenotypes <- df
-rm(df)
+# Add the sorted phenotypes back
+x <- input
+x$rnai.phenotypes <- NULL
+x <- cbind(x, sorted)
+rm(sorted)
+x <- x[GeneID_vec, ]
+rownames(x) <- GeneID_vec
+x$ORF <- NULL
+rnai_phenotypes <- x
+rm(x)
 
-save(rnai.phenotypes, file = "rda/rnai_phenotypes.rda")
+save(rnai_phenotypes, file = "rda/rnai_phenotypes.rda")
+rm(input)
