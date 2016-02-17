@@ -1,13 +1,13 @@
 pkg <- c("RCurl")
-lapply(pkg, require, character.only = T)
+lapply(pkg, require, character.only = TRUE)
 
 if (!file.exists("sources")) { dir.create("sources") }
 setwd("sources")
 
-# WormBase ====================================================================
+# WormBase ---------------------------------------------------------------------
 # http://www.wormbase.org/about/release_schedule
-files <- c("affy_oligo_mapping", "agil_oligo_mapping", "geneIDs",
-           "functional_descriptions", "orthologs")
+files <- c("affy_oligo_mapping", "agil_oligo_mapping",
+           "functional_descriptions", "geneIDs", "orthologs")
 lapply(seq(along = files), function(i) {
   file <- paste(c("ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/",
                   files[i], "/c_elegans.canonical_bioproject.current.", files[i], ".txt.gz"),
@@ -21,21 +21,20 @@ download.file("ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/
 
 # RNAi phenotypes
 dir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/ONTOLOGY/"
-ls <- getURL(dir, dirlistonly = T, verbose = T)
+ls <- getURL(dir, dirlistonly = TRUE, verbose = TRUE)
 ls <- strsplit(ls, "\n")
 ls <- ls[[1]]
-grep <- grep("rnai_phenotypes_quick", ls, value = T)
+grep <- grep("rnai_phenotypes_quick", ls, value = TRUE)
 file <- paste(c(dir, grep), collapse = "")
 download.file(file, "rnai_phenotypes.txt")
 system("gzip --force rnai_phenotypes.txt")
 
 # Wormpep IDs used for BLASTP matching
-#ftp://ftp.wormbase.org//pub/wormbase/releases/WS251/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS251.wormpep_package.tar.gz
-dir <- "ftp://ftp.wormbase.org//pub/wormbase/releases/current-production-release/species/c_elegans/PRJNA13758/"
-ls <- getURL(dir, dirlistonly = T, verbose = T)
+dir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/species/c_elegans/PRJNA13758/"
+ls <- getURL(dir, dirlistonly = TRUE, verbose = TRUE)
 ls <- strsplit(ls, "\n")
 ls <- ls[[1]]
-grep <- grep("wormpep_package", ls, value = T)
+grep <- grep("wormpep_package", ls, value = TRUE)
 file <- paste(c(dir, grep), collapse = "")
 download.file(file, "wormpep.tar.gz")
 system("tar -ztvf wormpep.tar.gz")
@@ -48,17 +47,17 @@ system("gzip --force wormpep.txt")
 # wormpep.table
 system("tar -zxvf wormpep.tar.gz")
 
-# PANTHER =====================================================================
+# PANTHER ----------------------------------------------------------------------
 dir <- "ftp://ftp.pantherdb.org/sequence_classifications/current_release/PANTHER_Sequence_Classification_files/"
-ls <- getURL(dir, dirlistonly = T, verbose = T)
+ls <- getURL(dir, dirlistonly = TRUE, verbose = TRUE)
 ls <- strsplit(ls, "\n")
 ls <- ls[[1]]
-grep <- grep("nematode_worm", ls, value = T)
+grep <- grep("nematode_worm", ls, value = TRUE)
 file <- paste(c(dir, grep), collapse = "")
 download.file(file, "panther.txt")
 system("gzip --force panther.txt")
 
-# ORFeome RNAi library ========================================================
+# ORFeome RNAi library ---------------------------------------------------------
 # http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai/
 download.file("http://dharmacon.gelifesciences.com/uploadedFiles/Resources/cernai-feeding-library.xlsx", "orfeome.xlsx")
 
