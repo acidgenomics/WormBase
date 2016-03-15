@@ -10,6 +10,7 @@ rnai.phenotypes
 blastp.wormbase.peptide.id
 blastp.ensembl.peptide.id
 blastp.e.val
+blastp.ensembl.peptide.id
 blastp.ensembl.gene.id
 blastp.external.gene.name
 blastp.description

@@ -34,18 +34,18 @@ dir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/
 ls <- getURL(dir, dirlistonly = TRUE, verbose = TRUE)
 ls <- strsplit(ls, "\n")
 ls <- ls[[1]]
+ls
 grep <- grep("wormpep_package", ls, value = TRUE)
+grep
 file <- paste(c(dir, grep), collapse = "")
 download.file(file, "wormpep.tar.gz")
-system("tar -ztvf wormpep.tar.gz")
 system("tar -xzf wormpep.tar.gz wormpep.table*")
-file.remove("wormpep.tar.gz")
 file <- list.files(pattern = "wormpep.table")
+file
 file.rename(file, "wormpep.txt")
 system("gzip --force wormpep.txt")
-
-# wormpep.table
-system("tar -zxvf wormpep.tar.gz")
+# Removal original wormpep file because it's large
+file.remove("wormpep.tar.gz")
 
 # PANTHER ----------------------------------------------------------------------
 dir <- "ftp://ftp.pantherdb.org/sequence_classifications/current_release/PANTHER_Sequence_Classification_files/"

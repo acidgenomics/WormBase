@@ -115,8 +115,8 @@ df <- cbind(id, df)
 df <- df[!duplicated(df$GeneID), ]
 rownames(df) <- df$GeneID
 df$GeneID <- NULL
-df <- df[GeneID.vec, ]
-rownames(df) <- GeneID.vec
+df <- df[GeneID_vec, ]
+rownames(df) <- GeneID_vec
 panther <- df
 rm(df)
 
