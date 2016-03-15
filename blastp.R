@@ -16,7 +16,7 @@ df$ensembl.peptide.id <- substr(df$ensembl.peptide.id, 9, 23)
 df <- df[order(df$wormbase.peptide.id, df$e.val), ]
 df <- df[!duplicated(df$wormbase.peptide.id), ]
 rownames(df) <- as.vector(df$wormbase.peptide.id)
-blastp.scores <- df
+blastp_scores <- df
 rm(df, input)
 
 # Map peptides to WormBase GeneID ----------------------------------------------
@@ -31,11 +31,11 @@ head(wormpep)
 df <- data.frame(do.call("rbind", wormpep))
 rm(wormpep)
 colnames(df) <- c("wormbase.peptide.id", "GeneID")
-wormbase.peptide.id <- df
+wormbase_peptide_id <- df
 
 # Pull ensembl IDs and p values based on wormbase.peptide.id -------------------
-vec <- as.vector(wormbase.peptide.id$wormbase.peptide.id)
-ensembl <- blastp.scores[vec, c("ensembl.peptide.id", "e.val")]
+vec <- as.vector(wormbase_peptide_id$wormbase.peptide.id)
+ensembl <- blastp_scores[vec, c("ensembl.peptide.id", "e.val")]
 df <- cbind(df, ensembl)
 rm(ensembl)
 
@@ -46,13 +46,13 @@ df <- df[!is.na(df$ensembl), ]
 rownames(df) <- df$GeneID
 # clean up the names for binding
 df$GeneID <- NULL
-blastp.GeneID <- df
+blastp_GeneID <- df
 rm(df)
 
 # biomaRt for human orthologs --------------------------------------------------
-ensembl.peptide.id <- as.vector(blastp.GeneID$ensembl.peptide.id)
+ensembl_peptide_id <- as.vector(blastp_GeneID$ensembl.peptide.id)
 mart <- useMart("ensembl", "hsapiens_gene_ensembl")
-biomart.options <- listAttributes(mart)
+biomart_options <- listAttributes(mart)
 df <- getBM(mart = mart,
             filters = "ensembl_peptide_id",
             values = ensembl.peptide.id,
@@ -60,14 +60,14 @@ df <- getBM(mart = mart,
                            "ensembl_gene_id",
                            "external_gene_name",
                            "description"))
-rownames(df) <- df$ensembl_peptide_id
-df$ensembl_peptide_id <- NULL
-df <- df[ensembl.peptide.id, ]
-df <- cbind(blastp.GeneID, df)
+rownames(df) <- df$ensembl.peptide.id
+df$ensembl.peptide.id <- NULL
+df <- df[ensembl_peptide_id, ]
+df <- cbind(blastp_GeneID, df)
 colnames(df) <- gsub("_", ".", colnames(df))
 # Set rows to metadata df
-blastp <- df[GeneID.vec, ]
-rownames(blastp) <- GeneID.vec
+blastp <- df[GeneID_vec, ]
+rownames(blastp) <- GeneID_vec
 rm(df)
 
 save(blastp, file = "rda/blastp.rda")

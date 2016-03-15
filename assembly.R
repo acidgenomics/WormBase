@@ -1,4 +1,5 @@
 source("http://bioconductor.org/biocLite.R")
+biocLite()
 biocLite(c("biomaRt", "plyr", "RCurl", "readr", "stringr"))
 
 # openxlsx is needed to load the ORFeome RNAi information

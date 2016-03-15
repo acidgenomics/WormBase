@@ -24,7 +24,7 @@ df <- getBM(mart = mart,
                            "description"))
 rownames(df) <- df$ensembl_gene_id
 df$ensembl_gene_id <- NULL
-basic <- df[GeneID.vec, ]
+basic <- df[GeneID_vec, ]
 rm(df)
 
 # Entrez IDs -------------------------------------------------------------------
@@ -35,7 +35,7 @@ df <- ddply(df, .(ensembl_gene_id), summarize,
             entrezgene = paste(sort(unique(entrezgene)), collapse = ","))
 rownames(df) <- df$ensembl_gene_id
 df$ensembl_gene_id <- NULL
-entrezgene <- df[GeneID.vec, ]
+entrezgene <- df[GeneID_vec, ]
 rm(df)
 
 # UniProt IDs ------------------------------------------------------------------
@@ -48,7 +48,7 @@ df <- ddply(df, .(ensembl_gene_id), summarize,
             uniprot_swissprot = paste(sort(unique(uniprot_swissprot)), collapse = ","))
 rownames(df) <- df$ensembl_gene_id
 df$ensembl_gene_id <- NULL
-uniprot <- df[GeneID.vec, ]
+uniprot <- df[GeneID_vec, ]
 rm(df)
 
 # Homology ---------------------------------------------------------------------
@@ -59,7 +59,7 @@ df <- ddply(df, .(ensembl_gene_id), summarize,
             hsapiens_homolog_ensembl_gene = paste(sort(unique(hsapiens_homolog_ensembl_gene)), collapse = ","))
 rownames(df) <- df$ensembl_gene_id
 df$ensembl_gene_id <- NULL
-homology <- df[GeneID.vec, ]
+homology <- df[GeneID_vec, ]
 rm(df)
 
 # GO terms ---------------------------------------------------------------------
@@ -73,7 +73,7 @@ df <- ddply(df, .(ensembl_gene_id), summarize,
 rownames(df) <- df$ensembl_gene_id
 df$ensembl_gene_id <- NULL
 colnames(df) <- c("ensembl.go.id", "ensembl.go.names")
-go.terms <- df[GeneID.vec, ]
+go.terms <- df[GeneID_vec, ]
 rm(df)
 
 # Interpro ---------------------------------------------------------------------
@@ -88,12 +88,12 @@ df <- ddply(df, .(ensembl_gene_id), summarize,
             interpro_description = paste(sort(unique(interpro_description)), collapse = " // "))
 rownames(df) <- df$ensembl_gene_id
 df$ensembl_gene_id <- NULL
-interpro <- df[GeneID.vec, ]
+interpro <- df[GeneID_vec, ]
 rm(df)
 
 # Merge everything together ----------------------------------------------------
 df <- cbind(basic, entrezgene, uniprot, homology, go.terms, interpro)
-rownames(df) <- GeneID.vec
+rownames(df) <- GeneID_vec
 colnames(df) <- gsub("_", ".", colnames(df))
 colnames(df)[colnames(df) == "description"] <- "ensembl.description"
 # Fix leading and trailing commas
