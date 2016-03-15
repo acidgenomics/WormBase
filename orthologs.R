@@ -61,9 +61,9 @@ hsapiens <- as.data.frame(cbind(hsapiens.id, hsapiens.name))
 rownames(hsapiens) <- names(hsapiens.all)
 colnames(hsapiens) <- c("hsapiens.homolog.wormbase.id",
                         "hsapiens.homolog.wormbase.name")
-hsapiens <- hsapiens[GeneID.vec, ]
+hsapiens <- hsapiens[GeneID_vec, ]
 orthologs <- hsapiens
-rownames(orthologs) <- GeneID.vec
+rownames(orthologs) <- GeneID_vec
 rm(hsapiens)
 
 save(orthologs, file = "rda/orthologs.rda")
