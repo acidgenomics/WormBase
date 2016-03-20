@@ -61,4 +61,9 @@ system("gzip --force panther.txt")
 # http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai/
 download.file("http://dharmacon.gelifesciences.com/uploadedFiles/Resources/cernai-feeding-library.xlsx", "orfeome.xlsx")
 
+# Ahringer RNAi library ========================================================
+# # Ahringer Library
+# http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/
+download.file("http://www.us.lifesciences.sourcebioscience.com/media/381254/C.%20elegans%20Database%202012.xlsx", "ahringer.xlsx")
+
 setwd("../")
