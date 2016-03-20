@@ -1,3 +1,7 @@
+###! ADD OTHER NAMES METADATA FROM WORMBASE
+###! FIX ORFEOME to add metadata columns
+###! ADD AHRINGER METADATA
+
 source("http://bioconductor.org/biocLite.R")
 biocLite()
 biocLite(c("biomaRt", "plyr", "RCurl", "readr", "stringr"))
