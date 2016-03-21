@@ -1,6 +1,4 @@
-###! ADD OTHER NAMES METADATA FROM WORMBASE
-###! FIX ORFEOME to add metadata columns
-###! ADD AHRINGER METADATA
+#! Ahringer and cherrypick update needed
 
 source("http://bioconductor.org/biocLite.R")
 biocLite()
@@ -46,7 +44,7 @@ colnames
 write(colnames, "colnames.txt", sep = "\n")
 
 # Simple version ---------------------------------------------------------------
-metadata_simple <- metadata[, c("GeneID", "ORF", "public.name")]
+metadata_simple <- metadata[, c("GeneID", "ORF", "public.name", "gene.other.ids")]
 write.csv(metadata_simple, "csv/metadata_simple.csv", row.names = FALSE)
 
 # Rownames by ORF instead of GeneID (Wormbase ID) ------------------------------
@@ -65,8 +63,11 @@ lapply(seq(along = datasets), function(i) {
   write.csv(df, file)
 })
 
-# Update ORFome RNAi metadata for screening info -------------------------------
-# Be sure to run last! CPU intensive and requires compiled metadata.rda
+# Update RNAi library metadata -------------------------------------------------
+# Be sure to run last!
+# Requires compiled metadata.rda to be saved prior
+#! source("ahringer.R", verbose = TRUE)
+#! source("cherrypick.R", verbose = TRUE)
 source("orfeome.R", verbose = TRUE)
 
 # gzip CSV files to save disk space --------------------------------------------
