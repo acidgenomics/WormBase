@@ -2,6 +2,7 @@ GeneID
 public.name
 ORF
 wormbase.status
+gene.other.ids
 description.gene.class
 description.concise
 description.provisional
