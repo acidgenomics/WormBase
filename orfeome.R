@@ -2,7 +2,7 @@ pkg <- c("openxlsx")
 lapply(pkg, require, character.only = TRUE)
 load("rda/metadata.rda")
 
-input <- read.xlsx("sources/orfeome.xlsx", sheet = 2)
+input <- read_excel("sources/orfeome.xlsx", sheet = 2)
 
 x <- input[, c("ORF.ID.(WS112)",
                 "Plate",
