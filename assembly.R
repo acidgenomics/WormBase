@@ -6,8 +6,9 @@ source("http://bioconductor.org/biocLite.R")
 biocLite()
 biocLite(c("biomaRt", "plyr", "RCurl", "readr", "stringr"))
 
-# openxlsx is needed to load the ORFeome RNAi information
-install.packages("openxlsx", dependencies = TRUE)
+# https://github.com/hadley/readxl
+# readxl is needed to open RNAi library spreadsheets
+install.packages("readxl")
 
 # Start assembly!
 rm(list = ls(all.names = TRUE))
