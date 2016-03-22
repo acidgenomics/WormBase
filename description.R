@@ -1,7 +1,6 @@
 load("rda/GeneID.rda")
-
 df <- read.delim("sources/functional_descriptions.txt.gz",
-                 header = F,
+                 header = FALSE,
                  skip = 4, # bad header tag delims, set manually
                  na.strings = "none available")
 

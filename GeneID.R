@@ -1,7 +1,7 @@
 pkg <- c("readr", "stringr")
-lapply(pkg, require, character.only = T)
+lapply(pkg, require, character.only = TRUE)
 # GeneID =======================================================================
-df <- read.csv("sources/geneIDs.txt.gz", header = F, na.strings = "")
+df <- read.csv("sources/geneIDs.txt.gz", header = FALSE, na.strings = "")
 df <- df[, c(2:5)] # discard uneeded columns
 colnames(df) <- c("GeneID", "public.name", "ORF", "wormbase.status")
 rownames(df) <- df$GeneID

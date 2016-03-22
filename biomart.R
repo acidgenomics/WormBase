@@ -1,5 +1,7 @@
+#! Fix leading "// " in GO terms from ensembl
+
 pkg <- c("biomaRt", "plyr")
-lapply(pkg, require, character.only = T)
+lapply(pkg, require, character.only = TRUE)
 load("rda/GeneID.rda")
 
 # entrezgene = entrez ID
@@ -10,8 +12,8 @@ load("rda/GeneID.rda")
 mart <- useMart("ensembl", "celegans_gene_ensembl")
 biomart.options <- listAttributes(mart)
 
-# musculus <- useMart("ensembl","mmusculus_gene_ensembl")
-# sapiens <- useMart("ensembl","hsapiens_gene_ensembl")
+# musculus <- useMart("ensembl", "mmusculus_gene_ensembl")
+# sapiens <- useMart("ensembl", "hsapiens_gene_ensembl")
 
 # Simple gene length info ------------------------------------------------------
 df <- getBM(mart = mart,
