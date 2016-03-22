@@ -1,5 +1,5 @@
 pkg <- c("biomaRt", "plyr")
-lapply(pkg, require, character.only = T)
+lapply(pkg, require, character.only = TRUE)
 load("rda/GeneID.rda")
 
 # Get the highest match for each peptide ---------------------------------------
@@ -55,19 +55,20 @@ mart <- useMart("ensembl", "hsapiens_gene_ensembl")
 biomart_options <- listAttributes(mart)
 df <- getBM(mart = mart,
             filters = "ensembl_peptide_id",
-            values = ensembl.peptide.id,
+            values = ensembl_peptide_id,
             attributes = c("ensembl_peptide_id",
                            "ensembl_gene_id",
                            "external_gene_name",
                            "description"))
+colnames(df) <- gsub("_", ".", colnames(df))
 rownames(df) <- df$ensembl.peptide.id
 df$ensembl.peptide.id <- NULL
 df <- df[ensembl_peptide_id, ]
 df <- cbind(blastp_GeneID, df)
-colnames(df) <- gsub("_", ".", colnames(df))
 # Set rows to metadata df
 blastp <- df[GeneID_vec, ]
 rownames(blastp) <- GeneID_vec
 rm(df)
 
 save(blastp, file = "rda/blastp.rda")
+warnings()
