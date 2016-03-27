@@ -29,17 +29,17 @@ if (!file.exists("rda")) {
 dir.create("csv")
 dir.create("rda")
 
-# Download current files from WormBase and PANTHER =============================
-source("sources.R", verbose = TRUE)
-
 # Source the .R code files =====================================================
+# Download current files from WormBase and PANTHER
+source("sources.R", verbose = TRUE)
+# Loop through the source files
 datasets <- c("GeneID", "description", "rnai_phenotypes", "blastp",
               "orthologs", "biomart", "panther")
 lapply(seq(along = datasets), function(i) {
   file <- paste(c(datasets[i], ".R"), collapse = "")
   source(file, verbose = TRUE)
 })
-# Now load the saved .rda files for compile ------------------------------------
+# Load the saved .rda files for compile
 lapply(seq(along = datasets), function(i) {
   file <- paste(c("rda/",datasets[i], ".rda"), collapse = "")
   load(file, .GlobalEnv)
@@ -74,7 +74,7 @@ save(metadata, metadata_ORF, metadata_simple, file = "rda/metadata.rda")
 
 # Create CSV subsets ===========================================================
 lapply(seq(along = datasets), function(i) {
-  df <- mget(datasets.gsub[i], envir = .GlobalEnv)[[1]]
+  df <- mget(datasets[i], envir = .GlobalEnv)[[1]]
   file <- paste(c("csv/", datasets[i], ".csv"), collapse = "")
   write.csv(df, file)
 })
