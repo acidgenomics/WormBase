@@ -8,7 +8,6 @@ rownames(df) <- df$GeneID
 GeneID_vec <- rownames(df)
 GeneID <- df
 rm(df)
-
 # Other IDs ====================================================================
 file <- read_file("sources/geneOtherIDs.txt.gz")
 # Take out dead or live status, we have this from geneIDs.txt
@@ -25,5 +24,5 @@ df <- df[GeneID_vec, ]
 df$GeneID <- NULL
 GeneID <- cbind(GeneID, df)
 rm(df, file)
-
 save(GeneID, GeneID_vec, file = "rda/GeneID.rda")
+warnings()

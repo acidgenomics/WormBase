@@ -66,9 +66,5 @@ download.file("http://dharmacon.gelifesciences.com/uploadedFiles/Resources/cerna
 # http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/
 download.file("http://www.us.lifesciences.sourcebioscience.com/media/381254/C.%20elegans%20Database%202012.xlsx", "ahringer.xlsx")
 
-# Ahringer RNAi library ========================================================
-# # Ahringer Library
-# http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/
-download.file("http://www.us.lifesciences.sourcebioscience.com/media/381254/C.%20elegans%20Database%202012.xlsx", "ahringer.xlsx")
-
 setwd("../")
+warnings()
