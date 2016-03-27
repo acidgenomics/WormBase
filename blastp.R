@@ -2,7 +2,7 @@ pkg <- c("biomaRt", "plyr")
 lapply(pkg, require, character.only = TRUE)
 load("rda/GeneID.rda")
 
-# Get the highest match for each peptide ---------------------------------------
+# Get the highest match for each peptide =======================================
 input <- read.csv("sources/best_blastp_hits.txt.gz", header = FALSE)
 df <- input[, c(1,4,5)]
 colnames(df) <- c("wormbase.peptide.id", "ensembl.peptide.id", "e.val")
@@ -19,7 +19,7 @@ rownames(df) <- as.vector(df$wormbase.peptide.id)
 blastp_scores <- df
 rm(df, input)
 
-# Map peptides to WormBase GeneID ----------------------------------------------
+# Map peptides to WormBase GeneID ==============================================
 input <- readLines("sources/wormpep.txt.gz")
 input <- strsplit(input, "\n")
 wormpep <- lapply(input, function(x) {
@@ -33,13 +33,13 @@ rm(wormpep)
 colnames(df) <- c("wormbase.peptide.id", "GeneID")
 wormbase_peptide_id <- df
 
-# Pull ensembl IDs and p values based on wormbase.peptide.id -------------------
+# Pull ensembl IDs and p values based on wormbase.peptide.id ===================
 vec <- as.vector(wormbase_peptide_id$wormbase.peptide.id)
 ensembl <- blastp_scores[vec, c("ensembl.peptide.id", "e.val")]
 df <- cbind(df, ensembl)
 rm(ensembl)
 
-# Subset only the top blastp with ensembl match --------------------------------
+# Subset only the top blastp with ensembl match ================================
 df <- df[order(df$GeneID, df$e.val, df$wormbase.peptide.id), ]
 df <- df[!duplicated(df$GeneID), ]
 df <- df[!is.na(df$ensembl), ]
@@ -49,7 +49,7 @@ df$GeneID <- NULL
 blastp_GeneID <- df
 rm(df)
 
-# biomaRt for human orthologs --------------------------------------------------
+# biomaRt for human orthologs ==================================================
 ensembl_peptide_id <- as.vector(blastp_GeneID$ensembl.peptide.id)
 mart <- useMart("ensembl", "hsapiens_gene_ensembl")
 biomart_options <- listAttributes(mart)

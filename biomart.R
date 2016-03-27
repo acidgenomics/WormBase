@@ -1,21 +1,16 @@
-#! Fix leading "// " in GO terms from ensembl
-
 pkg <- c("biomaRt", "plyr")
 lapply(pkg, require, character.only = TRUE)
 load("rda/GeneID.rda")
 
+# Connect to Biomart ===========================================================
 # entrezgene = entrez ID
 # external_gene_name = ensembl public name
 # wormbase_locus = wormbase public name
 # use wormbase_gene_seq_name for clean sequence ID
-
 mart <- useMart("ensembl", "celegans_gene_ensembl")
 biomart.options <- listAttributes(mart)
 
-# musculus <- useMart("ensembl", "mmusculus_gene_ensembl")
-# sapiens <- useMart("ensembl", "hsapiens_gene_ensembl")
-
-# Simple gene length info ------------------------------------------------------
+# Simple gene length info ======================================================
 df <- getBM(mart = mart,
             attributes = c("ensembl_gene_id",
                            "gene_biotype",
@@ -29,7 +24,7 @@ df$ensembl_gene_id <- NULL
 basic <- df[GeneID_vec, ]
 rm(df)
 
-# Entrez IDs -------------------------------------------------------------------
+# Entrez IDs ===================================================================
 df <- getBM(mart = mart,
             attributes = c("ensembl_gene_id",
                            "entrezgene"))
@@ -40,7 +35,7 @@ df$ensembl_gene_id <- NULL
 entrezgene <- df[GeneID_vec, ]
 rm(df)
 
-# UniProt IDs ------------------------------------------------------------------
+# UniProt IDs ==================================================================
 df <- getBM(mart = mart,
             attributes = c("ensembl_gene_id",
                            "uniprot_sptrembl",
@@ -53,7 +48,7 @@ df$ensembl_gene_id <- NULL
 uniprot <- df[GeneID_vec, ]
 rm(df)
 
-# Homology ---------------------------------------------------------------------
+# Homology =====================================================================
 df <- getBM(mart = mart,
             attributes = c("ensembl_gene_id",
                            "hsapiens_homolog_ensembl_gene"))
@@ -64,7 +59,7 @@ df$ensembl_gene_id <- NULL
 homology <- df[GeneID_vec, ]
 rm(df)
 
-# GO terms ---------------------------------------------------------------------
+# GO terms =====================================================================
 df <- getBM(mart = mart,
             attributes = c("ensembl_gene_id",
                            "go_id",
@@ -78,7 +73,7 @@ colnames(df) <- c("ensembl.go.id", "ensembl.go.names")
 go.terms <- df[GeneID_vec, ]
 rm(df)
 
-# Interpro ---------------------------------------------------------------------
+# Interpro =====================================================================
 df <- getBM(mart = mart,
             attributes = c("ensembl_gene_id",
                            "interpro",
@@ -93,15 +88,18 @@ df$ensembl_gene_id <- NULL
 interpro <- df[GeneID_vec, ]
 rm(df)
 
-# Merge everything together ----------------------------------------------------
+# Merge everything together ====================================================
 df <- cbind(basic, entrezgene, uniprot, homology, go.terms, interpro)
 rownames(df) <- GeneID_vec
 colnames(df) <- gsub("_", ".", colnames(df))
 colnames(df)[colnames(df) == "description"] <- "ensembl.description"
 # Fix leading and trailing commas
-df <- as.data.frame(apply(df, 2, function(x) gsub("^,(.*)", "\\1", x, perl = T)))
-df <- as.data.frame(apply(df,2,function(x) gsub("(.*),$", "\\1", x, perl = T)))
+df <- as.data.frame(apply(df, 2, function(x) gsub("^,(.*)", "\\1", x, perl = TRUE)))
+df <- as.data.frame(apply(df,2,function(x) gsub("(.*),$", "\\1", x, perl = TRUE)))
 biomart <- df
 rm(df)
 
 save(biomart, file = "rda/biomart.rda")
+warnings()
+
+#! Fix leading "// " in GO terms from ensembl

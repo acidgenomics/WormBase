@@ -1,7 +1,7 @@
 pkg <- c("plyr", "stringr")
 lapply(pkg, require, character.only = T)
 load("rda/GeneID.rda")
-
+# Load and set column names ====================================================
 df <- read.delim("sources/panther.txt.gz", header = F)
 colnames(df) <- c("id",
                   "protein",
@@ -14,13 +14,11 @@ colnames(df) <- c("id",
                   "pc",
                   "pathway")
 df$protein <- NULL
-id <- df$id # cleanup and split below
-df$id <- NULL # now safe to remove
-
+id <- df$id # Cleanup and split below
+df$id <- NULL # Column now safe to remove
 id <- gsub("CAEEL\\|", "", id)
-
-# Fix incorrect ID mapping in PANTHER ------------------------------------------
-# ORF to WBGeneID
+# Fix incorrect ID mappings in PANTHER =========================================
+## ORF to WBGeneID
 id <- gsub("Gene=B0303.5\\|", "WormBase=WBGene00015127\\|", id)
 id <- gsub("Gene=C13B9.1\\|", "WormBase=WBGene00015732\\|", id)
 id <- gsub("Gene=F23F12.11/F23F12.5\\|", "WormBase=WBGene00005075\\|", id)
@@ -90,7 +88,7 @@ id <- gsub("Gene=WormBase=ZK993.2a\\|", "WormBase=WBGene00022838\\|", id)
 id <- gsub("Gene=WormBase=ZK993.5\\|", "WormBase=WBGene00236809\\|", id)
 id <- gsub("Gene=Y104H12A.1/Y77E11A.5\\|", "WormBase=WBGene00022423\\|", id)
 id <- gsub("Gene=Y62E10A.11\\|", "WormBase=WBGene00014938\\|", id)
-# Entrez ID to WBGeneID
+## Entrez ID to WBGeneID
 id <- gsub("GeneID=13182953\\|", "WormBase=WBGene00014700\\|", id) # C37A5.6
 id <- gsub("GeneID=13182954\\|", "WormBase=WBGene00014699\\|", id) # C37A5.5
 id <- gsub("GeneID=13191030\\|", "WormBase=WBGene00044222\\|", id) # T16G12.10
@@ -103,8 +101,7 @@ id <- gsub("GeneID=2565702\\|", "WormBase=WBGene00000829\\|", id) # MTCE.21
 id <- gsub("GeneID=2565703\\|", "WormBase=WBGene00010967\\|", id) # MTCE.35
 id <- gsub("GeneID=2565704\\|", "WormBase=WBGene00010960\\|", id) # MTCE.12
 id <- gsub("GeneID=2565705\\|", "WormBase=WBGene00010963\\|", id) # MTCE.25
-
-# Fix the ID mapping -----------------------------------------------------------
+# Fix the ID mapping ===========================================================
 id <- as.data.frame(str_split_fixed(id, "\\|", 2))
 colnames(id) <- c("GeneID", "uniprot.kb")
 id <- as.data.frame(apply(id, 2, function(x) gsub("WormBase=", "", x, perl = T)))
@@ -119,5 +116,5 @@ df <- df[GeneID_vec, ]
 rownames(df) <- GeneID_vec
 panther <- df
 rm(df)
-
 save(panther, file = "rda/panther.rda")
+warnings()
