@@ -23,6 +23,8 @@ biomart.end.position
 biomart.strand
 biomart.ensembl.description
 biomart.entrezgene
+biomart.refseq.mrna
+biomart.refseq.ncrna
 biomart.uniprot.sptrembl
 biomart.uniprot.swissprot
 biomart.homology
