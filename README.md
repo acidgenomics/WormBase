@@ -9,4 +9,4 @@
 
 See [`colnames.txt`](colnames.txt) for all available metadata columns.
 
-Source `build.R` to build an up-to-date copy locally.
+Source [`build.R`](build.R) to build an up-to-date copy locally.
