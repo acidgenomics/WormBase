@@ -1,6 +1,6 @@
 # metadata-elegans
 
-[Michael J. Steinbaugh, PhD](http://mike.steinbaugh.com)
+[Michael J. Steinbaugh, PhD](http://mike.steinbaugh.com)<br />
 [Joslin Diabetes Center](http://www.joslin.org)
 
 [![DOI](https://zenodo.org/badge/20969/mjsteinbaugh/metadata-elegans.svg)](https://zenodo.org/badge/latestdoi/20969/mjsteinbaugh/metadata-elegans)
