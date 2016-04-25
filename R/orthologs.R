@@ -1,8 +1,9 @@
 pkg <- c("readr", "stringr")
-lapply(pkg, require, character.only = TRUE)
+source("R/bioc_packages.R")
 load("rda/GeneID.rda")
+
 # Convert the orthologs file to R compatible data frame ========================
-file <- read_file("sources/orthologs.txt.gz")
+file <- read_file("source_data/wormbase/orthologs.txt.gz")
 file <- gsub("\t", " | ", file)
 file <- gsub("\n", " // ", file)
 file <- gsub("= // ", "\n", file)
@@ -19,6 +20,7 @@ df <- df[, c(1, 3)]
 colnames(df) <- c("GeneID", "orthologs")
 rownames(df) <- df$GeneID
 df$GeneID <- NULL
+
 # Now run through and match orthologs ==========================================
 hsapiens.all <- list()
 hsapiens.id <- vector()
@@ -53,6 +55,7 @@ for (i in 1:nrow(df)) {
   }
 }
 rm(i, split1, split2)
+
 # Final data frame cleanup =====================================================
 hsapiens <- as.data.frame(cbind(hsapiens.id, hsapiens.name))
 rownames(hsapiens) <- names(hsapiens.all)

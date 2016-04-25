@@ -1,14 +1,14 @@
 pkg <- c("biomaRt", "plyr")
-lapply(pkg, require, character.only = TRUE)
+source("R/bioc_packages.R")
 load("rda/GeneID.rda")
 
 # Connect to Biomart ===========================================================
-# entrezgene = entrez ID
-# external_gene_name = ensembl public name
-# wormbase_locus = wormbase public name
-# use wormbase_gene_seq_name for clean sequence ID
+# `entrezgene` = Entrez ID
+# `external_gene_name` = Ensembl public name
+# `wormbase_locus` = WormBase public name
+# Use `wormbase_gene_seq_name` for clean sequence ID
 mart <- useMart("ensembl", "celegans_gene_ensembl")
-biomart.options <- listAttributes(mart)
+biomart_options <- listAttributes(mart)
 
 # Simple gene length info ======================================================
 df <- getBM(mart = mart,
@@ -101,7 +101,7 @@ df$ensembl_gene_id <- NULL
 interpro <- df[GeneID_vec, ]
 rm(df)
 
-# Merge everything together ====================================================
+# Merge and save ===============================================================
 df <- cbind(basic, entrezgene, refseq, uniprot, homology, go_terms, interpro)
 rownames(df) <- GeneID_vec
 colnames(df) <- gsub("_", ".", colnames(df))
@@ -111,6 +111,5 @@ df <- as.data.frame(apply(df, 2, function(x) gsub("^(,|\\s//)\\s(.*)", "\\2", x,
 df <- as.data.frame(apply(df,2,function(x) gsub("(.*)(,|\\s//)\\s$", "\\1", x, perl = TRUE)))
 biomart <- df
 rm(df)
-
 save(biomart, file = "rda/biomart.rda")
 warnings()

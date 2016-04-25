@@ -1,9 +1,11 @@
 pkg <- c("readxl")
-lapply(pkg, require, character.only = TRUE)
+source("R/cran_packages.R")
 load("rda/metadata.rda")
+
 # Import the Excel file ========================================================
-input <- read_excel("sources/orfeome.xlsx", sheet = 2)
+input <- read_excel("source_data/orfeome.xlsx", sheet = 2)
 colnames(input) <- gsub(" ", ".", colnames(input))
+
 # Set up the data frame converted from Excel ===================================
 df <- data.frame()
 df <- input[, c("ORF.ID.(WS112)",
@@ -12,11 +14,13 @@ df <- input[, c("ORF.ID.(WS112)",
                 "Col",
                 "RNAi.well")]
 names(df)[names(df) == "ORF.ID.(WS112)"] <- "ORF"
+
 # Subset the bad wells =========================================================
 df <- subset(df, !is.na(RNAi.well))
 df <- subset(df, ORF != "no match in WS112")
 input_subset <- df
 rm(df)
+
 # Set plate IDs as rownames ====================================================
 df <- input_subset
 col <- c("Plate", "Row", "Col")
@@ -33,6 +37,7 @@ df <- cbind(ORFeomeID, df)
 rownames(df) <- df$ORFeomeID
 orfeome_valid <- df
 rm(df, ORFeomeID)
+
 # Get current metadata =========================================================
 # Since there are duplicate ORFs per well, we must loop from metadata_ORF
 df <- orfeome_valid
@@ -45,11 +50,11 @@ list <- lapply(seq(along = orf), function(i) {
 df <- data.frame(do.call("rbind", list))
 ORF_to_GeneID <- df
 rm(df, list, orf)
-# Bind the matches back to the valid orfeome data frame ------------------------
+# Bind the matches back to the valid orfeome data frame
 df <- data.frame()
 df <- cbind(ORF_to_GeneID, orfeome_valid)
 rownames(df) <- as.vector(df$ORFeomeID)
-# Remove duplicate columns -----------------------------------------------------
+# Remove duplicate columns
 # This will only remove the first instance, here from ORF_to_GeneID
 df$ORF <- NULL
 df$ORFeomeID <- NULL
@@ -66,9 +71,11 @@ df <- df[, c("RNAi.well",
              "gene.other.ids")]
 orfeome <- df
 rm(df)
+
 # Additional information for library troubleshooting ===========================
 orfeome_unmatched <- orfeome[is.na(orfeome$GeneID), ]
 orfeome_unique <- unique(as.vector(orfeome$ORF))
+
 # Save =========================================================================
 save(orfeome, file = "rda/orfeome.rda")
 write.csv(orfeome, "csv/orfeome.csv")

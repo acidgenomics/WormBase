@@ -1,10 +1,12 @@
 pkg <- c("plyr", "stringr")
-lapply(pkg, require, character.only = TRUE)
+source("R/bioc_packages.R")
 load("rda/GeneID.rda")
 # Load and set column names ====================================================
-input <- read.delim("sources/rnai_phenotypes.txt.gz",
-                    header = FALSE, row.names = 1)
-colnames(input) <- c("ORF", "rnai.phenotypes")
+input <- read_delim("source_data/wormbase/rnai_phenotypes.txt.gz",
+                    delim = "\t",
+                    col_names = FALSE)
+colnames(input) <- c("GeneID", "ORF", "rnai.phenotypes")
+rownames(input) <- input$GeneID
 # Sort RNAi phenotypes alphabetically ==========================================
 x <- input
 x <- lapply(seq(along = rownames(x)), function(i) {
