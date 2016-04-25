@@ -30,5 +30,6 @@ df <- df[GeneID_vec, ]
 df$GeneID <- NULL
 GeneID <- cbind(GeneID, df)
 rm(df, file)
+
 save(GeneID, GeneID_vec, file = "rda/GeneID.rda")
 warnings()

@@ -111,5 +111,6 @@ df <- as.data.frame(apply(df, 2, function(x) gsub("^(,|\\s//)\\s(.*)", "\\2", x,
 df <- as.data.frame(apply(df,2,function(x) gsub("(.*)(,|\\s//)\\s$", "\\1", x, perl = TRUE)))
 biomart <- df
 rm(df)
+
 save(biomart, file = "rda/biomart.rda")
 warnings()
