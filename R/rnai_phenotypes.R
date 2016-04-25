@@ -29,7 +29,7 @@ x <- x[GeneID_vec, ]
 rownames(x) <- GeneID_vec
 x$ORF <- NULL
 rnai_phenotypes <- x
-rm(x)
+rm(input, x)
+
 save(rnai_phenotypes, file = "rda/rnai_phenotypes.rda")
-rm(input)
 warnings()

@@ -65,5 +65,6 @@ hsapiens <- hsapiens[GeneID_vec, ]
 orthologs <- hsapiens
 rownames(orthologs) <- GeneID_vec
 rm(hsapiens)
+
 save(orthologs, file = "rda/orthologs.rda")
 warnings()

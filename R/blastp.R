@@ -70,5 +70,6 @@ df <- cbind(blastp_GeneID, df)
 blastp <- df[GeneID_vec, ]
 rownames(blastp) <- GeneID_vec
 rm(df)
+
 save(blastp, file = "rda/blastp.rda")
 warnings()
