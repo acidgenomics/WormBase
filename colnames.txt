@@ -7,7 +7,8 @@ description.gene.class
 description.concise
 description.provisional
 description.automated
-rnai.phenotypes
+rnai_phenotypes.GeneID
+rnai_phenotypes.rnai.phenotypes
 blastp.wormbase.peptide.id
 blastp.ensembl.peptide.id
 blastp.e.val
