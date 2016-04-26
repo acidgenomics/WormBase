@@ -1,9 +1,10 @@
+rm(list = ls(all.names = TRUE))
 pkg <- c("readxl")
 source("R/cran_packages.R")
 load("rda/metadata.rda")
 
 # Import the Excel file ========================================================
-input <- read_excel("source_data/orfeome.xlsx", sheet = 2)
+input <- read_excel("source_data/rnai_orfeome.xlsx", sheet = 2)
 colnames(input) <- gsub(" ", ".", colnames(input))
 
 # Set up the data frame converted from Excel ===================================
@@ -77,7 +78,6 @@ orfeome_unmatched <- orfeome[is.na(orfeome$GeneID), ]
 orfeome_unique <- unique(as.vector(orfeome$ORF))
 
 # Save =========================================================================
-save(orfeome, file = "rda/orfeome.rda")
-write.csv(orfeome, "csv/orfeome.csv")
-system("gzip --force csv/orfeome.csv")
+save(orfeome, file = "rda/rnai_orfeome.rda")
+write.csv(orfeome, gzfile("csv/rnai_orfeome.csv.gz"))
 warnings()
