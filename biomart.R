@@ -8,7 +8,7 @@ load("rda/GeneID.rda")
 # wormbase_locus = wormbase public name
 # use wormbase_gene_seq_name for clean sequence ID
 mart <- useMart("ensembl", "celegans_gene_ensembl")
-biomart.options <- listAttributes(mart)
+biomart_options <- listAttributes(mart)
 
 # Simple gene length info ======================================================
 df <- getBM(mart = mart,
