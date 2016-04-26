@@ -1,5 +1,5 @@
 pkg <- c("readr", "stringr")
-source("R/bioc_packages.R")
+source("~/GitHub/common/R/cran.R")
 
 # GeneID =======================================================================
 df <- read_csv("source_data/wormbase/geneIDs.txt.gz",

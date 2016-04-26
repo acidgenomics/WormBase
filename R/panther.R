@@ -1,5 +1,5 @@
 pkg <- c("plyr", "stringr")
-source("R/bioc_packages.R")
+source("~/GitHub/common/R/cran.R")
 load("rda/GeneID.rda")
 
 # Load and set column names ====================================================

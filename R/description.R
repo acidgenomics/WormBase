@@ -1,5 +1,5 @@
 pkg <- c("readr")
-source("R/bioc_packages.R")
+source("~/GitHub/common/R/cran.R")
 load("rda/GeneID.rda")
 df <- read_delim("source_data/wormbase/functional_descriptions.txt.gz",
                  delim = "\t",

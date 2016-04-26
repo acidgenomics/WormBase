@@ -1,5 +1,5 @@
 pkg <- c("readr", "stringr")
-source("R/bioc_packages.R")
+source("~/GitHub/common/R/cran.R")
 load("rda/GeneID.rda")
 
 # Convert the orthologs file to R compatible data frame ========================

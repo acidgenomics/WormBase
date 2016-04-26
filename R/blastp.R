@@ -1,5 +1,7 @@
-pkg <- c("biomaRt", "plyr", "readr")
-source("R/bioc_packages.R")
+pkg <- c("biomaRt")
+source("~/GitHub/common/R/bioc.R")
+pkg <- c("plyr", "readr")
+source("~/GitHub/common/R/cran.R")
 load("rda/GeneID.rda")
 wormbase_dir <- "source_data/wormbase"
 
