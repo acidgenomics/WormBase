@@ -1,7 +1,7 @@
 pkg <- c("RCurl")
-source("R/bioc_packages.R")
+source("~/GitHub/common/R/bioc.R")
 pkg <- c("R.utils")
-source("R/cran_packages.R")
+source("~/GitHub/common/R/cran.R")
 save_dir <- "source_data"
 wormbase_dir <- file.path(save_dir, "wormbase")
 if (!file.exists(save_dir)) {

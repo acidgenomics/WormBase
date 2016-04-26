@@ -1,6 +1,6 @@
 rm(list = ls(all.names = TRUE))
-pkg <- c("readxl")
-source("R/cran_packages.R")
+pkg <- c("readr", "readxl")
+source("~/GitHub/common/R/cran.R")
 load("rda/metadata.rda")
 
 # Import the Excel file ========================================================

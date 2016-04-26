@@ -1,12 +1,14 @@
 pkg <- c("plyr", "readr", "stringr")
-source("R/bioc_packages.R")
+source("~/GitHub/common/R/cran.R")
 load("rda/GeneID.rda")
+
 # Load and set column names ====================================================
 input <- read_delim("source_data/wormbase/rnai_phenotypes.txt.gz",
                     delim = "\t",
                     col_names = FALSE)
 colnames(input) <- c("GeneID", "ORF", "rnai.phenotypes")
 rownames(input) <- input$GeneID
+
 # Sort RNAi phenotypes alphabetically ==========================================
 x <- input
 x <- lapply(seq(along = rownames(x)), function(i) {
@@ -20,6 +22,7 @@ x <- data.frame(do.call("rbind", x))
 colnames(x) <- "rnai.phenotypes"
 sorted <- x
 rm(x)
+
 # Add the sorted phenotypes back ===============================================
 x <- input
 x$rnai.phenotypes <- NULL

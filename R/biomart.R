@@ -1,5 +1,7 @@
-pkg <- c("biomaRt", "plyr")
-source("R/bioc_packages.R")
+pkg <- c("biomaRt")
+source("~/GitHub/common/R/bioc.R")
+pkg <- c("plyr")
+source("~/GitHub/common/R/cran.R")
 load("rda/GeneID.rda")
 
 # Connect to Biomart ===========================================================
