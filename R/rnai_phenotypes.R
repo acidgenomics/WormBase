@@ -1,4 +1,4 @@
-pkg <- c("plyr", "stringr")
+pkg <- c("plyr", "readr", "stringr")
 source("R/bioc_packages.R")
 load("rda/GeneID.rda")
 # Load and set column names ====================================================
@@ -27,6 +27,7 @@ x <- cbind(x, sorted)
 rm(sorted)
 x <- x[GeneID_vec, ]
 rownames(x) <- GeneID_vec
+x$GeneID <- NULL
 x$ORF <- NULL
 rnai_phenotypes <- x
 rm(input, x)
