@@ -31,6 +31,7 @@ invisible(lapply(seq(along = datasets), function(i) {
 # Compile the master metadata data.frame =======================================
 metadata <- data.frame()
 metadata <- do.call(cbind, mget(datasets))
+colnames(metadata) <- gsub("\\_", ".", colnames(metadata))
 colnames(metadata) <- gsub("GeneID.", "", colnames(metadata))
 write.csv(metadata,
           gzfile("csv/metadata.csv.gz"),
