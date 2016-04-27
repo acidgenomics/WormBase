@@ -22,8 +22,8 @@ file <- gsub("\t", ", ", file)
 # Add tab back in to separate GeneID for row names
 file <- gsub("WBGene([0-9]+), ", "WBGene\\1\t", file, perl = TRUE)
 # Warnings here mean there are no other IDs for that row
-# e.g. expected: 2 columns, actual: 1 columns
-df <- read_tsv(file, col_names = FALSE)
+# (e.g. expected: 2 columns, actual: 1 columns)
+df <- suppressWarnings(read_tsv(file, col_names = FALSE))
 rownames(df) <- df[, 1]
 colnames(df) <- c("GeneID", "gene.other.ids")
 df <- df[GeneID_vec, ]

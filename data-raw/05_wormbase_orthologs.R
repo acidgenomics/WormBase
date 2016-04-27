@@ -65,5 +65,5 @@ orthologs <- hsapiens
 rownames(orthologs) <- GeneID_vec
 rm(hsapiens)
 
-devtools::use_data(orthologs, overwrite = TRUE)
+devtools::use_data(orthologs, internal = TRUE, overwrite = TRUE)
 warnings()

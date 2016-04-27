@@ -122,5 +122,5 @@ biomart <- df
 lapply(biomart, class)
 rm(df)
 
-devtools::use_data(biomart, overwrite = TRUE)
+devtools::use_data(biomart, internal = TRUE, overwrite = TRUE)
 warnings()

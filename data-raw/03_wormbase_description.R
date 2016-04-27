@@ -28,5 +28,5 @@ df <- df[GeneID_vec, ]
 description <- df
 rm(df)
 
-devtools::use_data(description, overwrite = TRUE)
+devtools::use_data(description, internal = TRUE, overwrite = TRUE)
 warnings()

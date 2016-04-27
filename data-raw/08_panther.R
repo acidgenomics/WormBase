@@ -122,5 +122,5 @@ rownames(df) <- GeneID_vec
 panther <- df
 rm(df)
 
-devtools::use_data(panther, overwrite = TRUE)
+devtools::use_data(panther, internal = TRUE, overwrite = TRUE)
 warnings()
