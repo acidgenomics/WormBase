@@ -35,16 +35,12 @@ A subset of the master metadata file containing only human readable data.
   }
 }
 \source{
-WormBase (\url{http://www.wormbase.org})
-Biomart (\url{http://www.biomart.org})
-InterPro (\url{https://www.ebi.ac.uk/interpro})
+WormBase (\url{http://www.wormbase.org}),
+Biomart (\url{http://www.biomart.org}),
+InterPro (\url{https://www.ebi.ac.uk/interpro}),
 PANTHER (\url{http://pantherdb.org})
-}
-\references{
-%%  ~~ possibly secondary sources and usages ~~
 }
 \examples{
 data(metadata_report)
-## maybe str(metadata_report) ; plot(metadata_report) ...
 }
 \keyword{datasets}
