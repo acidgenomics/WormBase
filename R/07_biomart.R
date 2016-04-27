@@ -1,8 +1,5 @@
-pkg <- c("biomaRt")
-source("~/GitHub/common/R/bioc.R")
-pkg <- c("plyr")
-source("~/GitHub/common/R/cran.R")
-load("rda/GeneID.rda")
+library(biomaRt)
+library(plyr)
 
 # Connect to Biomart ===========================================================
 # `entrezgene` = Entrez ID
@@ -114,5 +111,5 @@ df <- as.data.frame(apply(df,2,function(x) gsub("(.*)(,|\\s//)\\s$", "\\1", x, p
 biomart <- df
 rm(df)
 
-save(biomart, file = "rda/biomart.rda")
+devtools::use_data(biomart, overwrite = TRUE)
 warnings()

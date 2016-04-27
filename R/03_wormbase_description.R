@@ -1,14 +1,13 @@
-pkg <- c("readr")
-source("~/GitHub/common/R/cran.R")
-load("rda/GeneID.rda")
-df <- read_delim("source_data/wormbase/functional_descriptions.txt.gz",
+library(readr)
+
+df <- read_delim(file.path("data-raw", "wormbase", "functional_descriptions.txt.gz"),
                  delim = "\t",
                  col_names = FALSE,
                  skip = 4, # column headers not properly tabbed
                  na = "none available")
 
 # Fix the column headers =======================================================
-header <- readLines("source_data/wormbase/functional_descriptions.txt.gz", n = 4)
+header <- readLines(file.path("data-raw", "wormbase", "functional_descriptions.txt.gz"), n = 4)
 header <- header[4]
 header <- strsplit(header, " ")
 colnames(df) <- header[[1]]
@@ -29,5 +28,5 @@ df <- df[GeneID_vec, ]
 description <- df
 rm(df)
 
-save(description, file = "rda/description.rda")
+devtools::use_data(description, overwrite = TRUE)
 warnings()

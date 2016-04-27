@@ -1,10 +1,8 @@
-rm(list = ls(all.names = TRUE))
-pkg <- c("readr", "readxl")
-source("~/GitHub/common/R/cran.R")
-load("rda/metadata.rda")
+library(readr)
+library(readxl)
 
 # Import the Excel file ========================================================
-input <- read_excel("source_data/rnai_orfeome.xlsx", sheet = 2)
+input <- read_excel(file.path("data-raw", "rnai_orfeome.xlsx"), sheet = 2)
 colnames(input) <- gsub(" ", ".", colnames(input))
 
 # Set up the data frame converted from Excel ===================================
@@ -70,14 +68,13 @@ df <- df[, c("RNAi.well",
              "GeneID",
              "public.name",
              "gene.other.ids")]
-orfeome <- df
+rnai_orfeome <- df
 rm(df)
 
 # Additional information for library troubleshooting ===========================
-orfeome_unmatched <- orfeome[is.na(orfeome$GeneID), ]
-orfeome_unique <- unique(as.vector(orfeome$ORF))
+rnai_orfeome_unmatched <- rnai_orfeome[is.na(rnai_orfeome$GeneID), ]
+rnai_orfeome_unique <- unique(as.vector(rnai_orfeome$ORF))
 
 # Save =========================================================================
-save(orfeome, file = "rda/rnai_orfeome.rda")
-write.csv(orfeome, gzfile("csv/rnai_orfeome.csv.gz"))
+devtools::use_data(rnai_orfeome, overwrite = TRUE)
 warnings()

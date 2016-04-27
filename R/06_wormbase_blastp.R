@@ -1,12 +1,9 @@
-pkg <- c("biomaRt")
-source("~/GitHub/common/R/bioc.R")
-pkg <- c("plyr", "readr")
-source("~/GitHub/common/R/cran.R")
-load("rda/GeneID.rda")
-wormbase_dir <- "source_data/wormbase"
+library(biomaRt)
+library(plyr)
+library(readr)
 
 # Get the highest match for each peptide =======================================
-input <- read_csv(file.path(wormbase_dir, "best_blastp_hits.txt.gz"), col_names = FALSE)
+input <- read_csv(file.path("data-raw", "wormbase", "best_blastp_hits.txt.gz"), col_names = FALSE)
 df <- input[, c(1, 4, 5)]
 colnames(df) <- c("wormbase.peptide.id", "ensembl.peptide.id", "e.val")
 # Filter for only ENSEMBL info
@@ -23,7 +20,7 @@ blastp_scores <- df
 rm(df, input)
 
 # Map peptides to WormBase GeneID ==============================================
-input <- readLines(file.path(wormbase_dir, "wormpep.txt.gz"))
+input <- readLines(file.path("data-raw", "wormbase", "wormpep.txt.gz"))
 input <- strsplit(input, "\n")
 wormpep <- lapply(input, function(x) {
   x <- gsub("^.*\t(CE[0-9]+\tWBGene[0-9]+).*$", "\\1", x, perl = T)
@@ -73,5 +70,5 @@ blastp <- df[GeneID_vec, ]
 rownames(blastp) <- GeneID_vec
 rm(df)
 
-save(blastp, file = "rda/blastp.rda")
+devtools::use_data(blastp, overwrite = TRUE)
 warnings()

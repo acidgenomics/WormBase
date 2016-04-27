@@ -1,9 +1,8 @@
-pkg <- c("plyr", "stringr")
-source("~/GitHub/common/R/cran.R")
-load("rda/GeneID.rda")
+library(plyr)
+library(stringr)
 
 # Load and set column names ====================================================
-df <- read_delim("source_data/panther.txt.gz",
+df <- read_delim(file.path("data-raw", "panther.txt.gz"),
                  delim = "\t",
                  col_names = FALSE)
 colnames(df) <- c("id",
@@ -122,5 +121,5 @@ rownames(df) <- GeneID_vec
 panther <- df
 rm(df)
 
-save(panther, file = "rda/panther.rda")
+devtools::use_data(panther, overwrite = TRUE)
 warnings()
