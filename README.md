@@ -1,5 +1,7 @@
 # worminfo
 
+[![Build Status](https://travis-ci.org/seqcloud/worminfo.svg?branch=master)](https://travis-ci.org/seqcloud/worminfo)
+
 [Michael J. Steinbaugh, PhD](http://mike.steinbaugh.com)<br />
 [Joslin Diabetes Center](http://www.joslin.org)
 
