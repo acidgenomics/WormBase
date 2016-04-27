@@ -1,7 +1,3 @@
-# Load the datasets
-#! load("R/sysdata.rda")
-
-# Compile the master metadata data.frame
 metadata <- data.frame()
 datasets <- c("GeneID",
               "description",
@@ -11,7 +7,6 @@ datasets <- c("GeneID",
               "biomart",
               "panther")
 metadata <- do.call(cbind, mget(datasets))
-#! colnames(metadata) <- gsub("\\_", ".", colnames(metadata))
 colnames(metadata) <- gsub("^GeneID\\.", "", colnames(metadata))
 metadata <- data.frame(apply(metadata, 2, function(x) gsub("^(,|\\s//)\\s(.*)", "\\2", x, perl = TRUE)))
 metadata <- data.frame(apply(metadata, 2, function(x) gsub("(.*)(,|\\s//)\\s$", "\\1", x, perl = TRUE)))
