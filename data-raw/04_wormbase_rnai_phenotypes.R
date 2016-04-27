@@ -18,20 +18,20 @@ x <- lapply(seq(along = rownames(x)), function(i) {
   vec <- sort(vec)
   paste(vec, collapse = " // ")
 })
-x <- data.frame(do.call("rbind", x))
-colnames(x) <- "rnai.phenotypes"
+x <- unlist(x)
+names(x) <- rownames(input)
 sorted <- x
 rm(x)
 
 # Add the sorted phenotypes back ===============================================
-x <- input
-x$rnai.phenotypes <- NULL
-x <- cbind(x, sorted)
+x <- cbind(input, sorted)
 rm(sorted)
 x <- x[GeneID_vec, ]
+x$rnai.phenotypes <- NULL
 rownames(x) <- GeneID_vec
 x$GeneID <- NULL
 x$ORF <- NULL
+colnames(x) <- "rnai.phenotypes"
 rnai_phenotypes <- x
 rm(input, x)
 

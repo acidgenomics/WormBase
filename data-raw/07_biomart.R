@@ -21,8 +21,9 @@ df <- getBM(mart = mart,
                            "strand",
                            "description"))
 rownames(df) <- df$ensembl_gene_id
+df <- df[GeneID_vec, ]
 df$ensembl_gene_id <- NULL
-basic <- df[GeneID_vec, ]
+basic <- df
 rm(df)
 
 # Entrez IDs ===================================================================
@@ -32,8 +33,9 @@ df <- getBM(mart = mart,
 df <- ddply(df, .(ensembl_gene_id), summarize,
             entrezgene = paste(sort(unique(entrezgene)), collapse = ", "))
 rownames(df) <- df$ensembl_gene_id
+df <- df[GeneID_vec, ]
 df$ensembl_gene_id <- NULL
-entrezgene <- df[GeneID_vec, ]
+entrezgene <- df
 rm(df)
 
 # Refseq IDs ===================================================================
@@ -45,8 +47,9 @@ df <- ddply(df, .(ensembl_gene_id), summarize,
             refseq_mrna = paste(sort(unique(refseq_mrna)), collapse = ", "),
             refseq_ncrna = paste(sort(unique(refseq_ncrna)), collapse = ", "))
 rownames(df) <- df$ensembl_gene_id
+df <- df[GeneID_vec, ]
 df$ensembl_gene_id <- NULL
-refseq <- df[GeneID_vec, ]
+refseq <- df
 rm(df)
 
 # UniProt IDs ==================================================================
@@ -58,8 +61,9 @@ df <- ddply(df, .(ensembl_gene_id), summarize,
             uniprot_sptrembl = paste(sort(unique(uniprot_sptrembl)), collapse = ", "),
             uniprot_swissprot = paste(sort(unique(uniprot_swissprot)), collapse = ", "))
 rownames(df) <- df$ensembl_gene_id
+df <- df[GeneID_vec, ]
 df$ensembl_gene_id <- NULL
-uniprot <- df[GeneID_vec, ]
+uniprot <- df
 rm(df)
 
 # Homology =====================================================================
@@ -69,8 +73,9 @@ df <- getBM(mart = mart,
 df <- ddply(df, .(ensembl_gene_id), summarize,
             hsapiens_homolog_ensembl_gene = paste(sort(unique(hsapiens_homolog_ensembl_gene)), collapse = ", "))
 rownames(df) <- df$ensembl_gene_id
+df <- df[GeneID_vec, ]
 df$ensembl_gene_id <- NULL
-homology <- df[GeneID_vec, ]
+homology <- df
 rm(df)
 
 # GO terms =====================================================================
@@ -83,8 +88,9 @@ df <- ddply(df, .(ensembl_gene_id), summarize,
             name_1006 = paste(sort(unique(name_1006)), collapse = " // "))
 rownames(df) <- df$ensembl_gene_id
 df$ensembl_gene_id <- NULL
+df <- df[GeneID_vec, ]
 colnames(df) <- c("ensembl.go.id", "ensembl.go.names")
-go_terms <- df[GeneID_vec, ]
+go_terms <- df
 rm(df)
 
 # Interpro =====================================================================
@@ -98,8 +104,9 @@ df <- ddply(df, .(ensembl_gene_id), summarize,
             interpro_short_description = paste(sort(unique(interpro_short_description)), collapse = " // "),
             interpro_description = paste(sort(unique(interpro_description)), collapse = " // "))
 rownames(df) <- df$ensembl_gene_id
+df <- df[GeneID_vec, ]
 df$ensembl_gene_id <- NULL
-interpro <- df[GeneID_vec, ]
+interpro <- df
 rm(df)
 
 # Merge and save ===============================================================

@@ -56,7 +56,7 @@ for (i in 1:nrow(df)) {
 rm(i, split1, split2)
 
 # Final data frame cleanup =====================================================
-hsapiens <- as.data.frame(cbind(hsapiens.id, hsapiens.name))
+hsapiens <- data.frame(cbind(hsapiens.id, hsapiens.name))
 rownames(hsapiens) <- names(hsapiens.all)
 colnames(hsapiens) <- c("hsapiens.homolog.wormbase.id",
                         "hsapiens.homolog.wormbase.name")
