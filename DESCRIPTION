@@ -4,8 +4,7 @@ Description: C. elegans metadata pulled from WormBase, Ensembl, and PANTHER.
 Version: 2016.4.26
 Author: Michael Steinbaugh
 Authors@R: 'Michael Steinbaugh <mike@steinbaugh.com> [aut,cre]'
-License: MIT
+Maintainer: Michael Steinbaugh <mike@steinbaugh.com>
 LazyData: true
 URL: https://github.com/seqcloud/worminfo
 BugReports: https://github.com/seqcloud/worminfo/issues
-RoxygenNote: 5.0.1
