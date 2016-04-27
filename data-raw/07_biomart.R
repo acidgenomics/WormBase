@@ -1,3 +1,5 @@
+# Need to convert factors to character vectors
+
 library(biomaRt)
 library(plyr)
 
