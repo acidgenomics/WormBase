@@ -108,9 +108,11 @@ rownames(df) <- GeneID_vec
 colnames(df) <- gsub("_", ".", colnames(df))
 colnames(df)[colnames(df) == "description"] <- "ensembl.description"
 # Fix leading and trailing commas
-df <- as.data.frame(apply(df, 2, function(x) gsub("^(,|\\s//)\\s(.*)", "\\2", x, perl = TRUE)))
-df <- as.data.frame(apply(df,2,function(x) gsub("(.*)(,|\\s//)\\s$", "\\1", x, perl = TRUE)))
+# This doesn't work properly and converts to factors...
+#! df <- apply(df, 2, function(x) gsub("^(,|\\s//)\\s(.*)", "\\2", x, perl = TRUE))
+#! df <- apply(df, 2, function(x) gsub("(.*)(,|\\s//)\\s$", "\\1", x, perl = TRUE))
 biomart <- df
+lapply(biomart, class)
 rm(df)
 
 devtools::use_data(biomart, overwrite = TRUE)
