@@ -1,9 +1,8 @@
-pkg <- c("readr", "stringr")
-source("~/GitHub/common/R/cran.R")
-load("rda/GeneID.rda")
+library(readr)
+library(stringr)
 
 # Convert the orthologs file to R compatible data frame ========================
-file <- read_file("source_data/wormbase/orthologs.txt.gz")
+file <- read_file(file.path("data-raw", "wormbase", "orthologs.txt.gz"))
 file <- gsub("\t", " | ", file)
 file <- gsub("\n", " // ", file)
 file <- gsub("= // ", "\n", file)
@@ -66,5 +65,5 @@ orthologs <- hsapiens
 rownames(orthologs) <- GeneID_vec
 rm(hsapiens)
 
-save(orthologs, file = "rda/orthologs.rda")
+devtools::use_data(orthologs, overwrite = TRUE)
 warnings()

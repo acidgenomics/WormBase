@@ -1,8 +1,8 @@
-pkg <- c("readr", "stringr")
-source("~/GitHub/common/R/cran.R")
+library(readr)
+library(stringr)
 
 # GeneID =======================================================================
-df <- read_csv("source_data/wormbase/geneIDs.txt.gz",
+df <- read_csv(file.path("data-raw", "wormbase", "geneIDs.txt.gz"),
                col_names = FALSE,
                na = "")
 # Discard uneeded columns
@@ -14,7 +14,7 @@ GeneID <- df
 rm(df)
 
 # Other IDs ====================================================================
-file <- read_file("source_data/wormbase/geneOtherIDs.txt.gz")
+file <- read_file(file.path("data-raw", "wormbase", "geneOtherIDs.txt.gz"))
 # Take out dead or live status, we have this from geneIDs.txt
 file <- gsub("\t(Dead|Live)", "", file, perl = TRUE)
 # Take the tabs out for gene list
@@ -31,5 +31,5 @@ df$GeneID <- NULL
 GeneID <- cbind(GeneID, df)
 rm(df, file)
 
-save(GeneID, GeneID_vec, file = "rda/GeneID.rda")
+devtools::use_data(GeneID, GeneID_vec, overwrite = TRUE)
 warnings()

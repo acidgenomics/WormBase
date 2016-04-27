@@ -1,9 +1,9 @@
-pkg <- c("plyr", "readr", "stringr")
-source("~/GitHub/common/R/cran.R")
-load("rda/GeneID.rda")
+library(plyr)
+library(readr)
+library(stringr)
 
 # Load and set column names ====================================================
-input <- read_delim("source_data/wormbase/rnai_phenotypes.txt.gz",
+input <- read_delim(file.path("data-raw", "wormbase", "rnai_phenotypes.txt.gz"),
                     delim = "\t",
                     col_names = FALSE)
 colnames(input) <- c("GeneID", "ORF", "rnai.phenotypes")
@@ -35,5 +35,5 @@ x$ORF <- NULL
 rnai_phenotypes <- x
 rm(input, x)
 
-save(rnai_phenotypes, file = "rda/rnai_phenotypes.rda")
+devtools::use_data(rnai_phenotypes, overwrite = TRUE)
 warnings()
