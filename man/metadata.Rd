@@ -3,7 +3,7 @@
 \docType{data}
 \title{metadata}
 \description{
-%%  ~~ A concise (1-5 lines) description of the dataset. ~~
+C. elegans metadata pulled from WormBase, Ensembl, and PANTHER.
 }
 \usage{data("metadata")}
 \format{
@@ -59,9 +59,9 @@
 %%  ~~ If necessary, more details than the __description__ above ~~
 }
 \source{
-WormBase (\url{http://www.wormbase.org})
-Biomart (\url{http://www.biomart.org})
-InterPro (\url{https://www.ebi.ac.uk/interpro})
+WormBase (\url{http://www.wormbase.org}),
+Biomart (\url{http://www.biomart.org}),
+InterPro (\url{https://www.ebi.ac.uk/interpro}),
 PANTHER (\url{http://pantherdb.org})
 }
 \references{

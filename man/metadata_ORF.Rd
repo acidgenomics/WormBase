@@ -17,7 +17,9 @@ to have unique ORF matches.
     \item{\code{gene.other.ids}}{a character vector}
   }
 }
-\source{\url{http://www.wormbase.org}}
+\source{
+WormBase (\url{http://www.wormbase.org})
+}
 \examples{
 data(metadata_ORF)
 }
