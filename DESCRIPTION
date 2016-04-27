@@ -5,6 +5,7 @@ Version: 2016.4.26
 Author: Michael Steinbaugh
 Authors@R: 'Michael Steinbaugh <mike@steinbaugh.com> [aut,cre]'
 Maintainer: Michael Steinbaugh <mike@steinbaugh.com>
+License: MIT
 LazyData: true
 URL: https://github.com/seqcloud/worminfo
 BugReports: https://github.com/seqcloud/worminfo/issues
