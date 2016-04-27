@@ -17,7 +17,9 @@ WormBase status, and previously used IDs.
     \item{\code{gene.other.ids}}{a character vector}
   }
 }
-\source{\url{http://www.wormbase.org}}
+\source{
+WormBase (\url{http://www.wormbase.org})
+}
 \examples{
 data(GeneID)
 }
