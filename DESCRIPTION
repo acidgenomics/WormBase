@@ -2,10 +2,14 @@ Package: worminfo
 Title: C. elegans metadata
 Description: C. elegans metadata pulled from WormBase, Ensembl, and PANTHER.
 Version: 2016.4.26
+Date: 206-04-26
 Author: Michael Steinbaugh
-Authors@R: 'Michael Steinbaugh <mike@steinbaugh.com> [aut,cre]'
+Authors@R: c(person("Michael", "Steinbaugh",
+                    role = c("aut", "cre"),
+                    email = "mike@steinbaugh.com"))
+Author: Michael Steinbaugh [aut, cre]
 Maintainer: Michael Steinbaugh <mike@steinbaugh.com>
-License: MIT
+License: MIT + file LICENSE
 LazyData: true
 URL: https://github.com/seqcloud/worminfo
 BugReports: https://github.com/seqcloud/worminfo/issues
