@@ -1,9 +1,7 @@
 \name{metadata_ORF}
 \alias{metadata_ORF}
 \docType{data}
-\title{
-%%   ~~ data name/kind ... ~~
-}
+\title{Metadata mapped to open reading frames (ORFs)}
 \description{
 %%  ~~ A concise (1-5 lines) description of the dataset. ~~
 }
