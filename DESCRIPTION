@@ -8,3 +8,4 @@ Maintainer: Michael Steinbaugh <mike@steinbaugh.com>
 LazyData: true
 URL: https://github.com/seqcloud/worminfo
 BugReports: https://github.com/seqcloud/worminfo/issues
+RoxygenNote: 5.0.1
