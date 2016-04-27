@@ -8,7 +8,7 @@ datasets <- c("GeneID",
               "panther")
 invisible(lapply(seq(along = datasets), function(i) {
   file <- file.path("data", paste0(datasets[i], ".rda"))
-  load(file)
+  load(file, envir = .GlobalEnv)
 }))
 
 # Compile the master metadata data.frame
@@ -16,6 +16,7 @@ metadata <- data.frame()
 metadata <- do.call(cbind, mget(datasets))
 colnames(metadata) <- gsub("\\_", ".", colnames(metadata))
 colnames(metadata) <- gsub("GeneID.", "", colnames(metadata))
+lapply(metadata, class)
 
 # Simple version
 metadata_simple <- metadata[, c("GeneID",
