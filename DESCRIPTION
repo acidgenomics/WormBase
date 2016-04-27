@@ -2,7 +2,7 @@ Package: worminfo
 Title: C. elegans metadata
 Description: C. elegans metadata pulled from WormBase, Ensembl, and PANTHER.
 Version: 2016.4.26
-Date: 206-04-26
+Date: 2016-04-26
 Author: Michael Steinbaugh
 Authors@R: c(person("Michael", "Steinbaugh",
                     role = c("aut", "cre"),
