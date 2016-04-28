@@ -10,6 +10,8 @@ metadata <- do.call(cbind, mget(datasets))
 colnames(metadata) <- gsub("^GeneID\\.", "", colnames(metadata))
 metadata <- data.frame(apply(metadata, 2, function(x) gsub("^(,|\\s//)\\s(.*)", "\\2", x, perl = TRUE)))
 metadata <- data.frame(apply(metadata, 2, function(x) gsub("(.*)(,|\\s//)\\s$", "\\1", x, perl = TRUE)))
+#! Add step here to change any blank cells to NA
+
 lapply(metadata, class)
 colnames(metadata)
 

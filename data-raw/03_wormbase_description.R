@@ -4,7 +4,7 @@ df <- read_delim(file.path("data-raw", "wormbase", "functional_descriptions.txt.
                  delim = "\t",
                  col_names = FALSE,
                  skip = 4, # column headers not properly tabbed
-                 na = "none available")
+                 na = c("", "none available", "not known"))
 
 # Fix the column headers =======================================================
 header <- readLines(file.path("data-raw", "wormbase", "functional_descriptions.txt.gz"), n = 4)
