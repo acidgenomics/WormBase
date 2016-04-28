@@ -35,5 +35,4 @@ colnames(x) <- "rnai.phenotypes"
 rnai_phenotypes <- x
 rm(input, x)
 
-devtools::use_data(rnai_phenotypes, internal = TRUE, overwrite = TRUE)
 warnings()

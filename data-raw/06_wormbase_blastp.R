@@ -70,5 +70,4 @@ blastp <- df[GeneID_vec, ]
 rownames(blastp) <- GeneID_vec
 rm(df)
 
-devtools::use_data(blastp, internal = TRUE, overwrite = TRUE)
 warnings()
