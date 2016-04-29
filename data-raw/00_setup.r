@@ -1,6 +1,6 @@
-source("https://raw.githubusercontent.com/seqcloud/seqcloudR/master/R/manage_pkg.R")
+devtools:install_github("seqcloud/seqcloudR")
 devtools::use_data_raw()
-devtools::use_travis()
+library(seqcloudR)
 
 manage_pkg(c("plyr",
              "R.utils",
