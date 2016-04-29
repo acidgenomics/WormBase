@@ -2,7 +2,7 @@
 
 # worminfo
 
-[Michael J. Steinbaugh, PhD](http://mike.steinbaugh.com)<br />
+[Michael Steinbaugh](http://mike.steinbaugh.com)<br />
 [Joslin Diabetes Center](http://www.joslin.org)
 
 *C. elegans* metadata automatically built using current information available from:
