@@ -1,6 +1,7 @@
-devtools:install_github("seqcloud/seqcloudR")
 devtools::use_data_raw()
-library(seqcloudR)
+
+devtools:install_github("seqcloud/seqcloudr")
+library(seqcloudr)
 
 manage_pkg(c("plyr",
              "R.utils",
