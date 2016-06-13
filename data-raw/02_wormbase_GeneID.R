@@ -7,10 +7,10 @@ df <- read_csv(file.path("data-raw", "wormbase", "geneIDs.txt.gz"),
                na = "")
 # Discard uneeded columns
 df <- df[, c(2:5)]
-colnames(df) <- c("GeneID", "public.name", "ORF", "wormbase.status")
+colnames(df) <- c("GeneID", "publicName", "ORF", "wormbaseStatus")
 rownames(df) <- df$GeneID
-GeneID_vec <- rownames(df)
-GeneID <- df
+geneIDVector <- rownames(df)
+geneID <- df
 rm(df)
 
 # Other IDs ====================================================================
@@ -25,11 +25,11 @@ file <- gsub("WBGene([0-9]+), ", "WBGene\\1\t", file, perl = TRUE)
 # (e.g. expected: 2 columns, actual: 1 columns)
 df <- suppressWarnings(read_tsv(file, col_names = FALSE))
 rownames(df) <- df[, 1]
-colnames(df) <- c("GeneID", "gene.other.ids")
-df <- df[GeneID_vec, ]
+colnames(df) <- c("GeneID", "geneOtherIDs")
+df <- df[geneIDVector, ]
 df$GeneID <- NULL
-GeneID <- cbind(GeneID, df)
+geneID <- cbind(geneID, df)
 rm(df, file)
 
-devtools::use_data(GeneID, GeneID_vec, overwrite = TRUE)
+devtools::use_data(geneID, geneIDVector, overwrite = TRUE)
 warnings()

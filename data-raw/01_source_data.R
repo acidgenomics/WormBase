@@ -3,6 +3,7 @@ library(R.utils)
 
 # WormBase =====================================================================
 # http://www.wormbase.org/about/release_schedule
+annotation_dir <- "ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/"
 files <- c("affy_oligo_mapping",
            "agil_oligo_mapping",
            "functional_descriptions",
@@ -11,18 +12,18 @@ files <- c("affy_oligo_mapping",
            "orthologs")
 invisible(lapply(seq(along = files), function(i) {
   file_name <- paste0(files[i], ".txt.gz")
-  file <- paste0("ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/",
-                  files[i], "/c_elegans.canonical_bioproject.current.", file_name)
+  file <- paste0(annotation_dir, files[i], "/c_elegans.canonical_bioproject.current.", file_name)
   save <- file.path("data-raw", "wormbase", paste0(files[i], ".txt.gz"))
   download.file(file, save)
 }))
 
 # Manually request blastp file due to naming
-download.file("ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/best_blast_hits/c_elegans.canonical_bioproject.current.best_blastp_hits.txt.gz", file.path("data-raw", "wormbase", "best_blastp_hits.txt.gz"))
+download.file(paste0(annotation_dir, "best_blast_hits/c_elegans.canonical_bioproject.current.best_blastp_hits.txt.gz"),
+              file.path("data-raw", "wormbase", "best_blastp_hits.txt.gz"))
 
 # RNAi phenotypes
-ftp_dir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/ONTOLOGY/"
-ls <- getURL(ftp_dir, dirlistonly = TRUE)
+ftpDir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/ONTOLOGY/"
+ls <- getURL(ftpDir, dirlistonly = TRUE)
 ls <- strsplit(ls, "\n")
 ls <- ls[[1]]
 grep <- grep("rnai_phenotypes_quick", ls, value = TRUE)
@@ -31,12 +32,12 @@ download.file(file, file.path("data-raw", "wormbase", "rnai_phenotypes.txt"))
 gzip(file.path("data-raw", "wormbase", "rnai_phenotypes.txt"), overwrite = TRUE)
 
 # Wormpep IDs used for BLASTP matching
-ftp_dir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/species/c_elegans/PRJNA13758/"
-ls <- getURL(ftp_dir, dirlistonly = TRUE)
+ftpDir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/species/c_elegans/PRJNA13758/"
+ls <- getURL(ftpDir, dirlistonly = TRUE)
 ls <- strsplit(ls, "\n")
 ls <- ls[[1]]
 grep <- grep("wormpep_package", ls, value = TRUE)
-file <- paste0(ftp_dir, grep)
+file <- paste0(ftpDir, grep)
 download.file(file, file.path("data-raw", "wormbase", "wormpep.tar.gz"))
 # Extract wormpep.table specifically
 # This will output to the current working directory
