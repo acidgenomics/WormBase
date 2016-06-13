@@ -2,9 +2,6 @@
 
 # worminfo
 
-[Michael Steinbaugh](http://mike.steinbaugh.com)<br />
-[Joslin Diabetes Center](http://www.joslin.org)
-
 *C. elegans* metadata automatically built using current information available from:
 
 * [WormBase](http://www.wormbase.org), release WS252
