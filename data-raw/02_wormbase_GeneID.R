@@ -1,3 +1,4 @@
+library(R.utils)
 library(readr)
 library(stringr)
 
@@ -7,13 +8,13 @@ df <- read_csv(file.path("data-raw", "wormbase", "geneIDs.txt.gz"),
                na = "")
 # Discard uneeded columns
 df <- df[, c(2:5)]
-colnames(df) <- c("GeneID", "publicName", "ORF", "wormbaseStatus")
-rownames(df) <- df$GeneID
-geneIDVector <- rownames(df)
+colnames(df) <- c("geneID", "publicName", "ORF", "wormbaseStatus")
+rownames(df) <- df$geneID
+geneIDRows <- rownames(df)
 geneID <- df
 rm(df)
 
-# Other IDs ====================================================================
+# geneOtherIDs =================================================================
 file <- read_file(file.path("data-raw", "wormbase", "geneOtherIDs.txt.gz"))
 # Take out dead or live status, we have this from geneIDs.txt
 file <- gsub("\t(Dead|Live)", "", file, perl = TRUE)
@@ -25,11 +26,11 @@ file <- gsub("WBGene([0-9]+), ", "WBGene\\1\t", file, perl = TRUE)
 # (e.g. expected: 2 columns, actual: 1 columns)
 df <- suppressWarnings(read_tsv(file, col_names = FALSE))
 rownames(df) <- df[, 1]
-colnames(df) <- c("GeneID", "geneOtherIDs")
-df <- df[geneIDVector, ]
-df$GeneID <- NULL
+colnames(df) <- c("geneID", "geneOtherIDs")
+df <- df[geneIDRows, ]
+df$geneID <- NULL
 geneID <- cbind(geneID, df)
 rm(df, file)
 
-devtools::use_data(geneID, geneIDVector, overwrite = TRUE)
+devtools::use_data(geneID, geneIDRows, overwrite = TRUE)
 warnings()

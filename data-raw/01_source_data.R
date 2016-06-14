@@ -3,7 +3,7 @@ library(R.utils)
 
 # WormBase =====================================================================
 # http://www.wormbase.org/about/release_schedule
-annotation_dir <- "ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/"
+annotation <- "ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/"
 files <- c("affy_oligo_mapping",
            "agil_oligo_mapping",
            "functional_descriptions",
@@ -11,33 +11,33 @@ files <- c("affy_oligo_mapping",
            "geneOtherIDs",
            "orthologs")
 invisible(lapply(seq(along = files), function(i) {
-  file_name <- paste0(files[i], ".txt.gz")
-  file <- paste0(annotation_dir, files[i], "/c_elegans.canonical_bioproject.current.", file_name)
-  save <- file.path("data-raw", "wormbase", paste0(files[i], ".txt.gz"))
-  download.file(file, save)
+  fileName <- paste0(files[i], ".txt.gz")
+  fileURL <- paste0(annotation, files[i], "/c_elegans.canonical_bioproject.current.", fileName)
+  saveName <- file.path("data-raw", "wormbase", paste0(files[i], ".txt.gz"))
+  download.file(fileURL, saveName)
 }))
 
 # Manually request blastp file due to naming
-download.file(paste0(annotation_dir, "best_blast_hits/c_elegans.canonical_bioproject.current.best_blastp_hits.txt.gz"),
+download.file(paste0(annotation, "best_blast_hits/c_elegans.canonical_bioproject.current.best_blastp_hits.txt.gz"),
               file.path("data-raw", "wormbase", "best_blastp_hits.txt.gz"))
 
 # RNAi phenotypes
-ftpDir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/ONTOLOGY/"
-ls <- getURL(ftpDir, dirlistonly = TRUE)
+dir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/ONTOLOGY/"
+ls <- getURL(dir, dirlistonly = TRUE)
 ls <- strsplit(ls, "\n")
 ls <- ls[[1]]
 grep <- grep("rnai_phenotypes_quick", ls, value = TRUE)
-file <- paste0(ftp_dir, grep)
+file <- paste0(dir, grep)
 download.file(file, file.path("data-raw", "wormbase", "rnai_phenotypes.txt"))
 gzip(file.path("data-raw", "wormbase", "rnai_phenotypes.txt"), overwrite = TRUE)
 
 # Wormpep IDs used for BLASTP matching
-ftpDir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/species/c_elegans/PRJNA13758/"
-ls <- getURL(ftpDir, dirlistonly = TRUE)
+dir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/species/c_elegans/PRJNA13758/"
+ls <- getURL(dir, dirlistonly = TRUE)
 ls <- strsplit(ls, "\n")
 ls <- ls[[1]]
 grep <- grep("wormpep_package", ls, value = TRUE)
-file <- paste0(ftpDir, grep)
+file <- paste0(dir, grep)
 download.file(file, file.path("data-raw", "wormbase", "wormpep.tar.gz"))
 # Extract wormpep.table specifically
 # This will output to the current working directory
@@ -54,12 +54,12 @@ gzip(file.path("data-raw", "wormbase", "wormpep.txt"), overwrite = TRUE)
 file.remove(file.path("data-raw", "wormbase", "wormpep.tar.gz"))
 
 # PANTHER ======================================================================
-ftp_dir <- "ftp://ftp.pantherdb.org/sequence_classifications/current_release/PANTHER_Sequence_Classification_files/"
-ls <- getURL(ftp_dir, dirlistonly = TRUE)
+dir <- "ftp://ftp.pantherdb.org/sequence_classifications/current_release/PANTHER_Sequence_Classification_files/"
+ls <- getURL(dir, dirlistonly = TRUE)
 ls <- strsplit(ls, "\n")
 ls <- ls[[1]]
 grep <- grep("nematode_worm", ls, value = TRUE)
-file <- paste0(ftp_dir, grep)
+file <- paste0(dir, grep)
 download.file(file, file.path("data-raw", "panther.txt"))
 gzip(file.path("data-raw", "panther.txt"), overwrite = TRUE)
 
@@ -73,4 +73,5 @@ download.file("http://dharmacon.gelifesciences.com/uploadedFiles/Resources/cerna
 download.file("http://www.us.lifesciences.sourcebioscience.com/media/381254/C.%20elegans%20Database%202012.xlsx",
               file.path("data-raw", "rnai_ahringer.xlsx"))
 
+rm(annotation, dir, file, files, grep, ls)
 warnings()

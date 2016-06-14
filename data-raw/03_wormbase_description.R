@@ -1,3 +1,4 @@
+library(R.utils)
 library(readr)
 
 df <- read_delim(file.path("data-raw", "wormbase", "functional_descriptions.txt.gz"),
@@ -12,12 +13,14 @@ header <- header[4]
 header <- strsplit(header, " ")
 colnames(df) <- header[[1]]
 rm(header)
-colnames(df) <- gsub("_", ".", colnames(df))
-rownames(df) <- df$gene.id
-df$gene.id <- NULL
+colnames(df) <- gsub("_id", "_ID", colnames(df))
+colnames(df) <- toCamelCase(colnames(df), split = "_")
+#! Duplicate rows! Need to fix here
+rownames(df) <- df$geneID
+df$geneID <- NULL
 
 # Select the columns desired ===================================================
-# Use public_name and molecular_name from GeneID.R instead, so discard here
+# Use publicName and molecularName from geneID.R instead, so discard here
 df <- df[, c("gene.class.description",
             "concise.description",
             "provisional.description",
