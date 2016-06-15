@@ -9,6 +9,7 @@ install.packages("stringr")
 
 source("https://bioconductor.org/biocLite.R")
 biocLite()
+biocLite("biomaRt")
 biocLite("RCurl")
 
 library(devtools)

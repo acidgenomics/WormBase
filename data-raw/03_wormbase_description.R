@@ -15,19 +15,18 @@ colnames(df) <- header[[1]]
 rm(header)
 colnames(df) <- gsub("_id", "_ID", colnames(df))
 colnames(df) <- toCamelCase(colnames(df), split = "_")
-#! Duplicate rows! Need to fix here
+# Make sure geneID contains a valid ID
+df <- df[grepl("^WBGene[0-9]{8}$", df$geneID), ]
 rownames(df) <- df$geneID
 df$geneID <- NULL
 
 # Select the columns desired ===================================================
 # Use publicName and molecularName from geneID.R instead, so discard here
-df <- df[, c("gene.class.description",
-            "concise.description",
-            "provisional.description",
-            "automated.description")]
+df$publicName <- NULL
+df$molecularName <- NULL
 # Clean up the column names
-colnames(df) <- gsub(".description", "", colnames(df))
-df <- df[GeneID_vec, ]
+## colnames(df) <- gsub("Description$", "", colnames(df))
+## df <- df[geneIDRows, ]
 description <- df
 rm(df)
 

@@ -16,53 +16,49 @@ head(id)
 df <- as.data.frame(cbind(id, df[, 2]))
 rm(id)
 df <- df[, c(1, 3)]
-colnames(df) <- c("GeneID", "orthologs")
-rownames(df) <- df$GeneID
-df$GeneID <- NULL
+colnames(df) <- c("geneID", "orthologs")
+rownames(df) <- df$geneID
+df$geneID <- NULL
 
 # Now run through and match orthologs ==========================================
-hsapiens.all <- list()
-hsapiens.id <- vector()
-hsapiens.name <- vector()
+hsapiensAll <- list()
+hsapiensID <- vector()
+hsapiensName <- vector()
 for (i in 1:nrow(df)) {
   gene <- rownames(df)[i]
   split1 <- strsplit(as.character(df[i, "orthologs"]), " // ")
-  hsapiens.all[[gene]] <- split1[[1]][grepl("Homo sapiens", split1[[1]])]
-  if (length(hsapiens.all[[gene]]) > 0) {
-    names <- names(hsapiens.all[[gene]])
+  hsapiensAll[[gene]] <- split1[[1]][grepl("Homo sapiens", split1[[1]])]
+  if (length(hsapiensAll[[gene]]) > 0) {
+    names <- names(hsapiensAll[[gene]])
     id <- vector()
     name <- vector()
-    for (j in 1:length(hsapiens.all[[gene]])) {
-      split2 <- strsplit(as.character(hsapiens.all[[gene]][j]), " \\| ")
+    for (j in 1:length(hsapiensAll[[gene]])) {
+      split2 <- strsplit(as.character(hsapiensAll[[gene]][j]), " \\| ")
       id <- append(id, split2[[1]][2])
       name <- append(name, split2[[1]][3])
     }
-    rm(j)
     id <- unique(id)
     id <- sort(id)
     id <- paste(id, collapse = ", ")
-    hsapiens.id[i] <- id
-    rm(id)
+    hsapiensID[i] <- id
     name <- unique(name)
     name <- sort(name)
     name <- paste(name, collapse = ", ")
-    hsapiens.name[i] <- name
-    rm(name)
+    hsapiensName[i] <- name
   } else {
-    hsapiens.id[i] <- NA
-    hsapiens.name[i] <- NA
+    hsapiensID[i] <- NA
+    hsapiensName[i] <- NA
   }
 }
-rm(i, split1, split2)
+rm(gene, i, id, j, name, names, split1, split2)
 
 # Final data frame cleanup =====================================================
-hsapiens <- data.frame(cbind(hsapiens.id, hsapiens.name))
-rownames(hsapiens) <- names(hsapiens.all)
-colnames(hsapiens) <- c("hsapiens.homolog.wormbase.id",
-                        "hsapiens.homolog.wormbase.name")
-hsapiens <- hsapiens[GeneID_vec, ]
+hsapiens <- data.frame(cbind(hsapiensID, hsapiensName))
+rownames(hsapiens) <- names(hsapiensAll)
+load("data/geneIDRows.rda")
+hsapiens <- hsapiens[geneIDRows, ]
 orthologs <- hsapiens
-rownames(orthologs) <- GeneID_vec
-rm(hsapiens)
+rownames(orthologs) <- geneIDRows
+rm(df, hsapiens, hsapiensAll, hsapiensID, hsapiensName)
 
 warnings()
