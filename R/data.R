@@ -1,22 +1,3 @@
-#' GeneID
-#'
-#' A dataset containing all current WormBase GeneIDs, public names, ORFs,
-#' WormBase status, and previously used IDs.
-#'
-#' @format A data frame with 5 variables: \code{GeneID}, \code{public.name},
-#' \code{ORF}, \code{wormbase.status} and \code{gene.other.ids}.
-"GeneID"
-
-
-#' GeneID_vec
-#'
-#' A list of all the current WormBase GeneIDs available. Useful for setting data
-#' frames to the same number of rows.
-#'
-#' @format A character vector.
-"GeneID_vec"
-
-
 #' metadata
 #'
 #' C. elegans metadata pulled from WormBase, Ensembl, and PANTHER.
@@ -29,106 +10,93 @@
 #'
 #' @format A data frame with 44 variables:
 #'   \describe{
-#'   \item{\code{GeneID}}{a character vector}
-#'   \item{\code{public.name}}{a character vector}
-#'   \item{\code{ORF}}{a character vector}
-#'   \item{\code{wormbase.status}}{a character vector}
-#'   \item{\code{gene.other.ids}}{a character vector}
-#'   \item{\code{description.gene.class}}{a character vector}
-#'   \item{\code{description.concise}}{a character vector}
-#'   \item{\code{description.provisional}}{a character vector}
-#'   \item{\code{description.automated}}{a character vector}
-#'   \item{\code{rnai.phenotypes}}{a character vector}
-#'   \item{\code{orthologs.hsapiens.homolog.wormbase.id}}{a character vector}
-#'   \item{\code{orthologs.hsapiens.homolog.wormbase.name}}{a character vector}
-#'   \item{\code{blastp.wormbase.peptide.id}}{a character vector}
-#'   \item{\code{blastp.ensembl.peptide.id}}{a character vector}
-#'   \item{\code{blastp.e.val}}{a numeric vector}
-#'   \item{\code{blastp.ensembl.gene.id}}{a character vector}
-#'   \item{\code{blastp.external.gene.name}}{a character vector}
-#'   \item{\code{blastp.description}}{a character vector}
-#'   \item{\code{biomart.gene.biotype}}{a character vector}
-#'   \item{\code{biomart.chromosome.name}}{a character vector}
-#'   \item{\code{biomart.start.position}}{a numeric vector}
-#'   \item{\code{biomart.end.position}}{a numeric vector}
-#'   \item{\code{biomart.strand}}{a numeric vector}
-#'   \item{\code{biomart.ensembl.description}}{a character vector}
-#'   \item{\code{biomart.entrezgene}}{a character vector}
-#'   \item{\code{biomart.refseq.mrna}}{a character vector}
-#'   \item{\code{biomart.refseq.ncrna}}{a character vector}
-#'   \item{\code{biomart.uniprot.sptrembl}}{a character vector}
-#'   \item{\code{biomart.uniprot.swissprot}}{a character vector}
-#'   \item{\code{biomart.hsapiens.homolog.ensembl.gene}}{a character vector}
-#'   \item{\code{biomart.ensembl.go.id}}{a character vector}
-#'   \item{\code{biomart.ensembl.go.names}}{a character vector}
-#'   \item{\code{biomart.interpro}}{a character vector}
-#'   \item{\code{biomart.interpro.short.description}}{a character vector}
-#'   \item{\code{biomart.interpro.description}}{a character vector}
-#'   \item{\code{panther.uniprot.kb}}{a character vector}
-#'   \item{\code{panther.sf.id}}{a character vector}
-#'   \item{\code{panther.family.name}}{a character vector}
-#'   \item{\code{panther.subfamily.name}}{a character vector}
-#'   \item{\code{panther.go.mf}}{a character vector}
-#'   \item{\code{panther.go.bp}}{a character vector}
-#'   \item{\code{panther.go.cc}}{a character vector}
-#'   \item{\code{panther.pc}}{a character vector}
-#'   \item{\code{panther.pathway}}{a character vector}
+#'   \item{\code{geneId}}{a character vector}
+#'   \item{\code{orf}}{a character vector}
+#'   \item{\code{publicName}}{a character vector}
+#'   \item{\code{wormbaseStatus}}{a character vector}
+#'   \item{\code{wormbaseGeneOtherIds}}{a character vector}
+#'   \item{\code{wormbaseConciseDescription}}{a character vector}
+#'   \item{\code{wormbaseProvisionalDescription}}{a character vector}
+#'   \item{\code{wormbaseDetailedDescription}}{a character vector}
+#'   \item{\code{wormbaseAutomatedDescription}}{a character vector}
+#'   \item{\code{wormbaseGeneClassDescription}}{a character vector}
+#'   \item{\code{wormbaseRnaiPhenotypes}}{a character vector}
+#'   \item{\code{wormbaseOrthologsHsapiensId}}{a character vector}
+#'   \item{\code{wormbaseOrthologsHsapiensName}}{a character vector}
+#'   \item{\code{wormbaseBlastpWormpepId}}{a character vector}
+#'   \item{\code{wormbaseBlastpEnsemblPeptideId}}{a numeric vector}
+#'   \item{\code{wormbaseBlastpEValue}}{a character vector}
+#'   \item{\code{wormbaseBlastpEnsemblGeneId}}{a character vector}
+#'   \item{\code{wormbaseBlastpEnsemblGeneName}}{a character vector}
+#'   \item{\code{wormbaseBlastpEnsemblDescription}}{a character vector}
+#'   \item{\code{ensemblGeneBiotype}}{a character vector}
+#'   \item{\code{ensemblChromosomeName}}{a numeric vector}
+#'   \item{\code{ensemblStartPosition}}{a numeric vector}
+#'   \item{\code{ensemblEndPosition}}{a numeric vector}
+#'   \item{\code{ensemblStrand}}{a character vector}
+#'   \item{\code{ensemblDescription}}{a character vector}
+#'   \item{\code{ensemblEntrezGeneId}}{a character vector}
+#'   \item{\code{ensemblRefseqMrna}}{a character vector}
+#'   \item{\code{ensemblRefseqNcrna}}{a character vector}
+#'   \item{\code{ensemblUniprotSptrembl}}{a character vector}
+#'   \item{\code{ensemblUniprotSwissprot}}{a character vector}
+#'   \item{\code{ensemblGeneOntologyId}}{a character vector}
+#'   \item{\code{ensemblGeneOntologyName}}{a character vector}
+#'   \item{\code{ensemblInterpro}}{a character vector}
+#'   \item{\code{ensemblInterproShortDescription}}{a character vector}
+#'   \item{\code{ensemblInterproDescription}}{a character vector}
+#'   \item{\code{pantherUniprotKb}}{a character vector}
+#'   \item{\code{pantherSubfamilyId}}{a character vector}
+#'   \item{\code{pantherFamilyName}}{a character vector}
+#'   \item{\code{pantherSubfamilyName}}{a character vector}
+#'   \item{\code{pantherGeneOntologyMolecularFunction}}{a character vector}
+#'   \item{\code{pantherGeneOntologyBiologicalProcess}}{a character vector}
+#'   \item{\code{pantherGeneOntologyCellularComponent}}{a character vector}
+#'   \item{\code{pantherClass}}{a character vector}
+#'   \item{\code{pantherPathway}}{a character vector}
 #'   }
 "metadata"
 
 
-#' metadata_ORF
+#' metadataOrf
 #'
 #' A dataset containing all current WormBase GeneIDs, public names, open reading
 #' frames (ORFs), and previously used IDs. This dataset is filtered to have
 #' unique ORF matches.
 #'
-#' @format A data frame with 4 variables: \code{GeneID}, \code{ORF},
-#' \code{public.name}, \code{gene.other.ids}
-"metadata_ORF"
+#' @format A data frame with 3 variables: \code{geneId}, \code{orf},
+#'   \code{publicName}
+"metadataOrf"
 
 
-#' metadata_report
+#' metadataReport
 #'
 #' A subset of the master metadata file containing only human readable data.
 #'
-#' @format A data frame with 23 variables:
+#' @format A data frame with 11 variables:
 #'   \describe{
-#'   \item{\code{GeneID}}{a character vector}
-#'   \item{\code{public.name}}{a character vector}
-#'   \item{\code{ORF}}{a character vector}
-#'   \item{\code{gene.other.ids}}{a character vector}
-#'   \item{\code{description.gene.class}}{a character vector}
-#'   \item{\code{description.concise}}{a character vector}
-#'   \item{\code{description.provisional}}{a character vector}
-#'   \item{\code{description.automated}}{a character vector}
-#'   \item{\code{rnai.phenotypes}}{a character vector}
-#'   \item{\code{orthologs.hsapiens.homolog.wormbase.name}}{a character vector}
-#'   \item{\code{blastp.external.gene.name}}{a character vector}
-#'   \item{\code{blastp.description}}{a character vector}
-#'   \item{\code{biomart.gene.biotype}}{a character vector}
-#'   \item{\code{biomart.ensembl.description}}{a character vector}
-#'   \item{\code{biomart.ensembl.go.names}}{a character vector}
-#'   \item{\code{biomart.interpro.description}}{a character vector}
-#'   \item{\code{panther.family.name}}{a character vector}
-#'   \item{\code{panther.subfamily.name}}{a character vector}
-#'   \item{\code{panther.go.mf}}{a character vector}
-#'   \item{\code{panther.go.bp}}{a character vector}
-#'   \item{\code{panther.go.cc}}{a character vector}
-#'   \item{\code{panther.pc}}{a character vector}
-#'   \item{\code{panther.pathway}}{a character vector}
+#'   \item{\code{geneId}}{a character vector}
+#'   \item{\code{orf}}{a character vector}
+#'   \item{\code{publicName}}{a character vector}
+#'   \item{\code{wormbaseGeneClassDescription}}{a character vector}
+#'   \item{\code{wormbaseConciseDescription}}{a character vector}
+#'   \item{\code{wormbaseBlastpEnsemblGeneName}}{a character vector}
+#'   \item{\code{wormbaseBlastpEnsemblDescription}}{a character vector}
+#'   \item{\code{wormbaseStatus}}{a character vector}
+#'   \item{\code{ensemblGeneBiotype}}{a character vector}
+#'   \item{\code{pantherFamilyName}}{a character vector}
+#'   \item{\code{pantherSubfamilyName}}{a character vector}
 #'   }
-"metadata_report"
+"metadataReport"
 
 
-#' metadata_simple
+#' metadataSimple
 #'
-#' A concise data frame containing only GeneID, ORF, public name, and other
-#' previously used IDs.
+#' A concise data frame containing only GeneID, ORF, and public name.
 #'
-#' @format A data frame with 4 variables: \code{GeneID}, \code{ORF},
-#' \code{public.name}, \code{gene.other.ids}
-"metadata_simple"
+#' @format A data frame with 3 variables: \code{geneId}, \code{orf},
+#'   \code{publicName}
+"metadataSimple"
 
 
 #' ORFeome RNAi library annotations
@@ -148,14 +116,12 @@
 #' C .elegans RNAi Collection (\url{http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai}),
 #' WORFDB (\url{http://worfdb.dfci.harvard.edu})
 #'
-#' @format A data frame with 7 variables:
+#' @format A data frame with 5 variables:
 #'   \describe{
-#'   \item{\code{ORFeomeID}}{a character vector}
-#'   \item{\code{ORF.original}}{a character vector}
-#'   \item{\code{RNAi.well}}{a character vector}
-#'   \item{\code{GeneID}}{a character vector}
-#'   \item{\code{ORF}}{a character vector}
-#'   \item{\code{public.name}}{a character vector}
-#'   \item{\code{gene.other.ids}}{a character vector}
+#'   \item{\code{orfeomeId}}{a character vector}
+#'   \item{\code{orfOriginal}}{a character vector}
+#'   \item{\code{geneId}}{a character vector}
+#'   \item{\code{orf}}{a character vector}
+#'   \item{\code{publicName}}{a character vector}
 #'   }
-"rnai_orfeome"
+"orfeome"
