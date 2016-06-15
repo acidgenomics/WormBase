@@ -1,62 +1,69 @@
-metadata <- data.frame()
-datasets <- c("GeneID",
-              "description",
-              "rnai_phenotypes",
-              "orthologs",
-              "blastp",
-              "biomart",
+datasets <- c("wormbaseGeneId",
+              "wormbaseDescription",
+              "wormbaseRnaiPhenotypes",
+              "wormbaseOrthologs",
+              "wormbaseBlastp",
+              "ensembl",
               "panther")
-metadata <- do.call(cbind, mget(datasets))
-colnames(metadata) <- gsub("^GeneID\\.", "", colnames(metadata))
-metadata <- data.frame(apply(metadata, 2, function(x) gsub("^(,|\\s//)\\s(.*)", "\\2", x, perl = TRUE)))
-metadata <- data.frame(apply(metadata, 2, function(x) gsub("(.*)(,|\\s//)\\s$", "\\1", x, perl = TRUE)))
-#! Add step here to change any blank cells to NA
+df <- do.call(cbind, mget(datasets))
+names(df)
 
-lapply(metadata, class)
-colnames(metadata)
+# Add wormbase prefix
+names(df)[names(df) == "rnaiPhenotypes"] <- "wormbaseRnaiPhenotypes"
+# Modify wormbase prefix
+names(df) <- gsub("^wormbase(Description|GeneId)", "wormbase", names(df))
+# Take out prefix for commonly used identifiers
+names(df) <- gsub("^wormbase\\.(geneId|publicName|orf)", "\\1", names(df))
+# camelCase
+names(df) <- gsub("\\.([[:lower:]])", "\\U\\1", names(df), perl = TRUE)
 
-# Readable report version
-metadata_report <- data.frame()
-x <- metadata
-x$biomart.chromosome.name <- NULL
-x$biomart.end.position <- NULL
-x$biomart.ensembl.go.id <- NULL
-x$biomart.entrezgene <- NULL
-x$biomart.hsapiens.homolog.ensembl.gene <- NULL
-x$biomart.interpro <- NULL
-x$biomart.interpro.short.description <- NULL
-x$biomart.refseq.mrna <- NULL
-x$biomart.refseq.ncrna <- NULL
-x$biomart.start.position <- NULL
-x$biomart.strand <- NULL
-x$biomart.uniprot.sptrembl <- NULL
-x$biomart.uniprot.swissprot <- NULL
-x$blastp.e.val <- NULL
-x$blastp.ensembl.gene.id <- NULL
-x$blastp.ensembl.peptide.id <- NULL
-x$blastp.wormbase.peptide.id <- NULL
-x$orthologs.hsapiens.homolog.wormbase.id <- NULL
-x$panther.sf.id <- NULL
-x$panther.uniprot.kb <- NULL
-x$wormbase.status <- NULL
-metadata_report <- x
-rm(x)
+# Set any blank cells to NA
+metadata <-
+  data.frame(apply(metadata, 2, function(x)
+    gsub("^$|^ $", NA, x)))
 
-# Simple version
-metadata_simple <- metadata[, c("GeneID",
-                                "ORF",
-                                "public.name",
-                                "gene.other.ids")]
+# Fix leading and trailing commas
+df <-
+  data.frame(apply(df, 2, function(x)
+    gsub("^(,|\\s//)\\s(.*)", "\\2", x, perl = TRUE)))
+df <-
+  data.frame(apply(df, 2, function(x)
+    gsub("(.*)(,|\\s//)\\s$", "\\1", x, perl = TRUE)))
 
-# Rownames by ORF instead of GeneID (Wormbase ID)
-metadata_ORF <- metadata_simple
-metadata_ORF <- subset(metadata_ORF, !is.na(metadata_ORF$ORF))
-metadata_ORF <- subset(metadata_ORF, !duplicated(metadata_ORF$ORF))
-rownames(metadata_ORF) <- metadata_ORF$ORF
+lapply(df, class)
+names(df)
+
+metadata <- df
+rm(df)
+
+metadataSimple <- metadata[, c("geneId",
+                               "orf",
+                               "publicName")]
+
+# Rownames by ORF instead of WBGeneID
+metadataOrf <- metadataSimple
+metadataOrf <- subset(metadataOrf, !is.na(metadataOrf$orf))
+metadataOrf <- subset(metadataOrf, !duplicated(metadataOrf$orf))
+rownames(metadataOrf) <- metadataOrf$orf
+
+# Additional detail useful for reports
+metadataReport <- metadata[, c(
+  "geneId",
+  "orf",
+  "publicName",
+  "wormbaseGeneClassDescription",
+  "wormbaseConciseDescription",
+  "wormbaseBlastpEnsemblGeneName",
+  "wormbaseBlastpEnsemblDescription",
+  "wormbaseStatus",
+  "ensemblGeneBiotype",
+  "pantherFamilyName",
+  "pantherSubfamilyName"
+)]
 
 devtools::use_data(metadata,
-                   metadata_ORF,
-                   metadata_report,
-                   metadata_simple,
+                   metadataOrf,
+                   metadataReport,
+                   metadataSimple,
                    overwrite = TRUE)
 warnings()

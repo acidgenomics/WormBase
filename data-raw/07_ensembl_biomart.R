@@ -1,13 +1,14 @@
 library(biomaRt)
 library(plyr)
+library(R.utils)
 
 # Connect to Biomart ===========================================================
-# `entrezgene` = Entrez ID
+# `entrezgene` = Entrez identifier
 # `external_gene_name` = Ensembl public name
 # `wormbase_locus` = WormBase public name
-# Use `wormbase_gene_seq_name` for clean sequence ID
+# Use `wormbase_gene_seq_name` for clean sequence identifier
 mart <- useMart("ensembl", "celegans_gene_ensembl")
-biomart_options <- listAttributes(mart)
+biomartOptions <- listAttributes(mart)
 
 # Simple gene length info ======================================================
 df <- getBM(mart = mart,
@@ -18,25 +19,29 @@ df <- getBM(mart = mart,
                            "end_position",
                            "strand",
                            "description"))
-rownames(df) <- df$ensembl_gene_id
-df <- df[GeneID_vec, ]
-df$ensembl_gene_id <- NULL
+colnames(df) <- toCamelCase(colnames(df), split = "_")
+rownames(df) <- df$ensemblGeneId
+load("data/geneIdRows.rda")
+df <- df[geneIdRows, ]
+df$ensemblGeneId <- NULL
 basic <- df
 rm(df)
 
-# Entrez IDs ===================================================================
+# Entrez identifiers ===========================================================
 df <- getBM(mart = mart,
             attributes = c("ensembl_gene_id",
                            "entrezgene"))
 df <- ddply(df, .(ensembl_gene_id), summarize,
             entrezgene = paste(sort(unique(entrezgene)), collapse = ", "))
-rownames(df) <- df$ensembl_gene_id
-df <- df[GeneID_vec, ]
-df$ensembl_gene_id <- NULL
-entrezgene <- df
+colnames(df) <- toCamelCase(colnames(df), split = "_")
+colnames(df)[colnames(df) == "entrezgene"] <- "entrezGeneId"
+rownames(df) <- df$ensemblGeneId
+df <- df[geneIdRows, ]
+df$ensemblGeneId <- NULL
+entrezGeneId <- df
 rm(df)
 
-# Refseq IDs ===================================================================
+# Refseq identifiers ===========================================================
 df <- getBM(mart = mart,
             attributes = c("ensembl_gene_id",
                            "refseq_mrna",
@@ -44,13 +49,14 @@ df <- getBM(mart = mart,
 df <- ddply(df, .(ensembl_gene_id), summarize,
             refseq_mrna = paste(sort(unique(refseq_mrna)), collapse = ", "),
             refseq_ncrna = paste(sort(unique(refseq_ncrna)), collapse = ", "))
-rownames(df) <- df$ensembl_gene_id
-df <- df[GeneID_vec, ]
-df$ensembl_gene_id <- NULL
+colnames(df) <- toCamelCase(colnames(df), split = "_")
+rownames(df) <- df$ensemblGeneId
+df <- df[geneIdRows, ]
+df$ensemblGeneId <- NULL
 refseq <- df
 rm(df)
 
-# UniProt IDs ==================================================================
+# UniProt identifiers ==========================================================
 df <- getBM(mart = mart,
             attributes = c("ensembl_gene_id",
                            "uniprot_sptrembl",
@@ -58,25 +64,27 @@ df <- getBM(mart = mart,
 df <- ddply(df, .(ensembl_gene_id), summarize,
             uniprot_sptrembl = paste(sort(unique(uniprot_sptrembl)), collapse = ", "),
             uniprot_swissprot = paste(sort(unique(uniprot_swissprot)), collapse = ", "))
-rownames(df) <- df$ensembl_gene_id
-df <- df[GeneID_vec, ]
-df$ensembl_gene_id <- NULL
+colnames(df) <- toCamelCase(colnames(df), split = "_")
+rownames(df) <- df$ensemblGeneId
+df <- df[geneIdRows, ]
+df$ensemblGeneId <- NULL
 uniprot <- df
 rm(df)
 
 # Homology =====================================================================
-df <- getBM(mart = mart,
-            attributes = c("ensembl_gene_id",
-                           "hsapiens_homolog_ensembl_gene"))
-df <- ddply(df, .(ensembl_gene_id), summarize,
-            hsapiens_homolog_ensembl_gene = paste(sort(unique(hsapiens_homolog_ensembl_gene)), collapse = ", "))
-rownames(df) <- df$ensembl_gene_id
-df <- df[GeneID_vec, ]
-df$ensembl_gene_id <- NULL
-homology <- df
-rm(df)
+# df <- getBM(mart = mart,
+#             attributes = c("ensembl_gene_id",
+#                            "hsapiens_homolog_ensembl_gene"))
+# df <- ddply(df, .(ensembl_gene_id), summarize,
+#             hsapiens_homolog_ensembl_gene = paste(sort(unique(hsapiens_homolog_ensembl_gene)), collapse = ", "))
+# colnames(df) <- toCamelCase(colnames(df), split = "_")
+# rownames(df) <- df$ensemblGeneId
+# df <- df[geneIdRows, ]
+# df$ensemblGeneId <- NULL
+# homology <- df
+# rm(df)
 
-# GO terms =====================================================================
+# Gene Ontology ================================================================
 df <- getBM(mart = mart,
             attributes = c("ensembl_gene_id",
                            "go_id",
@@ -84,11 +92,11 @@ df <- getBM(mart = mart,
 df <- ddply(df, .(ensembl_gene_id), summarize,
             go_id = paste(sort(unique(go_id)),collapse = ", "),
             name_1006 = paste(sort(unique(name_1006)), collapse = " // "))
-rownames(df) <- df$ensembl_gene_id
-df$ensembl_gene_id <- NULL
-df <- df[GeneID_vec, ]
-colnames(df) <- c("ensembl.go.id", "ensembl.go.names")
-go_terms <- df
+colnames(df) <- c("ensemblGeneId", "geneOntologyId", "geneOntologyName")
+rownames(df) <- df$ensemblGeneId
+df$ensemblGeneId <- NULL
+df <- df[geneIdRows, ]
+geneOntology <- df
 rm(df)
 
 # Interpro =====================================================================
@@ -101,23 +109,39 @@ df <- ddply(df, .(ensembl_gene_id), summarize,
             interpro = paste(sort(unique(interpro)),collapse = ", "),
             interpro_short_description = paste(sort(unique(interpro_short_description)), collapse = " // "),
             interpro_description = paste(sort(unique(interpro_description)), collapse = " // "))
-rownames(df) <- df$ensembl_gene_id
-df <- df[GeneID_vec, ]
-df$ensembl_gene_id <- NULL
+colnames(df) <- toCamelCase(colnames(df), split = "_")
+rownames(df) <- df$ensemblGeneId
+df <- df[geneIdRows, ]
+df$ensemblGeneId <- NULL
 interpro <- df
 rm(df)
 
 # Merge and save ===============================================================
-df <- cbind(basic, entrezgene, refseq, uniprot, homology, go_terms, interpro)
-rownames(df) <- GeneID_vec
-colnames(df) <- gsub("_", ".", colnames(df))
-colnames(df)[colnames(df) == "description"] <- "ensembl.description"
-# Fix leading and trailing commas
-# This doesn't work properly and converts to factors...
-#! df <- apply(df, 2, function(x) gsub("^(,|\\s//)\\s(.*)", "\\2", x, perl = TRUE))
-#! df <- apply(df, 2, function(x) gsub("(.*)(,|\\s//)\\s$", "\\1", x, perl = TRUE))
-biomart <- df
-lapply(biomart, class)
-rm(df)
+df <- cbind(basic,
+            entrezGeneId,
+            refseq,
+            uniprot,
+          # homology,
+            geneOntology,
+            interpro)
+lapply(df, class)
+## df <- apply(df, 2, function(x) gsub("^(,|\\s//)\\s(.*)", "\\2", x, perl = TRUE))
+## df <- apply(df, 2, function(x) gsub("(.*)(,|\\s//)\\s$", "\\1", x, perl = TRUE))
 
+load("data-raw/gene_id.rda")
+df <- df[wormbaseGeneIdRows, ]
+rownames(df) <- wormbaseGeneIdRows
+
+ensembl <- df
+
+rm(basic,
+   biomartOptions,
+   df,
+   entrezGeneId,
+   geneOntology,
+   homology,
+   interpro,
+   mart,
+   refseq,
+   uniprot)
 warnings()

@@ -8,21 +8,19 @@ file <- gsub("\n", " // ", file)
 file <- gsub("= // ", "\n", file)
 file <- gsub(" //  // ", "\t", file)
 df <- read_tsv(file, comment = "#", col_names = FALSE)
-rm(file)
 id <- df[, 1]
 head(id)
 id <- as.data.frame(str_split_fixed(id, " \\| ", 2))
 head(id)
 df <- as.data.frame(cbind(id, df[, 2]))
-rm(id)
 df <- df[, c(1, 3)]
-colnames(df) <- c("geneID", "orthologs")
-rownames(df) <- df$geneID
-df$geneID <- NULL
+colnames(df) <- c("geneId", "orthologs")
+rownames(df) <- df$geneId
+df$geneId <- NULL
 
 # Now run through and match orthologs ==========================================
 hsapiensAll <- list()
-hsapiensID <- vector()
+hsapiensId <- vector()
 hsapiensName <- vector()
 for (i in 1:nrow(df)) {
   gene <- rownames(df)[i]
@@ -40,25 +38,38 @@ for (i in 1:nrow(df)) {
     id <- unique(id)
     id <- sort(id)
     id <- paste(id, collapse = ", ")
-    hsapiensID[i] <- id
+    hsapiensId[i] <- id
     name <- unique(name)
     name <- sort(name)
     name <- paste(name, collapse = ", ")
     hsapiensName[i] <- name
   } else {
-    hsapiensID[i] <- NA
+    hsapiensId[i] <- NA
     hsapiensName[i] <- NA
   }
 }
-rm(gene, i, id, j, name, names, split1, split2)
 
 # Final data frame cleanup =====================================================
-hsapiens <- data.frame(cbind(hsapiensID, hsapiensName))
-rownames(hsapiens) <- names(hsapiensAll)
-load("data/geneIDRows.rda")
-hsapiens <- hsapiens[geneIDRows, ]
-orthologs <- hsapiens
-rownames(orthologs) <- geneIDRows
-rm(df, hsapiens, hsapiensAll, hsapiensID, hsapiensName)
+df <- data.frame(cbind(hsapiensId, hsapiensName))
+rownames(df) <- names(hsapiensAll)
 
+load("data-raw/gene_id.rda")
+df <- df[wormbaseGeneIdRows, ]
+rownames(df) <- wormbaseGeneIdRows
+
+wormbaseOrthologs <- df
+
+rm(df,
+   file,
+   gene,
+   hsapiensAll,
+   hsapiensId,
+   hsapiensName,
+   i,
+   id,
+   j,
+   name,
+   names,
+   split1,
+   split2)
 warnings()

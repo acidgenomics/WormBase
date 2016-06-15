@@ -8,13 +8,13 @@ df <- read_delim(file.path("data-raw", "panther.txt.gz"),
                  col_names = FALSE)
 colnames(df) <- c("id",
                   "protein",
-                  "sf.id",
-                  "family.name",
-                  "subfamily.name",
-                  "go.mf",
-                  "go.bp",
-                  "go.cc",
-                  "pc",
+                  "subfamilyId",
+                  "familyName",
+                  "subfamilyName",
+                  "geneOntologyMolecularFunction",
+                  "geneOntologyBiologicalProcess",
+                  "geneOntologyCellularComponent",
+                  "class",
                   "pathway")
 df$protein <- NULL
 id <- df$id # Cleanup and split below
@@ -106,20 +106,27 @@ id <- gsub("GeneID=2565703\\|", "WormBase=WBGene00010967\\|", id) # MTCE.35
 id <- gsub("GeneID=2565704\\|", "WormBase=WBGene00010960\\|", id) # MTCE.12
 id <- gsub("GeneID=2565705\\|", "WormBase=WBGene00010963\\|", id) # MTCE.25
 
-# Fix the ID mapping ===========================================================
-id <- as.data.frame(str_split_fixed(id, "\\|", 2))
-colnames(id) <- c("GeneID", "uniprot.kb")
-id <- as.data.frame(apply(id, 2, function(x) gsub("WormBase=", "", x, perl = TRUE)))
-id <- as.data.frame(apply(id, 2, function(x) gsub("UniProtKB=", "", x, perl = TRUE)))
+# Fix the ID mapping and clean up ==============================================
+id <- data.frame(str_split_fixed(id, "\\|", 2))
+colnames(id) <- c("geneId", "uniprotKb")
+id <- data.frame(apply(id, 2, function(x) gsub("WormBase=", "", x)))
+id <- data.frame(apply(id, 2, function(x) gsub("UniProtKB=", "", x)))
 head(id)
+
 # Recombine then remove duplicates from df, take out UniProtKB, then add back
 df <- cbind(id, df)
-df <- df[!duplicated(df$GeneID), ]
-rownames(df) <- df$GeneID
-df$GeneID <- NULL
-df <- df[GeneID_vec, ]
-rownames(df) <- GeneID_vec
-panther <- df
-rm(df)
+df <- df[!duplicated(df$geneId), ]
+rownames(df) <- df$geneId
+df$geneId <- NULL
 
+# Convert semicolon to double slash
+df <- data.frame(apply(df, c(1, 2), function(x) gsub(";", " // ", x)))
+
+load("data-raw/gene_id.rda")
+df <- df[wormbaseGeneIdRows, ]
+rownames(df) <- wormbaseGeneIdRows
+
+panther <- df
+
+rm(df, id)
 warnings()

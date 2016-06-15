@@ -4,22 +4,25 @@ library(R.utils)
 library(readr)
 
 # Get the highest match for each peptide =======================================
-input <- read_csv(file.path("data-raw", "wormbase", "best_blastp_hits.txt.gz"), col_names = FALSE)
+input <- read_csv(file.path("data-raw", "wormbase", "best_blastp_hits.txt.gz"),
+                  col_names = FALSE)
 df <- input[, c(1, 4, 5)]
-colnames(df) <- c("wormbasePeptideID", "ensemblPeptideID", "EValue")
+colnames(df) <- c("wormpepId",
+                  "ensemblPeptideId",
+                  "eValue")
 # Filter for only ENSEMBL info
-df <- df[grepl("ENSEMBL", df$ensemblPeptideID), ]
+df <- df[grepl("ENSEMBL", df$ensemblPeptideId), ]
 # Remove "ENSEMBL:" from column
-df$ensemblPeptideID <- substr(df$ensemblPeptideID, 9, 23)
+df$ensemblPeptideId <- substr(df$ensemblPeptideId, 9, 23)
 # Sort by E value to get the highest confidence BLASTP match
-df <- df[order(df$wormbasePeptideID, df$EValue), ]
+df <- df[order(df$wormpepId, df$eValue), ]
 # Now remove duplicates, will which eliminate the lower confidence entries
-df <- df[!duplicated(df$wormbasePeptideID), ]
-rownames(df) <- as.vector(df$wormbasePeptideID)
+df <- df[!duplicated(df$wormpepId), ]
+rownames(df) <- as.vector(df$wormpepId)
 blastpScores <- df
 rm(df, input)
 
-# Map peptides to WormBase GeneID ==============================================
+# Map peptides to WBGeneID =====================================================
 input <- readLines(file.path("data-raw", "wormbase", "wormpep.txt.gz"))
 input <- strsplit(input, "\n")
 wormpep <- lapply(input, function(x) {
@@ -30,54 +33,55 @@ wormpep <- lapply(input, function(x) {
 head(wormpep)
 df <- data.frame(do.call("rbind", wormpep))
 rm(wormpep)
-colnames(df) <- c("wormbasePeptideID", "geneID")
-wormbasePeptideID <- df
+colnames(df) <- c("wormpepId", "geneId")
+wormpepId <- df
 
-# Pull ensembl IDs and p values based on wormbase.peptide.id ===================
-vec <- as.vector(wormbasePeptideID$wormbasePeptideID)
-ensembl <- blastpScores[vec, c("ensemblPeptideID", "EValue")]
+# Match E values to WBGeneID ===================================================
+vec <- as.vector(wormpepId$wormpepId)
+ensembl <- blastpScores[vec, c("ensemblPeptideId", "eValue")]
 df <- cbind(df, ensembl)
 rm(ensembl, vec)
-
-# Subset only the top blastp with ensembl match ================================
-df <- df[order(df$geneID, df$EValue, df$wormbasePeptideID), ]
-df <- df[!duplicated(df$geneID), ]
-df <- df[!is.na(df$ensembl), ]
-rownames(df) <- df$geneID
-# clean up the names for binding
-df$geneID <- NULL
-blastpGeneID <- df
+# Subset only the top blastp with ensembl match
+df <- df[order(df$geneId, df$eValue, df$wormpepId), ]
+df <- df[!duplicated(df$geneId), ]
+df <- df[!is.na(df$ensemblPeptideId), ]
+rownames(df) <- df$geneId
+# Clean up the names for binding
+df$geneId <- NULL
+blastpGeneId <- df
 rm(df)
 
 # biomaRt for human orthologs ==================================================
-ensemblPeptideID <- as.vector(blastpGeneID$ensemblPeptideID)
+ensemblPeptideId <- as.vector(blastpGeneId$ensemblPeptideId)
 mart <- useMart("ensembl", "hsapiens_gene_ensembl")
 biomartOptions <- listAttributes(mart)
 df <- getBM(mart = mart,
             filters = "ensembl_peptide_id",
-            values = ensemblPeptideID,
+            values = ensemblPeptideId,
             attributes = c("ensembl_peptide_id",
                            "ensembl_gene_id",
                            "external_gene_name",
                            "description"))
-## colnames(df) <- gsub("_", ".", colnames(df))
-# Convert to camelCase
-colnames(df) <- gsub("_id", "_ID", colnames(df))
+colnames(df)[colnames(df) == "external_gene_name"] <- "ensembl_gene_name"
+colnames(df)[colnames(df) == "description"] <- "ensembl_description"
 colnames(df) <- toCamelCase(colnames(df), split = "_")
-rownames(df) <- df$ensemblPeptideID
-df$ensemblPeptideID <- NULL
-df <- df[ensemblPeptideID, ]
-df <- cbind(blastpGeneID, df)
-# Set rows to metadata df
-load("data/geneIDRows.rda")
-blastp <- df[geneIDRows, ]
-rownames(blastp) <- geneIDRows
+rownames(df) <- df$ensemblPeptideId
+df$ensemblPeptideId <- NULL
+df <- df[ensemblPeptideId, ]
+df <- cbind(blastpGeneId, df)
+
+load("data-raw/gene_id.rda")
+df <- df[wormbaseGeneIdRows, ]
+rownames(df) <- wormbaseGeneIdRows
+
+wormbaseBlastp <- df
+
 rm(biomartOptions,
-   blastpGeneID,
+   blastpGeneId,
    blastpScores,
    df,
-   ensemblPeptideID,
+   ensemblPeptideId,
    input,
    mart,
-   wormbasePeptideID)
+   wormpepId)
 warnings()

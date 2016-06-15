@@ -4,22 +4,26 @@ library(R.utils)
 # WormBase =====================================================================
 # http://www.wormbase.org/about/release_schedule
 annotation <- "ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/"
+## PRJNA13758.WS252 -- for specific version (e.g. WS252)
+version <- "canonical_bioproject.current"
 files <- c("affy_oligo_mapping",
            "agil_oligo_mapping",
+           "best_blast_hits",
            "functional_descriptions",
            "geneIDs",
            "geneOtherIDs",
            "orthologs")
 invisible(lapply(seq(along = files), function(i) {
-  fileName <- paste0(files[i], ".txt.gz")
-  fileURL <- paste0(annotation, files[i], "/c_elegans.canonical_bioproject.current.", fileName)
-  saveName <- file.path("data-raw", "wormbase", paste0(files[i], ".txt.gz"))
-  download.file(fileURL, saveName)
+  # BLASTP hits filename doesn't match folder
+  if (files[i] == "best_blast_hits") {
+    fileName <- "best_blastp_hits.txt.gz"
+  } else {
+    fileName <- paste0(files[i], ".txt.gz")
+  }
+  fileURL <- paste0(annotation, files[i], "/c_elegans.", version, ".", fileName)
+  savePath <- file.path("data-raw", "wormbase", fileName)
+  download.file(fileURL, savePath)
 }))
-
-# Manually request blastp file due to naming
-download.file(paste0(annotation, "best_blast_hits/c_elegans.canonical_bioproject.current.best_blastp_hits.txt.gz"),
-              file.path("data-raw", "wormbase", "best_blastp_hits.txt.gz"))
 
 # RNAi phenotypes
 dir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/ONTOLOGY/"
@@ -67,11 +71,11 @@ gzip(file.path("data-raw", "panther.txt"), overwrite = TRUE)
 # ORFeome (Vidal)
 # http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai/
 download.file("http://dharmacon.gelifesciences.com/uploadedFiles/Resources/cernai-feeding-library.xlsx",
-              file.path("data-raw", "rnai_orfeome.xlsx"))
+              file.path("data-raw/rnai_libraries", "orfeome.xlsx"))
 # Ahringer
 # http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/
 download.file("http://www.us.lifesciences.sourcebioscience.com/media/381254/C.%20elegans%20Database%202012.xlsx",
-              file.path("data-raw", "rnai_ahringer.xlsx"))
+              file.path("data-raw/rnai_libraries", "ahringer.xlsx"))
 
 rm(annotation, dir, file, files, grep, ls)
 warnings()

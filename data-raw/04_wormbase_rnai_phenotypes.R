@@ -6,34 +6,38 @@ library(stringr)
 input <- read_delim(file.path("data-raw", "wormbase", "rnai_phenotypes.txt.gz"),
                     delim = "\t",
                     col_names = FALSE)
-colnames(input) <- c("geneID", "ORF", "rnaiPhenotypes")
-rownames(input) <- input$geneID
+colnames(input) <- c("geneId", "ORF", "unsorted")
+rownames(input) <- input$geneId
 
 # Sort RNAi phenotypes alphabetically ==========================================
-x <- input
-x <- lapply(seq(along = rownames(x)), function(i) {
-  split <- strsplit(as.character(x[i, "rnaiPhenotypes"]), ", ")
+df <- input
+df <- lapply(seq(along = rownames(df)), function(x) {
+  split <- strsplit(as.character(df[x, "unsorted"]), ", ")
   vec <- split[[1]]
   vec <- unique(vec)
   vec <- sort(vec)
   paste(vec, collapse = " // ")
 })
-x <- unlist(x)
-names(x) <- rownames(input)
-sorted <- x
-rm(x)
+df <- unlist(df)
+names(df) <- rownames(input)
+sorted <- df
 
-# Add the sorted phenotypes back ===============================================
-x <- cbind(input, sorted)
-rm(sorted)
-load("data/geneIDRows.rda")
-x <- x[geneIDRows, ]
-x$rnaiPhenotypes <- NULL
-rownames(x) <- geneIDRows
-x$geneID <- NULL
-x$ORF <- NULL
-colnames(x) <- "rnaiPhenotypes"
-rnaiPhenotypes <- x
-rm(input, x)
+# Add the sorted phenotypes back
+df <- cbind(input, sorted)
 
+load("data-raw/gene_id.rda")
+df <- df[wormbaseGeneIdRows, ]
+rownames(df) <- wormbaseGeneIdRows
+
+# Remove unnecessary columns
+df$geneId <- NULL
+df$ORF <- NULL
+df$unsorted <- NULL
+
+# Set column name and save
+colnames(df) <- "rnaiPhenotypes"
+
+wormbaseRnaiPhenotypes <- df
+
+rm(input, sorted, df)
 warnings()
