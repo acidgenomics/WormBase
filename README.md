@@ -4,7 +4,7 @@
 
 *C. elegans* metadata automatically built using current information available from:
 
-* [WormBase](http://www.wormbase.org), release WS252
+* [WormBase](http://www.wormbase.org), release WS253
 * [Ensembl](http://www.ensembl.org/Caenorhabditis_elegans/Info/Index), release 84
 * [PANTHER](http://pantherdb.org), release 10
 
