@@ -1,5 +1,5 @@
 # worminfo
-*C. elegans* metadata assembled from WormBase, Ensembl, and PANTHER.
+*C. elegans* metadata assembled from WormBase, Ensembl, and PANTHER
 
 [![Build Status](https://travis-ci.org/seqcloud/worminfo.svg?branch=master)](https://travis-ci.org/seqcloud/worminfo)
 
