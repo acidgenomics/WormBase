@@ -2,19 +2,9 @@ library(R.utils)
 library(readr)
 library(readxl)
 load("data/metadataOrf.rda")
+source("data-raw/getOrfMetadata.R")
 
-getOrfMetadata <- function(orf) {
-  # Since there are duplicate ORFs per well, we must loop from metadata_ORF
-  list <- list()
-  list <- lapply(seq(along = orf), function(i) {
-    metadataOrf[orf[i], ]
-  })
-  # Converting to a data frame here will take a while
-  df <- data.frame(do.call("rbind", list))
-  assign("orf2GeneId", df, envir = .GlobalEnv)
-}
-
-# Set up the data frame from Excel file ========================================
+# Set up the ORFeome data frame from the Excel file ============================
 xlsx <- read_excel("data-raw/rnai_libraries/orfeome.xlsx", sheet = 2)
 # Strip parenthesis from column title
 colnames(xlsx) <- gsub("(\\(|\\))", "", colnames(xlsx))
@@ -75,7 +65,7 @@ df <- subset(df, !is.na(geneId))
 
 # Get the ORF merge mappings
 # This should have the same number of rows as unmappedOrf
-orfMergeInput <- read_excel("data-raw/rnai_libraries/orfeome_merge.xlsx",
+orfMergeInput <- read_excel("data-raw/rnai_libraries/orf_merge.xlsx",
                    sheet = 1, na = "NA")
 rownames(orfMergeInput) <- orfMergeInput$orfeomeId
 orfMergeInput <- orfMergeInput[rownames(unmappedOrf), ]
