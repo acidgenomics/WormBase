@@ -4,8 +4,8 @@
 \name{metadataOrf}
 \alias{metadataOrf}
 \title{metadataOrf}
-\format{A data frame with 3 variables: \code{geneId}, \code{orf},
-  \code{publicName}}
+\format{A data frame with 4 variables: \code{geneId}, \code{orf},
+  \code{publicName}, \code{wormbaseGeneOtherIds}}
 \usage{
 metadataOrf
 }

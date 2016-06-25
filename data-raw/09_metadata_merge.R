@@ -38,7 +38,8 @@ rm(df)
 
 metadataSimple <- metadata[, c("geneId",
                                "orf",
-                               "publicName")]
+                               "publicName",
+                               "wormbaseGeneOtherIds")]
 
 # Rownames by ORF instead of WBGeneID
 metadataOrf <- metadataSimple
@@ -51,6 +52,7 @@ metadataReport <- metadata[, c(
   "geneId",
   "orf",
   "publicName",
+  "wormbaseGeneOtherIds",
   "wormbaseGeneClassDescription",
   "wormbaseConciseDescription",
   "wormbaseBlastpEnsemblGeneName",

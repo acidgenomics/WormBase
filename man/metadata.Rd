@@ -61,7 +61,7 @@ PANTHER (\url{http://pantherdb.org})
 metadata
 }
 \description{
-C. elegans metadata pulled from WormBase, Ensembl, and PANTHER.
+C. elegans metadata assembled from WormBase, Ensembl, and PANTHER
 }
 \keyword{datasets}
 

@@ -18,42 +18,39 @@ df <- xlsx[, c("orfIdWs112",
                "row",
                "col",
                "rnaiWell")]
-names(df)[names(df) == "orfIdWs112"] <- "orf"
+names(df)[names(df) == "orfIdWs112"] <- "orfOriginal"
 
 # Subset the bad wells
 df <- subset(df, !is.na(rnaiWell))
-df <- subset(df, orf != "no match in WS112")
+df <- subset(df, orfOriginal != "no match in WS112")
 rownames(df) <- df$rnaiWell
 xlsxFiltered <- df
 
 # Set plate IDs as rownames ====================================================
 df <- xlsxFiltered
 col <- c("plate", "row", "col")
-orfeomeId <- do.call(paste, c(df[col], sep = "-"))
-orfeomeId[1]
-orfeomeId <- gsub("^(.*)-([0-9]{1})$", "\\1-0\\2", orfeomeId,
+cloneId <- do.call(paste, c(df[col], sep = "-"))
+cloneId[1]
+cloneId <- gsub("^(.*)-([0-9]{1})$", "\\1-0\\2", cloneId,
                   perl = TRUE, ignore.case = FALSE) # pad zeros
-orfeomeId[1]
-orfeomeId <- gsub("^([0-9]{5})-([A-Z]{1})-([0-9]{2})$", "\\1@\\2\\3", orfeomeId,
+cloneId[1]
+cloneId <- gsub("^([0-9]{5})-([A-Z]{1})-([0-9]{2})$", "\\1@\\2\\3", cloneId,
                   perl = TRUE, ignore.case = FALSE)
-orfeomeId[1]
-df <- cbind(orfeomeId, df)
-rownames(df) <- df$orfeomeId
+cloneId[1]
+df <- cbind(cloneId, df)
+rownames(df) <- df$cloneId
 xlsxConverted <- df
 rm(xlsxFiltered)
 
 # Get current metadata =========================================================
-getOrfMetadata(as.vector(xlsxConverted$orf))
+getOrfMetadata(as.vector(xlsxConverted$orfOriginal))
 
 # Bind the matches back to the orfeomeValid data frame
-df <- xlsxConverted[, c("orfeomeId", "orf")]
-
-# Keep original ORF information from xlsx file
-names(df)[names(df) == "orf"] <- "orfOriginal"
+df <- xlsxConverted[, c("cloneId", "orfOriginal")]
 
 # Now we can bind the metadata
 df <- cbind(df, orf2GeneId)
-rownames(df) <- as.vector(df$orfeomeId)
+rownames(df) <- as.vector(df$cloneId)
 colnames(df)
 
 # Unmapped ORFs
@@ -67,7 +64,7 @@ df <- subset(df, !is.na(geneId))
 # This should have the same number of rows as unmappedOrf
 orfMergeInput <- read_excel("data-raw/rnai_libraries/orf_merge.xlsx",
                    sheet = 1, na = "NA")
-rownames(orfMergeInput) <- orfMergeInput$orfeomeId
+rownames(orfMergeInput) <- orfMergeInput$cloneId
 orfMergeInput <- orfMergeInput[rownames(unmappedOrf), ]
 rownames(orfMergeInput) <- rownames(unmappedOrf)
 
@@ -78,6 +75,11 @@ getOrfMetadata(as.vector(orfMergeInput$mergedOrf))
 orfMerge <- cbind(unmappedOrf, orf2GeneId)
 df <- rbind(df, orfMerge)
 df <- df[rownames(xlsxConverted), ]
+
+# Add back the complete metadata
+df <- cbind(xlsxConverted, df)
+# Remove duplicate columns
+df <- df[, unique(colnames(df))]
 
 # Additional information for library troubleshooting
 debugNoGeneId <- df[is.na(df$geneId), ]
