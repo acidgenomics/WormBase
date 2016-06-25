@@ -4,13 +4,18 @@
 \name{orfeome}
 \alias{orfeome}
 \title{ORFeome RNAi library annotations}
-\format{A data frame with 5 variables:
+\format{A data frame with 10 variables:
   \describe{
-  \item{\code{orfeomeId}}{a character vector}
+  \item{\code{cloneId}}{a character vector}
   \item{\code{orfOriginal}}{a character vector}
+  \item{\code{plate}}{a character vector}
+  \item{\code{row}}{a character vector}
+  \item{\code{col}}{a character vector}
+  \item{\code{rnaiWell}}{a character vector}
   \item{\code{geneId}}{a character vector}
   \item{\code{orf}}{a character vector}
   \item{\code{publicName}}{a character vector}
+  \item{\code{wormbaseGeneOtherIds}}{a character vector}
   }}
 \source{
 C .elegans RNAi Collection (\url{http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai}),
