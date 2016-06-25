@@ -4,11 +4,12 @@
 \name{metadataReport}
 \alias{metadataReport}
 \title{metadataReport}
-\format{A data frame with 11 variables:
+\format{A data frame with 12 variables:
   \describe{
   \item{\code{geneId}}{a character vector}
   \item{\code{orf}}{a character vector}
   \item{\code{publicName}}{a character vector}
+  \item{\code{wormbaseGeneOtherIds}}{a character vector}
   \item{\code{wormbaseGeneClassDescription}}{a character vector}
   \item{\code{wormbaseConciseDescription}}{a character vector}
   \item{\code{wormbaseBlastpEnsemblGeneName}}{a character vector}

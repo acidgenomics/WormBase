@@ -1,6 +1,6 @@
 #' metadata
 #'
-#' C. elegans metadata pulled from WormBase, Ensembl, and PANTHER.
+#' C. elegans metadata assembled from WormBase, Ensembl, and PANTHER
 #'
 #' @source
 #' WormBase (\url{http://www.wormbase.org}),
@@ -64,8 +64,8 @@
 #' frames (ORFs), and previously used IDs. This dataset is filtered to have
 #' unique ORF matches.
 #'
-#' @format A data frame with 3 variables: \code{geneId}, \code{orf},
-#'   \code{publicName}
+#' @format A data frame with 4 variables: \code{geneId}, \code{orf},
+#'   \code{publicName}, \code{wormbaseGeneOtherIds}
 "metadataOrf"
 
 
@@ -73,11 +73,12 @@
 #'
 #' A subset of the master metadata file containing only human readable data.
 #'
-#' @format A data frame with 11 variables:
+#' @format A data frame with 12 variables:
 #'   \describe{
 #'   \item{\code{geneId}}{a character vector}
 #'   \item{\code{orf}}{a character vector}
 #'   \item{\code{publicName}}{a character vector}
+#'   \item{\code{wormbaseGeneOtherIds}}{a character vector}
 #'   \item{\code{wormbaseGeneClassDescription}}{a character vector}
 #'   \item{\code{wormbaseConciseDescription}}{a character vector}
 #'   \item{\code{wormbaseBlastpEnsemblGeneName}}{a character vector}
@@ -116,12 +117,47 @@
 #' C .elegans RNAi Collection (\url{http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai}),
 #' WORFDB (\url{http://worfdb.dfci.harvard.edu})
 #'
-#' @format A data frame with 5 variables:
+#' @format A data frame with 10 variables:
 #'   \describe{
-#'   \item{\code{orfeomeId}}{a character vector}
+#'   \item{\code{cloneId}}{a character vector}
 #'   \item{\code{orfOriginal}}{a character vector}
+#'   \item{\code{plate}}{a character vector}
+#'   \item{\code{row}}{a character vector}
+#'   \item{\code{col}}{a character vector}
+#'   \item{\code{rnaiWell}}{a character vector}
 #'   \item{\code{geneId}}{a character vector}
 #'   \item{\code{orf}}{a character vector}
 #'   \item{\code{publicName}}{a character vector}
+#'   \item{\code{wormbaseGeneOtherIds}}{a character vector}
 #'   }
 "orfeome"
+
+
+#' Ahringer RNAi library annotations
+#' The Caenorhabditis elegans RNAi feeding library was constructed by Julie
+#' Ahringer's group at The Wellcome CRC Institute, University of Cambridge,
+#' Cambridge, UK and is distributed by Source BioScience. It is designed for
+#' genome wide study of gene function in C. elegans through loss of function
+#' studies. It can be used both for rapid large scale RNAi experiments and for
+#' the study of individual genes.
+#'
+#' @source
+#' Source BioScience (\url{http://www.us.lifesciences.sourcebioscience.com/clone-production/non-mammalian/c-elegans/c-elegans-rnai-library})
+#'
+#' @format A data frame with 13 variables:
+#'   \describe{
+#'   \item{\code{cloneId}}{a character vector}
+#'   \item{\code{plate}}{a character vector}
+#'   \item{\code{well}}{a character vector}
+#'   \item{\code{chrom}}{a character vector}
+#'   \item{\code{orfOriginal}}{a character vector}
+#'   \item{\code{fwdPrimerSeq}}{a character vector}
+#'   \item{\code{revPrimerSeq}}{a character vector}
+#'   \item{\code{sourceBioscienceLocation}}{a character vector}
+#'   \item{\code{extraInfo}}{a character vector}
+#'   \item{\code{geneId}}{a character vector}
+#'   \item{\code{orf}}{a character vector}
+#'   \item{\code{publicName}}{a character vector}
+#'   \item{\code{wormbaseGeneOtherIds}}{a character vector}
+#'   }
+"ahringer"
