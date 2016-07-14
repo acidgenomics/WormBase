@@ -2,8 +2,18 @@ library(plyr)
 library(readr)
 library(stringr)
 
+# Source the data ==============================================================
+dir <- "ftp://ftp.pantherdb.org/sequence_classifications/current_release/PANTHER_Sequence_Classification_files/"
+ls <- getURL(dir, dirlistonly = TRUE)
+ls <- strsplit(ls, "\n")
+ls <- ls[[1]]
+grep <- grep("nematode_worm", ls, value = TRUE)
+file <- paste0(dir, grep)
+pantherSource <- tempfile(fileext = ".txt")
+download.file(file, pantherSource)
+
 # Load and set column names ====================================================
-df <- read_delim(file.path("data-raw", "panther.txt.gz"),
+df <- read_delim(pantherSource,
                  delim = "\t",
                  col_names = FALSE)
 colnames(df) <- c("id",

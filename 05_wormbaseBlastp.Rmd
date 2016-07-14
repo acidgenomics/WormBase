@@ -1,29 +1,66 @@
+---
+title: "WormBase BLASTP Matches"
+output: html_document
+---
+
+```{r setup}
 library(biomaRt)
 library(plyr)
 library(R.utils)
 library(readr)
+source("wormbaseFtp.R")
+```
 
-# Get the highest match for each peptide =======================================
-input <- read_csv(file.path("data-raw", "wormbase", "best_blastp_hits.txt.gz"),
-                  col_names = FALSE)
+```{r blastp import}
+# Get the highest match for each peptide
+wormbaseFile("best_blast_hits")
+input <- read_csv(bestBlastHits, col_names = FALSE)
 df <- input[, c(1, 4, 5)]
 colnames(df) <- c("wormpepId",
                   "ensemblPeptideId",
                   "eValue")
+
 # Filter for only ENSEMBL info
 df <- df[grepl("ENSEMBL", df$ensemblPeptideId), ]
+
 # Remove "ENSEMBL:" from column
 df$ensemblPeptideId <- substr(df$ensemblPeptideId, 9, 23)
+
 # Sort by E value to get the highest confidence BLASTP match
 df <- df[order(df$wormpepId, df$eValue), ]
+
 # Now remove duplicates, will which eliminate the lower confidence entries
 df <- df[!duplicated(df$wormpepId), ]
 rownames(df) <- as.vector(df$wormpepId)
 blastpScores <- df
-rm(df, input)
+```
 
-# Map peptides to WBGeneID =====================================================
-input <- readLines(file.path("data-raw", "wormbase", "wormpep.txt.gz"))
+Wormpep IDs are used for BLASTP matching:
+
+```{r wormpep download}
+dir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/species/c_elegans/PRJNA13758/"
+ls <- getURL(dir, dirlistonly = TRUE)
+ls <- strsplit(ls, "\n")
+ls <- ls[[1]]
+grep <- grep("wormpep_package", ls, value = TRUE)
+file <- paste0(dir, grep)
+download.file(file, "wormpep.tar.gz")
+
+# Extract wormpep.table specifically -- works on macOS
+system(paste0(
+  "tar -xzf ",
+  file.path("wormpep.tar.gz"),
+  " ",
+  "wormpep.table*"
+))
+file.remove("wormpep.tar.gz")
+file <- list.files(pattern = "wormpep.table")
+file.rename(file, "wormpep.txt")
+```
+
+```{r mapping}
+input <- read_lines("wormpep.txt")
+file.remove("wormpep.txt")
 input <- strsplit(input, "\n")
 wormpep <- lapply(input, function(x) {
   x <- gsub("^.*\t(CE[0-9]+\tWBGene[0-9]+).*$", "\\1", x, perl = T)
@@ -35,8 +72,9 @@ df <- data.frame(do.call("rbind", wormpep))
 rm(wormpep)
 colnames(df) <- c("wormpepId", "geneId")
 wormpepId <- df
+```
 
-# Match E values to WBGeneID ===================================================
+```{r match e values}
 vec <- as.vector(wormpepId$wormpepId)
 ensembl <- blastpScores[vec, c("ensemblPeptideId", "eValue")]
 df <- cbind(df, ensembl)
@@ -50,8 +88,9 @@ rownames(df) <- df$geneId
 df$geneId <- NULL
 blastpGeneId <- df
 rm(df)
+```
 
-# biomaRt for human orthologs ==================================================
+```{r biomart human orthologs}
 ensemblPeptideId <- as.vector(blastpGeneId$ensemblPeptideId)
 mart <- useMart("ensembl", "hsapiens_gene_ensembl")
 biomartOptions <- listAttributes(mart)
@@ -69,19 +108,10 @@ rownames(df) <- df$ensemblPeptideId
 df$ensemblPeptideId <- NULL
 df <- df[ensemblPeptideId, ]
 df <- cbind(blastpGeneId, df)
+```
 
-load("data-raw/gene_id.rda")
-df <- df[wormbaseGeneIdRows, ]
-rownames(df) <- wormbaseGeneIdRows
-
+```{r save}
+source("geneIdRows.R")
 wormbaseBlastp <- df
-
-rm(biomartOptions,
-   blastpGeneId,
-   blastpScores,
-   df,
-   ensemblPeptideId,
-   input,
-   mart,
-   wormpepId)
-warnings()
+devtools::use_data(wormbaseBlastp, overwrite = TRUE)
+```

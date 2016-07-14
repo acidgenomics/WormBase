@@ -1,4 +1,5 @@
-# repos = "http://cran.rstudio.com/"
+options(repos = "http://cran.rstudio.com/")
+
 install.packages("devtools")
 install.packages("plyr")
 install.packages("R.utils")
@@ -12,5 +13,4 @@ biocLite()
 biocLite("biomaRt")
 biocLite("RCurl")
 
-library(devtools)
-devtools::use_data_raw()
+devtools::install_github("seqcloud/seqcloudR")

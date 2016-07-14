@@ -1,8 +1,17 @@
+---
+title: "WormBase Orthologs"
+output: html_document
+---
+
+```{r setup}
 library(readr)
 library(stringr)
+source("wormbaseFtp.R")
+```
 
-# Convert the orthologs file to R compatible data frame ========================
-file <- read_file(file.path("data-raw", "wormbase", "orthologs.txt.gz"))
+```{r import}
+wormbaseFile("orthologs")
+file <- read_file(orthologs)
 file <- gsub("\t", " | ", file)
 file <- gsub("\n", " // ", file)
 file <- gsub("= // ", "\n", file)
@@ -17,8 +26,9 @@ df <- df[, c(1, 3)]
 colnames(df) <- c("geneId", "orthologs")
 rownames(df) <- df$geneId
 df$geneId <- NULL
+```
 
-# Now run through and match orthologs ==========================================
+```{r matching}
 hsapiensAll <- list()
 hsapiensId <- vector()
 hsapiensName <- vector()
@@ -48,28 +58,13 @@ for (i in 1:nrow(df)) {
     hsapiensName[i] <- NA
   }
 }
+```
 
-# Final data frame cleanup =====================================================
+```{r save}
 df <- data.frame(cbind(hsapiensId, hsapiensName))
 rownames(df) <- names(hsapiensAll)
-
-load("data-raw/gene_id.rda")
-df <- df[wormbaseGeneIdRows, ]
-rownames(df) <- wormbaseGeneIdRows
-
+source("geneIdRows.R")
 wormbaseOrthologs <- df
-
-rm(df,
-   file,
-   gene,
-   hsapiensAll,
-   hsapiensId,
-   hsapiensName,
-   i,
-   id,
-   j,
-   name,
-   names,
-   split1,
-   split2)
+devtools::use_data(wormbaseOrthologs, overwrite = TRUE)
 warnings()
+```

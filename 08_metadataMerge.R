@@ -17,21 +17,8 @@ names(df) <- gsub("^wormbase\\.(geneId|publicName|orf)", "\\1", names(df))
 # camelCase
 names(df) <- gsub("\\.([[:lower:]])", "\\U\\1", names(df), perl = TRUE)
 
-# Set any blank cells to NA
-metadata <-
-  data.frame(apply(metadata, 2, function(x)
-    gsub("^$|^ $", NA, x)))
 
-# Fix leading and trailing commas
-df <-
-  data.frame(apply(df, 2, function(x)
-    gsub("^(,|\\s//)\\s(.*)", "\\2", x, perl = TRUE)))
-df <-
-  data.frame(apply(df, 2, function(x)
-    gsub("(.*)(,|\\s//)\\s$", "\\1", x, perl = TRUE)))
-
-lapply(df, class)
-names(df)
+#### cleanCells CALL NEEDED HERE
 
 metadata <- df
 rm(df)

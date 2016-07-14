@@ -4,12 +4,16 @@ library(readxl)
 load("data/metadataOrf.rda")
 source("data-raw/getOrfMetadata.R")
 
+# Source the Excel file
+# http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/
+ahringerSource <- tempfile(fileext = ".xlsx")
+download.file("http://www.us.lifesciences.sourcebioscience.com/media/381254/C.%20elegans%20Database%202012.xlsx", ahringerSource)
+
 # Set up the ahringer data frame from the Excel file ============================
 chromosomes <- c("I", "II", "III", "IV", "V", "X")
 for (i in 1:length(chromosomes)) {
   sheet <- i + 1 # First sheet contains notes
-  df <- suppressWarnings(read_excel("data-raw/rnai_libraries/ahringer.xlsx",
-                                      sheet = sheet))
+  df <- suppressWarnings(read_excel(ahringerSource, sheet = sheet))
   colnames(df) <- toCamelCase(colnames(df))
 
   # Drop wells from NA plates
@@ -28,7 +32,6 @@ for (i in 1:length(chromosomes)) {
 rm(df, i)
 list <- list(chrI, chrII, chrIII, chrIV, chrV, chrX)
 xlsx <- data.frame(do.call("rbind", list))
-
 
 # Set up working data frame and rename ORF
 df <- xlsx

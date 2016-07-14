@@ -1,0 +1,61 @@
+---
+title: "WormBase RNAi Phenotypes"
+output: html_document
+---
+
+```{r setup}
+library(plyr)
+library(readr)
+library(stringr)
+source("wormbaseFtp.R")
+```
+
+```{r download}
+library(RCurl)
+dir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/ONTOLOGY/"
+ls <- getURL(dir, dirlistonly = TRUE)
+ls <- strsplit(ls, "\n")
+ls <- ls[[1]]
+grep <- grep("rnai_phenotypes_quick", ls, value = TRUE)
+file <- paste0(dir, grep)
+file
+rnaiPhenotypes <- tempfile(fileext = ".txt")
+download.file(file, rnaiPhenotypes)
+```
+
+```{r load}
+input <- read_delim(rnaiPhenotypes, delim = "\t", col_names = FALSE)
+colnames(input) <- c("geneId", "orf", "unsorted")
+rownames(input) <- input$geneId
+```
+
+```{r sort}
+df <- input
+df <- lapply(seq(along = rownames(df)), function(x) {
+  split <- strsplit(as.character(df[x, "unsorted"]), ", ")
+  vec <- split[[1]]
+  vec <- unique(vec)
+  vec <- sort(vec)
+  paste(vec, collapse = ", ")
+})
+df <- unlist(df)
+names(df) <- rownames(input)
+sorted <- df
+
+# Add the sorted phenotypes back
+df <- cbind(input, sorted)
+source("geneIdRows.R")
+```
+
+```{r save}
+names(df)[names(df) == "sorted"] <- "rnaiPhenotypes"
+
+# Remove unnecessary columns
+df$geneId <- NULL
+df$orf <- NULL
+df$unsorted <- NULL
+
+wormbaseRnaiPhenotypes <- df
+devtools::use_data(wormbaseRnaiPhenotypes, overwrite = TRUE)
+warnings()
+```

@@ -1,11 +1,16 @@
 library(R.utils)
+library(RCurl)
 library(readr)
 library(readxl)
 load("data/metadataOrf.rda")
-source("data-raw/getOrfMetadata.R")
+source("getOrfMetadata.R")
 
 # Set up the ORFeome data frame from the Excel file ============================
-xlsx <- read_excel("data-raw/rnai_libraries/orfeome.xlsx", sheet = 2)
+# http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai/
+orfeomeSource <- tempfile(fileext = ".xlsx")
+download.file("http://worminfo.seq.cloud/rnai/orfeome.xlsx", orfeomeSource)
+xlsx <- read_excel(orfeomeSource, sheet = 2)
+
 # Strip parenthesis from column title
 colnames(xlsx) <- gsub("(\\(|\\))", "", colnames(xlsx))
 colnames(xlsx) <- tolower(colnames(xlsx))
@@ -40,7 +45,6 @@ cloneId[1]
 df <- cbind(cloneId, df)
 rownames(df) <- df$cloneId
 xlsxConverted <- df
-rm(xlsxFiltered)
 
 # Get current metadata =========================================================
 getOrfMetadata(as.vector(xlsxConverted$orfOriginal))
@@ -61,9 +65,10 @@ unmappedOrf <- unmappedOrf[, 1:2]
 df <- subset(df, !is.na(geneId))
 
 # Get the ORF merge mappings
-# This should have the same number of rows as unmappedOrf
-orfMergeInput <- read_excel("data-raw/rnai_libraries/orf_merge.xlsx",
-                   sheet = 1, na = "NA")
+orfMergeSource <- tempfile(fileext = ".xlsx")
+download.file("http://worminfo.seq.cloud/orf_merge.xlsx", orfMergeSource)
+orfMergeInput <- read_excel(orfMergeSource, sheet = 1, na = "NA")
+
 rownames(orfMergeInput) <- orfMergeInput$cloneId
 orfMergeInput <- orfMergeInput[rownames(unmappedOrf), ]
 rownames(orfMergeInput) <- rownames(unmappedOrf)
