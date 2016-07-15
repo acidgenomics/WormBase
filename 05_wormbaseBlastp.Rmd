@@ -38,6 +38,7 @@ blastpScores <- df
 Wormpep IDs are used for BLASTP matching:
 
 ```{r wormpep download}
+library(RCurl)
 dir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/species/c_elegans/PRJNA13758/"
 ls <- getURL(dir, dirlistonly = TRUE)
 ls <- strsplit(ls, "\n")
