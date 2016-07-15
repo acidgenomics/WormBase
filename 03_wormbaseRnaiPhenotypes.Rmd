@@ -7,7 +7,6 @@ output: html_document
 library(plyr)
 library(readr)
 library(stringr)
-source("wormbaseFtp.R")
 ```
 
 ```{r download}
@@ -19,12 +18,12 @@ ls <- ls[[1]]
 grep <- grep("rnai_phenotypes_quick", ls, value = TRUE)
 file <- paste0(dir, grep)
 file
-rnaiPhenotypes <- tempfile(fileext = ".txt")
-download.file(file, rnaiPhenotypes)
+download.file(file, file.path("data-raw", "rnai_phenotypes.tsv"))
 ```
 
 ```{r load}
-input <- read_delim(rnaiPhenotypes, delim = "\t", col_names = FALSE)
+input <- read_tsv(file.path("data-raw", "rnai_phenotypes.tsv"),
+                  col_names = FALSE)
 colnames(input) <- c("geneId", "orf", "unsorted")
 rownames(input) <- input$geneId
 ```
