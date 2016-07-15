@@ -47,20 +47,14 @@ file <- paste0(dir, grep)
 download.file(file, "wormpep.tar.gz")
 
 # Extract wormpep.table specifically -- works on macOS
-system(paste0(
-  "tar -xzf ",
-  file.path("wormpep.tar.gz"),
-  " ",
-  "wormpep.table*"
-))
-file.remove("wormpep.tar.gz")
+system("tar -xzf wormpep.tar.gz wormpep.table*")
 file <- list.files(pattern = "wormpep.table")
-file.rename(file, "wormpep.txt")
+file.rename(file, file.path("data-raw", "wormpep.txt"))
+file.remove("wormpep.tar.gz")
 ```
 
 ```{r mapping}
-input <- read_lines("wormpep.txt")
-file.remove("wormpep.txt")
+input <- read_lines(file.path("data-raw", "wormpep.txt"))
 input <- strsplit(input, "\n")
 wormpep <- lapply(input, function(x) {
   x <- gsub("^.*\t(CE[0-9]+\tWBGene[0-9]+).*$", "\\1", x, perl = T)

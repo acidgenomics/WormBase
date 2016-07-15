@@ -1,5 +1,7 @@
 library(seqcloudR)
 wormbaseFile <- function(file) {
+  assignName <- camel(file)
+
   annotation <-
     "ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/"
   version <- "canonical_bioproject.current"
@@ -11,9 +13,13 @@ wormbaseFile <- function(file) {
   }
   fileUrl <- paste0(annotation, file, "/c_elegans.", version, ".", fileName)
 
-  wormbaseDownload <- tempfile(fileext = ".txt.gz")
-  download.file(fileUrl, wormbaseDownload)
+  # data-raw method:
+  filePath <- file.path("data-raw", fileName)
+  download.file(fileUrl, filePath)
+  assign(assignName, filePath, envir = .GlobalEnv)
 
-  assignName <- camel(file)
-  assign(assignName, wormbaseDownload, envir = .GlobalEnv)
+  # tempfile method:
+  #! temp <- tempfile(fileext = ".txt.gz")
+  #! download.file(fileUrl, temp)
+  #! assign(assignName, temp, envir = .GlobalEnv)
 }
