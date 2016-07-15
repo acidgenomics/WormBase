@@ -14,3 +14,4 @@ biocLite("biomaRt")
 biocLite("RCurl")
 
 devtools::install_github("seqcloud/seqcloudR")
+devtools::use_data_raw()

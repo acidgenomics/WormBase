@@ -17,7 +17,7 @@ df <- df[, c(2, 4, 3, 5)]
 
 colnames(df) <- c("geneId", "orf", "publicName", "status")
 rownames(df) <- df$geneId
-geneId <- df
+geneIds <- df
 ```
 
 ```{r geneOtherIds}
@@ -39,13 +39,13 @@ df <- suppressWarnings(read_tsv(file, col_names = FALSE))
 
 rownames(df) <- df[, 1]
 colnames(df) <- c("geneId", "geneOtherIds")
-df <- df[rownames(geneId), ]
+df <- df[rownames(geneIds), ]
 df$geneId <- NULL
 geneOtherIds <- df
 ```
 
 ``` {r save}
-wormbaseGeneId <- cbind(geneId, geneOtherIds)
+wormbaseGeneId <- cbind(geneIds, geneOtherIds)
 devtools::use_data(wormbaseGeneId, overwrite = TRUE)
 warnings()
 ```
