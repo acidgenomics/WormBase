@@ -4,7 +4,9 @@ Title: C. elegans metadata
 Version: 0.3
 Author: Michael Steinbaugh
 Maintainer: Michael Steinbaugh <mike@seq.cloud>
-Description: C. elegans genome and RNAi library metadata. Gene annotations dynamically assembled from WormBase, Ensembl, and PANTHER. RNAi library annotation support for ORFeome and Ahringer feeding RNAi libraries.
+Description: C. elegans genome and RNAi library metadata. Gene annotations
+dynamically assembled from WormBase, Ensembl, and PANTHER. RNAi library
+annotation support for ORFeome and Ahringer feeding RNAi libraries.
 License: MIT + file LICENSE
 LazyData: true
 URL: https://github.com/seqcloud/worminfo
