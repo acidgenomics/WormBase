@@ -9,20 +9,15 @@ library(plyr)
 library(seqcloudR)
 ```
 
-# Functions
-
-## Reformat Biomart output to match all WormBase GeneIDs
-
-```{r bm2wb}
-bm2wb <- function(df, name) {
+```{r functions}
+bm2wb <- function(df) {
   colnames(df) <- camel(colnames(df))
   rownames(df) <- df$ensemblGeneId
   source("geneIdRows.R", local = TRUE)
   df$ensemblGeneId <- NULL
-  assign(name, df, envir = .GlobalEnv)
+  return(df)
 }
 ```
-
 
 
 # Connect to Biomart
@@ -39,7 +34,6 @@ mart <- useMart("ensembl", "celegans_gene_ensembl")
 ```
 
 
-
 # Simple gene length info
 
 ```{r basic}
@@ -51,9 +45,8 @@ df <- getBM(mart = mart,
                            "end_position",
                            "strand",
                            "description"))
-bm2wb(df, "basic")
+basic <- bm2wb(df)
 ```
-
 
 
 # Entrez identifiers
@@ -64,9 +57,8 @@ df <- getBM(mart = mart,
                            "entrezgene"))
 df <- ddply(df, .(ensembl_gene_id), summarize,
             entrezgene = paste(sort(unique(entrezgene)), collapse = ", "))
-bm2wb(df, "entrezGeneId")
+entrezGeneId <- bm2wb(df)
 ```
-
 
 
 # Refseq identifiers
@@ -79,9 +71,8 @@ df <- getBM(mart = mart,
 df <- ddply(df, .(ensembl_gene_id), summarize,
             refseq_mrna = paste(sort(unique(refseq_mrna)), collapse = ", "),
             refseq_ncrna = paste(sort(unique(refseq_ncrna)), collapse = ", "))
-bm2wb(df, "refseq")
+refseq <- bm2wb(df)
 ```
-
 
 
 # UniProt identifiers
@@ -94,9 +85,8 @@ df <- getBM(mart = mart,
 df <- ddply(df, .(ensembl_gene_id), summarize,
             uniprot_sptrembl = paste(sort(unique(uniprot_sptrembl)), collapse = ", "),
             uniprot_swissprot = paste(sort(unique(uniprot_swissprot)), collapse = ", "))
-bm2wb(df, "uniprot")
+uniprot <- bm2wb(df)
 ```
-
 
 
 # Homology
@@ -107,9 +97,8 @@ df <- getBM(mart = mart,
                            "hsapiens_homolog_ensembl_gene"))
 df <- ddply(df, .(ensembl_gene_id), summarize,
             hsapiens_homolog_ensembl_gene = paste(sort(unique(hsapiens_homolog_ensembl_gene)), collapse = ", "))
-bm2wb(df, "homology")
+homology <- bm2wb(df)
 ```
-
 
 
 # Gene Ontology
@@ -121,8 +110,8 @@ df <- getBM(mart = mart,
                            "name_1006"))
 df <- ddply(df, .(ensembl_gene_id), summarize,
             go_id = paste(sort(unique(go_id)),collapse = ", "),
-            name_1006 = paste(sort(unique(name_1006)), collapse = " // "))
-bm2wb(df, "geneOntology")
+            name_1006 = paste(sort(unique(name_1006)), collapse = ", "))
+geneOntology <- bm2wb(df)
 ```
 
 
@@ -137,11 +126,10 @@ df <- getBM(mart = mart,
                            "interpro_description"))
 df <- ddply(df, .(ensembl_gene_id), summarize,
             interpro = paste(sort(unique(interpro)),collapse = ", "),
-            interpro_short_description = paste(sort(unique(interpro_short_description)), collapse = " // "),
-            interpro_description = paste(sort(unique(interpro_description)), collapse = " // "))
-bm2wb(df, "interpro")
+            interpro_short_description = paste(sort(unique(interpro_short_description)), collapse = ", "),
+            interpro_description = paste(sort(unique(interpro_description)), collapse = ", "))
+interpro <- bm2wb(df)
 ```
-
 
 
 # Merge and save

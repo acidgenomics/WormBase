@@ -1,3 +1,5 @@
+library(seqcloudR)
+
 datasets <- c("wormbaseGeneId",
               "wormbaseDescription",
               "wormbaseRnaiPhenotypes",
@@ -5,23 +7,22 @@ datasets <- c("wormbaseGeneId",
               "wormbaseBlastp",
               "ensembl",
               "panther")
+dataFiles <- paste0("data/", datasets, ".rda")
+lapply(dataFiles, load, .GlobalEnv)
 df <- do.call(cbind, mget(datasets))
-names(df)
 
-# Add wormbase prefix
-names(df)[names(df) == "rnaiPhenotypes"] <- "wormbaseRnaiPhenotypes"
 # Modify wormbase prefix
 names(df) <- gsub("^wormbase(Description|GeneId)", "wormbase", names(df))
+
 # Take out prefix for commonly used identifiers
 names(df) <- gsub("^wormbase\\.(geneId|publicName|orf)", "\\1", names(df))
+
 # camelCase
-names(df) <- gsub("\\.([[:lower:]])", "\\U\\1", names(df), perl = TRUE)
+names(df) <- camel(names(df))
 
-
-#### cleanCells CALL NEEDED HERE
-
+# Clean cruft from cells
+df <- cleanCells(df)
 metadata <- df
-rm(df)
 
 metadataSimple <- metadata[, c("geneId",
                                "orf",
