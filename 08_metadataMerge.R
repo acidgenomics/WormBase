@@ -20,6 +20,13 @@ names(df) <- gsub("^wormbase\\.(geneId|publicName|orf)", "\\1", names(df))
 # camelCase
 names(df) <- camel(names(df))
 
+# Fix any column name issues
+names(df)[names(df) == "ensemblGoId"] <- "ensemblGeneOntologyId"
+names(df)[names(df) == "ensemblInterpro"] <- "ensemblInterproId"
+names(df)[names(df) == "ensemblName1006"] <- "ensemblGeneOntologyName"
+names(df)[names(df) == "ensemblEntrezgene"] <- "ensemblEntrezGeneId"
+names(df)[names(df) == "rnaiPhenotypes"] <- "wormbaseRnaiPhenotypes"
+
 # Clean cruft from cells
 df <- cleanCells(df)
 metadata <- df

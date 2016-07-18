@@ -38,7 +38,7 @@
   \item{\code{ensemblUniprotSwissprot}}{a character vector}
   \item{\code{ensemblGeneOntologyId}}{a character vector}
   \item{\code{ensemblGeneOntologyName}}{a character vector}
-  \item{\code{ensemblInterpro}}{a character vector}
+  \item{\code{ensemblInterproId}}{a character vector}
   \item{\code{ensemblInterproShortDescription}}{a character vector}
   \item{\code{ensemblInterproDescription}}{a character vector}
   \item{\code{pantherUniprotKb}}{a character vector}
