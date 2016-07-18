@@ -10,7 +10,7 @@ library(stringr)
 ```
 
 
-# Download the data
+## Download the data
 
 ```{r download}
 library(RCurl)
@@ -24,7 +24,7 @@ download.file(file, file.path("data-raw", "panther.txt"))
 ```
 
 
-# Load and set column names
+## Load and set column names
 
 ```{r input}
 df <- read_delim(file.path("data-raw", "panther.txt"),
@@ -47,9 +47,9 @@ id <- gsub("CAEEL\\|", "", id)
 ```
 
 
-# Fix incorrect ID mappings in PANTHER
+## Fix incorrect ID mappings in PANTHER
 
-## ORF
+### ORF
 
 ```{r orf2geneId}
 id <- gsub("Gene=B0303.5\\|",
@@ -192,7 +192,7 @@ id <- gsub("Gene=Y62E10A.11\\|",
            "WormBase=WBGene00014938\\|", id)
 ```
 
-## Entrez
+### Entrez
 
 ```{r entrez2geneId}
 id <- gsub("GeneID=13182953\\|",
@@ -222,7 +222,7 @@ id <- gsub("GeneID=2565705\\|",
 ```
 
 
-# Fix the ID mapping and clean up
+## Fix the ID mapping and clean up
 
 ```{r cleanup}
 id <- data.frame(str_split_fixed(id, "\\|", 2))
@@ -242,7 +242,7 @@ df <- data.frame(apply(df, c(1, 2), function(x) gsub(";", " // ", x)))
 ```
 
 
-# Save the results
+## Save the results
 
 ```{r save}
 source("geneIdRows.R")
