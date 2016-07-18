@@ -21,3 +21,6 @@ vignettes/*.pdf
 
 # data-raw downloads
 data-raw/
+
+# knit HTML files
+*.html

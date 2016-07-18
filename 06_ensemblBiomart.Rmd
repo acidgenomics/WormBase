@@ -20,7 +20,7 @@ bm2wb <- function(df) {
 ```
 
 
-# Connect to Biomart
+## Connect to Biomart
 
 * `entrezgene` = Entrez identifier
 * `external_gene_name` = Ensembl public name
@@ -34,7 +34,7 @@ mart <- useMart("ensembl", "celegans_gene_ensembl")
 ```
 
 
-# Simple gene length info
+## Simple gene length info
 
 ```{r basic}
 df <- getBM(mart = mart,
@@ -49,7 +49,7 @@ basic <- bm2wb(df)
 ```
 
 
-# Entrez identifiers
+## Entrez identifiers
 
 ```{r entrez}
 df <- getBM(mart = mart,
@@ -61,7 +61,7 @@ entrezGeneId <- bm2wb(df)
 ```
 
 
-# Refseq identifiers
+## Refseq identifiers
 
 ```{r refseq}
 df <- getBM(mart = mart,
@@ -75,7 +75,7 @@ refseq <- bm2wb(df)
 ```
 
 
-# UniProt identifiers
+## UniProt identifiers
 
 ```{r uniprot}
 df <- getBM(mart = mart,
@@ -89,7 +89,7 @@ uniprot <- bm2wb(df)
 ```
 
 
-# Homology
+## Homology
 
 ```{r homology}
 df <- getBM(mart = mart,
@@ -101,7 +101,7 @@ homology <- bm2wb(df)
 ```
 
 
-# Gene Ontology
+## Gene Ontology
 
 ```{r ontology}
 df <- getBM(mart = mart,
@@ -116,7 +116,7 @@ geneOntology <- bm2wb(df)
 
 
 
-# Interpro
+## Interpro
 
 ```{r interpro}
 df <- getBM(mart = mart,
@@ -132,7 +132,7 @@ interpro <- bm2wb(df)
 ```
 
 
-# Merge and save
+## Merge and save
 
 ```{r save}
 df <- cbind(basic,

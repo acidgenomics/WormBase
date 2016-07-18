@@ -1,3 +1,4 @@
+```{r}
 library(R.utils)
 library(readr)
 library(readxl)
@@ -85,3 +86,4 @@ ahringer <- df
 devtools::use_data(ahringer, overwrite = TRUE)
 
 warnings()
+```

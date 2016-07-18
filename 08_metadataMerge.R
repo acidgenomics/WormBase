@@ -56,4 +56,8 @@ devtools::use_data(metadata,
                    metadataReport,
                    metadataSimple,
                    overwrite = TRUE)
-warnings()
+
+# Move source .rda files to data-raw
+dataFilesRename <- gsub("data/", "data-raw/", dataFiles)
+dataFilesRename
+file.rename(dataFiles, dataFilesRename)
