@@ -1,37 +1,49 @@
-library(R.utils)
+---
+title: "ORFeome RNAi library"
+output: html_document
+---
+
+```{r setup}
 library(RCurl)
 library(readr)
 library(readxl)
+library(seqcloudR)
 load("data/metadataOrf.rda")
 source("getOrfMetadata.R")
+```
 
-# Set up the ORFeome data frame from the Excel file ============================
-# http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai/
-orfeomeSource <- tempfile(fileext = ".xlsx")
-download.file("http://worminfo.seq.cloud/rnai/orfeome.xlsx", orfeomeSource)
-xlsx <- read_excel(orfeomeSource, sheet = 2)
+## Download and setup Excel file
 
-# Strip parenthesis from column title
-colnames(xlsx) <- gsub("(\\(|\\))", "", colnames(xlsx))
-colnames(xlsx) <- tolower(colnames(xlsx))
-colnames(xlsx) <- toCamelCase(colnames(xlsx))
+### Download
 
+Use the metadata from [GE Dharmacon](http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai/):
+
+```{r download}
+download.file("http://dharmacon.gelifesciences.com/uploadedFiles/Resources/cernai-feeding-library.xlsx",
+              "data-raw/orfeome.xlsx")
+xlsx <- read_excel("data-raw/orfeome.xlsx", sheet = 2)
+colnames(xlsx) <- camel(colnames(xlsx))
+```
+
+### Filter
+
+```{r filter}
 # Select the desired columns and rename
-df <- data.frame()
-df <- xlsx[, c("orfIdWs112",
-               "plate",
-               "row",
-               "col",
-               "rnaiWell")]
+df <- xlsx
 names(df)[names(df) == "orfIdWs112"] <- "orfOriginal"
+df <- df[, c("orfOriginal", "plate", "row", "col")]
 
 # Subset the bad wells
-df <- subset(df, !is.na(rnaiWell))
+df <- subset(df, !is.na(orfOriginal))
 df <- subset(df, orfOriginal != "no match in WS112")
-rownames(df) <- df$rnaiWell
 xlsxFiltered <- df
+```
 
-# Set plate IDs as rownames ====================================================
+### cloneId
+
+Set plate IDs as rownames:
+
+```{r cloneId}
 df <- xlsxFiltered
 col <- c("plate", "row", "col")
 cloneId <- do.call(paste, c(df[col], sep = "-"))
@@ -45,9 +57,12 @@ cloneId[1]
 df <- cbind(cloneId, df)
 rownames(df) <- df$cloneId
 xlsxConverted <- df
+```
 
-# Get current metadata =========================================================
-getOrfMetadata(as.vector(xlsxConverted$orfOriginal))
+## Update metadata
+
+```{r metadata}
+orf2GeneId <- getOrfMetadata(as.vector(xlsxConverted$orfOriginal))
 
 # Bind the matches back to the orfeomeValid data frame
 df <- xlsxConverted[, c("cloneId", "orfOriginal")]
@@ -65,19 +80,17 @@ unmappedOrf <- unmappedOrf[, 1:2]
 df <- subset(df, !is.na(geneId))
 
 # Get the ORF merge mappings
-orfMergeSource <- tempfile(fileext = ".xlsx")
-download.file("http://worminfo.seq.cloud/orf_merge.xlsx", orfMergeSource)
-orfMergeInput <- read_excel(orfMergeSource, sheet = 1, na = "NA")
+orfMergeInput <- read_excel("orfMerge.xlsx", sheet = 1, na = "NA")
 
 rownames(orfMergeInput) <- orfMergeInput$cloneId
 orfMergeInput <- orfMergeInput[rownames(unmappedOrf), ]
 rownames(orfMergeInput) <- rownames(unmappedOrf)
 
 # Get the metadata of these merged ORFs
-getOrfMetadata(as.vector(orfMergeInput$mergedOrf))
+orf2GeneIdMerge <- getOrfMetadata(as.vector(orfMergeInput$mergedOrf))
 
 # Bind back to main data frame
-orfMerge <- cbind(unmappedOrf, orf2GeneId)
+orfMerge <- cbind(unmappedOrf, orf2GeneIdMerge)
 df <- rbind(df, orfMerge)
 df <- df[rownames(xlsxConverted), ]
 
@@ -89,8 +102,10 @@ df <- df[, unique(colnames(df))]
 # Additional information for library troubleshooting
 debugNoGeneId <- df[is.na(df$geneId), ]
 debugUnique <- unique(as.vector(df$orf))
+```
 
+```{r save}
 orfeome <- df
 devtools::use_data(orfeome, overwrite = TRUE)
-
 warnings()
+```
