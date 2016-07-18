@@ -42,7 +42,7 @@
 #'   \item{\code{ensemblUniprotSwissprot}}{a character vector}
 #'   \item{\code{ensemblGeneOntologyId}}{a character vector}
 #'   \item{\code{ensemblGeneOntologyName}}{a character vector}
-#'   \item{\code{ensemblInterpro}}{a character vector}
+#'   \item{\code{ensemblInterproId}}{a character vector}
 #'   \item{\code{ensemblInterproShortDescription}}{a character vector}
 #'   \item{\code{ensemblInterproDescription}}{a character vector}
 #'   \item{\code{pantherUniprotKb}}{a character vector}
@@ -117,14 +117,13 @@
 #' C .elegans RNAi Collection (\url{http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai}),
 #' WORFDB (\url{http://worfdb.dfci.harvard.edu})
 #'
-#' @format A data frame with 10 variables:
+#' @format A data frame with 9 variables:
 #'   \describe{
 #'   \item{\code{cloneId}}{a character vector}
 #'   \item{\code{orfOriginal}}{a character vector}
 #'   \item{\code{plate}}{a character vector}
 #'   \item{\code{row}}{a character vector}
 #'   \item{\code{col}}{a character vector}
-#'   \item{\code{rnaiWell}}{a character vector}
 #'   \item{\code{geneId}}{a character vector}
 #'   \item{\code{orf}}{a character vector}
 #'   \item{\code{publicName}}{a character vector}
