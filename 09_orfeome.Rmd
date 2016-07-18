@@ -80,7 +80,8 @@ unmappedOrf <- unmappedOrf[, 1:2]
 df <- subset(df, !is.na(geneId))
 
 # Get the ORF merge mappings
-orfMergeInput <- read_excel("orfMerge.xlsx", sheet = 1, na = "NA")
+orfMergeInput <- read_excel("http://worminfo.seq.cloud/orfMerge.xlsx",
+                            sheet = 1, na = "NA")
 
 rownames(orfMergeInput) <- orfMergeInput$cloneId
 orfMergeInput <- orfMergeInput[rownames(unmappedOrf), ]
