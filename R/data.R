@@ -133,6 +133,8 @@
 
 
 #' Ahringer RNAi library annotations
+#'
+#' @details
 #' The Caenorhabditis elegans RNAi feeding library was constructed by Julie
 #' Ahringer's group at The Wellcome CRC Institute, University of Cambridge,
 #' Cambridge, UK and is distributed by Source BioScience. It is designed for

@@ -3,13 +3,7 @@
 \docType{data}
 \name{ahringer}
 \alias{ahringer}
-\title{Ahringer RNAi library annotations
-The Caenorhabditis elegans RNAi feeding library was constructed by Julie
-Ahringer's group at The Wellcome CRC Institute, University of Cambridge,
-Cambridge, UK and is distributed by Source BioScience. It is designed for
-genome wide study of gene function in C. elegans through loss of function
-studies. It can be used both for rapid large scale RNAi experiments and for
-the study of individual genes.}
+\title{Ahringer RNAi library annotations}
 \format{A data frame with 13 variables:
   \describe{
   \item{\code{cloneId}}{a character vector}
@@ -34,6 +28,8 @@ ahringer
 }
 \description{
 Ahringer RNAi library annotations
+}
+\details{
 The Caenorhabditis elegans RNAi feeding library was constructed by Julie
 Ahringer's group at The Wellcome CRC Institute, University of Cambridge,
 Cambridge, UK and is distributed by Source BioScience. It is designed for
