@@ -2,6 +2,7 @@
 
 language: R
 r: bioc-release
-r_github_packages: seqcloud/seqcloudR
 sudo: false
 cache: packages
+bioc_packages: RDAVIDWebService
+r_github_packages: seqcloud/seqcloudR
