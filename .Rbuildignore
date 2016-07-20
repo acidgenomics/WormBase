@@ -1,5 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.travis\.yml$
+^data$
 ^data-raw$
-^.*\.(html|R|Rmd)$
+^\w+\.(html|R|Rmd)$
