@@ -1,5 +1,6 @@
 # worminfo
-*C. elegans* genome and RNAi library metadata. Gene annotations dynamically assembled from WormBase, Ensembl, and PANTHER. RNAi library annotation support for ORFeome and Ahringer feeding RNAi libraries.
+
+*C. elegans* genome and RNAi library annotations. Metadata dynamically assembled from WormBase, Ensembl, and PANTHER. Support for ORFeome and Ahringer feeding RNAi libraries.
 
 [![Build Status](https://travis-ci.org/seqcloud/worminfo.svg?branch=master)](https://travis-ci.org/seqcloud/worminfo)
 
