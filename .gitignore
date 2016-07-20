@@ -19,7 +19,8 @@ vignettes/*.pdf
 .httr-oauth
 .Rproj.user
 
-# data-raw downloads
+# Data folders
+data/
 data-raw/
 
 # knit HTML files
