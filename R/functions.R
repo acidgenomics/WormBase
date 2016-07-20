@@ -18,22 +18,6 @@ colNamesReport <-
   )
 
 
-#' Bind metadata to data.frame
-#'
-#' @param df data.frame with identifier column
-#' @param id Identifier type (geneID, orf, publicName)
-#' @param type Output type (report, simple)
-#'
-#' @return data.frame cbind with metadata
-#' @export
-bindMetadata <- function(df, id = "geneId", type = "simple") {
-  vec <- df[, id]
-  df <- cbind(df, metadata(vec, id = id, type = type))
-  df <- df[, unique(names(df))]
-  return(df)
-}
-
-
 #' Match Ensembl/biomaRt output with WormBase Gene IDs
 #'
 #' @param df data.frame output from biomaRt
@@ -85,15 +69,15 @@ metadata <- function(rowNames = NULL, id = "geneId", type = "simple") {
       # Strip isoforms from ORF
       rowNames <- gsub("\\.[a-z]{1}$", "", rowNames)
     }
-    df <- subset(df, !is.na(orf))
-    df <- subset(df, !duplicated(orf))
+    df <- subset(df, !is.na(df$orf))
+    df <- subset(df, !duplicated(df$orf))
     rownames(df) <- df$orf
   }
 
   # publicName matching
   if (id == "publicName") {
-    df <- subset(df, !is.na(publicName))
-    df <- subset(df, !duplicated(publicName))
+    df <- subset(df, !is.na(df$publicName))
+    df <- subset(df, !duplicated(df$publicName))
     rownames(df) <- df$publicName
   }
 
@@ -102,6 +86,22 @@ metadata <- function(rowNames = NULL, id = "geneId", type = "simple") {
     df <- df[rowNames, ]
   }
 
+  return(df)
+}
+
+
+#' Bind metadata to data.frame
+#'
+#' @param df data.frame with identifier column
+#' @param id Identifier type (geneID, orf, publicName)
+#' @param type Output type (report, simple)
+#'
+#' @return data.frame cbind with metadata
+#' @export
+metadataBind <- function(df, id = "geneId", type = "simple") {
+  vec <- df[, id]
+  df <- cbind(df, metadata(vec, id = id, type = type))
+  df <- df[, unique(names(df))]
   return(df)
 }
 
@@ -130,7 +130,7 @@ rnai <- function(cloneId = NULL,
     df <- df[rowNames, ]
   }
 
-  df <- bindMetadata(df, id = "orf", type = type)
+  df <- metadataBind(df, id = "orf", type = type)
 
   # Subset columns
   if (type == "report") {
@@ -167,12 +167,12 @@ wormbaseFile <- function(file) {
   filePath <- file.path("data-raw", fileName)
 
   if (!file.exists(filePath)) {
-    download.file(fileUrl, filePath)
+    utils::download.file(fileUrl, filePath)
   }
 
   # tempfile method:
   #! temp <- tempfile(fileext = ".txt.gz")
-  #! download.file(fileUrl, temp)
+  #! utils::download.file(fileUrl, temp)
 
   return(filePath)
 }
