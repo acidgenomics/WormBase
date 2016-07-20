@@ -7,10 +7,10 @@
 geneIdRows(df)
 }
 \arguments{
-\item{df}{}
+\item{df}{data.frame without all WormBase identifiers}
 }
 \value{
-data.frame with all WormBase Gene IDs
+data.frame with all WormBase identifiers
 }
 \description{
 Set number of rows to Wormbase Gene IDs

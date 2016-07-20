@@ -1,10 +1,45 @@
-#' Match biomaRt output with WormBase Gene IDs
+colNamesSimple <-
+  c("geneId",
+    "orf",
+    "publicName"
+    )
+
+colNamesReport <-
+  c(colNamesSimple,
+    "wormbaseGeneOtherIds",
+    "wormbaseGeneClassDescription",
+    "wormbaseConciseDescription",
+    "wormbaseBlastpEnsemblGeneName",
+    "wormbaseBlastpEnsemblDescription",
+    "wormbaseStatus",
+    "ensemblGeneBiotype",
+    "pantherFamilyName",
+    "pantherSubfamilyName"
+  )
+
+
+#' Bind metadata to data.frame
 #'
-#' @param df
+#' @param df data.frame with identifier column
+#' @param id Identifier type (geneID, orf, publicName)
+#' @param type Output type (report, simple)
+#'
+#' @return data.frame cbind with metadata
+#' @export
+bindMetadata <- function(df, id = "geneId", type = "simple") {
+  vec <- df[, id]
+  df <- cbind(df, metadata(vec, id = id, type = type))
+  df <- df[, unique(names(df))]
+  return(df)
+}
+
+
+#' Match Ensembl/biomaRt output with WormBase Gene IDs
+#'
+#' @param df data.frame output from biomaRt
 #'
 #' @return data.frame with all WormBase Gene IDs
-#' @export
-bm2wb <- function(df) {
+ensembl2wormbase <- function(df) {
   colnames(df) <- seqcloudR::camel(colnames(df))
   rownames(df) <- df$ensemblGeneId
   df <- geneIdRows(df)
@@ -14,10 +49,9 @@ bm2wb <- function(df) {
 
 #' Set number of rows to Wormbase Gene IDs
 #'
-#' @param df
+#' @param df data.frame without all WormBase identifiers
 #'
-#' @return data.frame with all WormBase Gene IDs
-#' @export
+#' @return data.frame with all WormBase identifiers
 geneIdRows <- function(df) {
   vec <- geneIds
   df <- df[vec, ]
@@ -26,35 +60,87 @@ geneIdRows <- function(df) {
 }
 
 
-#' ORF metadata matching
+#' Annotation metadata
 #'
-#' @param orf ORF character vector
+#' @param rowNames Identifier vector
+#' @param id Identifier type (geneID, orf, publicName)
+#' @param type Output type (report, simple)
 #'
-#' @return data.frame
+#' @return metadata data.frame
 #' @export
-getOrfMetadata <- function(orf) {
-  # Since there are duplicate ORFs per well, loop from metadataOrf
-  list <- list()
-  list <- lapply(seq(along = orf), function(i) {
-    # Strip out isoform (included in some Ahringer clones)
-    orfSearch <- gsub("\\.[a-z]{1}$", "", orf[i])
-    metadataOrf[orfSearch, ]
-  })
-  # Converting to a data frame here will take a while
-  df <- data.frame(do.call("rbind", list))
+metadata <- function(rowNames = NULL, id = "geneId", type = "simple") {
+  df <- metadataMaster
+  rownames(df) <- df$geneId
+
+  # Subset columns
+  if (type == "report") {
+    df <- df[, colNamesReport]
+  } else {
+    df <- df[, colNamesSimple]
+  }
+
+  # orf matching
+  if (id == "orf") {
+    if (!is.null(rowNames)) {
+      # Strip isoforms from ORF
+      rowNames <- gsub("\\.[a-z]{1}$", "", rowNames)
+    }
+    df <- subset(df, !is.na(orf))
+    df <- subset(df, !duplicated(orf))
+    rownames(df) <- df$orf
+  }
+
+  # publicName matching
+  if (id == "publicName") {
+    df <- subset(df, !is.na(publicName))
+    df <- subset(df, !duplicated(publicName))
+    rownames(df) <- df$publicName
+  }
+
+  # Subset rows
+  if (!is.null(rowNames)) {
+    df <- df[rowNames, ]
+  }
+
   return(df)
 }
 
 
-#' Bind ORF metadata to data.frame
+#' Feeding RNAi Library clone matching
 #'
-#' @param df data.frame with `orf` column
+#' @param cloneId Clone identifier
+#' @param lib Feeding library (orfeome, ahringer)
+#' @param type Output type (simple, report)
 #'
-#' @return data.frame with metadataOrf information
+#' @return data.frame with metadata
 #' @export
-bindOrfMetadata <- function(df) {
-  df <- cbind(df, getOrfMetadata(df$orf))
-  df <- df[, unique(names(df))]
+rnai <- function(cloneId = NULL,
+                 lib = "orfeome",
+                 type = "simple") {
+  if (lib == "ahringer") {
+    df <- ahringerMaster
+  } else {
+    df <- orfeomeMaster
+  }
+  rownames(df) <- df$cloneId
+
+  # Subset rows
+  rowNames <- cloneId
+  if (!is.null(rowNames)) {
+    df <- df[rowNames, ]
+  }
+
+  df <- bindMetadata(df, id = "orf", type = type)
+
+  # Subset columns
+  if (type == "report") {
+    colNamesReport <- c("cloneId", colNamesReport)
+    df <- df[, colNamesReport]
+  } else {
+    colNamesSimple <- c("cloneId", colNamesSimple)
+    df <- df[, colNamesSimple]
+  }
+
   return(df)
 }
 
@@ -84,9 +170,9 @@ wormbaseFile <- function(file) {
     download.file(fileUrl, filePath)
   }
 
-  return(filePath)
-
   # tempfile method:
   #! temp <- tempfile(fileext = ".txt.gz")
   #! download.file(fileUrl, temp)
+
+  return(filePath)
 }
