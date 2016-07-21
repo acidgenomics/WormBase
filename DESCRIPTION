@@ -1,6 +1,6 @@
 Package: worminfo
 Type: Package
-Title: C. elegans annotation data
+Title: C. elegans genome and RNAi library annotations
 Version: 0.4
 Author: Michael Steinbaugh
 Maintainer: Michael Steinbaugh <mike@seq.cloud>
