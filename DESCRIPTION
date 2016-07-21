@@ -11,5 +11,5 @@ URL: https://github.com/seqcloud/worminfo
 Depends:
   R (>= 3.1.0)
 Imports:
-  seqcloudR
+  seqcloudr
 RoxygenNote: 5.0.1
