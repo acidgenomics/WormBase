@@ -23,7 +23,7 @@ if (!file.exists(orfeome$rawData)) {
                 orfeome$rawData)
 }
 df <- readxl::read_excel(orfeome$rawData, sheet = 2)
-colnames(df) <- seqcloudR::camel(colnames(df))
+colnames(df) <- seqcloudr::camel(colnames(df))
 
 # Select the desired columns, rename, then subset the bad wells:
 names(df)[names(df) == "orfIdWs112"] <- "orf"
@@ -72,7 +72,7 @@ for (i in 1:length(chromosomes)) {
   df <- suppressWarnings(
     readxl::read_excel(ahringer$rawData, sheet = sheet)
     )
-  colnames(df) <- seqcloudR::camel(colnames(df))
+  colnames(df) <- seqcloudr::camel(colnames(df))
 
   # Drop wells from NA plates
   df <- subset(df, !is.na(plate))
