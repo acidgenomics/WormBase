@@ -24,7 +24,7 @@ colNamesReport <-
 #'
 #' @return data.frame with all WormBase Gene IDs
 ensembl2wormbase <- function(df) {
-  colnames(df) <- seqcloudR::camel(colnames(df))
+  colnames(df) <- seqcloudr::camel(colnames(df))
   rownames(df) <- df$ensemblGeneId
   df <- geneIdRows(df)
   return(df)

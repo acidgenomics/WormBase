@@ -80,7 +80,7 @@ colnames(df) <- header[[1]]
 rm(header)
 
 # Convert colnames to camel
-colnames(df) <- seqcloudR::camel(colnames(df))
+colnames(df) <- seqcloudr::camel(colnames(df))
 names(df)[names(df) == "molecularName"] <- "orf"
 
 # Make sure there's a valid identifier
@@ -283,7 +283,7 @@ df <- biomaRt::getBM(mart = mart,
                            "ensembl_gene_id",
                            "external_gene_name",
                            "description"))
-colnames(df) <- seqcloudR::camel(colnames(df))
+colnames(df) <- seqcloudr::camel(colnames(df))
 colnames(df)[colnames(df) == "externalGeneName"] <- "ensemblGeneName"
 colnames(df)[colnames(df) == "description"] <- "ensemblDescription"
 rownames(df) <- df$ensemblPeptideId
@@ -414,7 +414,7 @@ df <- cbind(basic,
             geneOntology,
             interpro)
 df <- df[, !duplicated(colnames(df))]
-ensembl <- seqcloudR::cleanCells(df)
+ensembl <- seqcloudr::cleanCells(df)
 devtools::use_data(ensembl, overwrite = TRUE)
 ```
 
@@ -697,7 +697,7 @@ df$ensembl.ensemblGeneId <- NULL
 names(df) <- gsub("^wormbaseDescription", "wormbase", names(df))
 
 # camelCase
-names(df) <- seqcloudR::camel(names(df))
+names(df) <- seqcloudr::camel(names(df))
 
 # Fix any column name issues
 names(df)[names(df) == "ensemblEntrezgene"] <- "ensemblEntrezGeneId"
