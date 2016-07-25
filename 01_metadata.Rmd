@@ -7,8 +7,11 @@ output: html_document
 source("R/functions.R")
 ```
 
+WormBase
+========
 
-# WormBase Gene Identifiers
+WormBase Gene Identifiers
+-------------------------
 
 ```{r geneIds}
 geneIds <- wormbaseFile("geneIDs")
@@ -58,7 +61,8 @@ devtools::use_data(geneIds, wormbaseGeneId, overwrite = TRUE)
 ```
 
 
-# WormBase Functional Descriptions
+WormBase Functional Descriptions
+--------------------------------
 
 ```{r wormbaseDescription}
 descriptions <- wormbaseFile("functional_descriptions")
@@ -92,7 +96,8 @@ devtools::use_data(wormbaseDescription, overwrite = TRUE)
 ```
 
 
-# WormBase RNAi Phenotypes
+WormBase RNAi Phenotypes
+------------------------
 
 ```{r rnai pheno input}
 if (!file.exists("data-raw/rnai_phenotypes.tsv")) {
@@ -136,7 +141,8 @@ devtools::use_data(wormbaseRnaiPhenotypes, overwrite = TRUE)
 ```
 
 
-# WormBase Orthologs
+WormBase Orthologs
+------------------
 
 ```{r orthologs import}
 orthologs <- wormbaseFile("orthologs")
@@ -197,7 +203,8 @@ devtools::use_data(wormbaseOrthologs, overwrite = TRUE)
 ```
 
 
-# WormBase Best BLASTP Hits
+WormBase Best BLASTP Hits
+-------------------------
 
 ```{r blastp import}
 # Get the highest match for each peptide
@@ -298,9 +305,11 @@ devtools::use_data(wormbaseBlastp, overwrite = TRUE)
 ```
 
 
-# Ensembl Annotations
+Ensembl
+=======
 
-## Connect to Biomart
+Connect to Biomart
+------------------
 
 * `entrezgene` = Entrez identifier
 * `external_gene_name` = Ensembl public name
@@ -310,10 +319,12 @@ Use `wormbase_gene_seq_name` for clean sequence identifier.
 
 ```{r connect}
 mart <- biomaRt::useMart("ensembl", "celegans_gene_ensembl")
-#! biomartOptions <- listAttributes(mart)
+biomartOptions <- biomaRt::listAttributes(mart)
 ```
 
-## Simple gene length info
+
+Simple gene length info
+-----------------------
 
 ```{r basic}
 df <- biomaRt::getBM(mart = mart,
@@ -327,7 +338,9 @@ df <- biomaRt::getBM(mart = mart,
 basic <- ensembl2wormbase(df)
 ```
 
-## Entrez identifiers
+
+Entrez identifiers
+------------------
 
 ```{r entrez}
 df <- biomaRt::getBM(mart = mart,
@@ -338,7 +351,9 @@ df <- ddply(df, .(ensembl_gene_id), summarize,
 entrezGeneId <- ensembl2wormbase(df)
 ```
 
-## Refseq identifiers
+
+Refseq identifiers
+------------------
 
 ```{r refseq}
 df <- biomaRt::getBM(mart = mart,
@@ -351,7 +366,9 @@ df <- ddply(df, .(ensembl_gene_id), summarize,
 refseq <- ensembl2wormbase(df)
 ```
 
-## UniProt identifiers
+
+UniProt identifiers
+-------------------
 
 ```{r uniprot}
 df <- biomaRt::getBM(mart = mart,
@@ -364,7 +381,23 @@ df <- ddply(df, .(ensembl_gene_id), summarize,
 uniprot <- ensembl2wormbase(df)
 ```
 
-## Homology
+
+KEGG identifiers
+----------------
+
+```{r kegg}
+df <- biomaRt::getBM(mart = mart,
+            attributes = c("ensembl_gene_id",
+                           "kegg_enzyme"))
+df <- ddply(df, .(ensembl_gene_id), summarize,
+            uniprot_sptrembl = paste(sort(unique(uniprot_sptrembl)), collapse = ", "),
+            uniprot_swissprot = paste(sort(unique(uniprot_swissprot)), collapse = ", "))
+kegg <- ensembl2wormbase(df)
+```
+
+
+Homology
+--------
 
 ```{r homology}
 df <- biomaRt::getBM(mart = mart,
@@ -375,7 +408,9 @@ df <- ddply(df, .(ensembl_gene_id), summarize,
 homology <- ensembl2wormbase(df)
 ```
 
-## Gene Ontology
+
+Gene Ontology
+-------------
 
 ```{r geneOntology}
 df <- biomaRt::getBM(mart = mart,
@@ -388,7 +423,9 @@ df <- ddply(df, .(ensembl_gene_id), summarize,
 geneOntology <- ensembl2wormbase(df)
 ```
 
-## Interpro
+
+Interpro
+--------
 
 ```{r interpro}
 df <- biomaRt::getBM(mart = mart,
@@ -403,14 +440,17 @@ df <- ddply(df, .(ensembl_gene_id), summarize,
 interpro <- ensembl2wormbase(df)
 ```
 
-## Merge and save
+
+Merge and save
+--------------
 
 ```{r save ensembl}
 df <- cbind(basic,
             entrezGeneId,
             refseq,
             uniprot,
-         #! homology,
+            kegg,
+            homology,
             geneOntology,
             interpro)
 df <- df[, !duplicated(colnames(df))]
@@ -419,9 +459,12 @@ devtools::use_data(ensembl, overwrite = TRUE)
 ```
 
 
-# PANTHER Annotations
 
-## Download the data
+PANTHER
+=======
+
+Download the data
+-----------------
 
 ```{r panther download}
 if (!file.exists("data-raw/panther.txt")) {
@@ -435,7 +478,9 @@ if (!file.exists("data-raw/panther.txt")) {
 }
 ```
 
-## Load and set column names
+
+Load and set column names
+-------------------------
 
 ```{r panther input}
 df <- readr::read_delim(file.path("data-raw", "panther.txt"),
@@ -461,7 +506,9 @@ df$protein <- NULL
 pantherInput <- df
 ```
 
-## Fix incorrect ID mappings
+
+Fix incorrect ID mappings
+-------------------------
 
 ### ORF
 
@@ -635,7 +682,9 @@ id <- gsub("GeneID=2565705\\|",
            "WormBase=WBGene00010963\\|", id) # MTCE.25
 ```
 
-## Final cleanup
+
+Final cleanup
+-------------
 
 ```{r cleanup}
 id <- data.frame(stringr::str_split_fixed(id, "\\|", 2))
@@ -653,7 +702,9 @@ rownames(df) <- df$geneId
 df <- data.frame(apply(df, c(1, 2), function(x) gsub(";", " // ", x)))
 ```
 
-## Save the results
+
+Save the results
+----------------
 
 ```{r save}
 panther <- geneIdRows(df)
@@ -661,7 +712,9 @@ devtools::use_data(panther, overwrite = TRUE)
 ```
 
 
-# Metadata Merge
+
+Metadata merge
+==============
 
 ```{r metadata merge}
 datasets <- c("wormbaseGeneId",
