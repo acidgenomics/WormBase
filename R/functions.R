@@ -9,12 +9,22 @@ colNamesReport <-
     "wormbaseGeneOtherIds",
     "wormbaseGeneClassDescription",
     "wormbaseConciseDescription",
+    "wormbaseProvisionalDescription",
+    "wormbaseAutomatedDescription",
     "wormbaseBlastpEnsemblGeneName",
     "wormbaseBlastpEnsemblDescription",
     "wormbaseStatus",
     "ensemblGeneBiotype",
+    "ensemblGeneOntologyId",
+    "ensemblGeneOntologyName",
+    "ensemblInterproId",
+    "ensemblInterproDescription",
     "pantherFamilyName",
-    "pantherSubfamilyName"
+    "pantherSubfamilyName",
+    "pantherGeneOntologyMolecularFunction",
+    "pantherGeneOntologyBiologicalProcess",
+    "pantherGeneOntologyCellularComponent",
+    "pantherClass"
   )
 
 
