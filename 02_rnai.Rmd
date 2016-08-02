@@ -7,6 +7,7 @@ This must be run *after* sourcing the `metadata.Rmd` file.
 
 ```{r setup}
 source("R/functions.R")
+rnai <- list()
 ```
 
 # ORFeome Library
@@ -16,20 +17,20 @@ Use the annotation data from [GE Dharmacon](http://dharmacon.gelifesciences.com/
 ## Convert the `orfeome.xlsx` source file
 
 ```{r orfeome}
-orfeome <- list()
-orfeome[["rawData"]] <- "data-raw/orfeome.xlsx"
-if (!file.exists(orfeome$rawData)) {
+if (!file.exists("data-raw/orfeome.xlsx")) {
   download.file("http://dharmacon.gelifesciences.com/uploadedFiles/Resources/cernai-feeding-library.xlsx",
-                orfeome$rawData)
+                "data-raw/orfeome.xlsx")
 }
-df <- readxl::read_excel(orfeome$rawData, sheet = 2)
+df <- readxl::read_excel("data-raw/orfeome.xlsx", sheet = 2)
 colnames(df) <- seqcloudr::camel(colnames(df))
 
-# Select the desired columns, rename, then subset the bad wells:
+# Remove empty ORFs
 names(df)[names(df) == "orfIdWs112"] <- "orf"
-df <- df[, c("orf", "plate", "row", "col")]
+df$orf <- gsub("^no match in WS112", NA, df$orf)
 df <- subset(df, !is.na(orf))
-df <- subset(df, orf != "no match in WS112")
+
+# Select the desired columns, rename, then subset the bad wells:
+df <- df[, c("orf", "plate", "row", "col")]
 
 # Set plate IDs as rownames
 col <- c("plate", "row", "col")
@@ -49,8 +50,7 @@ df$plate <- NULL
 df$row <- NULL
 df$col <- NULL
 
-orfeome[["converted"]] <- df
-devtools::use_data(orfeome, overwrite = TRUE)
+rnai[["orfeome"]] <- df
 ```
 
 
@@ -60,17 +60,16 @@ Use the annotation data from [Source Bioscience](http://www.us.lifesciences.sour
 
 ```{r ahringer}
 ahringer <- list()
-ahringer[["rawData"]] <- "data-raw/ahringer.xlsx"
-if (!file.exists(ahringer$rawData)) {
+if (!file.exists("data-raw/ahringer.xlsx")) {
 download.file("http://www.us.lifesciences.sourcebioscience.com/media/381254/C.%20elegans%20Database%202012.xlsx",
-              ahringer$rawData)
+              "data-raw/ahringer.xlsx")
 }
 
 chromosomes <- c("I", "II", "III", "IV", "V", "X")
 for (i in 1:length(chromosomes)) {
   sheet <- i + 1 # First sheet contains notes
   df <- suppressWarnings(
-    readxl::read_excel(ahringer$rawData, sheet = sheet)
+    readxl::read_excel("data-raw/ahringer.xlsx", sheet = sheet)
     )
   colnames(df) <- seqcloudr::camel(colnames(df))
 
@@ -98,6 +97,9 @@ df$well <- NULL
 df$chrom <- NULL
 
 names(df)[names(df) == "genePairsName"] <- "orf"
-ahringer[["converted"]] <- df
-devtools::use_data(ahringer, overwrite = TRUE)
+rnai[["ahringer"]] <- df
+```
+
+```{r save}
+devtools::use_data(rnai, overwrite = TRUE)
 ```
