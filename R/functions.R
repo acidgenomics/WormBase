@@ -77,7 +77,7 @@ metadata <- function(rowNames = NULL, id = "geneId", type = "simple") {
   if (id == "orf") {
     if (!is.null(rowNames)) {
       # Strip isoforms from ORF
-      rowNames <- gsub("\\.[a-z]{1}$", "", rowNames)
+      rowNames <- gsub("[a-z]{1}$", "", rowNames)
     }
     df <- subset(df, !is.na(df$orf))
     df <- subset(df, !duplicated(df$orf))
