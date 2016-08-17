@@ -12,16 +12,18 @@
 .Rproj.user/
 
 # produced vignettes
-vignettes/*.html
-vignettes/*.pdf
+vignettes/
 
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
 .httr-oauth
 .Rproj.user
 
-# Data folders
 data/
-data-raw/
+data-raw/*.gz
+data-raw/*.html
+data-raw/*.tsv
+data-raw/*.txt
+data-raw/*.xlsx
 
 # knit HTML files
 *.html
