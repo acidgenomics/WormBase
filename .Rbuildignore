@@ -3,4 +3,4 @@
 ^\.travis\.yml$
 ^data$
 ^data-raw$
-^\w+\.(html|R|Rmd)$
+^\w+\.(html|pdf|R|Rmd)$

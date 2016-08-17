@@ -1,12 +1,17 @@
 ---
-title: "rnaiLibrary function source data"
+title: "RNAi clone annotations"
 output: html_document
 ---
 
-This must be run *after* sourcing the `metadata.Rmd` file.
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = normalizePath("../"))
+```
 
-```{r setup}
-source("R/functions.R")
+```{r, include=FALSE}
+source("data-raw/setup.R")
+```
+
+```{r}
 rnai <- list()
 ```
 
