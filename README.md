@@ -1,8 +1,6 @@
-# README
-
-
-
 # worminfo
+
+
 
 *C. elegans* genome and RNAi library annotations. Metadata dynamically assembled from [WormBase](http://www.wormbase.org), [Ensembl](http://www.ensembl.org/Caenorhabditis_elegans), and [PANTHER](http://pantherdb.org). Support for ORFeome and Ahringer feeding RNAi libraries.
 
@@ -11,18 +9,15 @@
 ## Installation
 
 This is an [R](https://www.r-project.org) data package.
+Current version is 0.5 (2016-08-19).
 
 To install, run `devtools::install_github("seqcloud/worminfo")`.
 
-Current build version is 0.5 (2016-08-19).
-
-## Statistics
+## Annotations
 
 - Genes: 50970.
 - Ahringer clones: 16256.
 - ORFeome clones: 10991.
-
-## Annotations
 
 
 ```
@@ -69,3 +64,5 @@ Current build version is 0.5 (2016-08-19).
 ## [41] "pantherClass"                        
 ## [42] "pantherPathway"
 ```
+
+Built with R version 3.3.1 (2016-06-21) running on x86_64-apple-darwin15.5.0.
