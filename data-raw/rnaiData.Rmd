@@ -12,7 +12,7 @@ source("data-raw/setup.R")
 ```
 
 ```{r}
-rnai <- list()
+rnaiData <- list()
 ```
 
 # ORFeome Library
@@ -55,7 +55,7 @@ df$plate <- NULL
 df$row <- NULL
 df$col <- NULL
 
-rnai[["orfeome"]] <- df
+rnaiData[["orfeome"]] <- df
 ```
 
 
@@ -102,9 +102,9 @@ df$well <- NULL
 df$chrom <- NULL
 
 names(df)[names(df) == "genePairsName"] <- "orf"
-rnai[["ahringer"]] <- df
+rnaiData[["ahringer"]] <- df
 ```
 
 ```{r save}
-devtools::use_data(rnai, overwrite = TRUE)
+devtools::use_data(rnaiData, overwrite = TRUE)
 ```

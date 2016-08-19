@@ -19,7 +19,7 @@ source("data-raw/setup.R")
 geneIds <- wormbaseFile("geneIDs")
 df <- readr::read_csv(geneIds, col_names = FALSE, na = "")
 df[[1]] <- NULL
-colnames(df) <- c("geneId", "orf", "publicName", "status")
+colnames(df) <- c("geneId", "publicName", "orf", "status")
 geneIds <- df
 
 # Other identifiers
@@ -543,6 +543,12 @@ df <- Reduce(function(...) {
 names(df) <- seqcloudr::camel(names(df))
 rownames(df) <- df[[1]]
 df <- seqcloudr::cruft(df)
-geneInfo <- df
-devtools::use_data(geneInfo, overwrite = TRUE)
+geneData <- df
+devtools::use_data(geneData, overwrite = TRUE)
+```
+
+```{r unlink}
+unlink("data/ensembl.rda")
+unlink("data/panther.rda")
+unlink("data/wormbase*.rda")
 ```

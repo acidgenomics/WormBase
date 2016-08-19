@@ -1,6 +1,10 @@
+# README
+
+
+
 # worminfo
 
-*C. elegans* genome and RNAi library annotations. Metadata dynamically assembled from WormBase, Ensembl, and PANTHER. Support for ORFeome and Ahringer feeding RNAi libraries.
+*C. elegans* genome and RNAi library annotations. Metadata dynamically assembled from [WormBase](http://www.wormbase.org), [Ensembl](http://www.ensembl.org/Caenorhabditis_elegans), and [PANTHER](http://pantherdb.org). Support for ORFeome and Ahringer feeding RNAi libraries.
 
 [![Build Status](https://travis-ci.org/seqcloud/worminfo.svg?branch=master)](https://travis-ci.org/seqcloud/worminfo)
 
@@ -8,10 +12,60 @@
 
 This is an [R](https://www.r-project.org) data package.
 
-To install, run `devtools::install_github("seqcloud/worminfo")`
+To install, run `devtools::install_github("seqcloud/worminfo")`.
 
-## Source Information
+Current build version is 0.5 (2016-08-19).
 
-* [WormBase](http://www.wormbase.org), release WS253
-* [Ensembl](http://www.ensembl.org/Caenorhabditis_elegans/Info/Index), release 84
-* [PANTHER](http://pantherdb.org), release 11
+## Statistics
+
+- Genes: 50970.
+- Ahringer clones: 16256.
+- ORFeome clones: 10991.
+
+## Annotations
+
+
+```
+##  [1] "geneId"                              
+##  [2] "publicName"                          
+##  [3] "orf"                                 
+##  [4] "status"                              
+##  [5] "geneOtherIds"                        
+##  [6] "conciseDescription"                  
+##  [7] "provisionalDescription"              
+##  [8] "detailedDescription"                 
+##  [9] "automatedDescription"                
+## [10] "geneClassDescription"                
+## [11] "rnaiPhenotypes"                      
+## [12] "hsapiensEnsemblGeneName"             
+## [13] "hsapiensEnsemblGeneId"               
+## [14] "wormpepId"                           
+## [15] "hsapiensBlastpEnsemblPeptideId"      
+## [16] "hsapiensBlastpEnsemblGeneId"         
+## [17] "hsapiensBlastpEnsemblGeneName"       
+## [18] "hsapiensBlastpEnsemblDescription"    
+## [19] "geneBiotype"                         
+## [20] "chromosomeName"                      
+## [21] "startPosition"                       
+## [22] "endPosition"                         
+## [23] "strand"                              
+## [24] "ensemblDescription"                  
+## [25] "entrezGeneId"                        
+## [26] "keggEnzyme"                          
+## [27] "refseqMrna"                          
+## [28] "refseqNcrna"                         
+## [29] "uniprotSptrembl"                     
+## [30] "uniprotSwissprot"                    
+## [31] "geneOntologyName"                    
+## [32] "geneOntologyId"                      
+## [33] "interproId"                          
+## [34] "interproDescription"                 
+## [35] "uniprotKb"                           
+## [36] "pantherFamilyName"                   
+## [37] "pantherSubfamilyName"                
+## [38] "pantherGeneOntologyMolecularFunction"
+## [39] "pantherGeneOntologyBiologicalProcess"
+## [40] "pantherGeneOntologyCellularComponent"
+## [41] "pantherClass"                        
+## [42] "pantherPathway"
+```
