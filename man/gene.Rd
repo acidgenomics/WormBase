@@ -4,12 +4,12 @@
 \alias{gene}
 \title{Gene annotations}
 \usage{
-gene(rowNames = NULL, id = "geneId", output = "report")
+gene(id = NULL, format = "geneId", output = "report")
 }
 \arguments{
-\item{rowNames}{Identifier vector}
+\item{id}{Identifier}
 
-\item{id}{Identifier type (geneID, orf, publicName)}
+\item{format}{Identifier type (geneID, orf, publicName)}
 
 \item{output}{Output type (report, simple)}
 }
@@ -18,5 +18,12 @@ metadata data.frame
 }
 \description{
 Gene annotations
+}
+\examples{
+gene()
+gene(output = "simple")
+gene(id = c("WBGene00004804", "WBGene00001752"), format = "geneId")
+gene(id = c("T19E7.2", "K08F4.7"), format = "orf")
+gene(id = c("skn-1", "gst-4"), format = "publicName")
 }
 
