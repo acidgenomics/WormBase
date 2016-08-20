@@ -1,0 +1,34 @@
+---
+title: "worminfo"
+output:
+  html_document:
+    keep_md: true
+---
+
+```{r, include=FALSE}
+data(geneData)
+data(rnaiData)
+```
+
+*C. elegans* genome and RNAi library annotations. Metadata dynamically assembled from [WormBase](http://www.wormbase.org), [Ensembl](http://www.ensembl.org/Caenorhabditis_elegans), and [PANTHER](http://pantherdb.org). Support for ORFeome and Ahringer feeding RNAi libraries.
+
+[![Build Status](https://travis-ci.org/seqcloud/worminfo.svg?branch=master)](https://travis-ci.org/seqcloud/worminfo)
+
+## Installation
+
+This is an [R](https://www.r-project.org) data package.
+Current version is `r packageVersion("worminfo")` (`r Sys.Date()`).
+
+To install, run `devtools::install_github("seqcloud/worminfo")`.
+
+## Annotations
+
+- Genes: `r nrow(geneData)`.
+- Ahringer clones: `r length(unique(na.omit(rnaiData$ahringer$orf)))`.
+- ORFeome clones: `r length(unique(na.omit(rnaiData$orfeome$orf)))`.
+
+```{r, echo=FALSE}
+print(names(geneData))
+```
+
+Built with `r R.Version()$version.string` running on `r R.Version()$platform`.

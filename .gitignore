@@ -19,9 +19,9 @@ vignettes/*.pdf
 .httr-oauth
 .Rproj.user
 
-# Data folders
-data/
-data-raw/
+data-raw/*.gz
+data-raw/*.tsv
+data-raw/*.txt
+data-raw/*.xlsx
 
-# knit HTML files
 *.html
