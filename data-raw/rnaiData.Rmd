@@ -1,13 +1,18 @@
 ---
-title: "rnaiLibrary function source data"
+title: "RNAi clone annotations"
 output: html_document
 ---
 
-This must be run *after* sourcing the `metadata.Rmd` file.
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = normalizePath("../"))
+```
 
-```{r setup}
-source("R/functions.R")
-rnai <- list()
+```{r, include=FALSE}
+source("data-raw/setup.R")
+```
+
+```{r}
+rnaiData <- list()
 ```
 
 # ORFeome Library
@@ -50,7 +55,7 @@ df$plate <- NULL
 df$row <- NULL
 df$col <- NULL
 
-rnai[["orfeome"]] <- df
+rnaiData[["orfeome"]] <- df
 ```
 
 
@@ -97,9 +102,9 @@ df$well <- NULL
 df$chrom <- NULL
 
 names(df)[names(df) == "genePairsName"] <- "orf"
-rnai[["ahringer"]] <- df
+rnaiData[["ahringer"]] <- df
 ```
 
 ```{r save}
-devtools::use_data(rnai, overwrite = TRUE)
+devtools::use_data(rnaiData, overwrite = TRUE)
 ```
