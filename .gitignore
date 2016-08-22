@@ -23,5 +23,3 @@ data-raw/*.gz
 data-raw/*.tsv
 data-raw/*.txt
 data-raw/*.xlsx
-
-*.html
