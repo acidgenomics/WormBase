@@ -13,11 +13,15 @@
 #' @export
 rnai <- function(id = NULL, library = "orfeome", format = "report") {
   if (library == "ahringer") {
-    id <- gsub("^ahringer", "", id)
+    if (!is.null(id)) {
+      id <- gsub("^ahringer", "", id)
+    }
     df <- rnaiData$ahringer
   }
   if (library == "orfeome") {
-    id <- gsub("^orfeome", "", id)
+    if (!is.null(id)) {
+      id <- gsub("^orfeome", "", id)
+    }
     df <- rnaiData$orfeome
   }
 
