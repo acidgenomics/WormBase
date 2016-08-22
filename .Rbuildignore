@@ -3,5 +3,4 @@
 ^\.travis\.yml$
 ^data$
 ^data-raw$
-^README\.html$
 ^README\.Rmd$
