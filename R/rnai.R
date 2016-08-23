@@ -16,13 +16,13 @@ rnai <- function(id = NULL, library = "orfeome", format = "report") {
     if (!is.null(id)) {
       id <- gsub("^ahringer", "", id)
     }
-    df <- rnaiData$ahringer
+    df <- ahringerData
   }
   if (library == "orfeome") {
     if (!is.null(id)) {
-      id <- gsub("^orfeome", "", id)
+      id <- gsub("^GHR-", "orfeome", id)
     }
-    df <- rnaiData$orfeome
+    df <- orfeomeData
   }
 
   if (!is.null(id)) {

@@ -1,0 +1,56 @@
+---
+title: "Ahringer RNAi library annotations"
+output: md_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = normalizePath("../"))
+```
+
+```{r, include=FALSE}
+source("data-raw/setup.R")
+```
+
+Use the annotation data from [Source Bioscience](http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/):
+
+```{r ahringer}
+ahringer <- list()
+if (!file.exists("data-raw/ahringer.xlsx")) {
+download.file("http://www.us.lifesciences.sourcebioscience.com/media/381254/C.%20elegans%20Database%202012.xlsx",
+              "data-raw/ahringer.xlsx")
+}
+
+chromosomes <- as.roman(1:6)
+for (i in 1:length(chromosomes)) {
+  df <- readxl::read_excel("data-raw/ahringer.xlsx", sheet = i + 1)  # First sheet contains notes
+  
+  colnames(df) <- seqcloudr::camel(colnames(df))
+  names(df)[names(df) == "genePairsName"] <- "orf"
+
+  # Drop wells from NA plates
+  df <- subset(df, !is.na(plate))
+
+  col <- c("plate", "well")
+  cloneId96 <- do.call(paste, c(df[col], sep = "-"))
+  cloneId96[1]
+  cloneId <- gsub("^(.+)-", "\\1@\\2", cloneId96, perl = TRUE)
+  cloneId96[1]
+  df <- cbind(cloneId96, df)
+  
+  # rownames(df) <- df$clone384
+  name <- paste0("chr", chromosomes[i])
+  assign(name, df)
+}
+rm(df, i)
+list <- list(chrI, chrII, chrIII, chrIV, chrV, chrX)
+df <- data.frame(do.call("rbind", list))
+
+# Remove unnecessary columns
+df$extraInfo <- NULL
+df$plate <- NULL
+df$well <- NULL
+df$chrom <- NULL
+
+ahringerData <- df
+devtools::use_data(ahringerData, overwrite = TRUE)
+```

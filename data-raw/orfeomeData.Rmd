@@ -1,0 +1,57 @@
+---
+title: "ORFeome RNAi library annotations"
+output: md_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = normalizePath("../"))
+```
+
+```{r, include=FALSE}
+source("data-raw/setup.R")
+```
+
+# ORFeome Library
+
+Use the annotation data from [GE Dharmacon](http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai/):
+
+## Convert the `orfeome.xlsx` source file
+
+```{r orfeome}
+if (!file.exists("data-raw/orfeome.xlsx")) {
+  download.file("http://dharmacon.gelifesciences.com/uploadedFiles/Resources/cernai-feeding-library.xlsx",
+                "data-raw/orfeome.xlsx")
+}
+df <- readxl::read_excel("data-raw/orfeome.xlsx", sheet = 2)
+colnames(df) <- seqcloudr::camel(colnames(df))
+
+# Remove empty ORFs
+names(df)[names(df) == "orfIdWs112"] <- "orf"
+df$orf <- gsub("^no match in WS112", NA, df$orf)
+df <- subset(df, !is.na(orf))
+
+# Select the desired columns, rename, then subset the bad wells:
+df <- df[, c("orf", "plate", "row", "col")]
+
+# Set plate IDs as rownames
+col <- c("plate", "row", "col")
+cloneId <- do.call(paste, c(df[col], sep = "-"))
+cloneId[1]
+cloneId <- gsub("^(.*)-([0-9]{1})$", "\\1-0\\2", cloneId,
+                  perl = TRUE, ignore.case = FALSE) # pad zeros
+cloneId[1]
+cloneId <- gsub("^([0-9]{5})-([A-Z]{1})-([0-9]{2})$", "\\1@\\2\\3", cloneId,
+                  perl = TRUE, ignore.case = FALSE)
+cloneId <- paste0("orfeome", cloneId)
+cloneId[1]
+df <- cbind(cloneId, df)
+rownames(df) <- df$cloneId
+
+# Remove unnecessary columns
+df$plate <- NULL
+df$row <- NULL
+df$col <- NULL
+
+orfeomeData <- df
+devtools::use_data(orfeomeData, overwrite = TRUE)
+```
