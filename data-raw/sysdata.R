@@ -1,2 +1,5 @@
-data(geneData, rnaiData)
-devtools::use_data(geneData, rnaiData, internal = TRUE, overwrite = TRUE)
+data(ahringerData, geneData, orfeomeData)
+devtools::use_data(ahringerData,
+                   geneData,
+                   orfeomeData,
+                   internal = TRUE, overwrite = TRUE)

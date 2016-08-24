@@ -23,34 +23,28 @@ if (!file.exists("data-raw/orfeome.xlsx")) {
                 "data-raw/orfeome.xlsx")
 }
 df <- readxl::read_excel("data-raw/orfeome.xlsx", sheet = 2)
+
 colnames(df) <- seqcloudr::camel(colnames(df))
+names(df)[names(df) == "orfIdWs112"] <- "orf"
+names(df)[names(df) == "rnaiWell"] <- "orfeomeHistorical"
 
 # Remove empty ORFs
-names(df)[names(df) == "orfIdWs112"] <- "orf"
 df$orf <- gsub("^no match in WS112", NA, df$orf)
 df <- subset(df, !is.na(orf))
 
 # Select the desired columns, rename, then subset the bad wells:
-df <- df[, c("orf", "plate", "row", "col")]
+df <- df[, c("orf", "plate", "row", "col", "orfeomeHistorical")]
 
 # Set plate IDs as rownames
-col <- c("plate", "row", "col")
-cloneId <- do.call(paste, c(df[col], sep = "-"))
-cloneId[1]
-cloneId <- gsub("^(.*)-([0-9]{1})$", "\\1-0\\2", cloneId,
-                  perl = TRUE, ignore.case = FALSE) # pad zeros
-cloneId[1]
-cloneId <- gsub("^([0-9]{5})-([A-Z]{1})-([0-9]{2})$", "\\1@\\2\\3", cloneId,
-                  perl = TRUE, ignore.case = FALSE)
-cloneId <- paste0("orfeome", cloneId)
-cloneId[1]
-df <- cbind(cloneId, df)
-rownames(df) <- df$cloneId
+df$orfeome <- do.call(paste, c(df[, c("plate", "row", "col")], sep = "-"))
+df$orfeome[1]
+df$orfeome <- gsub("^(.*)-([0-9]{1})$", "\\1-0\\2", df$orfeome) # pad zeros
+df$orfeome[1]
+df$orfeome <- gsub("^([0-9]{5})-([A-Z]{1})-([0-9]{2})$", "\\1@\\2\\3", df$orfeome)
+df$orfeome[1]
 
-# Remove unnecessary columns
-df$plate <- NULL
-df$row <- NULL
-df$col <- NULL
+df$oligo <- paste0("mv_", df$orf)
+df$rnaiHistorical <- paste0("MV_SV:mv_", df$orf)
 
 orfeomeData <- df
 devtools::use_data(orfeomeData, overwrite = TRUE)
