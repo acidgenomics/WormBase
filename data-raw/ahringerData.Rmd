@@ -13,6 +13,9 @@ source("data-raw/setup.R")
 
 Use the annotation data from [Source Bioscience](http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/):
 
+Up-to-date mapping of Julie Ahringer RNAi library clones to current WormBase gene models:
+ftp://caltech.wormbase.org/pub/annots/rnai/
+
 ```{r ahringer}
 ahringer <- list()
 if (!file.exists("data-raw/ahringer.xlsx")) {
@@ -20,36 +23,30 @@ download.file("http://www.us.lifesciences.sourcebioscience.com/media/381254/C.%2
               "data-raw/ahringer.xlsx")
 }
 
-chromosomes <- as.roman(1:6)
+chromosomes <- c("I", "II", "III", "IV", "V", "X")
 for (i in 1:length(chromosomes)) {
   df <- readxl::read_excel("data-raw/ahringer.xlsx", sheet = i + 1)  # First sheet contains notes
   
   colnames(df) <- seqcloudr::camel(colnames(df))
-  names(df)[names(df) == "genePairsName"] <- "orf"
-
-  # Drop wells from NA plates
-  df <- subset(df, !is.na(plate))
-
-  col <- c("plate", "well")
-  cloneId96 <- do.call(paste, c(df[col], sep = "-"))
-  cloneId96[1]
-  cloneId <- gsub("^(.+)-", "\\1@\\2", cloneId96, perl = TRUE)
-  cloneId96[1]
-  df <- cbind(cloneId96, df)
+  df$extraInfo <- NULL
+  names(df)[names(df) == "genePairsName"] <- "genePair"
+  names(df)[names(df) == "sourceBioscienceLocation"] <- "sourceBioscience384"
   
-  # rownames(df) <- df$clone384
+  #! df$plate <- stringr::str_pad(df$plate, 3, pad = "0")
+  df$ahringer96 <- do.call(paste, c(df[, c("chrom", "plate", "well")], sep = "-"))
+  df$ahringer96[1]
+  df$ahringer96 <- gsub("-([A-Z]{1}[0-9]{2})$", "@\\1", df$ahringer96)
+  df$ahringer96[1]
+  
+  df$oligo <- paste0("sjj_", df$genePair)
+  df$rnaiHistorical <- paste0("JA:", df$genePair)
+  
   name <- paste0("chr", chromosomes[i])
   assign(name, df)
 }
 rm(df, i)
 list <- list(chrI, chrII, chrIII, chrIV, chrV, chrX)
 df <- data.frame(do.call("rbind", list))
-
-# Remove unnecessary columns
-df$extraInfo <- NULL
-df$plate <- NULL
-df$well <- NULL
-df$chrom <- NULL
 
 ahringerData <- df
 devtools::use_data(ahringerData, overwrite = TRUE)
