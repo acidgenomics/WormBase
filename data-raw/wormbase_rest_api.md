@@ -44,3 +44,9 @@ curl -H content-type:application/json http://api.wormbase.org/rest/field/rnai/WB
 
 
 Use the URL redirect from search to get the WBRNAi identifier?
+
+
+
+
+https://cran.r-project.org/web/packages/jsonlite/vignettes/json-apis.html
+library(jsonlite)

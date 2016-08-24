@@ -2,6 +2,7 @@ options(repos = "http://cran.rstudio.com/")
 
 install.packages("devtools")
 install.packages("dplyr")
+install.packages("magrittr")
 install.packages("readr")
 install.packages("readxl")
 install.packages("roxygen2")
