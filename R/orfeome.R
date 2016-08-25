@@ -11,7 +11,7 @@
 #' rnai(library = "orfeome")
 #' rnai(id = "11010@G06", library = "orfeome")
 #' @export
-rnai <- function(id = NULL, library = "orfeome", format = "report") {
+orfeome <- function(id = NULL, library = "orfeome", format = "report") {
   if (library == "ahringer") {
     if (!is.null(id)) {
       id <- gsub("^ahringer", "", id)
