@@ -17,7 +17,7 @@ wormbaseFile <- function(file) {
   fileUrl <- paste0(annotation, file, "/c_elegans.", version, ".", fileName)
 
   # data-raw method:
-  filePath <- file.path("data-raw", fileName)
+  filePath <- file.path("data-raw", "wormbase", fileName)
 
   if (!file.exists(filePath)) {
     utils::download.file(fileUrl, filePath)
