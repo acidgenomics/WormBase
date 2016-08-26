@@ -7,10 +7,10 @@ output: md_document
 knitr::opts_knit$set(root.dir = normalizePath("../"))
 ```
 
-```{r, include=FALSE}
+```{r, eval=FALSE, include=FALSE}
+rm(list = setdiff(ls(), lsf.str()))
 rm(list = ls())
-#! rm(list = setdiff(ls(), lsf.str()))
-source("data-raw/setup.R")
+seqcloudr::loadpkg()
 ```
 
 # WormBase

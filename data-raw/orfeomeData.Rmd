@@ -7,8 +7,10 @@ output: md_document
 knitr::opts_knit$set(root.dir = normalizePath("../"))
 ```
 
-```{r, include=FALSE}
-source("data-raw/setup.R")
+```{r, eval=FALSE, include=FALSE}
+rm(list = setdiff(ls(), lsf.str()))
+rm(list = ls())
+seqcloudr::loadpkg()
 ```
 
 # ORFeome Library

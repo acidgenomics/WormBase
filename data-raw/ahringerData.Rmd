@@ -7,8 +7,8 @@ output: md_document
 knitr::opts_knit$set(root.dir = normalizePath("../"))
 ```
 
-```{r, include=FALSE}
-source("data-raw/setup.R")
+```{r, eval=FALSE, include=FALSE}
+seqcloudr::loadpkg()
 ```
 
 Use the annotation data from [Source Bioscience](http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/):
