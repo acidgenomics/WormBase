@@ -1,23 +1,20 @@
 #' Feeding RNAi Library clone matching
 #'
 #' @param id Clone identifier
-#' @param well
+#' @param wells Library plate format (96, 384)
 #' @param format Output type (report, simple)
 #'
 #' @return data.frame with metadata
 #' @examples
-#' rnai(library = "ahringer")
-#' rnai(id = "III-86@B01", library = "ahringer")
-#' rnai(library = "orfeome")
-#' rnai(id = "11010@G06", library = "orfeome")
+#' ahringer("III-86@B01")
 #' @export
-ahringer <- function(id = NULL, well = 384, format = "report") {
+ahringer <- function(id = NULL, wells = 384, format = "report") {
   df <- ahringerData
 
-  if (well == 96) {
+  if (wells == 96) {
     cloneId <- df$ahringerId96
   }
-  if (well == 384) {
+  if (wells == 384) {
     cloneId <- df$ahringerId384
   }
 
