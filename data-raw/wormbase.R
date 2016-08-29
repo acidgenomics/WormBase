@@ -147,8 +147,9 @@ hsapiens <-
                                 "ensembl_gene_id",
                                 "external_gene_name",
                                 "description")) %>%
-  rename(ensembl_description = description,
-         ensembl_gene_name = external_gene_name) %>%
+  rename(hsapiensBlastpDescription = description,
+         hsapiensBlastpGeneName = external_gene_name,
+         hsapiensBlastpGeneId = ensembl_gene_id) %>%
   setNames(camel(names(.)))
 
 # Final join:

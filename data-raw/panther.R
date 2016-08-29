@@ -6,11 +6,8 @@ library(seqcloudr)
 library(stringr)
 library(tidyr)
 
-if (!file.exists("data-raw/panther.tsv")) {
-  file <- downloadFile("ftp://ftp.pantherdb.org/sequence_classifications/current_release/PANTHER_Sequence_Classification_files/",
-                       "nematode", rename = "panther.tsv")
-}
-panther <- read_tsv("data-raw/panther.tsv", col_names = FALSE) %>%
+file <- downloadFile("ftp://ftp.pantherdb.org/sequence_classifications/current_release/PANTHER_Sequence_Classification_files/", "nematode")
+panther <- read_tsv(file, col_names = FALSE) %>%
   setNames(c("id",
              "protein",
              "subfamilyId",
