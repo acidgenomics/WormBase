@@ -9,23 +9,22 @@ License: MIT + file LICENSE
 LazyData: true
 URL: https://github.com/seqcloud/worminfo
 Depends:
-  R (>= 3.1.0)
+    R (>= 3.1.0)
 Imports:
-  biomaRt,
-  dplyr,
-  httr,
-  magrittr,
-  parallel,
-  readr,
-  readxl,
-  rmarkdown,
-  seqcloudr,
-  stringr,
-  tidyr,
+    biomaRt,
+    devtools,
+    dplyr,
+    httr,
+    magrittr,
+    parallel,
+    readr,
+    readxl,
+    seqcloudr,
+    stringr,
     tibble,
-    devtools
+    tidyr,
 Remotes:
-  seqcloud/seqcloudr
-biocViews: 
+    seqcloud/seqcloudr
+biocViews:
 RoxygenNote: 5.0.1
 Suggests: rmarkdown

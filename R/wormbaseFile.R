@@ -1,15 +1,15 @@
-#' Download a file from WormBase
+#' Download a file from WormBase.
 #'
-#' @param file FTP file request
+#' @param request WormBase FTP server file request.
 #'
-#' @return File path of download
+#' @return Local file path of downloaded file.
 #' @export
-wormbaseFile <- function(file) {
+wormbaseFile <- function(request) {
   annotation <-
     "ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/"
   version <- "canonical_bioproject.current"
 
-  if (file == "best_blast_hits") {
+  if (remoteFile == "best_blast_hits") {
     fileName <- "best_blastp_hits.txt.gz"
   } else {
     fileName <- paste0(file, ".txt.gz")
@@ -17,15 +17,11 @@ wormbaseFile <- function(file) {
   fileUrl <- paste0(annotation, file, "/c_elegans.", version, ".", fileName)
 
   # data-raw method:
+  fileDir <- 
   filePath <- file.path("data-raw", "wormbase", fileName)
 
   if (!file.exists(filePath)) {
     utils::download.file(fileUrl, filePath)
   }
-
-  # tempfile method:
-  #! temp <- tempfile(fileext = ".txt.gz")
-  #! utils::download.file(fileUrl, temp)
-
   return(filePath)
 }
