@@ -22,7 +22,7 @@ Imports:
     seqcloudr,
     stringr,
     tibble,
-    tidyr,
+    tidyr
 Remotes:
     seqcloud/seqcloudr
 biocViews:
