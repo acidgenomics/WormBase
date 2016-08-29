@@ -7,10 +7,10 @@
 historical2wbrnai(vec)
 }
 \arguments{
-\item{vec}{Vector of WormBase historical RNAi clones}
+\item{vec}{\code{vector} of WormBase historical RNAi clones}
 }
 \value{
-data.frame
+\code{data.frame}
 }
 \description{
 Convert historical RNAi identifier to WBRNAi with WormBase RESTful API
