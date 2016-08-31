@@ -9,9 +9,9 @@ library(magrittr)
 library(stringr)
 library(tibble)
 info <- installed.packages() %>% as_tibble %>% filter(Package == "worminfo")
-data(ahringerData)
-data(geneData)
-data(orfeomeData)
+data(ahringer)
+data(gene)
+data(orfeome)
 ```
 
 [Ahringer]: http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/
@@ -44,14 +44,14 @@ with `r R.Version()$version.string` running on `r R.Version()$platform`.
 - [Ahringer][] clones: `r nrow(ahringerData)`
 - [ORFeome][] clones: `r nrow(orfeomeData)`
 
-## `geneData`
+## `gene`
 
-`r seqcloudr::mdlist(names(geneData), ordered = TRUE)`
+`r seqcloudr::mdlist(names(gene), ordered = TRUE)`
 
-## `ahringerData`
+## `ahringer`
 
-`r seqcloudr::mdlist(names(ahringerData), ordered = TRUE)`
+`r seqcloudr::mdlist(names(ahringer), ordered = TRUE)`
 
-## `orfeomeData`
+## `orfeome`
 
-`r seqcloudr::mdlist(names(orfeomeData), ordered = TRUE)`
+`r seqcloudr::mdlist(names(orfeome), ordered = TRUE)`
