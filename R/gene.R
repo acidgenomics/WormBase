@@ -13,33 +13,33 @@
 #' gene(id = c("skn-1", "gst-4"), format = "publicName")
 #' @export
 gene <- function(id = NULL, format = "geneId", output = "report") {
-  df <- geneData
+    df <- geneData
 
-  # Strip ORF isoforms
-  if (format == "orf") {
-    id <- gsub("[a-z]{1}$", "", id)
-  }
-
-  # Subset if `id` declared
-  if (!is.null(id)) {
-    if (format == "geneId") {
-      df <- subset(df, df$geneId %in% id)
-    }
+    # Strip ORF isoforms
     if (format == "orf") {
-      df <- subset(df, df$orf %in% id)
+        id <- gsub("[a-z]{1}$", "", id)
     }
-    if (format == "publicName") {
-      df <- subset(df, df$publicName %in% id)
+
+    # Subset if `id` declared
+    if (!is.null(id)) {
+        if (format == "geneId") {
+            df <- subset(df, df$geneId %in% id)
+        }
+        if (format == "orf") {
+            df <- subset(df, df$orf %in% id)
+        }
+        if (format == "publicName") {
+            df <- subset(df, df$publicName %in% id)
+        }
     }
-  }
 
-  # Subset columns
-  if (output == "report") {
-    df <- df[, colNamesReport]
-  }
-  if (output == "simple") {
-    df <- df[, colNamesSimple]
-  }
+    # Subset columns
+    if (output == "report") {
+        df <- df[, colNamesReport]
+    }
+    if (output == "simple") {
+        df <- df[, colNamesSimple]
+    }
 
-  return(df)
+    return(df)
 }
