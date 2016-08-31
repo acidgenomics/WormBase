@@ -21,8 +21,8 @@ Use the annotation data from [GE Dharmacon](http://dharmacon.gelifesciences.com/
 
 ```{r orfeome}
 if (!file.exists("data-raw/orfeome.xlsx")) {
-  download.file("http://dharmacon.gelifesciences.com/uploadedFiles/Resources/cernai-feeding-library.xlsx",
-                "data-raw/orfeome.xlsx")
+    download.file("http://dharmacon.gelifesciences.com/uploadedFiles/Resources/cernai-feeding-library.xlsx",
+                  "data-raw/orfeome.xlsx")
 }
 df <- readxl::read_excel("data-raw/orfeome.xlsx", sheet = 2)
 colnames(df) <- seqcloudr::camel(colnames(df))
@@ -56,17 +56,17 @@ devtools::use_data(orfeomeRawData, overwrite = TRUE)
 ```{r annotations}
 # WormBase RESTful API request for RNAi annotations
 if (file.exists("data/orfeomeRest.rda")) {
-  data(orfeomeRest) 
+    data(orfeomeRest) 
 } else {
-  orfeomeRest <- historical2wbrnai(orfeomeRawData$historical)
-  devtools::use_data(orfeomeRest, overwrite = TRUE)
+    orfeomeRest <- historical2wbrnai(orfeomeRawData$historical)
+    devtools::use_data(orfeomeRest, overwrite = TRUE)
 }
 
 # Oligo to Gene ID
 if (file.exists("data/oligo2geneId.rda")) {
-  data(oligo2geneId)
+    data(oligo2geneId)
 } else {
-  source("data-raw/oligo2geneId.R")
+    source("data-raw/oligo2geneId.R")
 }
 
 df <- cbind(orfeomeRawData, orfeomeRest)
