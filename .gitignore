@@ -21,9 +21,6 @@ vignettes/*.pdf
 
 .DS_Store
 
-data-raw/*.gz
-data-raw/*.tsv
-data-raw/*.txt
 data-raw/*.xlsx
 data-raw/PTHR*
 data-raw/wormbase/
