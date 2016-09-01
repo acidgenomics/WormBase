@@ -40,3 +40,5 @@ orfeome <- function(id = NULL, library = "orfeome", format = "report") {
     df <- df[, col]
     return(df)
 }
+
+orfeomeData

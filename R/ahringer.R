@@ -37,3 +37,5 @@ ahringer <- function(id = NULL, wells = 384, format = "report") {
     df <- df[, col]
     return(df)
 }
+
+ahringerData

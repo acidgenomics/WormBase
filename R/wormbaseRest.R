@@ -21,10 +21,12 @@
 
 # RNAi clone information
 # CHANGE THIS TO NOT QUERY SEQUENCE?
-rest <- httr::GET(paste0("http://api.wormbase.org/rest/field/rnai/", wbrnai, "/sequence"),
-                  config = httr::content_type_json())
-content <- httr::content(rest)
+wormbaseRest <- function(query = wbrnai, field = "rnai") {
+    rest <- httr::GET(paste0("http://api.wormbase.org/rest/field/rnai/", wbrnai, "/sequence"),
+                      config = httr::content_type_json())
+    content <- httr::content(rest)
 
-oligo <- content$sequence$data[[1]]$header
-length <- content$sequence$data[[1]]$length
-# sequence <- content$sequence$data[[1]]$sequence
+    oligo <- content$sequence$data[[1]]$header
+    length <- content$sequence$data[[1]]$length
+    # sequence <- content$sequence$data[[1]]$sequence
+}
