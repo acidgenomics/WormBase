@@ -30,8 +30,7 @@ raw <- as_tibble(do.call("rbind", list))
 rm(list)
 
 # WBRNAi from WormBase historical experiments
-wbrnaiAhringer <- historical2wbrnai(raw$wormbaseHistorical)
-devtools::use_data(wbrnaiAhringer, overwrite = TRUE)
+wbrnai <- historical2wbrnai(raw$wormbaseHistorical)
 
 # WormBase RESTful API requests with WBRNAi
 if (file.exists("data/ahringerRest.rda")) {
@@ -53,7 +52,6 @@ if (file.exists("data/oligo2geneId.rda")) {
     source("data-raw/oligo2geneId.R")
 }
 
-data(ahringerRawData)
 df <- cbind(ahringerRawData, ahringerRest)
 df <- df[, unique(names(df))]
 df <- merge(df, oligo2geneId, by = "oligo", all.x = TRUE)
@@ -78,5 +76,6 @@ df2 <- merge(oligoNoMatch,
 
 df2 <- merge(df2, gene(df$genePair, format = "orf", output = "simple"), all.x = TRUE)
 
-devtools::use_data(ahringer, overwrite = TRUE)
+ahringerData <- list(raw, wbrnai)
+devtools::use_data(ahringerData, overwrite = TRUE)
 ```

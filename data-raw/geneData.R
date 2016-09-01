@@ -15,5 +15,5 @@ data(panther)
 panther <- select(panther, -c(protein, subfamilyId))
 names(panther)[3:length(panther)] <- paste("panther", names(panther)[3:length(panther)], sep = "_") %>% camel
 
-gene <- Reduce(function(...) left_join(..., by = "geneId"), list(wormbase, ensembl, panther)) %>% cruft
-devtools::use_data(gene, overwrite = TRUE)
+geneData <- Reduce(function(...) left_join(..., by = "geneId"), list(wormbase, ensembl, panther)) %>% cruft
+devtools::use_data(geneData, overwrite = TRUE)
