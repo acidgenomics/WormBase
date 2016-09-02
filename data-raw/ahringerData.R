@@ -30,7 +30,12 @@ raw <- as_tibble(do.call("rbind", list))
 rm(list)
 
 # WBRNAi from WormBase historical experiments
-wbrnai <- historical2wbrnai(raw$wormbaseHistorical)
+if (file.exists("data/ahringerWbrnai.rda")) {
+    data(ahringerWbrnai)
+} else {
+    ahringerWbrnai <- historical2wbrnai(raw$wormbaseHistorical)
+    devtools::use_data(ahringerWbrnai, overwrite = TRUE)
+}
 
 # WormBase RESTful API requests with WBRNAi
 if (file.exists("data/ahringerRest.rda")) {

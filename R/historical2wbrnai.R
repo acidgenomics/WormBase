@@ -10,6 +10,7 @@
 #' @examples
 #' historical2wbrnai("JA:K10E9.1")
 historical2wbrnai <- function(vec) {
+    vec <- sort(unique(vec))
     parallel::mclapply(vec, function(historical) {
         request <- httr::GET(paste0("http://www.wormbase.org/search/rnai/", historical))
         status <- httr::status_code(request)
