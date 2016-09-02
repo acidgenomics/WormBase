@@ -21,7 +21,7 @@ wormbaseRest <- function(query, class, instance) {
 #' @examples
 #' wormbaseRestRnaiTargets(c("WBRNAi00031683", "WBRNAi00009236"))
 wormbaseRestRnaiTargets <- function(query) {
-    query <- na.omit(query)
+    query <- sort(query) %>% unique %>% na.omit
     targets <- parallel::mclapply(seq_along(query), function(a) {
         wbrnai <- query[a]
         data <- wormbaseRest(wbrnai, class = "rnai", instance = "targets") %>%
@@ -36,7 +36,7 @@ wormbaseRestRnaiTargets <- function(query) {
             })
             tbl <- tibble::as_tibble(do.call(rbind, list)) %>%
                 set_names(c("type", "id")) %>%
-                filter(grepl("WBGene", id)) %>%
+                # filter(grepl("WBGene", id)) %>%
                 group_by(type) %>%
                 summarize(id = paste(sort(unique(id)),collapse = ", "))
             primary <- filter(tbl, type == "primary") %>% select(id) %>% as.character
