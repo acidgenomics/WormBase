@@ -1,32 +1,57 @@
-# dev <- function() {
-#   query <- "WBRNAi00009236"
-#   rest <- httr::GET(paste0("http://api.wormbase.org/rest/field/rnai/", query, "/targets"),
-#                     config = httr::content_type_json())
-#   content <- httr::content(rest)
-#   data <- content$targets$data
-#   list <- lapply(seq_along(data), function(i) {
-#     c(data[[i]]$target_type, data[[i]]$gene$id)
-#   })
-#   df <- data.frame(do.call(rbind, list))
-#   colnames(df) <- c("target_type", "id")
-#   df$target_type <- seqcloudr::camel(df$target_type)
-#
-#   data <- df %>% group_by(target_type) %>%
-#     summarize(id = paste(sort(unique(id)),collapse = ", ")) %>%
-#     gather(data, key, 2:ncol(df)) %>%
-#     spread(target_type, key)
-#   data[1] <- NULL
-# }
-
-
 # RNAi clone information
-# CHANGE THIS TO NOT QUERY SEQUENCE?
-wormbaseRest <- function(query = wbrnai, field = "rnai") {
-    rest <- httr::GET(paste0("http://api.wormbase.org/rest/field/rnai/", wbrnai, "/sequence"),
-                      config = httr::content_type_json())
-    content <- httr::content(rest)
+#' WormBase RESTful API query
+#'
+#' @description
+#' \url{http://www.wormbase.org/about/userguide/for_developers/API-REST}
+#'
+#' @return
+wormbaseRest <- function(query, class, instance) {
+    httr::GET(paste0("http://api.wormbase.org/rest/field/", class, "/", query, "/", instance),
+              config = httr::content_type_json()) %>%
+        httr::content(.)
+}
 
-    oligo <- content$sequence$data[[1]]$header
-    length <- content$sequence$data[[1]]$length
-    # sequence <- content$sequence$data[[1]]$sequence
+#' RNAi targets
+#'
+#' @import dplyr
+#' @import magrittr
+#'
+#' @return
+#'
+#' @examples
+#' wormbaseRestRnaiTargets(c("WBRNAi00031683", "WBRNAi00009236"))
+wormbaseRestRnaiTargets <- function(query) {
+    query <- na.omit(query)
+    targets <- parallel::mclapply(seq_along(query), function(a) {
+        wbrnai <- query[a]
+        data <- wormbaseRest(wbrnai, class = "rnai", instance = "targets") %>%
+            .[["targets"]] %>% .[["data"]]
+        if (length(data)) {
+            list <- lapply(seq_along(data), function(b) {
+                type <- data[[b]]$target_type %>%
+                    tolower %>%
+                    stringr::str_replace(" target", "")
+                id <- data[[b]]$gene$id
+                c(type, id)
+            })
+            tbl <- tibble::as_tibble(do.call(rbind, list)) %>%
+                set_names(c("type", "id")) %>%
+                filter(grepl("WBGene", id)) %>%
+                group_by(type) %>%
+                summarize(id = paste(sort(unique(id)),collapse = ", "))
+            primary <- filter(tbl, type == "primary") %>% select(id) %>% as.character
+            if (primary == "character(0)") {
+                primary <- NA
+            }
+            secondary <- filter(tbl, type == "secondary") %>% select(id) %>% as.character
+            if (secondary == "character(0)") {
+                secondary <- NA
+            }
+            c(wbrnai, primary, secondary)
+        } else {
+            c(wbrnai, NA, NA)
+        }
+    })
+    tibble::as_tibble(do.call(rbind, targets)) %>%
+        set_names(c("wbrnai", "primary", "secondary"))
 }
