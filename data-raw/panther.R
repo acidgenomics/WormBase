@@ -1,14 +1,12 @@
 library(dplyr)
 library(magrittr)
-library(RCurl)
-library(readr)
-library(seqcloudr)
-library(stringr)
-library(tidyr)
 
-file <- downloadFile("ftp://ftp.pantherdb.org/sequence_classifications/current_release/PANTHER_Sequence_Classification_files/", "nematode")
-panther <- read_tsv(file, col_names = FALSE) %>%
-    setNames(c("id",
+file <- list.files(path = "data-raw", pattern = "PTHR*", full.names = TRUE)
+if (!length(file)) {
+    file <- seqcloudr::downloadFile("ftp://ftp.pantherdb.org/sequence_classifications/current_release/PANTHER_Sequence_Classification_files/", "nematode")
+}
+panther <- readr::read_tsv(file, col_names = FALSE) %>%
+    set_names(c("id",
                "protein",
                "subfamilyId",
                "familyName",
@@ -20,7 +18,7 @@ panther <- read_tsv(file, col_names = FALSE) %>%
                "pathway")) %>%
     mutate(id = gsub("CAEEL\\|", "", id)) %>%
     mutate(id = gsub("(EnsemblGenome|Gene|GeneID|UniProtKB|WormBase)=", "", id)) %>%
-    separate(id, c("geneId", "uniprotKb"), sep = "\\|") %>%
+    tidyr::separate(id, c("geneId", "uniprotKb"), sep = "\\|") %>%
     # Fix incorrect ID mappings:
     mutate(geneId = gsub("^B0303.5$", "WBGene00015127", geneId)) %>%
     mutate(geneId = gsub("^C13B9.1$", "WBGene00015732", geneId)) %>%
@@ -38,8 +36,17 @@ panther <- read_tsv(file, col_names = FALSE) %>%
     mutate(geneId = gsub("^2565702$", "WBGene00000829", geneId)) %>%  # MTCE.21
     mutate(geneId = gsub("^2565703$", "WBGene00010967", geneId)) %>%  # MTCE.35
     mutate(geneId = gsub("^2565704$", "WBGene00010960", geneId)) %>%  # MTCE.12
-    mutate(geneId = gsub("^2565705$", "WBGene00010963", geneId))  # MTCE.25
+    mutate(geneId = gsub("^2565705$", "WBGene00010963", geneId)) %>%  # MTCE.25
+    # Change to `stringr::str_split` and make alphabetical here:
+    mutate(geneOntologyBiologicalProcess = gsub(";", " // ", geneOntologyBiologicalProcess)) %>%
+    mutate(geneOntologyBiologicalProcess = gsub("#GO:[0-9]+", "", geneOntologyBiologicalProcess)) %>%
+    mutate(geneOntologyCellularComponent = gsub(";", " // ", geneOntologyCellularComponent)) %>%
+    mutate(geneOntologyCellularComponent = gsub("#GO:[0-9]+", "", geneOntologyCellularComponent)) %>%
+    mutate(geneOntologyMolecularFunction = gsub(";", " // ", geneOntologyMolecularFunction)) %>%
+    mutate(geneOntologyMolecularFunction = gsub("#GO:[0-9]+", "", geneOntologyMolecularFunction)) %>%
+    mutate(class = gsub(";", " // ", class)) %>%
+    mutate(class = gsub("#PC[0-9]+", "", class)) %>%
+    mutate(pathway = gsub(">", " > ", pathway)) %>%
+    mutate(pathway = gsub(";", " // ", pathway)) %>%
+    mutate(pathway = gsub("#P[0-9]+", "", pathway))
 devtools::use_data(panther, overwrite = TRUE)
-
-# Convert semicolon to double slash
-#! data.frame(apply(df, c(1, 2), function(x) gsub(";", " // ", x)))
