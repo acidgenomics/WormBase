@@ -1,4 +1,5 @@
 library(dplyr)
+library(magrittr)
 library(seqcloudr)
 
 data(wormbase)
@@ -9,7 +10,7 @@ data(ensembl)
 ensembl <- Reduce(function(...) full_join(..., by = "ensembl_gene_id"), ensembl) %>%
     rename(geneId = ensembl_gene_id,
            ensembl_description = description) %>%
-    setNames(camel(names(.)))
+    set_names(camel(names(.)))
 
 data(panther)
 panther <- select(panther, -c(protein, subfamilyId))

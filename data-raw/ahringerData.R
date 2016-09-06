@@ -1,4 +1,5 @@
 library(dplyr)
+library(magrittr)
 library(readxl)
 library(seqcloudr)
 library(tibble)
@@ -29,58 +30,50 @@ rm(i, name, tbl)
 raw <- as_tibble(do.call("rbind", list))
 rm(list)
 
-# WBRNAi from WormBase historical experiments
-if (file.exists("data/ahringerWbrnai.rda")) {
-    data(ahringerWbrnai)
-} else {
+data(ahringerWbrnai)
+if (!exists("ahringerWbrnai")) {
     ahringerWbrnai <- historical2wbrnai(raw$wormbaseHistorical)
     devtools::use_data(ahringerWbrnai, overwrite = TRUE)
 }
 
-# WormBase RESTful API requests with WBRNAi
-if (file.exists("data/ahringerRest.rda")) {
-    data(ahringerRest)
-} else {
-    # Split up to prevent curl memory error
-    ahringerRest1 <- historical2wbrnai(ahringerRawData$historical[00001:05000])
-    ahringerRest2 <- historical2wbrnai(ahringerRawData$historical[05001:10000])
-    ahringerRest3 <- historical2wbrnai(ahringerRawData$historical[10001:15000])
-    ahringerRest4 <- historical2wbrnai(ahringerRawData$historical[15001:nrow(ahringerRawData)])
-    ahringerRest <- rbind(ahringerRest1, ahringerRest2, ahringerRest3, ahringerRest4)
-    devtools::use_data(ahringerRest, overwrite = TRUE)
+data(ahringerSequence)
+if (!exists("ahringerSequence")) {
+    ahringerSequence1 <- wormbaseRestRnaiSequence(ahringerWbrnai$wbrnai[00001:05000])
+    ahringerSequence2 <- wormbaseRestRnaiSequence(ahringerWbrnai$wbrnai[05001:10000])
+    ahringerSequence3 <- wormbaseRestRnaiSequence(ahringerWbrnai$wbrnai[10001:15000])
+    ahringerSequence4 <- wormbaseRestRnaiSequence(ahringerWbrnai$wbrnai[15001:nrow(ahringerWbrnai)])
+    ahringerSequence <- bind_rows(ahringerSequence1,
+                                  ahringerSequence2,
+                                  ahringerSequence3,
+                                  ahringerSequence4)
+    devtools::use_data(ahringerSequence, overwrite = TRUE)
 }
 
-# Oligo to Gene ID
-if (file.exists("data/oligo2geneId.rda")) {
-    data(oligo2geneId)
-} else {
+data(ahringerTargets)
+if (!exists("ahringerTargets")) {
+    ahringerTargets1 <- wormbaseRestRnaiTargets(ahringerWbrnai$wbrnai[00001:05000])
+    ahringerTargets2 <- wormbaseRestRnaiTargets(ahringerWbrnai$wbrnai[05001:10000])
+    ahringerTargets3 <- wormbaseRestRnaiTargets(ahringerWbrnai$wbrnai[10001:15000])
+    ahringerTargets4 <- wormbaseRestRnaiTargets(ahringerWbrnai$wbrnai[15001:nrow(ahringerWbrnai)])
+    ahringerTargets <- bind_rows(ahringerTargets1,
+                                  ahringerTargets2,
+                                  ahringerTargets3,
+                                  ahringerTargets4)
+    devtools::use_data(ahringerTargets, overwrite = TRUE)
+}
+
+data(oligo2geneId)
+if (!exists("oligo2geneId")) {
     source("data-raw/oligo2geneId.R")
 }
 
-df <- cbind(ahringerRawData, ahringerRest)
-df <- df[, unique(names(df))]
-df <- merge(df, oligo2geneId, by = "oligo", all.x = TRUE)
-
-oligoNoMatch <- dplyr::filter(df, is.na(df$geneId))
-oligoNoMatch$geneId <- NULL
-
-df <- dplyr::filter(df, !is.na(df$geneId))
-df <- merge(df, gene(df$geneId, output = "simple"), by = "geneId", all.x = TRUE)
-oligoMatch <- df
-
-# Strip isoforms from genePair search
-genePairQuery <- oligoNoMatch$genePair
-genePairQuery[1:1000]
-genePairQuery <- gsub("([0-9]+)[a-z]$", "\\1", genePairQuery)
-genePairQuery[1:1000]
-genePairQuery <- gsub("\\.([0-9]+)\\.[0-9]+$", ".\\1", genePairQuery)
-df2 <- merge(oligoNoMatch,
-             gene(genePairQuery, format = "orf", output = "simple"),
-             by.x = "genePair", by.y = "orf",
-             all.x = TRUE)
-
-df2 <- merge(df2, gene(df$genePair, format = "orf", output = "simple"), all.x = TRUE)
-
-ahringerData <- list(raw, wbrnai)
+ahringerData <- left_join(ahringerWbrnai, ahringerSequence) %>%
+    left_join(., ahringerTargets) %>%
+    left_join(., oligo2geneId) %>%
+    left_join(raw, .) %>%
+    distinct %>%
+    rename(primaryTarget = primary,
+           secondaryTarget = secondary) %>%
+    select(-wormbaseHistorical) %>%
+    arrange(ahringer96)
 devtools::use_data(ahringerData, overwrite = TRUE)
-```
