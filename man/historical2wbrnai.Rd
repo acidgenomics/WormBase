@@ -16,6 +16,6 @@ historical2wbrnai(vec)
 Convert historical RNAi identifier to WBRNAi with WormBase RESTful API
 }
 \examples{
-historical2wbrnai("JA:K10E9.1", "JA:F56C11.1")
+historical2wbrnai("JA:K10E9.1")
 }
 

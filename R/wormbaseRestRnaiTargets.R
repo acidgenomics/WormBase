@@ -6,7 +6,7 @@
 #' @return \code{tibble}
 #'
 #' @examples
-#' wormbaseRestRnaiTargets("WBRNAi00031683"))
+#' wormbaseRestRnaiTargets("WBRNAi00031683")
 wormbaseRestRnaiTargets <- function(query) {
     query <- sort(query) %>% unique %>% na.omit
     #! parallel::mclapply

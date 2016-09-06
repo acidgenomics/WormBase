@@ -1,4 +1,6 @@
-data(ahringerData)
+#' ahringerData
+#'
+"ahringerData"
 
 
 #' geneData
@@ -52,7 +54,8 @@ data(ahringerData)
 #' WormBase (\url{http://www.wormbase.org}),
 #' Ensembl (\url{http://www.ensembl.org/Caenorhabditis_elegans}),
 #' PANTHER (\url{http://pantherdb.org})
-data(geneData)
+"geneData"
 
 
-data(orfeomeData)
+#' orfeomeData
+"orfeomeData"

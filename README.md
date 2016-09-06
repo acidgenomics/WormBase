@@ -1,4 +1,4 @@
-worminfo 0.5.2 (2016-08-29)
+worminfo 0.5.2 (2016-09-06)
 ================
 
 *C. elegans* gene annotations dynamically assembled from [WormBase](http://www.wormbase.org), [Ensembl](http://www.ensembl.org/Caenorhabditis_elegans), and [PANTHER](http://pantherdb.org). Clone mapping support for [ORFeome](http://worfdb.dfci.harvard.edu) and [Ahringer](http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/) feeding RNAi libraries.
@@ -70,28 +70,29 @@ Gene annotations were sourced from WormBase WS254, Ensembl Genes 85 and PANTHER 
 `ahringerData`
 --------------
 
-1.  plate
-2.  well
-3.  chrom
-4.  genePair
-5.  fwdPrimerSeq
-6.  revPrimerSeq
-7.  sourceBioscience384
-8.  ahringer96
-9.  oligo
-10. rnaiHistorical
+1.  genePair
+2.  fwdPrimerSeq
+3.  revPrimerSeq
+4.  sourceBioscience384
+5.  ahringer96
+6.  wbrnai
+7.  oligo
+8.  length
+9.  sequence
+10. primaryTarget
+11. secondaryTarget
+12. oligo2geneId
 
 `orfeomeData`
 -------------
 
-1.  orfHistorical
-2.  plate
-3.  row
-4.  col
-5.  orfeomeHistorical
-6.  orfeome
-7.  historical
-8.  wbrnai
-9.  oligo
-10. length
-11. sequence
+1.  genePair
+2.  orfeome96Historical
+3.  orfeome96
+4.  wbrnai
+5.  oligo
+6.  length
+7.  sequence
+8.  primaryTarget
+9.  secondaryTarget
+10. oligo2geneId
