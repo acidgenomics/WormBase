@@ -1,8 +1,16 @@
+utils::globalVariables(
+    c(".",
+      "type",
+      "cloneData", "geneData",
+      "geneId", "orf", "publicName",
+      "ahringer96", "orfeome96", "sourceBioscience384")
+)
+
 colNamesSimple <-
     c("geneId",
       "orf",
-      "publicName"
-    )
+      "publicName")
+
 colNamesReport <-
     c(colNamesSimple,
       "geneOtherIds",
@@ -10,8 +18,8 @@ colNamesReport <-
       "conciseDescription",
       "provisionalDescription",
       "automatedDescription",
-      "hsapiensBlastpEnsemblGeneName",
-      "hsapiensBlastpEnsemblDescription",
+      "hsapiensBlastpGeneName",
+      "hsapiensBlastpDescription",
       "status",
       "geneBiotype",
       "geneOntologyName",
@@ -23,5 +31,4 @@ colNamesReport <-
       "pantherGeneOntologyMolecularFunction",
       "pantherGeneOntologyBiologicalProcess",
       "pantherGeneOntologyCellularComponent",
-      "pantherClass"
-    )
+      "pantherClass")

@@ -21,7 +21,7 @@ for (i in 1:length(chromosomes)) {
         mutate(fwdPrimerSeq = tolower(fwdPrimerSeq), revPrimerSeq = tolower(revPrimerSeq)) %>%
         #! df$plate <- stringr::str_pad(df$plate, 3, pad = "0")
         mutate(ahringer96 = do.call(paste, c(.[, c("chrom", "plate", "well")], sep = "-"))) %>%
-        #! mutate(ahringer96 = gsub("-([A-Z]{1}[0-9]{2})$", "@\\1", ahringer96)) %>%
+        mutate(ahringer96 = gsub("-([A-Z]{1}[0-9]{2})$", "\\1", ahringer96)) %>%
         select(-c(plate, well, chrom))
     name <- paste0("chr", chromosomes[i])
     list[[i]] <- tbl
@@ -29,6 +29,8 @@ for (i in 1:length(chromosomes)) {
 rm(i, name, tbl)
 raw <- as_tibble(do.call("rbind", list))
 rm(list)
+
+# FROM HERE ON, EVERYTHING IS THE SAME WITH ORFEOME -- MAKE A FUNCTION
 
 data(ahringerWbrnai)
 if (!exists("ahringerWbrnai")) {
@@ -56,24 +58,8 @@ if (!exists("ahringerTargets")) {
     ahringerTargets3 <- wormbaseRestRnaiTargets(ahringerWbrnai$wbrnai[10001:15000])
     ahringerTargets4 <- wormbaseRestRnaiTargets(ahringerWbrnai$wbrnai[15001:nrow(ahringerWbrnai)])
     ahringerTargets <- bind_rows(ahringerTargets1,
-                                  ahringerTargets2,
-                                  ahringerTargets3,
-                                  ahringerTargets4)
+                                 ahringerTargets2,
+                                 ahringerTargets3,
+                                 ahringerTargets4)
     devtools::use_data(ahringerTargets, overwrite = TRUE)
 }
-
-data(oligo2geneId)
-if (!exists("oligo2geneId")) {
-    source("data-raw/oligo2geneId.R")
-}
-
-ahringerData <- left_join(ahringerWbrnai, ahringerSequence) %>%
-    left_join(., ahringerTargets) %>%
-    left_join(., oligo2geneId) %>%
-    left_join(raw, .) %>%
-    distinct %>%
-    rename(primaryTarget = primary,
-           secondaryTarget = secondary) %>%
-    select(-wormbaseHistorical) %>%
-    arrange(ahringer96)
-devtools::use_data(ahringerData, overwrite = TRUE)

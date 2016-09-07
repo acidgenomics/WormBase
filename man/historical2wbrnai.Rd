@@ -4,13 +4,13 @@
 \alias{historical2wbrnai}
 \title{Convert historical RNAi identifier to WBRNAi with WormBase RESTful API}
 \usage{
-historical2wbrnai(vec)
+historical2wbrnai(historical)
 }
 \arguments{
-\item{vec}{\code{vector} of WormBase historical RNAi clones}
+\item{historical}{WormBase historical RNAi experiment \code{vector}.}
 }
 \value{
-\code{data.frame}
+\code{tibble}
 }
 \description{
 Convert historical RNAi identifier to WBRNAi with WormBase RESTful API

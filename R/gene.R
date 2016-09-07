@@ -1,10 +1,9 @@
 #' Gene annotations
-#'
+#' @import utils
 #' @param id Identifier
 #' @param format Identifier type (geneID, orf, publicName)
 #' @param output Output type (report, simple)
-#'
-#' @return \code{tibble}
+#' @return tibble
 #' @examples
 #' gene()
 #' gene(output = "simple")
@@ -13,33 +12,29 @@
 #' gene(id = c("skn-1", "gst-4"), format = "publicName")
 #' @export
 gene <- function(id = NULL, format = "geneId", output = "report") {
-    tbl <- geneData
-
-    # Strip ORF isoforms
     if (format == "orf") {
-        id <- gsub("[a-z]{1}$", "", id)
+        id <- gsub("[a-z]{1}$", "", id) # strip isoforms
     }
-
     # Subset if `id` declared
     if (!is.null(id)) {
         if (format == "geneId") {
-            tbl <- subset(tbl, tbl$geneId %in% id)
+            data <- dplyr::filter(geneData, geneId %in% id)
         }
         if (format == "orf") {
-            tbl <- subset(tbl, tbl$orf %in% id)
+            data <- dplyr::filter(geneData, orf %in% id)
         }
         if (format == "publicName") {
-            tbl <- subset(tbl, tbl$publicName %in% id)
+            data <- dplyr::filter(geneData, publicName %in% id)
         }
+    } else {
+        data <- geneData
     }
-
     # Subset columns
     if (output == "report") {
-        tbl <- tbl[, colNamesReport]
+        data <- data[, colNamesReport]
     }
     if (output == "simple") {
-        tbl <- tbl[, colNamesSimple]
+        data <- data[, colNamesSimple]
     }
-
-    return(tbl)
+    return(data)
 }
