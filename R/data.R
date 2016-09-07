@@ -1,10 +1,8 @@
-#' ahringerData
-#'
-"ahringerData"
-
+#' cloneData
+#' @format A list of 2: \code{ahringer} and \code{orfeome}.
+"cloneData"
 
 #' geneData
-#'
 #' @format A data frame with 50970 observations on the following 42 variables.
 #' \describe{
 #'     \item{\code{geneId}}{a character vector}
@@ -18,13 +16,12 @@
 #'     \item{\code{automatedDescription}}{a character vector}
 #'     \item{\code{geneClassDescription}}{a character vector}
 #'     \item{\code{rnaiPhenotypes}}{a character vector}
-#'     \item{\code{hsapiensEnsemblGeneName}}{a character vector}
 #'     \item{\code{hsapiensEnsemblGeneId}}{a character vector}
 #'     \item{\code{wormpepId}}{a character vector}
-#'     \item{\code{hsapiensBlastpEnsemblPeptideId}}{a character vector}
-#'     \item{\code{hsapiensBlastpEnsemblGeneId}}{a character vector}
-#'     \item{\code{hsapiensBlastpEnsemblGeneName}}{a character vector}
-#'     \item{\code{hsapiensBlastpEnsemblDescription}}{a character vector}
+#'     \item{\code{ensemblPeptideId}}{a character vector}
+#'     \item{\code{hsapiensBlastpGeneId}}{a character vector}
+#'     \item{\code{hsapiensBlastpGeneName}}{a character vector}
+#'     \item{\code{hsapiensBlastpDescription}}{a character vector}
 #'     \item{\code{geneBiotype}}{a character vector}
 #'     \item{\code{chromosomeName}}{a character vector}
 #'     \item{\code{startPosition}}{a character vector}
@@ -37,6 +34,7 @@
 #'     \item{\code{refseqNcrna}}{a character vector}
 #'     \item{\code{uniprotSptrembl}}{a character vector}
 #'     \item{\code{uniprotSwissprot}}{a character vector}
+#'     \item{\code{hsapiensHomologEnsemblGene}}{a character vector}
 #'     \item{\code{geneOntologyName}}{a character vector}
 #'     \item{\code{geneOntologyId}}{a character vector}
 #'     \item{\code{interproId}}{a character vector}
@@ -55,7 +53,3 @@
 #' Ensembl (\url{http://www.ensembl.org/Caenorhabditis_elegans}),
 #' PANTHER (\url{http://pantherdb.org})
 "geneData"
-
-
-#' orfeomeData
-"orfeomeData"

@@ -1,29 +1,25 @@
 #' WormBase RESTful RNAi targets query
-#'
 #' @import dplyr
 #' @import magrittr
-#'
-#' @return \code{tibble}
-#'
+#' @param wbrnai WormBase RNAi identifier vector.
+#' @return tibble
 #' @examples
 #' wormbaseRestRnaiTargets("WBRNAi00031683")
-wormbaseRestRnaiTargets <- function(query) {
-    query <- sort(query) %>% unique %>% na.omit
-    #! parallel::mclapply
-    list <- lapply(seq_along(query), function(a) {
-        wbrnai <- query[a]
-        data <- wormbaseRest(wbrnai, class = "rnai", instance = "targets") %>%
+#' @export
+wormbaseRestRnaiTargets <- function(wbrnai) {
+    wbrnai <- sort(wbrnai) %>% unique %>% stats::na.omit(.)
+    list <- lapply(seq_along(wbrnai), function(a) {
+        data <- wormbaseRest(wbrnai[a], class = "rnai", instance = "targets") %>%
             .[["targets"]] %>% .[["data"]]
         if (length(data)) {
             list <- lapply(seq_along(data), function(b) {
                 type <- data[[b]]$target_type %>%
                     tolower %>%
-                    stringr::str_replace(" target", "")
+                    stringr::str_replace(., " target", "")
                 id <- data[[b]]$gene$id
-                c(type, id)
+                list(type = type, id = id)
             })
-            tbl <- tibble::as_tibble(do.call(rbind, list)) %>%
-                set_names(c("type", "id")) %>%
+            tbl <- dplyr::bind_rows(list) %>%
                 filter(grepl("WBGene", id)) %>%
                 group_by(type) %>%
                 summarize(id = paste(sort(unique(id)),collapse = ", "))
@@ -35,11 +31,13 @@ wormbaseRestRnaiTargets <- function(query) {
             if (secondary == "character(0)") {
                 secondary <- NA
             }
-            c(wbrnai, primary, secondary)
         } else {
-            c(wbrnai, NA, NA)
+            primary <- NA
+            secondary <- NA
         }
+        list(wbrnai = wbrnai[a],
+             primary = primary,
+             secondary = secondary)
     })
-    tibble::as_tibble(do.call(rbind, list)) %>%
-        set_names(c("wbrnai", "primary", "secondary"))
+    dplyr::bind_rows(list)
 }

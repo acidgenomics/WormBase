@@ -2,7 +2,7 @@
 % Please edit documentation in R/wormbaseFile.R
 \name{wormbaseFile}
 \alias{wormbaseFile}
-\title{Download a file from WormBase.}
+\title{WormBase FTP server file download}
 \usage{
 wormbaseFile(request)
 }
@@ -13,6 +13,6 @@ wormbaseFile(request)
 Local file path of downloaded file.
 }
 \description{
-Download a file from WormBase.
+WormBase FTP server file download
 }
 

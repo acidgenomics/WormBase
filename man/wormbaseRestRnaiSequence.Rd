@@ -4,7 +4,10 @@
 \alias{wormbaseRestRnaiSequence}
 \title{WormBase RESTful RNAi sequence query}
 \usage{
-wormbaseRestRnaiSequence(query)
+wormbaseRestRnaiSequence(wbrnai)
+}
+\arguments{
+\item{wbrnai}{WormBase RNAi identifier vector.}
 }
 \value{
 \code{tibble}
