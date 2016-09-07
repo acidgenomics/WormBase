@@ -1,0 +1,11 @@
+`geneData`
+
+`r seqcloudr::mdlist(names(geneData), ordered = TRUE)`
+
+`cloneData[["ahringer"]]`
+
+`r seqcloudr::mdlist(names(cloneData$ahringer), ordered = TRUE)`
+
+`cloneData[["orfeome"]]`
+
+`r seqcloudr::mdlist(names(cloneData$orfeome), ordered = TRUE)`
