@@ -14,7 +14,7 @@ clone <- function(id = NULL,
                   wells = NULL,
                   output = "simple") {
     if (!is.null(id)) {
-        id <- gsub("^(ahringer|GHR|ofeome)", "", id)
+        id <- gsub("^(ahringer|GHR|orfeome)", "", id)
         id <- gsub("([A-Z]{1})([0-9]{1})$", "\\10\\2", id) # pad zeros
     }
     if (library == "ahringer") {
