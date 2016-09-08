@@ -19,9 +19,8 @@ vignettes/*.pdf
 .httr-oauth
 .Rproj.user
 
-data-raw/*.gz
-data-raw/*.tsv
-data-raw/*.txt
-data-raw/*.xlsx
+.DS_Store
 
-*.html
+data-raw/*.xlsx
+data-raw/PTHR*
+data-raw/wormbase/
