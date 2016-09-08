@@ -14,7 +14,7 @@ gene(id = NULL, format = "geneId", output = "report")
 \item{output}{Output type (report, simple)}
 }
 \value{
-metadata data.frame
+\code{tibble}
 }
 \description{
 Gene annotations

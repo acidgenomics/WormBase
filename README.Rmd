@@ -1,34 +1,44 @@
 ---
-title: "worminfo"
-output:
-  html_document:
-    keep_md: true
+title: worminfo
+output: github_document
 ---
 
 ```{r, include=FALSE}
+library(dplyr)
+library(magrittr)
+library(stringr)
+library(tibble)
+info <- installed.packages() %>% as_tibble %>% filter(Package == "worminfo")
+data(cloneData)
 data(geneData)
-data(rnaiData)
 ```
 
-*C. elegans* genome and RNAi library annotations. Metadata dynamically assembled from [WormBase](http://www.wormbase.org), [Ensembl](http://www.ensembl.org/Caenorhabditis_elegans), and [PANTHER](http://pantherdb.org). Support for ORFeome and Ahringer feeding RNAi libraries.
+[Ahringer]: http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/
+[Ensembl]: http://www.ensembl.org/Caenorhabditis_elegans
+[ORFeome]: http://worfdb.dfci.harvard.edu
+[PANTHER]: http://pantherdb.org
+[R]: https://www.r-project.org
+[WormBase]: http://www.wormbase.org
+
+*C. elegans* gene annotations dynamically assembled from [WormBase][], [Ensembl][], and [PANTHER][].
+Clone mapping support for [ORFeome][] and [Ahringer][] feeding RNAi libraries.
+
+# Installation
+
+This is an [R][] data package.
+
+To install, run `devtools::install_github("seqcloud/worminfo")`
 
 [![Build Status](https://travis-ci.org/seqcloud/worminfo.svg?branch=master)](https://travis-ci.org/seqcloud/worminfo)
 
-## Installation
+# Annotations
 
-This is an [R](https://www.r-project.org) data package.
-Current version is `r packageVersion("worminfo")` (`r Sys.Date()`).
+- [WormBase][] genes: `r nrow(geneData)`
+- [Ahringer][] clones: `r nrow(cloneData$ahringer)`
+- [ORFeome][] clones: `r nrow(cloneData$orfeome)`
 
-To install, run `devtools::install_github("seqcloud/worminfo")`.
-
-## Annotations
-
-- Genes: `r nrow(geneData)`.
-- Ahringer clones: `r length(unique(na.omit(rnaiData$ahringer$orf)))`.
-- ORFeome clones: `r length(unique(na.omit(rnaiData$orfeome$orf)))`.
-
-```{r, echo=FALSE}
-print(names(geneData))
-```
-
-Built with `r R.Version()$version.string` running on `r R.Version()$platform`.
+Sourced from
+WormBase WS`r list.files(path = "data-raw/wormbase", pattern = "wormpep.table*") %>% str_extract("[0-9]{3}")`,
+`r biomaRt::listMarts(host = "useast.ensembl.org") %>% filter(biomart == "ENSEMBL_MART_ENSEMBL") %>% select(version)`
+and PANTHER `r list.files(path = "data-raw", pattern = "PTHR*") %>% str_extract("([0-9]{2}\\.[0-9]{1})")`
+with `r R.Version()$version.string` running on `r R.Version()$platform`.

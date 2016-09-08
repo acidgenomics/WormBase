@@ -1,10 +1,9 @@
 #' Gene annotations
-#'
+#' @import utils
 #' @param id Identifier
 #' @param format Identifier type (geneID, orf, publicName)
 #' @param output Output type (report, simple)
-#'
-#' @return metadata data.frame
+#' @return tibble
 #' @examples
 #' gene()
 #' gene(output = "simple")
@@ -13,33 +12,29 @@
 #' gene(id = c("skn-1", "gst-4"), format = "publicName")
 #' @export
 gene <- function(id = NULL, format = "geneId", output = "report") {
-  df <- geneData
-
-  # Strip ORF isoforms
-  if (format == "orf") {
-    id <- gsub("[a-z]{1}$", "", id)
-  }
-
-  # Subset if `id` declared
-  if (!is.null(id)) {
-    if (format == "geneId") {
-      df <- subset(df, df$geneId %in% id)
-    }
     if (format == "orf") {
-      df <- subset(df, df$orf %in% id)
+        id <- gsub("[a-z]{1}$", "", id) # strip isoforms
     }
-    if (format == "publicName") {
-      df <- subset(df, df$publicName %in% id)
+    # Subset if `id` declared
+    if (!is.null(id)) {
+        if (format == "geneId") {
+            data <- dplyr::filter(geneData, geneId %in% id)
+        }
+        if (format == "orf") {
+            data <- dplyr::filter(geneData, orf %in% id)
+        }
+        if (format == "publicName") {
+            data <- dplyr::filter(geneData, publicName %in% id)
+        }
+    } else {
+        data <- geneData
     }
-  }
-
-  # Subset columns
-  if (output == "report") {
-    df <- df[, colNamesReport]
-  }
-  if (output == "simple") {
-    df <- df[, colNamesSimple]
-  }
-
-  return(df)
+    # Subset columns
+    if (output == "report") {
+        data <- data[, colNamesReport]
+    }
+    if (output == "simple") {
+        data <- data[, colNamesSimple]
+    }
+    return(data)
 }

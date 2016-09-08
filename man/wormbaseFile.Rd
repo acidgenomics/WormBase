@@ -2,17 +2,17 @@
 % Please edit documentation in R/wormbaseFile.R
 \name{wormbaseFile}
 \alias{wormbaseFile}
-\title{Download a file from WormBase}
+\title{WormBase FTP server file download}
 \usage{
-wormbaseFile(file)
+wormbaseFile(request)
 }
 \arguments{
-\item{file}{FTP file request}
+\item{request}{WormBase FTP server file request.}
 }
 \value{
-File path of download
+Local file path of downloaded file.
 }
 \description{
-Download a file from WormBase
+WormBase FTP server file download
 }
 
