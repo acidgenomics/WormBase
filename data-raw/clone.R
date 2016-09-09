@@ -2,6 +2,7 @@ library(dplyr)
 library(magrittr)
 library(readxl)
 library(seqcloudr)
+library(stringr)
 library(tibble)
 devtools::load_all()
 
@@ -17,13 +18,20 @@ if (!exists("ahringer")) {
     list <- list()
     for (i in 1:length(chromosomes)) {
         tbl <- read_excel("data-raw/ahringer.xlsx", sheet = i + 1) %>% # First sheet contains notes
-            set_names(camel(names(.))) %>%
+            set_names(seqcloudr::camel(names(.))) %>%
             select(-extraInfo) %>%
-            rename(genePair = genePairsName, sourceBioscience384 = sourceBioscienceLocation) %>%
-            mutate(wormbaseHistorical = paste0("JA:", genePair)) %>%
-            mutate(fwdPrimerSeq = tolower(fwdPrimerSeq), revPrimerSeq = tolower(revPrimerSeq)) %>%
-            mutate(ahringer96 = do.call(paste, c(.[, c("chrom", "plate", "well")], sep = "-"))) %>%
-            mutate(ahringer96 = gsub("-([A-Z]{1}[0-9]{2})$", "\\1", ahringer96)) %>%
+            rename(genePair = genePairsName,
+                   ahringer384 = sourceBioscienceLocation) %>%
+            mutate(wormbaseHistorical = paste0("JA:", genePair),
+                   fwdPrimerSeq = tolower(fwdPrimerSeq),
+                   revPrimerSeq = tolower(revPrimerSeq),
+                   ahringer96 = paste(stringr::str_pad(plate, 3, pad = "0"),
+                                      stringr::str_pad(well, 2, pad = "0"),
+                                      sep = "-"),
+                   ahringer96 = gsub("^NA.*$", NA, ahringer96),
+                   ahringer384 = gsub("-([0-9}+)([A-Z]{1})", "-\\1-\\2", ahringer384),
+                   ahringer384 = gsub("-([0-9]{1})-", "-00\\1-", ahringer384),
+                   ahringer384 = gsub("-([0-9]{2})-", "-0\\1-", ahringer384)) %>%
             select(-c(plate, well, chrom))
         name <- paste0("chr", chromosomes[i])
         list[[i]] <- tbl
@@ -61,17 +69,15 @@ if (!exists("orfeome")) {
                       "data-raw/orfeome.xlsx")
     }
     orfeome[["raw"]] <- read_excel("data-raw/orfeome.xlsx", sheet = 2) %>%
-        set_names(camel(names(.))) %>%
+        set_names(seqcloudr::camel(names(.))) %>%
         rename(orfeome96Historical = rnaiWell,
                genePair = orfIdWs112) %>%
         mutate(genePair = gsub("^no match.*", NA, genePair)) %>%
         filter(!is.na(genePair)) %>%
-        select(genePair, plate, row, col, orfeome96Historical) %>%
+        select(genePair, plate, row, col) %>%
         mutate(wormbaseHistorical = paste0("MV_SV:mv_", genePair)) %>%
-        mutate(orfeome96 = paste(plate, row, col, sep = "-")) %>%
-        select(-c(plate, row, col)) %>%
-        mutate(orfeome96 = gsub("^(.*)-([0-9]{1})$", "\\1-0\\2", orfeome96)) %>% # pad zeros
-        mutate(orfeome96 = gsub("^([0-9]{5})-([A-Z]{1})-([0-9]{2})$", "\\1@\\2\\3", orfeome96))
+        mutate(orfeome96 = paste0(plate, "-", row, stringr::str_pad(col, 2, pad = "0"))) %>%
+        select(-c(plate, row, col))
     if (is.null(orfeome$wbrnai)) {
         orfeome[["wbrnai"]] <- historical2wbrnai(orfeome$raw$wormbaseHistorical)
     }

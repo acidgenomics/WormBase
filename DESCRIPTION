@@ -1,7 +1,7 @@
 Package: worminfo
 Type: Package
 Title: C. elegans genome and RNAi library annotations
-Version: 0.6
+Version: 0.7
 Author: Michael Steinbaugh
 Maintainer: Michael Steinbaugh <mike@steinbaugh.com>
 Description: C. elegans genome and RNAi library annotations. Metadata dynamically assembled from WormBase, Ensembl, and PANTHER. Support for ORFeome and Ahringer feeding RNAi libraries.
@@ -23,5 +23,5 @@ Imports:
     utils
 Remotes:
     seqcloud/seqcloudr
-biocViews: 
+biocViews:
 RoxygenNote: 5.0.1
