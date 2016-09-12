@@ -17,15 +17,6 @@ ensembl[["basic"]] <-
                                   "strand",
                                   "description"))
 
-# Homology ====
-ensembl[["homology"]] <-
-    biomaRt::getBM(mart = mart,
-                   attributes = c("ensembl_gene_id",
-                                  "hsapiens_homolog_ensembl_gene")) %>%
-    dplyr::group_by(ensembl_gene_id) %>%
-    dplyr::summarize(hsapiens_homolog_ensembl_gene = paste(sort(unique(hsapiens_homolog_ensembl_gene)),
-                                                           collapse = ", "))
-
 # Gene Ontology ====
 ensembl[["geneOntology"]] <-
     biomaRt::getBM(mart = mart,
