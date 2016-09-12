@@ -1,30 +1,20 @@
-#' Feeding RNAi Library clone matching
+#' Feeding RNAi Library clone matching.
 #' @import dplyr
 #' @import magrittr
-#' @param id Clone identifier
-#' @param library Library type ("orfeome" or "ahringer")
-#' @param wells Library plate format (96, 384)
-#' @param output Output format (report, simple)
-#' @return tibble with \code{gene()} metadata
+#' @param id Clone identifier.
+#' @param library Library type ("orfeome" or "ahringer").
+#' @param wells Library plate format (96, 384).
+#' @param select Select columns (report, simple).
+#' @return tibble with \code{gene()} metadata.
 #' @examples
-#' These should all match SBP-1:
-#'
-#' ORFeome
-#' clone("orfeome96-11010-G06", library = "orfeome")
 #' clone("11010-G06", library = "orfeome")
-#' clone("GHR-11010@G06", library = "orfeome")
-#'
-#' Ahringer
-#' clone("III-86B01", library = "ahringer", wells = 96)
-#' clone("III-086-B01", library = "ahringer", wells = 96)
 #' clone("086-B01", library = "ahringer", wells = 96)
 #' clone("III-006-C01", library = "ahringer", wells = 384)
-#' clone("III-6C1", library = "ahringer", wells = 384)
 #' @export
 clone <- function(id = NULL,
                   library = "orfeome",
                   wells = NULL,
-                  output = "simple") {
+                  select = "simple") {
     if (!is.null(id)) {
         id <- gsub("^(ahringer|GHR|orfeome)(96|384)?-", "", id) %>%
             gsub("@", "-", .) %>%
@@ -41,16 +31,15 @@ clone <- function(id = NULL,
             if (wells == 96) {
                 # Chromosome number isn't necessary
                 id <- gsub("^([IVX]+)-", "", id)
-                data <- dplyr::filter(cloneData$ahringer, ahringer96 %in% id)
+                data <- dplyr::filter_(cloneData$ahringer, ~ahringer96 %in% id)
             } else if (wells == 384) {
-                data <- dplyr::filter(cloneData$ahringer, ahringer384 %in% id)
+                data <- dplyr::filter_(cloneData$ahringer, ~ahringer384 %in% id)
             }
         }
     } else if (library == "orfeome") {
         if (!is.null(id)) {
-            data <- dplyr::filter(cloneData$orfeome, orfeome96 %in% id)
+            data <- dplyr::filter_(cloneData$orfeome, ~orfeome96 %in% id)
         }
     }
-    dplyr::left_join(data, gene(data$geneId, format = "geneId", output = output)) %>%
-        select(-matchedBy)
+    dplyr::left_join(data, gene(data$geneId, format = "geneId", select = select))
 }
