@@ -108,22 +108,19 @@ for (i in libraries) {
                secondaryTarget = secondary) %>%
         select(-c(sequence, wormbaseHistorical))
     # Matched by oligo
-    matched1 <- filter(all, !is.na(geneId)) %>%
-        mutate(matchedBy = "oligo")
+    matched1 <- filter(all, !is.na(geneId))
     # Matched with gene()
     matched2 <- filter(all, is.na(geneId)) %>%
         select(genePair) %>% .[[1]] %>%
-        gene(format = "orf", output = "simple") %>%
+        gene(format = "orf", select = "simple") %>%
         inner_join(select(all, -geneId), ., by = c("genePair" = "orf")) %>%
-        select(-publicName) %>%
-        mutate(matchedBy = "gene()")
+        select(-publicName)
     # Matched with deadOrf()
     matched3 <- filter(all, !(genePair %in% c(matched1$genePair,
                                               matched2$genePair))) %>%
         select(genePair) %>% .[[1]] %>%
         deadOrf %>%
-        inner_join(select(all, -geneId), .) %>%
-        mutate(matchedBy = "deadOrf()")
+        inner_join(select(all, -geneId), .)
     # Check that there's no leftovers
     filter(all, (!genePair %in% c(matched1$genePair,
                                   matched2$genePair,
