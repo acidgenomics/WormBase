@@ -3,18 +3,20 @@ library(magrittr)
 library(seqcloudr)
 
 data(wormbase)
-wormbase <- Reduce(function(...) full_join(..., by = "geneId"), wormbase) %>%
-    select(-eValue)
+wormbase <- Reduce(function(...) dplyr::full_join(..., by = "geneId"), wormbase) %>%
+    dplyr::select(-eValue)
 
 data(ensembl)
-ensembl <- Reduce(function(...) full_join(..., by = "ensembl_gene_id"), ensembl) %>%
-    rename(geneId = ensembl_gene_id,
-           ensembl_description = description) %>%
-    set_names(camel(names(.)))
+ensembl <- Reduce(function(...) dplyr::full_join(..., by = "ensembl_gene_id"), ensembl) %>%
+    dplyr::rename(geneId = ensembl_gene_id,
+                  ensembl_description = description) %>%
+    magrittr::set_names(seqcloudr::camel(names(.)))
 
 data(panther)
-panther <- select(panther, -c(protein, subfamilyId))
-names(panther)[3:length(panther)] <- paste("panther", names(panther)[3:length(panther)], sep = "_") %>% camel
+panther <- dplyr::select(panther, -c(protein, subfamilyId, uniprotKb))
+names(panther)[2:length(panther)] <- paste("panther", names(panther)[2:length(panther)], sep = "_") %>%
+    seqcloudr::camel(.)
 
-geneData <- Reduce(function(...) left_join(..., by = "geneId"), list(wormbase, ensembl, panther)) %>% cruft
+geneData <- Reduce(function(...) dplyr::left_join(..., by = "geneId"), list(wormbase, ensembl, panther)) %>%
+    seqcloudr::cruft(.)
 devtools::use_data(geneData, overwrite = TRUE)
