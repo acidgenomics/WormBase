@@ -2,7 +2,7 @@
 % Please edit documentation in R/wormbaseRest.R
 \name{wormbaseRest}
 \alias{wormbaseRest}
-\title{WormBase RESTful API query}
+\title{WormBase RESTful API query.}
 \usage{
 wormbaseRest(query, class, instance)
 }

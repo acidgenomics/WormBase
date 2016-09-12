@@ -21,7 +21,7 @@ Imports:
     tibble,
     tidyr,
     utils,
-    xml2
+    xml2,
 Remotes:
     seqcloud/seqcloudr
 biocViews:

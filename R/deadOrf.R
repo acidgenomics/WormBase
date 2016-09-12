@@ -1,4 +1,6 @@
 #' Map dead ORF to WormBase Gene ID.
+#' @import dplyr
+#' @import httr
 #' @param orf ORF vector.
 #' @return tibble.
 #' @examples
@@ -8,11 +10,12 @@ deadOrf <- function(orf) {
     orf <- sort(orf) %>% unique %>% stats::na.omit(.)
     list <- lapply(seq_along(orf), function(a) {
         query <- orf[a]
-        request <- httr::GET(paste0("http://www.wormbase.org/search/gene/", query, "?species=c_elegans"),
-                             config = httr::content_type_json())
-        status <- httr::status_code(request)
-        content <- httr::content(request)
-        results <- content$results %>% rev # WormBase seems to use the last entry for matching
+        request <- GET(paste0("http://www.wormbase.org/search/gene/", query, "?species=c_elegans"),
+                       config = content_type_json())
+        status <- status_code(request)
+        content <- content(request)
+        results <- content$results %>%
+            rev # WormBase seems to use the last entry for matching
         if (length(results)) {
             deadGeneId <- results[[1]]$name$id
             mergeGeneId <- results[[1]]$merged_into[[1]]$id
@@ -26,5 +29,5 @@ deadOrf <- function(orf) {
         }
         list(genePair = query, geneId = geneId)
     })
-    dplyr::bind_rows(list)
+    bind_rows(list)
 }

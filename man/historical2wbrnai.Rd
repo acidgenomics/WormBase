@@ -2,7 +2,7 @@
 % Please edit documentation in R/historical2wbrnai.R
 \name{historical2wbrnai}
 \alias{historical2wbrnai}
-\title{Convert historical RNAi identifier to WBRNAi with WormBase RESTful API}
+\title{Convert historical RNAi identifier to WBRNAi with WormBase RESTful API.}
 \usage{
 historical2wbrnai(historical)
 }
@@ -10,10 +10,10 @@ historical2wbrnai(historical)
 \item{historical}{WormBase historical RNAi experiment vector.}
 }
 \value{
-tibble
+tibble.
 }
 \description{
-Convert historical RNAi identifier to WBRNAi with WormBase RESTful API
+Convert historical RNAi identifier to WBRNAi with WormBase RESTful API.
 }
 \examples{
 historical2wbrnai("JA:K10E9.1")

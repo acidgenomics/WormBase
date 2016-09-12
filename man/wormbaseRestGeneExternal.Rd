@@ -10,7 +10,7 @@ wormbaseRestGeneExternal(geneId)
 \item{geneId}{WormBase gene identifier vector.}
 }
 \value{
-tibble
+tibble.
 }
 \description{
 Get Entrez identifier from WormBase Gene identifier.

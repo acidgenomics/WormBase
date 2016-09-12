@@ -1,4 +1,4 @@
-#' WormBase FTP server file download
+#' WormBase FTP server file download.
 #' @param request WormBase FTP server file request.
 #' @return Local file path of downloaded file.
 #' @export
