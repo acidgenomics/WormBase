@@ -23,7 +23,6 @@ Feeding RNAi Library clone matching.
 }
 \examples{
 clone("11010-G06", library = "orfeome")
-clone("11010-G06", library = "orfeome", select = "report")
 clone("086-B01", library = "ahringer", wells = 96)
 clone("III-006-C01", library = "ahringer", wells = 384)
 }

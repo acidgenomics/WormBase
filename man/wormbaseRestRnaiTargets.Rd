@@ -2,7 +2,7 @@
 % Please edit documentation in R/wormbaseRestRnaiTargets.R
 \name{wormbaseRestRnaiTargets}
 \alias{wormbaseRestRnaiTargets}
-\title{WormBase RESTful RNAi targets query}
+\title{WormBase RESTful RNAi targets query.}
 \usage{
 wormbaseRestRnaiTargets(wbrnai)
 }
@@ -10,10 +10,10 @@ wormbaseRestRnaiTargets(wbrnai)
 \item{wbrnai}{WormBase RNAi identifier vector.}
 }
 \value{
-tibble
+tibble.
 }
 \description{
-WormBase RESTful RNAi targets query
+WormBase RESTful RNAi targets query.
 }
 \examples{
 wormbaseRestRnaiTargets("WBRNAi00031683")

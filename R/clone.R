@@ -1,6 +1,5 @@
 #' Feeding RNAi Library clone matching.
 #' @import dplyr
-#' @import magrittr
 #' @param id Clone identifier.
 #' @param library Library type ("orfeome" or "ahringer").
 #' @param wells Library plate format (96, 384).
@@ -31,15 +30,15 @@ clone <- function(id = NULL,
             if (wells == 96) {
                 # Chromosome number isn't necessary
                 id <- gsub("^([IVX]+)-", "", id)
-                data <- dplyr::filter_(cloneData$ahringer, ~ahringer96 %in% id)
+                data <- filter(cloneData$ahringer, ahringer96 %in% id)
             } else if (wells == 384) {
-                data <- dplyr::filter_(cloneData$ahringer, ~ahringer384 %in% id)
+                data <- filter(cloneData$ahringer, ahringer384 %in% id)
             }
         }
     } else if (library == "orfeome") {
         if (!is.null(id)) {
-            data <- dplyr::filter_(cloneData$orfeome, ~orfeome96 %in% id)
+            data <- filter(cloneData$orfeome, orfeome96 %in% id)
         }
     }
-    dplyr::left_join(data, gene(data$geneId, format = "geneId", select = select))
+    left_join(data, gene(data$geneId, format = "geneId", select = select))
 }

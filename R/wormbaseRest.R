@@ -1,4 +1,4 @@
-#' WormBase RESTful API query
+#' WormBase RESTful API query.
 #' @import httr
 #' @param query A WormBase gene identifier (e.g. WBGene00000001).
 #' @param class A class (e.g. gene).
@@ -7,7 +7,7 @@
 #' \url{http://www.wormbase.org/about/userguide/for_developers/API-REST}
 #' @export
 wormbaseRest <- function(query, class, instance) {
-    httr::GET(paste0("http://api.wormbase.org/rest/field/", class, "/", query, "/", instance),
-              config = httr::content_type_json()) %>%
-        httr::content(.)
+    GET(paste0("http://api.wormbase.org/rest/field/", class, "/", query, "/", instance),
+        config = content_type_json()) %>%
+        content(.)
 }

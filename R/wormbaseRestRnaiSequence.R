@@ -1,8 +1,7 @@
-#' WormBase RESTful RNAi sequence query
+#' WormBase RESTful RNAi sequence query.
 #' @import dplyr
-#' @import magrittr
 #' @param wbrnai WormBase RNAi identifier vector.
-#' @return tibble
+#' @return tibble.
 #' @examples
 #' wormbaseRestRnaiSequence("WBRNAi00003982")
 #' @export
@@ -25,5 +24,5 @@ wormbaseRestRnaiSequence <- function(wbrnai) {
              length = length,
              sequence = sequence)
     })
-    dplyr::bind_rows(list)
+    bind_rows(list)
 }

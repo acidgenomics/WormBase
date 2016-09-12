@@ -1,24 +1,20 @@
 #' Get Entrez identifier from WormBase Gene identifier.
-#'
+#' @import httr
 #' @import dplyr
-#' @import magrittr
 #' @import stringr
 #' @import tibble
 #' @import xml2
-#'
 #' @param geneId WormBase gene identifier vector.
-#'
-#' @return tibble
+#' @return tibble.
 #' @export
-#'
 #' @examples
 #' wormbaseRestGeneExternal("WBGene00000001")
 wormbaseRestGeneExternal <- function(geneId) {
     geneId <- sort(geneId) %>% unique %>% stats::na.omit(.)
     list <- lapply(seq_along(geneId), function(a) {
-        rest <- httr::GET(paste0("http://api.wormbase.org/rest/widget/gene/", geneId[a], "/external_links"),
-                          config = httr::content_type_json()) %>%
-            httr::content(.)
+        rest <- GET(paste0("http://api.wormbase.org/rest/widget/gene/", geneId[a], "/external_links"),
+                    config = content_type_json()) %>%
+            content(.)
         list(geneId = geneId[a],
              aceviewId = rest$fields$xrefs$data$AceView$gene$ids[[1]],
              ncbiId = rest$fields$xrefs$data$NCBI$gene$ids[[1]],
@@ -28,6 +24,6 @@ wormbaseRestGeneExternal <- function(geneId) {
              uniprotId = rest$fields$xrefs$data$UniProt$UniProtAcc$ids[[1]])
     })
     bind_rows(lapply(list, function(x) {
-        tibble::as_tibble(Filter(Negate(is.null), x))
+        as_tibble(Filter(Negate(is.null), x))
     }))
 }
