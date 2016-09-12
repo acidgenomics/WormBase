@@ -30,15 +30,15 @@ clone <- function(id = NULL,
             if (wells == 96) {
                 # Chromosome number isn't necessary
                 id <- gsub("^([IVX]+)-", "", id)
-                data <- filter(cloneData$ahringer, ahringer96 %in% id)
+                data <- filter(worminfo::cloneData$ahringer, ahringer96 %in% id)
             } else if (wells == 384) {
-                data <- filter(cloneData$ahringer, ahringer384 %in% id)
+                data <- filter(worminfo::cloneData$ahringer, ahringer384 %in% id)
             }
         }
     } else if (library == "orfeome") {
         if (!is.null(id)) {
-            data <- filter(cloneData$orfeome, orfeome96 %in% id)
+            data <- filter(worminfo::cloneData$orfeome, orfeome96 %in% id)
         }
     }
-    left_join(data, gene(data$geneId, format = "geneId", select = select))
+    left_join(data, gene(data$geneId, format = "geneId", select = select), by = "geneId")
 }
