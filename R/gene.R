@@ -14,17 +14,17 @@ gene <- function(id = NULL, format = "geneId", select = "simple") {
     if (!is.null(id)) {
         id <- sort(id) %>% unique %>% stats::na.omit(.)
         if (format == "geneId") {
-            data <- filter(geneData, geneId %in% id)
+            data <- filter(worminfo::geneData, geneId %in% id)
         }
         if (format == "orf") {
             id <- gsub("[a-z]{1}$", "", id) # strip isoforms
-            data <- filter(geneData, orf %in% id)
+            data <- filter(worminfo::geneData, orf %in% id)
         }
         if (format == "publicName") {
-            data <- filter(geneData, publicName %in% id)
+            data <- filter(worminfo::geneData, publicName %in% id)
         }
     } else {
-        data <- geneData
+        data <- worminfo::geneData
     }
 
     if (!is.null(select)) {

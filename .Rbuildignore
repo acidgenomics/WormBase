@@ -1,12 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.travis\.yml$
-^data/ahringer\.rda$
-^data/ensembl\.rda$
-^data/oligo2geneId\.rda$
-^data/orfeome\.rda$
-^data/panther\.rda$
-^data/wormbase\.rda$
 ^data-raw$
 ^docs$
 ^paper$
