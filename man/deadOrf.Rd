@@ -2,7 +2,7 @@
 % Please edit documentation in R/deadOrf.R
 \name{deadOrf}
 \alias{deadOrf}
-\title{Map dead ORF to WormBase Gene ID}
+\title{Map dead ORF to WormBase Gene ID.}
 \usage{
 deadOrf(orf)
 }
@@ -10,10 +10,10 @@ deadOrf(orf)
 \item{orf}{ORF vector.}
 }
 \value{
-tibble
+tibble.
 }
 \description{
-Map dead ORF to WormBase Gene ID
+Map dead ORF to WormBase Gene ID.
 }
 \examples{
 deadOrf("M01E10.2")
