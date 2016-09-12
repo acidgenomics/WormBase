@@ -2,38 +2,29 @@
 % Please edit documentation in R/clone.R
 \name{clone}
 \alias{clone}
-\title{Feeding RNAi Library clone matching}
+\title{Feeding RNAi Library clone matching.}
 \usage{
-clone(id = NULL, library = "orfeome", wells = NULL, output = "simple")
+clone(id = NULL, library = "orfeome", wells = NULL, select = "simple")
 }
 \arguments{
-\item{id}{Clone identifier}
+\item{id}{Clone identifier.}
 
-\item{library}{Library type ("orfeome" or "ahringer")}
+\item{library}{Library type ("orfeome" or "ahringer").}
 
-\item{wells}{Library plate format (96, 384)}
+\item{wells}{Library plate format (96, 384).}
 
-\item{output}{Output format (report, simple)}
+\item{select}{Select columns (report, simple).}
 }
 \value{
-tibble with \code{gene()} metadata
+tibble with \code{gene()} metadata.
 }
 \description{
-Feeding RNAi Library clone matching
+Feeding RNAi Library clone matching.
 }
 \examples{
-These should all match SBP-1:
-
-ORFeome
-clone("orfeome96-11010-G06", library = "orfeome")
 clone("11010-G06", library = "orfeome")
-clone("GHR-11010@G06", library = "orfeome")
-
-Ahringer
-clone("III-86B01", library = "ahringer", wells = 96)
-clone("III-086-B01", library = "ahringer", wells = 96)
+clone("11010-G06", library = "orfeome", select = "report")
 clone("086-B01", library = "ahringer", wells = 96)
 clone("III-006-C01", library = "ahringer", wells = 384)
-clone("III-6C1", library = "ahringer", wells = 384)
 }
 
