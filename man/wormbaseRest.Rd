@@ -7,11 +7,11 @@
 wormbaseRest(query, class, instance)
 }
 \arguments{
-\item{query}{a WBGene ID (e.g. WBGene00006763)}
+\item{query}{A WormBase gene identifier (e.g. WBGene00000001).}
 
-\item{class}{a class (e.g. gene)}
+\item{class}{A class (e.g. gene).}
 
-\item{instance}{an instance (e.g. concise_description)}
+\item{instance}{An instance (e.g. concise_description).}
 }
 \description{
 \url{http://www.wormbase.org/about/userguide/for_developers/API-REST}

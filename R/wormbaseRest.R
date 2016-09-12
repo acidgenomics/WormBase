@@ -1,7 +1,8 @@
 #' WormBase RESTful API query
-#' @param query a WBGene ID (e.g. WBGene00006763)
-#' @param class a class (e.g. gene)
-#' @param instance an instance (e.g. concise_description)
+#' @import httr
+#' @param query A WormBase gene identifier (e.g. WBGene00000001).
+#' @param class A class (e.g. gene).
+#' @param instance An instance (e.g. concise_description).
 #' @description
 #' \url{http://www.wormbase.org/about/userguide/for_developers/API-REST}
 #' @export

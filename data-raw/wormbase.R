@@ -127,7 +127,7 @@ wormpepId <- read_lines(file) %>%
     }) %>%
     do.call(rbind, .) %>%
     as_tibble %>%
-    setNames(c("wormpepId", "geneId"))
+    set_names(c("wormpepId", "geneId"))
 
 # Bind the WormBase Gene IDs:
 blastp <- left_join(blastp, wormpepId, by = "wormpepId", all = TRUE) %>%
@@ -150,11 +150,15 @@ hsapiens <-
     rename(hsapiensBlastpDescription = description,
            hsapiensBlastpGeneName = external_gene_name,
            hsapiensBlastpGeneId = ensembl_gene_id) %>%
-    setNames(camel(names(.)))
+    set_names(camel(names(.)))
 
 # Final join:
 wormbase[["blastp"]] <- left_join(blastp, hsapiens, by = "ensemblPeptideId")
 rm(blastp, file, hsapiens, mart, options)
+
+
+# External Links
+wormbase[["external"]] <- wormbaseRestGeneExternal(wormbase$geneId$geneId)
 
 
 # Save ====

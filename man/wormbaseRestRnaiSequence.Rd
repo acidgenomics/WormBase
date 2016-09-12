@@ -10,7 +10,7 @@ wormbaseRestRnaiSequence(wbrnai)
 \item{wbrnai}{WormBase RNAi identifier vector.}
 }
 \value{
-\code{tibble}
+tibble
 }
 \description{
 WormBase RESTful RNAi sequence query

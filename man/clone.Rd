@@ -16,14 +16,24 @@ clone(id = NULL, library = "orfeome", wells = NULL, output = "simple")
 \item{output}{Output format (report, simple)}
 }
 \value{
-\code{tibble} with \code{gene()} metadata
+tibble with \code{gene()} metadata
 }
 \description{
 Feeding RNAi Library clone matching
 }
 \examples{
-clone("11010@G06", library = "orfeome")
+These should all match SBP-1:
+
+ORFeome
+clone("orfeome96-11010-G06", library = "orfeome")
+clone("11010-G06", library = "orfeome")
+clone("GHR-11010@G06", library = "orfeome")
+
+Ahringer
 clone("III-86B01", library = "ahringer", wells = 96)
-clone("III-6C01", library = "ahringer", wells = 384)
+clone("III-086-B01", library = "ahringer", wells = 96)
+clone("086-B01", library = "ahringer", wells = 96)
+clone("III-006-C01", library = "ahringer", wells = 384)
+clone("III-6C1", library = "ahringer", wells = 384)
 }
 

@@ -4,17 +4,17 @@
 \alias{gene}
 \title{Gene annotations}
 \usage{
-gene(id = NULL, format = "geneId", output = "report")
+gene(id = NULL, format = "geneId", select = NULL)
 }
 \arguments{
 \item{id}{Identifier}
 
 \item{format}{Identifier type (geneID, orf, publicName)}
 
-\item{output}{Output type (report, simple)}
+\item{select}{Columns to select (report, simple)}
 }
 \value{
-\code{tibble}
+tibble
 }
 \description{
 Gene annotations

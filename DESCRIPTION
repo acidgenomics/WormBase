@@ -20,8 +20,9 @@ Imports:
     stringr,
     tibble,
     tidyr,
-    utils
+    utils,
+    xml2
 Remotes:
     seqcloud/seqcloudr
-biocViews:
+biocViews: 
 RoxygenNote: 5.0.1

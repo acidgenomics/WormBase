@@ -2,7 +2,7 @@
 #' @import utils
 #' @param id Identifier
 #' @param format Identifier type (geneID, orf, publicName)
-#' @param output Output type (report, simple)
+#' @param select Columns to select (report, simple)
 #' @return tibble
 #' @examples
 #' gene()
@@ -11,7 +11,9 @@
 #' gene(id = c("T19E7.2", "K08F4.7"), format = "orf")
 #' gene(id = c("skn-1", "gst-4"), format = "publicName")
 #' @export
-gene <- function(id = NULL, format = "geneId", output = "report") {
+gene <- function(id = NULL,
+                 format = "geneId",
+                 select = NULL) {
     if (format == "orf") {
         id <- gsub("[a-z]{1}$", "", id) # strip isoforms
     }
@@ -29,12 +31,36 @@ gene <- function(id = NULL, format = "geneId", output = "report") {
     } else {
         data <- geneData
     }
-    # Subset columns
-    if (output == "report") {
-        data <- data[, colNamesReport]
-    }
-    if (output == "simple") {
-        data <- data[, colNamesSimple]
+
+    if (!is.null(select)) {
+        if (select == "simple") {
+            data <- dplyr::select(data,
+                                  geneId,
+                                  orf,
+                                  publicName)
+        } else if (select == "report") {
+            data <- dplyr::select(data,
+                                  geneId,
+                                  orf,
+                                  publicName,
+                                  geneOtherIds,
+                                  geneClassDescription,
+                                  conciseDescription,
+                                  provisionalDescription,
+                                  automatedDescription,
+                                  hsapiensBlastpGeneName,
+                                  hsapiensBlastpDescription,
+                                  geneOntologyName,
+                                  interproDescription,
+                                  pantherFamilyName,
+                                  pantherSubfamilyName,
+                                  pantherGeneOntologyMolecularFunction,
+                                  pantherGeneOntologyBiologicalProcess,
+                                  pantherGeneOntologyCellularComponent,
+                                  pantherClass)
+        } else {
+            data <- data[, c(format, select)]
+        }
     }
     return(data)
 }

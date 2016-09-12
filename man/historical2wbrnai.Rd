@@ -7,10 +7,10 @@
 historical2wbrnai(historical)
 }
 \arguments{
-\item{historical}{WormBase historical RNAi experiment \code{vector}.}
+\item{historical}{WormBase historical RNAi experiment vector.}
 }
 \value{
-\code{tibble}
+tibble
 }
 \description{
 Convert historical RNAi identifier to WBRNAi with WormBase RESTful API
