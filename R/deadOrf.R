@@ -1,6 +1,6 @@
-#' Map dead ORF to WormBase Gene ID
+#' Map dead ORF to WormBase Gene ID.
 #' @param orf ORF vector.
-#' @return tibble
+#' @return tibble.
 #' @examples
 #' deadOrf("M01E10.2")
 #' @export

@@ -3,6 +3,7 @@
 #' @import dplyr
 #' @import magrittr
 #' @import stringr
+#' @import tibble
 #' @import xml2
 #'
 #' @param geneId WormBase gene identifier vector.
@@ -27,6 +28,6 @@ wormbaseRestGeneExternal <- function(geneId) {
              uniprotId = rest$fields$xrefs$data$UniProt$UniProtAcc$ids[[1]])
     })
     bind_rows(lapply(list, function(x) {
-        as_tibble(Filter(Negate(is.null), x))
+        tibble::as_tibble(Filter(Negate(is.null), x))
     }))
 }

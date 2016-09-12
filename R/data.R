@@ -1,8 +1,8 @@
-#' cloneData
+#' cloneData.
 #' @format A list of 2: \code{ahringer} and \code{orfeome}.
 "cloneData"
 
-#' geneData
+#' geneData.
 #' @format A data frame with 50970 observations on the following 42 variables.
 #' \describe{
 #'     \item{\code{geneId}}{a character vector}
@@ -22,24 +22,22 @@
 #'     \item{\code{hsapiensBlastpGeneId}}{a character vector}
 #'     \item{\code{hsapiensBlastpGeneName}}{a character vector}
 #'     \item{\code{hsapiensBlastpDescription}}{a character vector}
+#'     \item{\code{aceviewId}}{a character vector}
+#'     \item{\code{ncbiId}}{a character vector}
+#'     \item{\code{refseqMrnaId}}{a character vector}
+#'     \item{\code{refseqProteinId}}{a character vector}
+#'     \item{\code{treefamId}}{a character vector}
+#'     \item{\code{uniprotId}}{a character vector}
 #'     \item{\code{geneBiotype}}{a character vector}
 #'     \item{\code{chromosomeName}}{a character vector}
 #'     \item{\code{startPosition}}{a character vector}
 #'     \item{\code{endPosition}}{a character vector}
 #'     \item{\code{strand}}{a character vector}
 #'     \item{\code{ensemblDescription}}{a character vector}
-#'     \item{\code{entrezGeneId}}{a character vector}
-#'     \item{\code{keggEnzyme}}{a character vector}
-#'     \item{\code{refseqMrna}}{a character vector}
-#'     \item{\code{refseqNcrna}}{a character vector}
-#'     \item{\code{uniprotSptrembl}}{a character vector}
-#'     \item{\code{uniprotSwissprot}}{a character vector}
-#'     \item{\code{hsapiensHomologEnsemblGene}}{a character vector}
 #'     \item{\code{geneOntologyName}}{a character vector}
 #'     \item{\code{geneOntologyId}}{a character vector}
 #'     \item{\code{interproId}}{a character vector}
 #'     \item{\code{interproDescription}}{a character vector}
-#'     \item{\code{uniprotKb}}{a character vector}
 #'     \item{\code{pantherFamilyName}}{a character vector}
 #'     \item{\code{pantherSubfamilyName}}{a character vector}
 #'     \item{\code{pantherGeneOntologyMolecularFunction}}{a character vector}

@@ -20,14 +20,18 @@ wormbaseRestRnaiTargets <- function(wbrnai) {
                 list(type = type, id = id)
             })
             tbl <- dplyr::bind_rows(list) %>%
-                filter(grepl("WBGene", id)) %>%
-                group_by(type) %>%
-                summarize(id = paste(sort(unique(id)),collapse = ", "))
-            primary <- filter(tbl, type == "primary") %>% select(id) %>% as.character
+                dplyr::filter(grepl("WBGene", id)) %>%
+                dplyr::group_by_("type") %>%
+                dplyr::summarize(id = paste(sort(unique(id)), collapse = ", "))
+            primary <- dplyr::filter_(tbl, "type" == "primary") %>%
+                dplyr::select(id) %>%
+                as.character
             if (primary == "character(0)") {
                 primary <- NA
             }
-            secondary <- filter(tbl, type == "secondary") %>% select(id) %>% as.character
+            secondary <- dplyr::filter_(tbl, "type" == "secondary") %>%
+                dplyr::select(id) %>%
+                as.character
             if (secondary == "character(0)") {
                 secondary <- NA
             }
