@@ -7,10 +7,10 @@
 wormbaseRestRnaiTargets(wbrnai)
 }
 \arguments{
-\item{wbrnai}{WormBase RNAi identifier \code{vector}.}
+\item{wbrnai}{WormBase RNAi identifier vector.}
 }
 \value{
-\code{tibble}
+tibble
 }
 \description{
 WormBase RESTful RNAi targets query

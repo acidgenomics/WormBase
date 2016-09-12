@@ -21,6 +21,6 @@ vignettes/*.pdf
 
 .DS_Store
 
-data-raw/*.xlsx
-data-raw/PTHR*
-data-raw/wormbase/
+#! data-raw/*.xlsx
+#! data-raw/PTHR*
+#! data-raw/wormbase/
