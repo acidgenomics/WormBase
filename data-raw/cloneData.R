@@ -25,32 +25,32 @@ libraries <- c("ahringer", "orfeome")
 cloneData <- list()
 for (i in libraries) {
     library <- get(i)
-    all <- left_join(library$wbrnai, library$sequence) %>%
-        left_join(., library$targets) %>%
-        left_join(., oligo2geneId) %>%
-        left_join(library$raw, .) %>%
+    all <- left_join(library$wbrnai, library$sequence, by = "wbrnai") %>%
+        left_join(., library$targets, by = "wbrnai") %>%
+        left_join(., oligo2geneId, by = "oligo") %>%
+        left_join(library$raw, ., by = "wormbaseHistorical") %>%
         distinct %>%
         rename(primaryTarget = primary,
                secondaryTarget = secondary) %>%
         select(-c(sequence, wormbaseHistorical))
+    unmatched <- filter(all, is.na(geneId))
     # Matched by oligo
     matched1 <- filter(all, !is.na(geneId))
-    # Matched with gene()
-    matched2 <- filter(all, is.na(geneId)) %>%
+    # Matched by gene()
+    matched2 <- unmatched %>%
         select(genePair) %>% .[[1]] %>%
         gene(format = "orf", select = "simple") %>%
         inner_join(select(all, -geneId), ., by = c("genePair" = "orf")) %>%
         select(-publicName)
-    # Matched with deadOrf()
-    matched3 <- filter(all, !(genePair %in% c(matched1$genePair,
-                                              matched2$genePair))) %>%
+    unmatched <- filter(unmatched, !(genePair %in% matched2$genePair))
+    # Matched by deadOrf()
+    matched3 <- unmatched %>%
         select(genePair) %>% .[[1]] %>%
         deadOrf %>%
-        inner_join(select(all, -geneId), .)
+        inner_join(select(all, -geneId), ., by = "genePair")
+    unmatched <- filter(unmatched, !(genePair %in% matched3$genePair))
     # Check that there's no leftovers
-    filter(all, (!genePair %in% c(matched1$genePair,
-                                  matched2$genePair,
-                                  matched3$genePair)))
+    print(unmatched)
     cloneData[[i]] <- bind_rows(matched1, matched2, matched3)
 }
 devtools::use_data(cloneData, overwrite = TRUE)

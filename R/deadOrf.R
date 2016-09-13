@@ -14,8 +14,8 @@ deadOrf <- function(orf) {
                        config = content_type_json())
         status <- status_code(request)
         content <- content(request)
-        results <- content$results %>%
-            rev # WormBase seems to use the last entry for matching
+        # WormBase seems to use the last entry for matching
+        results <- content$results %>% rev
         if (length(results)) {
             deadGeneId <- results[[1]]$name$id
             mergeGeneId <- results[[1]]$merged_into[[1]]$id

@@ -13,8 +13,12 @@ historical2wbrnai <- function(historical) {
         request <- GET(paste0("http://www.wormbase.org/search/rnai/", historical[a]))
         # Server is now returning 400, need to set error method here?
         wbrnai <- tryCatch(request$headers$location) %>%
-            str_extract(., "WBRNAi[0-9]{8}")
-        list(wormbaseHistorical = historical, wbrnai = wbrnai)
+            str_extract("WBRNAi[0-9]{8}")
+        if (!length(wbrnai)) {
+            wbrnai <- NA
+        }
+        list(historical = historical[a],
+             wbrnai = wbrnai)
     })
     bind_rows(list)
 }

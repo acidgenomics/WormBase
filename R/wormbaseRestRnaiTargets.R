@@ -15,7 +15,7 @@ wormbaseRestRnaiTargets <- function(wbrnai) {
             list <- lapply(seq_along(data), function(b) {
                 type <- data[[b]]$target_type %>%
                     tolower %>%
-                    str_replace(., " target", "")
+                    str_replace(" target", "")
                 id <- data[[b]]$gene$id
                 list(type = type, id = id)
             })
@@ -26,13 +26,13 @@ wormbaseRestRnaiTargets <- function(wbrnai) {
             primary <- filter(tbl, type == "primary") %>%
                 select(id) %>%
                 as.character
-            if (primary == "character(0)") {
+            if (!length(primary)) {
                 primary <- NA
             }
             secondary <- filter(tbl, type == "secondary") %>%
                 select(id) %>%
                 as.character
-            if (secondary == "character(0)") {
+            if (!length(secondary)) {
                 secondary <- NA
             }
         } else {
