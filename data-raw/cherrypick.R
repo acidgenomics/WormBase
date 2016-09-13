@@ -5,7 +5,7 @@ workbook <- "data-raw/cherrypick.xlsx"
 sheet <- readxl::excel_sheets(workbook)
 raw <- list()
 for (i in 1:length(sheet)) {
-    raw[[i]] <- readxl::read_excel(workbook, sheet = sheet[i], col_types = rep("text", 12)) %>%
+    raw[[i]] <- readxl::read_excel(workbook, sheet = sheet[i], col_types = rep("text", 13)) %>%
         select(plateId, cloneId, genePair)
 }
 raw <- bind_rows(raw) %>%
@@ -25,5 +25,5 @@ if (nrow(ahringer)) {
 cherrypick <- bind_rows(orfeome, ahringer) %>%
     arrange(plateId)
 
-mismatch <- filter(cherrypick, genePair.x != genePair.y)
-missing <- filter(cherrypick, is.na(genePair.y))
+sourceBioscienceMismatch <- filter(cherrypick, genePair.x != genePair.y)
+sourceBioscienceMissing <- filter(cherrypick, is.na(genePair.y) & !is.na(genePair.x))
