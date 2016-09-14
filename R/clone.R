@@ -28,10 +28,6 @@ clone <- function(id = NULL,
                 # Padded zeroes for wells
                 gsub("([A-Z]{1})([0-9]{1})$", "\\10\\2", .)
         }
-        if (format == "genePair") {
-            id <- gsub("/.*$", "", id) %>%
-                gsub("\\(.+\\)$", "", .)
-        }
     }
     if (library == "ahringer") {
         if (!is.null(id)) {

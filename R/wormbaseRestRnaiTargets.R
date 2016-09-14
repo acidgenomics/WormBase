@@ -40,8 +40,8 @@ wormbaseRestRnaiTargets <- function(wbrnai) {
             secondary <- NA
         }
         list(wbrnai = wbrnai[a],
-             primary = primary,
-             secondary = secondary)
+             primaryTarget = primary,
+             secondaryTarget = secondary)
     })
     bind_rows(list)
 }
