@@ -26,13 +26,13 @@ wormbaseRestRnaiTargets <- function(wbrnai) {
             primary <- filter(tbl, type == "primary") %>%
                 select(id) %>%
                 as.character
-            if (!length(primary)) {
+            if (primary == "character(0)") {
                 primary <- NA
             }
             secondary <- filter(tbl, type == "secondary") %>%
                 select(id) %>%
                 as.character
-            if (!length(secondary)) {
+            if (secondary == "character(0)") {
                 secondary <- NA
             }
         } else {
