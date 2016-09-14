@@ -5,105 +5,85 @@ library(seqcloudr)
 library(stringr)
 devtools::load_all()
 
-# Ahringer ====
-if (!file.exists("data-raw/ahringer.xlsx")) {
-    download.file("http://www.us.lifesciences.sourcebioscience.com/media/381254/C.%20elegans%20Database%202012.xlsx",
-                  "data-raw/ahringer.xlsx")
+load("data-raw/ahringer.rda")
+if (!exists("ahringer")) {
+    source("data-raw/ahringer.R")
 }
-chromosomes <- c("I", "II", "III", "IV", "V", "X")
-list <- list()
-for (i in 1:length(chromosomes)) {
-    tbl <- read_excel("data-raw/ahringer.xlsx", sheet = i + 1,
-                      col_types = rep("text", 8)) %>% # First sheet contains notes
-        set_names(camel(names(.))) %>%
-        filter(!grepl("mismatch", extraInfo)) %>%
-        select(-c(extraInfo, fwdPrimerSeq, revPrimerSeq)) %>%
-        rename(genePair = genePairsName,
-               ahringer384 = sourceBioscienceLocation) %>%
-        mutate(historical = paste0("JA:", genePair),
-               plate = gsub("^S([0-9]{1})-", "S0\\1-", plate),
-               ahringer96 = paste(str_pad(plate, 3, pad = "0"), well, sep = "-"),
-               ahringer96 = gsub("^.*NA.*$", NA, ahringer96),
-               ahringer384 = gsub("-([0-9}+)([A-Z]{1})", "-\\1-\\2", ahringer384),
-               ahringer384 = gsub("-([0-9]{1})-", "-00\\1-", ahringer384),
-               ahringer384 = gsub("-([0-9]{2})-", "-0\\1-", ahringer384)) %>%
-        select(-c(plate, well, chrom))
-    name <- paste0("chr", chromosomes[i])
-    list[[i]] <- tbl
+
+load("data-raw/orfeome.rda")
+if (!exists("orfeome")) {
+    source("data-raw/orfeome.R")
 }
-ahringer <- bind_rows(list)
-rm(chromosomes, i, list, name, tbl)
 
-# ORFeome ====
-if (!file.exists("data-raw/orfeome.xlsx")) {
-    download.file("http://dharmacon.gelifesciences.com/uploadedFiles/Resources/cernai-feeding-library.xlsx",
-                  "data-raw/orfeome.xlsx")
+load("data-raw/cherrypick.rda")
+if (!exists("cherrypick")) {
+    source("data-raw/cherrypick.R")
 }
-orfeome <- read_excel("data-raw/orfeome.xlsx", sheet = 2) %>%
-    set_names(camel(names(.))) %>%
-    rename(genePair = orfIdWs112) %>%
-    select(plate, row, col, genePair) %>%
-    filter(!grepl("no match", genePair)) %>%
-    filter(!is.na(genePair)) %>%
-    mutate(historical = paste0("MV_SV:mv_", genePair),
-           orfeome96 = paste0(plate, "-", row, str_pad(col, 2, pad = "0"))) %>%
-    select(-c(plate, row, col))
 
-# Bind ====
-bind <- bind_rows(ahringer, orfeome) %>%
-    select(genePair, historical, orfeome96, ahringer96, ahringer384) %>%
-    mutate(genePair = gsub("(\\.[0-9]+)[a-z]{1}$", "\\1", genePair)) %>%
-    arrange(historical)
+bind <- bind_rows(ahringer, orfeome, cherrypick) %>%
+    mutate(genePair = gsub("(\\.[0-9]+)[a-z]{1}$", "\\1", genePair))
+rm(ahringer, cherrypick, orfeome)
 
+# Historical RNAi Identifiers ====
+mv <- bind %>%
+    filter(!is.na(orfeome96)) %>%
+    mutate(historical = paste0("MV_SV:mv_", genePair))
+ja <- bind %>%
+    filter(with(., !is.na(ahringer96) |
+                    !is.na(ahringer96Historical) |
+                    !is.na(ahringer384))) %>%
+    mutate(historical = paste0("JA:", genePair))
+# Check that all clones matched
+bind %>% filter(with(., is.na(orfeome96) &
+                         is.na(ahringer96) &
+                         is.na(ahringer96Historical) &
+                         is.na(ahringer384)))
+bind <- bind_rows(mv, ja) %>%
+    group_by(historical) %>%
+    summarise_each(funs(str_collapse))
+# Missing NA fix
+bind[bind == ""] <- NA
+
+# WormBase RESTful queries (CPU intensive) ====
 load("data-raw/wbrnai.rda")
 if (!exists("wbrnai")) {
     wbrnai <- historical2wbrnai(bind$historical)
+    save(wbrnai, file = "data-raw/wbrnai.rda")
 }
 
 load("data-raw/sequence.rda")
 if (!exists("sequence")) {
-    sequence1 <- wormbaseRestRnaiSequence(wbrnai$wbrnai[00001:05000])
-    sequence2 <- wormbaseRestRnaiSequence(wbrnai$wbrnai[05001:10000])
-    sequence3 <- wormbaseRestRnaiSequence(wbrnai$wbrnai[10001:15000])
-    sequence4 <- wormbaseRestRnaiSequence(wbrnai$wbrnai[15001:20000])
-    sequence5 <- wormbaseRestRnaiSequence(wbrnai$wbrnai[20001:25000])
-    sequence6 <- wormbaseRestRnaiSequence(wbrnai$wbrnai[25001:nrow(wbrnai)])
-    sequence <- bind_rows(sequence1,
-                          sequence,
-                          sequence3,
-                          sequence4,
-                          sequence5,
-                          sequence6)
+    sequence <- list()
+    # Separate requests to server (slower but more reliable)
+    for (i in 1:nrow(wbrnai)) {
+        sequence[[i]] <- wormbaseRestRnaiSequence(wbrnai$wbrnai[i])
+    }
+    sequence <- bind_rows(sequence)
     save(sequence, file = "data-raw/sequence.rda")
 }
 sequence <- sequence %>% select(-sequence)
 
 load("data-raw/targets.rda")
 if (!exists("targets")) {
-    targets1 <- wormbaseRestRnaiTargets(wbrnai$wbrnai[00001:05000])
-    targets2 <- wormbaseRestRnaiTargets(wbrnai$wbrnai[05001:10000])
-    targets3 <- wormbaseRestRnaiTargets(wbrnai$wbrnai[10001:15000])
-    targets4 <- wormbaseRestRnaiTargets(wbrnai$wbrnai[15001:20000])
-    targets5 <- wormbaseRestRnaiTargets(wbrnai$wbrnai[20001:25000])
-    targets6 <- wormbaseRestRnaiTargets(wbrnai$wbrnai[25001:nrow(wbrnai)])
-    targets <- bind_rows(tarets1,
-                         targets2,
-                         targets3,
-                         targets4,
-                         targets5,
-                         targets6)
+    targets <- list()
+    for (i in 1:nrow(wbrnai)) {
+        targets[[i]] <- wormbaseRestRnaiTargets(wbrnai$wbrnai[i])
+    }
+    targets <- bind_rows(targets)
     save(targets, file = "data-raw/targets.rda")
 }
 
+# Annotation joins ===
+# WormBase FTP oligo info
 load("data-raw/oligo2geneId.rda")
 if (!exists("oligo2geneId")) {
     source("data-raw/oligo2geneId.R")
 }
 
-bind <- bind %>%
+bind2 <- bind %>%
     left_join(wbrnai, by = "historical") %>%
-    left_join(sequence, by = "wbrnai") %>%
-    left_join(targets, by = "wbrnai") %>%
+    #left_join(sequence, by = "wbrnai") %>%
+    #left_join(targets, by = "wbrnai") %>%
     left_join(oligo2geneId, by = "oligo") %>%
     distinct %>%
     arrange(historical)
@@ -136,14 +116,15 @@ matchedDeadOrf <- unmatched$genePair %>%
     left_join(unmatched, by = "genePair")
 unmatched <- unmatched %>% filter(!(genePair %in% matchedDeadOrf$genePair))
 
-cloneData <- dplyr::bind_rows(matchedHistorical,
-                              matchedOligo,
-                              matchedGene,
-                              matchedDeadOrf,
-                              unmatched) %>%
+cloneData <- bind_rows(matchedHistorical,
+                       matchedOligo,
+                       matchedGene,
+                       matchedDeadOrf,
+                       unmatched) %>%
     arrange(historical)
 devtools::use_data(cloneData, overwrite = TRUE)
 
+# Duplicate check ====
 dupeGeneId <- cloneData %>%
     filter(duplicated(geneId)) %>%
     select(geneId) %>% .[[1]] %>%

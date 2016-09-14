@@ -1,6 +1,6 @@
 #' WormBase RESTful RNAi sequence query.
 #' @import dplyr
-#' @param wbrnai WormBase RNAi identifier vector.
+#' @param rnai WormBase RNAi identifier.
 #' @return tibble.
 #' @examples
 #' wormbaseRestRnaiSequence("WBRNAi00003982")
@@ -13,16 +13,15 @@ wormbaseRestRnaiSequence <- function(wbrnai) {
         if (length(data)) {
             oligo <- data$header
             length <- data$length
-            sequence <- data$sequence
+            # sequence <- data$sequence
         } else {
             oligo <- NA
             length <- NA
-            sequence <- NA
+            # sequence <- NA
         }
         list(wbrnai = wbrnai[a],
              oligo = oligo,
-             length = length,
-             sequence = sequence)
+             length = length)
     })
     bind_rows(list)
 }
