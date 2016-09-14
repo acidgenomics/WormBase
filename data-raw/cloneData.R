@@ -61,7 +61,6 @@ if (!exists("sequence")) {
     sequence <- bind_rows(sequence)
     save(sequence, file = "data-raw/sequence.rda")
 }
-sequence <- sequence %>% select(-sequence)
 
 load("data-raw/targets.rda")
 if (!exists("targets")) {
@@ -80,10 +79,11 @@ if (!exists("oligo2geneId")) {
     source("data-raw/oligo2geneId.R")
 }
 
-bind2 <- bind %>%
+bind_backup <- bind
+bind <- bind %>%
     left_join(wbrnai, by = "historical") %>%
-    #left_join(sequence, by = "wbrnai") %>%
-    #left_join(targets, by = "wbrnai") %>%
+    left_join(sequence, by = "wbrnai") %>%
+    left_join(targets, by = "wbrnai") %>%
     left_join(oligo2geneId, by = "oligo") %>%
     distinct %>%
     arrange(historical)
