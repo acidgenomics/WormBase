@@ -10,10 +10,10 @@ deadOrf <- function(orf) {
     orf <- sort(orf) %>% unique %>% stats::na.omit(.)
     list <- lapply(seq_along(orf), function(a) {
         query <- orf[a]
-        request <- GET(paste0("http://www.wormbase.org/search/gene/", query, "?species=c_elegans"),
-                       config = content_type_json())
-        status <- status_code(request)
-        content <- content(request)
+        request <- httr::GET(paste0("http://www.wormbase.org/search/gene/", query, "?species=c_elegans"),
+                             config = httr::content_type_json())
+        status <- httr::status_code(request)
+        content <- httr::content(request)
         # WormBase seems to use the last entry for matching
         results <- content$results %>% rev
         if (length(results)) {
@@ -29,5 +29,6 @@ deadOrf <- function(orf) {
         }
         list(genePair = query, geneId = geneId)
     })
-    bind_rows(list)
+    dplyr::bind_rows(list) %>%
+        dplyr::filter(!is.na(geneId))
 }

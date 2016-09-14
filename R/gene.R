@@ -17,7 +17,6 @@ gene <- function(id = NULL, format = "geneId", select = "simple") {
             data <- filter(worminfo::geneData, geneId %in% id)
         }
         if (format == "orf") {
-            id <- gsub("[a-z]{1}$", "", id) # strip isoforms
             data <- filter(worminfo::geneData, orf %in% id)
         }
         if (format == "publicName") {
@@ -26,7 +25,6 @@ gene <- function(id = NULL, format = "geneId", select = "simple") {
     } else {
         data <- worminfo::geneData
     }
-
     if (!is.null(select)) {
         if (select == "simple") {
             data <- select_(data, .dots = c("geneId",
