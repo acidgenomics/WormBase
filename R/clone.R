@@ -3,7 +3,7 @@
 #' @import dplyr
 #' @import parallel
 #'
-#' @param identifier Clone identifier.
+#' @param identifier Identifier.
 #' @param format Identifier format - \code{clone} (e.g. GHR-11010@G06), \code{gene} (e.g. sbp-1), \code{genePair} (e.g. Y47D3B.7), \code{sequence} (e.g. Y47D3B.7))
 #' @param library Library type ("orfeome" or "ahringer").
 #' @param wells Library plate format (96, 384).
@@ -18,16 +18,16 @@
 #' clone("III-006-C01", library = "ahringer", wells = 384)
 #' clone("Y47D3B.7", format = "genePair")
 #' clone("sbp-1", format = "name")
-clone <- function(clone = NULL,
+clone <- function(identifier = NULL,
                   format = "clone",
                   library = "orfeome",
                   wells = NULL) {
     data <- worminfo::cloneData
     data <- left_join(data, gene(data$gene, format = "gene"), by = "gene")
-    if (!is.null(clone)) {
-        clone <- clone %>% stats::na.omit(.) %>% unique %>% sort
-        list <- parallel::mclapply(seq_along(clone), function(a) {
-            id <- clone[a] %>%
+    if (!is.null(identifier)) {
+        identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
+        list <- parallel::mclapply(seq_along(identifier), function(a) {
+            id <- identifier[a] %>%
                 gsub("^(ahringer|GHR|orfeome)(96|384)?-", "", .) %>%
                 gsub("@", "-", .) %>%
                 # Separator for Ahringer IDs
@@ -56,7 +56,7 @@ clone <- function(clone = NULL,
                 # Add the clone identifier back to match:
                 if (nrow(match) == 1) {
                     match <- match %>%
-                        mutate(clone = clone[a])
+                        mutate(clone = identifier[a])
                 }
             } else if (format == "gene") {
                 match <- filter(data, gene %in% id)
