@@ -2,18 +2,18 @@
 % Please edit documentation in R/wormbaseRestRnaiSequence.R
 \name{wormbaseRestRnaiSequence}
 \alias{wormbaseRestRnaiSequence}
-\title{WormBase RESTful RNAi sequence query}
+\title{WormBase RESTful RNAi sequence query.}
 \usage{
-wormbaseRestRnaiSequence(wbrnai)
+wormbaseRestRnaiSequence(rnai)
 }
 \arguments{
-\item{wbrnai}{WormBase RNAi identifier vector.}
+\item{rnai}{WormBase RNAi identifier.}
 }
 \value{
-\code{tibble}
+tibble.
 }
 \description{
-WormBase RESTful RNAi sequence query
+WormBase RESTful RNAi sequence query.
 }
 \examples{
 wormbaseRestRnaiSequence("WBRNAi00003982")

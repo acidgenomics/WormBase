@@ -4,7 +4,28 @@
 \name{cloneData}
 \alias{cloneData}
 \title{cloneData}
-\format{A list of 2: \code{ahringer} and \code{orfeome}.}
+\format{A data frame with 30244 observations on the following 13 variables.
+\describe{
+    \item{\code{ahringer384}}{a character vector}
+    \item{\code{ahringer96}}{a character vector}
+    \item{\code{ahringer96Historical}}{a character vector}
+    \item{\code{cherrypick}}{a character vector}
+    \item{\code{gene}}{a character vector}
+    \item{\code{genePair}}{a character vector}
+    \item{\code{historical}}{a character vector}
+    \item{\code{length}}{a character vector}
+    \item{\code{oligo}}{a character vector}
+    \item{\code{orfeome96}}{a character vector}
+    \item{\code{rnai}}{a character vector}
+    \item{\code{targetPrimary}}{a character vector}
+    \item{\code{targetSecondary}}{a character vector}
+}}
+\source{
+GE Dharmacon (\url{http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai/}),
+Source BioScience (\url{http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/}),
+WORFDB (\url{http://worfdb.dfci.harvard.edu}),
+WormBase (\url{http://www.wormbase.org})
+}
 \usage{
 cloneData
 }

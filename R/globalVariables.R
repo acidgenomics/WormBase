@@ -1,0 +1,11 @@
+utils::globalVariables(c(".",
+                         "ahringer96",
+                         "ahringer384",
+                         "cloneData",
+                         "geneData",
+                         "gene",
+                         "genePair",
+                         "orfeome96",
+                         "name",
+                         "sequence",
+                         "type"))
