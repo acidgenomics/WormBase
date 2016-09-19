@@ -5,10 +5,10 @@
 #' @examples
 #' wormbaseRestRnaiSequence("WBRNAi00003982")
 #' @export
-wormbaseRestRnaiSequence <- function(wbrnai) {
-    wbrnai <- sort(wbrnai) %>% unique %>% stats::na.omit(.)
-    list <- lapply(seq_along(wbrnai), function(a) {
-        data <- wormbaseRest(wbrnai[a], class = "rnai", instance = "sequence") %>%
+wormbaseRestRnaiSequence <- function(rnai) {
+    rnai <- sort(rnai) %>% unique %>% stats::na.omit(.)
+    list <- lapply(seq_along(rnai), function(a) {
+        data <- wormbaseRest(rnai[a], class = "rnai", instance = "sequence") %>%
             .[["sequence"]] %>% .[["data"]] %>% .[[1]]
         if (length(data)) {
             oligo <- data$header
@@ -19,7 +19,7 @@ wormbaseRestRnaiSequence <- function(wbrnai) {
             length <- NA
             # sequence <- NA
         }
-        list(wbrnai = wbrnai[a],
+        list(rnai = rnai[a],
              oligo = oligo,
              length = length)
     })

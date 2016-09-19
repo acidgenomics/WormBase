@@ -1,15 +1,15 @@
 #' WormBase RESTful RNAi targets query.
 #' @import dplyr
 #' @import stringr
-#' @param wbrnai WormBase RNAi identifier vector.
+#' @param rnai WormBase RNAi identifier vector.
 #' @return tibble.
 #' @examples
 #' wormbaseRestRnaiTargets("WBRNAi00031683")
 #' @export
-wormbaseRestRnaiTargets <- function(wbrnai) {
-    wbrnai <- sort(wbrnai) %>% unique %>% stats::na.omit(.)
-    list <- lapply(seq_along(wbrnai), function(a) {
-        data <- wormbaseRest(wbrnai[a], class = "rnai", instance = "targets") %>%
+wormbaseRestRnaiTargets <- function(rnai) {
+    rnai <- sort(rnai) %>% unique %>% stats::na.omit(.)
+    list <- lapply(seq_along(rnai), function(a) {
+        data <- wormbaseRest(rnai[a], class = "rnai", instance = "targets") %>%
             .[["targets"]] %>% .[["data"]]
         if (length(data)) {
             list <- lapply(seq_along(data), function(b) {
@@ -39,7 +39,7 @@ wormbaseRestRnaiTargets <- function(wbrnai) {
             primary <- NA
             secondary <- NA
         }
-        list(wbrnai = wbrnai[a],
+        list(rnai = rnai[a],
              primaryTarget = primary,
              secondaryTarget = secondary)
     })

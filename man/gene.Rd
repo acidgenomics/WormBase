@@ -4,12 +4,12 @@
 \alias{gene}
 \title{Gene annotations.}
 \usage{
-gene(id = NULL, format = "geneId", select = "simple")
+gene(id = NULL, format = "gene", select = "simple")
 }
 \arguments{
-\item{id}{Identifier.}
+\item{id}{Gene identifier.}
 
-\item{format}{Identifier type (geneID, orf, publicName).}
+\item{format}{Identifier type (gene, name, sequence).}
 
 \item{select}{Columns to select (report, simple).}
 }
@@ -20,8 +20,8 @@ tibble.
 Gene annotations.
 }
 \examples{
-gene(id = "WBGene00004804", format = "geneId")
-gene(id = "T19E7.2", format = "orf")
-gene(id = "skn-1", format = "publicName")
+gene(id = "WBGene00004804", format = "gene")
+gene(id = "skn-1", format = "name")
+gene(id = "T19E7.2", format = "sequence")
 }
 

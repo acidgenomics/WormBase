@@ -40,23 +40,22 @@ bind %>% filter(with(., is.na(orfeome96) &
                          is.na(ahringer384)))
 bind <- bind_rows(mv, ja) %>%
     group_by(historical) %>%
-    summarise_each(funs(str_collapse))
-# Missing NA fix
-bind[bind == ""] <- NA
+    summarise_each(funs(str_collapse)) %>%
+    cruft
 
 # WormBase RESTful queries (CPU intensive) ====
-load("data-raw/wbrnai.rda")
-if (!exists("wbrnai")) {
-    wbrnai <- historical2wbrnai(bind$historical)
-    save(wbrnai, file = "data-raw/wbrnai.rda")
+load("data-raw/rnai.rda")
+if (!exists("rnai")) {
+    rnai <- historical2rnai(bind$historical)
+    save(rnai, file = "data-raw/rnai.rda")
 }
 
 load("data-raw/sequence.rda")
 if (!exists("sequence")) {
     sequence <- list()
     # Separate requests to server (slower but more reliable)
-    for (i in 1:nrow(wbrnai)) {
-        sequence[[i]] <- wormbaseRestRnaiSequence(wbrnai$wbrnai[i])
+    for (i in 1:nrow(rnai)) {
+        sequence[[i]] <- wormbaseRestRnaiSequence(rnai$rnai[i])
     }
     sequence <- bind_rows(sequence)
     save(sequence, file = "data-raw/sequence.rda")
@@ -65,8 +64,8 @@ if (!exists("sequence")) {
 load("data-raw/targets.rda")
 if (!exists("targets")) {
     targets <- list()
-    for (i in 1:nrow(wbrnai)) {
-        targets[[i]] <- wormbaseRestRnaiTargets(wbrnai$wbrnai[i])
+    for (i in 1:nrow(rnai)) {
+        targets[[i]] <- wormbaseRestRnaiTargets(rnai$rnai[i])
     }
     targets <- bind_rows(targets)
     save(targets, file = "data-raw/targets.rda")
@@ -74,77 +73,77 @@ if (!exists("targets")) {
 
 # Annotation joins ===
 # WormBase FTP oligo info
-load("data-raw/oligo2geneId.rda")
-if (!exists("oligo2geneId")) {
-    source("data-raw/oligo2geneId.R")
+load("data-raw/oligo2gene.rda")
+if (!exists("oligo2gene")) {
+    source("data-raw/oligo2gene.R")
 }
 
-bind_backup <- bind
+#! bind_backup <- bind
 bind <- bind %>%
-    left_join(wbrnai, by = "historical") %>%
-    left_join(sequence, by = "wbrnai") %>%
-    left_join(targets, by = "wbrnai") %>%
-    left_join(oligo2geneId, by = "oligo") %>%
+    left_join(rnai, by = "historical") %>%
+    left_join(sequence, by = "rnai") %>%
+    left_join(targets, by = "rnai") %>%
+    left_join(oligo2gene, by = "oligo") %>%
     distinct %>%
     arrange(historical)
 
-# Matched by historical2geneId()
-matchedHistorical <- bind %>% filter(!is.na(geneId))
-unmatched <- bind %>% filter(is.na(geneId)) %>%
-    select(-geneId) %>%
+# Matched by historical2rnai()
+matchedHistorical <- bind %>% filter(!is.na(gene))
+unmatched <- bind %>% filter(is.na(gene)) %>%
+    select(-gene) %>%
     mutate(oligo = historical,
            oligo = gsub("^MV:", "", oligo),
            oligo = gsub("^JA:", "sjj_", oligo))
 
-# Matched by oligo2geneId
+# Matched by oligo2gene
 matchedOligo <- unmatched %>%
-    left_join(oligo2geneId, by = "oligo") %>%
-    filter(!is.na(geneId))
+    left_join(oligo2gene, by = "oligo") %>%
+    filter(!is.na(gene))
 unmatched <- unmatched %>% filter(!(oligo %in% matchedOligo$oligo))
 
 # Matched by gene()
 matchedGene <- unmatched$genePair %>%
-    gene(format = "orf") %>%
-    mutate(genePair = orf) %>%
+    gene(format = "sequence") %>%
+    mutate(genePair = sequence) %>%
     left_join(unmatched, by = "genePair") %>%
-    select(-orf)
+    select(-c(name, sequence))
 unmatched <- unmatched %>% filter(!(genePair %in% matchedGene$genePair))
 
-# Matched by deadOrf()
-matchedDeadOrf <- unmatched$genePair %>%
-    deadOrf %>%
+# Matched by deadSequence()
+matchedDeadSequence <- unmatched$genePair %>%
+    deadSequence %>%
     left_join(unmatched, by = "genePair")
-unmatched <- unmatched %>% filter(!(genePair %in% matchedDeadOrf$genePair))
+unmatched <- unmatched %>% filter(!(genePair %in% matchedDeadSequence$genePair))
 
 cloneData <- bind_rows(matchedHistorical,
                        matchedOligo,
                        matchedGene,
-                       matchedDeadOrf,
+                       matchedDeadSequence,
                        unmatched) %>%
     arrange(historical)
 devtools::use_data(cloneData, overwrite = TRUE)
 
 # Duplicate check ====
-dupeGeneId <- cloneData %>%
-    filter(duplicated(geneId)) %>%
-    select(geneId) %>% .[[1]] %>%
-    sort %>% unique %>% stats::na.omit(.)
+dupeGene <- cloneData %>%
+    filter(duplicated(gene)) %>%
+    select(gene) %>% .[[1]] %>%
+    na.omit %>% unique %>% sort
 dupeHistorical <- bind %>%
     filter(duplicated(historical)) %>%
     select(historical) %>% .[[1]] %>%
-    sort %>% unique %>% stats::na.omit(.)
+    na.omit %>% unique %>% sort
 dupeAhringer96 <- cloneData %>%
     filter(duplicated(ahringer96)) %>%
     select(ahringer96) %>% .[[1]] %>%
-    sort %>% unique %>% stats::na.omit(.)
+    na.omit %>% unique %>% sort
 dupeAhringer384 <- cloneData %>%
     filter(duplicated(ahringer384)) %>%
     select(ahringer384) %>% .[[1]] %>%
-    sort %>% unique %>% stats::na.omit(.)
+    na.omit %>% unique %>% sort
 dupeOrfeome96 <- cloneData %>%
     filter(duplicated(orfeome96)) %>%
     select(orfeome96) %>% .[[1]] %>%
-    sort %>% unique %>% stats::na.omit(.)
+    na.omit %>% unique %>% sort
 head(dupeAhringer96)
 head(dupeAhringer384)
 head(dupeOrfeome96)
