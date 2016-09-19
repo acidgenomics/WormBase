@@ -4,10 +4,10 @@
 \alias{wormbaseRestGeneExternal}
 \title{Get Entrez identifier from WormBase Gene identifier.}
 \usage{
-wormbaseRestGeneExternal(geneId)
+wormbaseRestGeneExternal(gene)
 }
 \arguments{
-\item{geneId}{WormBase gene identifier vector.}
+\item{gene}{WormBase gene identifier.}
 }
 \value{
 tibble.

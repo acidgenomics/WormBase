@@ -4,10 +4,10 @@
 \alias{wormbaseRestRnaiTargets}
 \title{WormBase RESTful RNAi targets query.}
 \usage{
-wormbaseRestRnaiTargets(wbrnai)
+wormbaseRestRnaiTargets(rnai)
 }
 \arguments{
-\item{wbrnai}{WormBase RNAi identifier vector.}
+\item{rnai}{WormBase RNAi identifier vector.}
 }
 \value{
 tibble.

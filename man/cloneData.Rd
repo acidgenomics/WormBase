@@ -3,13 +3,13 @@
 \docType{data}
 \name{cloneData}
 \alias{cloneData}
-\title{cloneData.}
+\title{cloneData}
 \format{A list of 2: \code{ahringer} and \code{orfeome}.}
 \usage{
 cloneData
 }
 \description{
-cloneData.
+cloneData
 }
 \keyword{datasets}
 
