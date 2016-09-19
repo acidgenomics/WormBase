@@ -4,16 +4,16 @@
 \alias{clone}
 \title{Feeding RNAi Library clone matching.}
 \usage{
-clone(id = NULL, format = "clone", library = "orfeome", wells = NULL)
+clone(clone = NULL, format = "clone", library = "orfeome", wells = NULL)
 }
 \arguments{
-\item{id}{Clone identifier.}
-
 \item{format}{Identifier format - \code{clone} (e.g. GHR-11010@G06), \code{gene} (e.g. sbp-1), \code{genePair} (e.g. Y47D3B.7), \code{sequence} (e.g. Y47D3B.7))}
 
 \item{library}{Library type ("orfeome" or "ahringer").}
 
 \item{wells}{Library plate format (96, 384).}
+
+\item{identifier}{Clone identifier.}
 }
 \value{
 tibble with \code{gene()} metadata.
@@ -22,10 +22,10 @@ tibble with \code{gene()} metadata.
 Feeding RNAi Library clone matching.
 }
 \examples{
-clone("GHR-11010@G06", library = "orfeome")
+clone("GHR-11010@G06")
 clone("086-B01", library = "ahringer", wells = 96)
 clone("III-006-C01", library = "ahringer", wells = 384)
 clone("Y47D3B.7", format = "genePair")
-clone("skn-1", format = "name")
+clone("sbp-1", format = "name")
 }
 

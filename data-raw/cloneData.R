@@ -40,8 +40,7 @@ bind %>% filter(with(., is.na(orfeome96) &
                          is.na(ahringer384)))
 bind <- bind_rows(mv, ja) %>%
     group_by(historical) %>%
-    summarise_each(funs(str_collapse)) %>%
-    cruft
+    summarise_each(funs(str_collapse))
 
 # WormBase RESTful queries (CPU intensive) ====
 load("data-raw/rnai.rda")
@@ -92,7 +91,7 @@ matchedHistorical <- bind %>% filter(!is.na(gene))
 unmatched <- bind %>% filter(is.na(gene)) %>%
     select(-gene) %>%
     mutate(oligo = historical,
-           oligo = gsub("^MV:", "", oligo),
+           oligo = gsub("^MV_SV:", "", oligo),
            oligo = gsub("^JA:", "sjj_", oligo))
 
 # Matched by oligo2gene
@@ -120,8 +119,11 @@ cloneData <- bind_rows(matchedHistorical,
                        matchedGene,
                        matchedDeadSequence,
                        unmatched) %>%
+    cruft %>%
+    select(noquote(order(names(.)))) %>%
     arrange(historical)
 devtools::use_data(cloneData, overwrite = TRUE)
+
 
 # Duplicate check ====
 dupeGene <- cloneData %>%
