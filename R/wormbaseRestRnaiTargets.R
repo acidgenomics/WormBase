@@ -1,33 +1,37 @@
-#' WormBase RESTful RNAi targets query
+#' WormBase RESTful RNAi targets query.
 #' @import dplyr
-#' @import magrittr
-#' @param wbrnai WormBase RNAi identifier vector.
-#' @return tibble
+#' @import stringr
+#' @param rnai WormBase RNAi identifier vector.
+#' @return tibble.
 #' @examples
 #' wormbaseRestRnaiTargets("WBRNAi00031683")
 #' @export
-wormbaseRestRnaiTargets <- function(wbrnai) {
-    wbrnai <- sort(wbrnai) %>% unique %>% stats::na.omit(.)
-    list <- lapply(seq_along(wbrnai), function(a) {
-        data <- wormbaseRest(wbrnai[a], class = "rnai", instance = "targets") %>%
+wormbaseRestRnaiTargets <- function(rnai) {
+    rnai <- sort(rnai) %>% unique %>% stats::na.omit(.)
+    list <- lapply(seq_along(rnai), function(a) {
+        data <- wormbaseRest(rnai[a], class = "rnai", instance = "targets") %>%
             .[["targets"]] %>% .[["data"]]
         if (length(data)) {
             list <- lapply(seq_along(data), function(b) {
                 type <- data[[b]]$target_type %>%
                     tolower %>%
-                    stringr::str_replace(., " target", "")
+                    str_replace(" target", "")
                 id <- data[[b]]$gene$id
                 list(type = type, id = id)
             })
-            tbl <- dplyr::bind_rows(list) %>%
+            tbl <- bind_rows(list) %>%
                 filter(grepl("WBGene", id)) %>%
                 group_by(type) %>%
-                summarize(id = paste(sort(unique(id)),collapse = ", "))
-            primary <- filter(tbl, type == "primary") %>% select(id) %>% as.character
+                summarize(id = paste(sort(unique(id)), collapse = ", "))
+            primary <- filter(tbl, type == "primary") %>%
+                select(id) %>%
+                as.character
             if (primary == "character(0)") {
                 primary <- NA
             }
-            secondary <- filter(tbl, type == "secondary") %>% select(id) %>% as.character
+            secondary <- filter(tbl, type == "secondary") %>%
+                select(id) %>%
+                as.character
             if (secondary == "character(0)") {
                 secondary <- NA
             }
@@ -35,9 +39,9 @@ wormbaseRestRnaiTargets <- function(wbrnai) {
             primary <- NA
             secondary <- NA
         }
-        list(wbrnai = wbrnai[a],
-             primary = primary,
-             secondary = secondary)
+        list(rnai = rnai[a],
+             targetPrimary = primary,
+             targetSecondary = secondary)
     })
-    dplyr::bind_rows(list)
+    bind_rows(list)
 }

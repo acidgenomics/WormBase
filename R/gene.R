@@ -1,40 +1,65 @@
-#' Gene annotations
-#' @import utils
-#' @param id Identifier
-#' @param format Identifier type (geneID, orf, publicName)
-#' @param output Output type (report, simple)
-#' @return tibble
-#' @examples
-#' gene()
-#' gene(output = "simple")
-#' gene(id = c("WBGene00004804", "WBGene00001752"), format = "geneId")
-#' gene(id = c("T19E7.2", "K08F4.7"), format = "orf")
-#' gene(id = c("skn-1", "gst-4"), format = "publicName")
+#' Gene annotations.
+#'
+#' @import dplyr
+#'
+#' @param id Gene identifier.
+#' @param format Identifier type (gene, name, sequence).
+#' @param select Columns to select (report, simple).
+#'
+#' @return tibble.
+#'
 #' @export
-gene <- function(id = NULL, format = "geneId", output = "report") {
-    if (format == "orf") {
-        id <- gsub("[a-z]{1}$", "", id) # strip isoforms
-    }
-    # Subset if `id` declared
+#'
+#' @examples
+#' gene(id = "WBGene00004804", format = "gene")
+#' gene(id = "skn-1", format = "name")
+#' gene(id = "T19E7.2", format = "sequence")
+gene <- function(id = NULL, format = "gene", select = "simple") {
+    # Subset if \code{id} declared
     if (!is.null(id)) {
-        if (format == "geneId") {
-            data <- dplyr::filter(geneData, geneId %in% id)
+        id <- sort(id) %>% unique %>% stats::na.omit(.)
+        if (format == "gene") {
+            data <- filter(worminfo::geneData, gene %in% id)
         }
-        if (format == "orf") {
-            data <- dplyr::filter(geneData, orf %in% id)
+        if (format == "sequence") {
+            data <- filter(worminfo::geneData, sequence %in% id)
         }
-        if (format == "publicName") {
-            data <- dplyr::filter(geneData, publicName %in% id)
+        if (format == "name") {
+            data <- filter(worminfo::geneData, name %in% id)
         }
     } else {
-        data <- geneData
+        data <- worminfo::geneData
     }
-    # Subset columns
-    if (output == "report") {
-        data <- data[, colNamesReport]
-    }
-    if (output == "simple") {
-        data <- data[, colNamesSimple]
+    if (!is.null(select)) {
+        if (select == "simple") {
+            data <- select_(data, .dots = c("gene",
+                                            "sequence",
+                                            "name"))
+        } else if (select == "report") {
+            data <- select_(data, .dots = c("gene",
+                                           "sequence",
+                                           "name",
+                                           "class",
+                                           "otherIdentifier",
+                                           "ncbi",
+                                           "descriptionConcise",
+                                           "descriptionProvisional",
+                                           "descriptionAutomated",
+                                           "descriptionEnsembl",
+                                           "blastpHsapiensGene",
+                                           "blastpHsapiensName",
+                                           "blastpHsapiensDescription",
+                                           "geneOntologyName",
+                                           "interproName",
+                                           "pantherFamilyName",
+                                           "pantherSubfamilyName",
+                                           "pantherGeneOntologyMolecularFunction",
+                                           "pantherGeneOntologyBiologicalProcess",
+                                           "pantherGeneOntologyCellularComponent",
+                                           "pantherClass"))
+        } else {
+            data <- select_(data, .dots = c(format, select))
+        }
     }
     return(data)
 }

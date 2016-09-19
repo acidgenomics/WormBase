@@ -2,28 +2,30 @@
 % Please edit documentation in R/clone.R
 \name{clone}
 \alias{clone}
-\title{Feeding RNAi Library clone matching}
+\title{Feeding RNAi Library clone matching.}
 \usage{
-clone(id = NULL, library = "orfeome", wells = NULL, output = "simple")
+clone(clone = NULL, format = "clone", library = "orfeome", wells = NULL)
 }
 \arguments{
-\item{id}{Clone identifier}
+\item{format}{Identifier format - \code{clone} (e.g. GHR-11010@G06), \code{gene} (e.g. sbp-1), \code{genePair} (e.g. Y47D3B.7), \code{sequence} (e.g. Y47D3B.7))}
 
-\item{library}{Library type ("orfeome" or "ahringer")}
+\item{library}{Library type ("orfeome" or "ahringer").}
 
-\item{wells}{Library plate format (96, 384)}
+\item{wells}{Library plate format (96, 384).}
 
-\item{output}{Output format (report, simple)}
+\item{identifier}{Clone identifier.}
 }
 \value{
-\code{tibble} with \code{gene()} metadata
+tibble with \code{gene()} metadata.
 }
 \description{
-Feeding RNAi Library clone matching
+Feeding RNAi Library clone matching.
 }
 \examples{
-clone("11010@G06", library = "orfeome")
-clone("III-86B01", library = "ahringer", wells = 96)
-clone("III-6C01", library = "ahringer", wells = 384)
+clone("GHR-11010@G06")
+clone("086-B01", library = "ahringer", wells = 96)
+clone("III-006-C01", library = "ahringer", wells = 384)
+clone("Y47D3B.7", format = "genePair")
+clone("sbp-1", format = "name")
 }
 

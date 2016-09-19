@@ -1,10 +1,10 @@
 Package: worminfo
 Type: Package
-Title: C. elegans genome and RNAi library annotations
-Version: 0.6
+Title: C. elegans genome and RNAi clone annotations
+Version: 0.8
 Author: Michael Steinbaugh
 Maintainer: Michael Steinbaugh <mike@steinbaugh.com>
-Description: C. elegans genome and RNAi library annotations. Metadata dynamically assembled from WormBase, Ensembl, and PANTHER. Support for ORFeome and Ahringer feeding RNAi libraries.
+Description: Annotations dynamically assembled from WormBase, Ensembl, and PANTHER. Support for ORFeome, Ahringer and cherrypick feeding RNAi libraries.
 License: MIT + file LICENSE
 LazyData: true
 URL: https://github.com/seqcloud/worminfo
@@ -14,14 +14,16 @@ Imports:
     dplyr,
     httr,
     magrittr,
+    parallel,
     readr,
     readxl,
     seqcloudr,
     stringr,
     tibble,
     tidyr,
-    utils
+    utils,
+    xml2
 Remotes:
     seqcloud/seqcloudr
-biocViews: 
+biocViews:
 RoxygenNote: 5.0.1

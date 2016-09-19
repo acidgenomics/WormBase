@@ -2,28 +2,26 @@
 % Please edit documentation in R/gene.R
 \name{gene}
 \alias{gene}
-\title{Gene annotations}
+\title{Gene annotations.}
 \usage{
-gene(id = NULL, format = "geneId", output = "report")
+gene(id = NULL, format = "gene", select = "simple")
 }
 \arguments{
-\item{id}{Identifier}
+\item{id}{Gene identifier.}
 
-\item{format}{Identifier type (geneID, orf, publicName)}
+\item{format}{Identifier type (gene, name, sequence).}
 
-\item{output}{Output type (report, simple)}
+\item{select}{Columns to select (report, simple).}
 }
 \value{
-\code{tibble}
+tibble.
 }
 \description{
-Gene annotations
+Gene annotations.
 }
 \examples{
-gene()
-gene(output = "simple")
-gene(id = c("WBGene00004804", "WBGene00001752"), format = "geneId")
-gene(id = c("T19E7.2", "K08F4.7"), format = "orf")
-gene(id = c("skn-1", "gst-4"), format = "publicName")
+gene(id = "WBGene00004804", format = "gene")
+gene(id = "skn-1", format = "name")
+gene(id = "T19E7.2", format = "sequence")
 }
 

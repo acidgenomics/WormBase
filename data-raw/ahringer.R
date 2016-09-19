@@ -2,64 +2,31 @@ library(dplyr)
 library(magrittr)
 library(readxl)
 library(seqcloudr)
-library(tibble)
-devtools::load_all()
-
+library(stringr)
 if (!file.exists("data-raw/ahringer.xlsx")) {
     download.file("http://www.us.lifesciences.sourcebioscience.com/media/381254/C.%20elegans%20Database%202012.xlsx",
                   "data-raw/ahringer.xlsx")
 }
-
 chromosomes <- c("I", "II", "III", "IV", "V", "X")
 list <- list()
 for (i in 1:length(chromosomes)) {
-    tbl <- read_excel("data-raw/ahringer.xlsx", sheet = i + 1) %>% # First sheet contains notes
-        setNames(camel(names(.))) %>%
-        select(-extraInfo) %>%
-        rename(genePair = genePairsName, sourceBioscience384 = sourceBioscienceLocation) %>%
-        mutate(wormbaseHistorical = paste0("JA:", genePair)) %>%
-        mutate(fwdPrimerSeq = tolower(fwdPrimerSeq), revPrimerSeq = tolower(revPrimerSeq)) %>%
-        #! df$plate <- stringr::str_pad(df$plate, 3, pad = "0")
-        mutate(ahringer96 = do.call(paste, c(.[, c("chrom", "plate", "well")], sep = "-"))) %>%
-        mutate(ahringer96 = gsub("-([A-Z]{1}[0-9]{2})$", "\\1", ahringer96)) %>%
+    # Note that the first sheet contains notes, so \code{i + 1}
+    tbl <- read_excel("data-raw/ahringer.xlsx", sheet = i + 1, col_types = rep("text", 8)) %>%
+        set_names(camel(names(.))) %>%
+        filter(!grepl("mismatch", extraInfo)) %>%
+        select(-c(extraInfo, fwdPrimerSeq, revPrimerSeq)) %>%
+        rename(genePair = genePairsName,
+               ahringer384 = sourceBioscienceLocation) %>%
+        mutate(plate = gsub("^S([0-9]{1})-", "S0\\1-", plate),
+               ahringer96 = paste(str_pad(plate, 3, pad = "0"), well, sep = "-"),
+               ahringer96 = gsub("^.*NA.*$", NA, ahringer96),
+               ahringer384 = gsub("-([0-9}+)([A-Z]{1})", "-\\1-\\2", ahringer384),
+               ahringer384 = gsub("-([0-9]{1})-", "-00\\1-", ahringer384),
+               ahringer384 = gsub("-([0-9]{2})-", "-0\\1-", ahringer384)) %>%
         select(-c(plate, well, chrom))
     name <- paste0("chr", chromosomes[i])
     list[[i]] <- tbl
 }
-rm(i, name, tbl)
-raw <- as_tibble(do.call("rbind", list))
-rm(list)
-
-# FROM HERE ON, EVERYTHING IS THE SAME WITH ORFEOME -- MAKE A FUNCTION
-
-data(ahringerWbrnai)
-if (!exists("ahringerWbrnai")) {
-    ahringerWbrnai <- historical2wbrnai(raw$wormbaseHistorical)
-    devtools::use_data(ahringerWbrnai, overwrite = TRUE)
-}
-
-data(ahringerSequence)
-if (!exists("ahringerSequence")) {
-    ahringerSequence1 <- wormbaseRestRnaiSequence(ahringerWbrnai$wbrnai[00001:05000])
-    ahringerSequence2 <- wormbaseRestRnaiSequence(ahringerWbrnai$wbrnai[05001:10000])
-    ahringerSequence3 <- wormbaseRestRnaiSequence(ahringerWbrnai$wbrnai[10001:15000])
-    ahringerSequence4 <- wormbaseRestRnaiSequence(ahringerWbrnai$wbrnai[15001:nrow(ahringerWbrnai)])
-    ahringerSequence <- bind_rows(ahringerSequence1,
-                                  ahringerSequence2,
-                                  ahringerSequence3,
-                                  ahringerSequence4)
-    devtools::use_data(ahringerSequence, overwrite = TRUE)
-}
-
-data(ahringerTargets)
-if (!exists("ahringerTargets")) {
-    ahringerTargets1 <- wormbaseRestRnaiTargets(ahringerWbrnai$wbrnai[00001:05000])
-    ahringerTargets2 <- wormbaseRestRnaiTargets(ahringerWbrnai$wbrnai[05001:10000])
-    ahringerTargets3 <- wormbaseRestRnaiTargets(ahringerWbrnai$wbrnai[10001:15000])
-    ahringerTargets4 <- wormbaseRestRnaiTargets(ahringerWbrnai$wbrnai[15001:nrow(ahringerWbrnai)])
-    ahringerTargets <- bind_rows(ahringerTargets1,
-                                 ahringerTargets2,
-                                 ahringerTargets3,
-                                 ahringerTargets4)
-    devtools::use_data(ahringerTargets, overwrite = TRUE)
-}
+ahringer <- bind_rows(list)
+rm(chromosomes, i, list, name, tbl)
+save(ahringer, file = "data-raw/ahringer.rda")
