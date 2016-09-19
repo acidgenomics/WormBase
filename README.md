@@ -8,9 +8,9 @@ Installation
 
 This is an [R](https://www.r-project.org) data package.
 
-To install, run `devtools::install_github("seqcloud/worminfo")`
+To install, run `devtools::install_github("mjsteinbaugh/worminfo")`
 
-[![Build Status](https://travis-ci.org/seqcloud/worminfo.svg?branch=master)](https://travis-ci.org/seqcloud/worminfo)
+[![Build Status](https://travis-ci.org/mjsteinbaugh/worminfo.svg?branch=master)](https://travis-ci.org/mjsteinbaugh/worminfo)
 
 Annotations
 ===========
