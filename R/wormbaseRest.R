@@ -11,7 +11,7 @@
 
 #' @export
 wormbaseRest <- function(query, class, instance) {
-    GET(paste0("http://api.wormbase.org/rest/field/", class, "/", query, "/", instance),
-        config = content_type_json()) %>%
-        content(.)
+    httr::GET(paste0("http://api.wormbase.org/rest/field/", class, "/", query, "/", instance),
+              config = httr::content_type_json()) %>%
+        httr::content(.)
 }
