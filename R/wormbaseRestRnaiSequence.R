@@ -1,19 +1,29 @@
 #' WormBase RESTful RNAi sequence query.
+#'
 #' @import dplyr
+#' @import stats
+#'
 #' @param rnai WormBase RNAi identifier.
+#'
 #' @return tibble.
+#' @export
+#'
 #' @examples
 #' wormbaseRestRnaiSequence("WBRNAi00003982")
-#' @export
 wormbaseRestRnaiSequence <- function(rnai) {
-    rnai <- sort(rnai) %>% unique %>% stats::na.omit(.)
+    rnai <- rnai %>%
+        stats::na.omit(.) %>%
+        unique(.) %>%
+        sort(.)
     list <- lapply(seq_along(rnai), function(a) {
-        data <- wormbaseRest(rnai[a], class = "rnai", instance = "sequence") %>%
-            .[["sequence"]] %>% .[["data"]] %>% .[[1]]
+        data <- worminfo::wormbaseRest(rnai[a], class = "rnai", instance = "sequence") %>%
+            .[["sequence"]] %>%
+            .[["data"]] %>%
+            .[[1]]
         if (length(data)) {
             oligo <- data$header
             length <- data$length
-            # sequence <- data$sequence
+            #! sequence <- data$sequence
         } else {
             oligo <- NA
             length <- NA
@@ -23,5 +33,5 @@ wormbaseRestRnaiSequence <- function(rnai) {
              oligo = oligo,
              length = length)
     })
-    bind_rows(list)
+    dplyr::bind_rows(list)
 }

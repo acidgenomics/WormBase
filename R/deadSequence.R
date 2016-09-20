@@ -1,13 +1,21 @@
 #' Map dead ORF to WormBase Gene ID.
+#'
 #' @import dplyr
 #' @import httr
+#' @import stats
+#'
 #' @param sequence Sequence (ORF).
+#'
 #' @return tibble.
+#' @export
+#'
 #' @examples
 #' deadSequence("M01E10.2")
-#' @export
 deadSequence <- function(sequence) {
-    sequence <- sort(sequence) %>% unique %>% stats::na.omit(.)
+    sequence <- sequence %>%
+        stats::na.omit(.) %>%
+        unique(.) %>%
+        sort(.)
     list <- lapply(seq_along(sequence), function(a) {
         query <- sequence[a]
         request <- httr::GET(paste0("http://www.wormbase.org/search/gene/", query, "?species=c_elegans"),
@@ -15,7 +23,7 @@ deadSequence <- function(sequence) {
         status <- httr::status_code(request)
         content <- httr::content(request)
         # WormBase seems to use the last entry for matching
-        results <- content$results %>% rev
+        results <- rev(content$results)
         if (length(results)) {
             deadGene <- results[[1]]$name$id
             mergeGene <- results[[1]]$merged_into[[1]]$id
