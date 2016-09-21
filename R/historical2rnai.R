@@ -2,7 +2,7 @@
 #'
 #' @import httr
 #' @import dplyr
-#' @import stats
+#' @import seqcloudr
 #' @import stringr
 #'
 #' @param historical WormBase historical RNAi experiment vector.
@@ -13,15 +13,12 @@
 #' @examples
 #' historical2rnai("JA:K10E9.1")
 historical2rnai <- function(historical) {
-    historical <- historical %>%
-        stats::na.omit(.) %>%
-        unique(.) %>%
-        sort(.)
+    historical <- seqcloudr::toStringUnique(historical)
     list <- lapply(seq_along(historical), function(a) {
         request <- httr::GET(paste0("http://www.wormbase.org/search/rnai/", historical[a]))
         # Server is now returning 400, need to set error method here?
         rnai <- tryCatch(request$headers$location) %>%
-            stringr::str_extract("WBRNAi[0-9]{8}")
+            stringr::str_extract(., "WBRNAi[0-9]{8}")
         if (!length(rnai)) {
             rnai <- NA
         }

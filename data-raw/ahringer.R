@@ -17,16 +17,15 @@ for (i in 1:length(chromosomes)) {
         dplyr::select(-c(extraInfo, fwdPrimerSeq, revPrimerSeq)) %>%
         dplyr::rename(genePair = genePairsName,
                       ahringer384 = sourceBioscienceLocation) %>%
-        dplyr::mutate(plate = gsub("^S([0-9]{1})-", "S0\\1-", plate),
-                      ahringer96 = paste(stringr::str_pad(plate, 3, pad = "0"), well, sep = "-"),
-                      ahringer96 = gsub("^.*NA.*$", NA, ahringer96),
-                      ahringer384 = gsub("-([0-9}+)([A-Z]{1})", "-\\1-\\2", ahringer384),
-                      ahringer384 = gsub("-([0-9]{1})-", "-00\\1-", ahringer384),
-                      ahringer384 = gsub("-([0-9]{2})-", "-0\\1-", ahringer384)) %>%
+        dplyr::mutate(ahringer96 = paste0(plate, well),
+                      ahringer96 = gsub("([A-Z]{1})0", "\\1", ahringer96),
+                      ahringer384 = gsub("-", "", ahringer384),
+                      ahringer384 = gsub("([A-Z]{1})0", "\\1", ahringer384)) %>%
         dplyr::select(-c(plate, well, chrom))
     name <- paste0("chr", chromosomes[i])
     list[[i]] <- tbl
 }
-ahringer <- dplyr::bind_rows(list)
+ahringer <- dplyr::bind_rows(list) %>%
+    arrange(genePair, ahringer384)
 rm(chromosomes, i, list, name, tbl)
 save(ahringer, file = "data-raw/ahringer.rda")

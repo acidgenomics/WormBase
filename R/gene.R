@@ -1,7 +1,7 @@
 #' Gene annotations.
 #'
 #' @import dplyr
-#' @import stats
+#' @import seqcloudr
 #'
 #' @param id Gene identifier.
 #' @param format Identifier type (gene, name, sequence).
@@ -17,10 +17,7 @@
 gene <- function(id = NULL, format = "gene", select = "simple") {
     # Subset if \code{id} declared
     if (!is.null(id)) {
-        id <- id %>%
-            stats::na.omit(.) %>%
-            unique(.) %>%
-            sort(.)
+        id <- seqcloudr::toStringUnique(id)
         if (format == "gene") {
             data <- dplyr::filter(worminfo::geneData, gene %in% id)
         }

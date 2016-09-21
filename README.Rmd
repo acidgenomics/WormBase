@@ -26,9 +26,9 @@ data(geneData)
 
 This is an [R][] data package.
 
-To install, run `devtools::install_github("mjsteinbaugh/worminfo")`
+To install, run `devtools::install_github("steinbaugh/worminfo")`
 
-[![Build Status](https://travis-ci.org/mjsteinbaugh/worminfo.svg?branch=master)](https://travis-ci.org/mjsteinbaugh/worminfo)
+[![Build Status](https://travis-ci.org/steinbaugh/worminfo.svg?branch=master)](https://travis-ci.org/steinbaugh/worminfo)
 
 # Annotations
 

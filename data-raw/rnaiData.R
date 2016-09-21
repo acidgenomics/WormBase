@@ -20,43 +20,40 @@ if (!exists("cherrypick")) {
     source("data-raw/cherrypick.R")
 }
 
-bind <- dplyr::bind_rows(ahringer, orfeome, cherrypick) %>%
+raw <- dplyr::bind_rows(ahringer, orfeome, cherrypick) %>%
     dplyr::mutate(genePair = gsub("(\\.[0-9]+)[a-z]{1}$", "\\1", genePair))
 rm(ahringer, cherrypick, orfeome)
 
+
 # Historical RNAi Identifiers ====
-mv <- bind %>%
+mv <- raw %>%
     dplyr::filter(!is.na(orfeome96)) %>%
     dplyr::mutate(historical = paste0("MV_SV:mv_", genePair))
-ja <- bind %>%
-    dplyr::filter(with(!is.na(ahringer96) |
-                              !is.na(ahringer96Historical) |
-                              !is.na(ahringer384))) %>%
+ja <- raw %>%
+    dplyr::filter(is.na(orfeome96)) %>%
     dplyr::mutate(historical = paste0("JA:", genePair))
 
-# Check that all clones matched
-bind %>% dplyr::filter(with(is.na(orfeome96) &
-                                   is.na(ahringer96) &
-                                   is.na(ahringer96Historical) &
-                                   is.na(ahringer384)))
+# Check that all rows were selected:
+nrow(raw)
+nrow(mv) + nrow(ja)
 
-bind <- dplyr::bind_rows(mv, ja) %>%
+unique <- dplyr::bind_rows(mv, ja) %>%
     dplyr::group_by(historical) %>%
-    # seqcloudr::str_collapse
-    dplyr::summarise_each(funs(str_collapse)) %>%
-    seqcloudr::cruft(.)
+    dplyr::summarise_each(funs(toStringUnique))
+# NAs are set as "NA" here...can use \code{seqcloudr::wash(.)}
+
 
 # WormBase RESTful queries (CPU intensive) ====
 load("data-raw/rnai.rda")
 if (!exists("rnai")) {
-    rnai <- worminfo::historical2rnai(bind$historical)
+    rnai <- worminfo::historical2rnai(unique$historical)
     save(rnai, file = "data-raw/rnai.rda")
 }
 
 load("data-raw/sequence.rda")
 if (!exists("sequence")) {
     sequence <- list()
-    # Separate requests to server (slower but more reliable)
+    # Separate requests to server (slower, but more reliable)
     for (i in 1:nrow(rnai)) {
         sequence[[i]] <- worminfo::wormbaseRestRnaiSequence(rnai$rnai[i])
     }
@@ -74,6 +71,7 @@ if (!exists("targets")) {
     save(targets, file = "data-raw/targets.rda")
 }
 
+
 # Annotation joins ===
 # WormBase FTP oligo info
 load("data-raw/oligo2gene.rda")
@@ -81,9 +79,7 @@ if (!exists("oligo2gene")) {
     source("data-raw/oligo2gene.R")
 }
 
-bind_backup <- bind
-
-bind <- bind %>%
+master <- unique %>%
     dplyr::left_join(rnai, by = "historical") %>%
     dplyr::left_join(sequence, by = "rnai") %>%
     dplyr::left_join(targets, by = "rnai") %>%
@@ -91,89 +87,83 @@ bind <- bind %>%
     dplyr::distinct(.) %>%
     dplyr::arrange(historical)
 
+matched <- list()
+
 # Matched by historical2rnai()
-matchedHistorical <- bind %>%
+matched[["historical"]] <- master %>%
     dplyr::filter(!is.na(gene))
-unmatched <- bind %>%
+matched$historical
+unmatched <- master %>%
     dplyr::filter(is.na(gene)) %>%
     dplyr::select(-gene) %>%
     dplyr::mutate(oligo = historical,
                   oligo = gsub("^MV_SV:", "", oligo),
                   oligo = gsub("^JA:", "sjj_", oligo))
+unmatched
 
 # Matched by oligo2gene
-matchedOligo <- unmatched %>%
+matched[["oligo"]] <- unmatched %>%
     dplyr::left_join(oligo2gene, by = "oligo") %>%
     dplyr::filter(!is.na(gene))
+matched$oligo
 unmatched <- unmatched %>%
-    dplyr::filter(!(oligo %in% matchedOligo$oligo))
+    dplyr::filter(!(oligo %in% matched[["oligo"]]["oligo"][[1]]))
+unmatched
 
 # Matched by gene()
-matchedGene <- unmatched$genePair %>%
-    worminfo::gene(format = "sequence") %>%
+matched[["gene"]] <- unmatched$genePair %>%
+    worminfo::gene(., format = "sequence") %>%
     dplyr::mutate(genePair = sequence) %>%
     dplyr::left_join(unmatched, by = "genePair") %>%
     dplyr::select(-c(name, sequence))
 unmatched <- unmatched %>%
-    dplyr::filter(!(genePair %in% matchedGene$genePair))
+    dplyr::filter(!(genePair %in% matched[["gene"]]["genePair"][[1]]))
 
 # Matched by deadSequence()
-matchedDeadSequence <- unmatched$genePair %>%
+matched[["dead"]] <- unmatched$genePair %>%
     worminfo::deadSequence(.) %>%
     dplyr::left_join(unmatched, by = "genePair")
 unmatched <- unmatched %>%
-    dplyr::filter(!(genePair %in% matchedDeadSequence$genePair))
+    dplyr::filter(!(genePair %in% matched[["dead"]]["genePair"][[1]]))
 
-cloneData <- dplyr::bind_rows(matchedHistorical,
-                              matchedOligo,
-                              matchedGene,
-                              matchedDeadSequence,
-                              unmatched)
-cloneData <- dplyr::left_join(cloneData,
-                              worminfo::gene(cloneData$gene, format = "gene"),
-                              by = "gene") %>%
-    seqcloudr::cruft(.) %>%
+rnaiData <- dplyr::bind_rows(matched, unmatched) %>%
+    dplyr::select(-genePair) %>%
+    dplyr::left_join(worminfo::gene(.["gene"][[1]], format = "gene"),
+                     by = "gene") %>%
+    dplyr::group_by(historical) %>%
+    dplyr::summarise_each(funs(toStringUnique)) %>%
     dplyr::select(noquote(order(names(.)))) %>%
-    dplyr::arrange(historical)
-devtools::use_data(cloneData, overwrite = TRUE)
+    dplyr::arrange(historical) %>%
+    seqcloudr::wash(.)
+devtools::use_data(rnaiData, overwrite = TRUE)
 
 
 # Duplicate check ====
-dupeGene <- cloneData %>%
+dupeGene <- rnaiData %>%
     dplyr::filter(duplicated(gene)) %>%
     dplyr::select(gene) %>%
     .[[1]] %>%
-    stats::na.omit(.) %>%
-    unique(.) %>%
-    sort(.)
-dupeHistorical <- bind %>%
+    seqcloudr::toStringUnique(.)
+dupeHistorical <- rnaiData %>%
     dplyr::filter(duplicated(historical)) %>%
     dplyr::select(historical) %>%
     .[[1]] %>%
-    stats::na.omit(.) %>%
-    unique %>%
-    sort
-dupeAhringer96 <- cloneData %>%
+    seqcloudr::toStringUnique(.)
+dupeAhringer96 <- rnaiData %>%
     dplyr::filter(duplicated(ahringer96)) %>%
     dplyr::select(ahringer96) %>%
     .[[1]] %>%
-    stats::na.omit(.) %>%
-    unique(.) %>%
-    sort(.)
-dupeAhringer384 <- cloneData %>%
+    seqcloudr::toStringUnique(.)
+dupeAhringer384 <- rnaiData %>%
     dplyr::filter(duplicated(ahringer384)) %>%
     dplyr::select(ahringer384) %>%
     .[[1]] %>%
-    stats::na.omit(.) %>%
-    unique %>%
-    sort
-dupeOrfeome96 <- cloneData %>%
+    seqcloudr::toStringUnique(.)
+dupeOrfeome96 <- rnaiData %>%
     dplyr::filter(duplicated(orfeome96)) %>%
     dplyr::select(orfeome96) %>%
     .[[1]] %>%
-    stats::na.omit(.) %>%
-    unique(.) %>%
-    sort(.)
+    seqcloudr::toStringUnique(.)
 head(dupeAhringer96)
 head(dupeAhringer384)
 head(dupeOrfeome96)

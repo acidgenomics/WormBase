@@ -9,14 +9,15 @@ for (i in 1:length(sheet)) {
                                    col_types = c("numeric", "text", "numeric",
                                                  "text", "text", "text", "numeric",
                                                  "text")) %>%
-        dplyr::mutate(cherrypick = paste0(sheet[i], "-",
-                                          stringr::str_pad(plateNum, 2, pad = "0"), "-",
+        dplyr::mutate(cherrypick = paste0(sheet[i],
+                                          plateNum,
                                           plateRow,
-                                          stringr::str_pad(plateCol, 2, pad = "0")),
-                      clone = paste0(sourceLibrary, "-",
-                                     stringr::str_pad(sourcePlateNum, 3, pad = "0"), "-",
+                                          plateCol),
+                      clone = paste0(sourceLibrary,
+                                     "-",
+                                     sourcePlateNum,
                                      sourcePlateRow,
-                                     stringr::str_pad(sourcePlateCol, 2, pad = "0")),
+                                     sourcePlateCol),
                       # NA fix
                       clone = gsub("^NA", NA, clone),
                       # Clone library columns
@@ -31,10 +32,9 @@ for (i in 1:length(sheet)) {
                       # Remove trailing info, e.g. `(dbd)`
                       genePair = gsub("\\(.+\\)$", "", genePair)) %>%
         dplyr::filter(!is.na(genePair)) %>%
-        dplyr::select(cherrypick, genePair, ahringer96Historical, orfeome96) %>%
-        dplyr::arrange(cherrypick)
+        dplyr::select(cherrypick, genePair, ahringer96Historical, orfeome96)
 }
 cherrypick <- dplyr::bind_rows(raw) %>%
-    dplyr::arrange(cherrypick)
+    dplyr::arrange(genePair, cherrypick)
 save(cherrypick, file = "data-raw/cherrypick.rda")
 rm(i, raw, sheet, workbook)

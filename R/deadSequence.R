@@ -2,7 +2,7 @@
 #'
 #' @import dplyr
 #' @import httr
-#' @import stats
+#' @import seqcloudr
 #'
 #' @param sequence Sequence (ORF).
 #'
@@ -12,10 +12,7 @@
 #' @examples
 #' deadSequence("M01E10.2")
 deadSequence <- function(sequence) {
-    sequence <- sequence %>%
-        stats::na.omit(.) %>%
-        unique(.) %>%
-        sort(.)
+    sequence <- seqcloudr::toStringUnique(sequence)
     list <- lapply(seq_along(sequence), function(a) {
         query <- sequence[a]
         request <- httr::GET(paste0("http://www.wormbase.org/search/gene/", query, "?species=c_elegans"),

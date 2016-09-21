@@ -2,7 +2,7 @@
 #'
 #' @import httr
 #' @import dplyr
-#' @import stats
+#' @import seqcloudr
 #' @import stringr
 #' @import tibble
 #' @import xml2
@@ -15,10 +15,7 @@
 #' @examples
 #' wormbaseRestGeneExternal("WBGene00000001")
 wormbaseRestGeneExternal <- function(gene) {
-    gene <- gene %>%
-        stats::na.omit(.) %>%
-        unique(.) %>%
-        sort(.)
+    gene <- seqcloudr::toStringUnique(gene)
     list <- lapply(seq_along(gene), function(a) {
         rest <- httr::GET(paste0("http://api.wormbase.org/rest/widget/gene/", gene[a], "/external_links"),
                           config = httr::content_type_json()) %>%
