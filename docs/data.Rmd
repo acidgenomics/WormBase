@@ -1,7 +1,22 @@
+---
+title: data
+author: Michael J. Steinbaugh
+date: '`r format(Sys.time(), "%B %d, %Y")`'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = normalizePath("../"))
+```
+
+```{r data, include=FALSE}
+devtools::load_all()
+utils::data(geneData, rnaiData)
+```
+
 `geneData`
 
 `r seqcloudr::mdlist(names(geneData), ordered = TRUE)`
 
-`cloneData`
+`rnaiData`
 
-`r seqcloudr::mdlist(names(cloneData), ordered = TRUE)`
+`r seqcloudr::mdlist(names(rnaiData), ordered = TRUE)`
