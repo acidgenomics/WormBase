@@ -11,22 +11,21 @@ chromosomes <- c("I", "II", "III", "IV", "V", "X")
 list <- list()
 for (i in 1:length(chromosomes)) {
     # Note that the first sheet contains notes, so \code{i + 1}
-    tbl <- read_excel("data-raw/ahringer.xlsx", sheet = i + 1, col_types = rep("text", 8)) %>%
-        set_names(camel(names(.))) %>%
-        filter(!grepl("mismatch", extraInfo)) %>%
-        select(-c(extraInfo, fwdPrimerSeq, revPrimerSeq)) %>%
-        rename(genePair = genePairsName,
-               ahringer384 = sourceBioscienceLocation) %>%
-        mutate(plate = gsub("^S([0-9]{1})-", "S0\\1-", plate),
-               ahringer96 = paste(str_pad(plate, 3, pad = "0"), well, sep = "-"),
-               ahringer96 = gsub("^.*NA.*$", NA, ahringer96),
-               ahringer384 = gsub("-([0-9}+)([A-Z]{1})", "-\\1-\\2", ahringer384),
-               ahringer384 = gsub("-([0-9]{1})-", "-00\\1-", ahringer384),
-               ahringer384 = gsub("-([0-9]{2})-", "-0\\1-", ahringer384)) %>%
-        select(-c(plate, well, chrom))
+    tbl <- readxl::read_excel("data-raw/ahringer.xlsx", sheet = i + 1, col_types = rep("text", 8)) %>%
+        magrittr::set_names(seqcloudr::camel(names(.))) %>%
+        dplyr::filter(!grepl("mismatch", extraInfo)) %>%
+        dplyr::select(-c(extraInfo, fwdPrimerSeq, revPrimerSeq)) %>%
+        dplyr::rename(genePair = genePairsName,
+                      ahringer384 = sourceBioscienceLocation) %>%
+        dplyr::mutate(ahringer96 = paste0(plate, well),
+                      ahringer96 = gsub("([A-Z]{1})0", "\\1", ahringer96),
+                      ahringer384 = gsub("-", "", ahringer384),
+                      ahringer384 = gsub("([A-Z]{1})0", "\\1", ahringer384)) %>%
+        dplyr::select(-c(plate, well, chrom))
     name <- paste0("chr", chromosomes[i])
     list[[i]] <- tbl
 }
-ahringer <- bind_rows(list)
+ahringer <- dplyr::bind_rows(list) %>%
+    arrange(genePair, ahringer384)
 rm(chromosomes, i, list, name, tbl)
 save(ahringer, file = "data-raw/ahringer.rda")

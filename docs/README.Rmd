@@ -1,0 +1,53 @@
+---
+title: worminfo
+date: '`r format(Sys.time(), "%B %d, %Y")`'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = normalizePath("../"))
+```
+
+```{r data, include=FALSE}
+devtools::load_all()
+utils::data(geneData, rnaiData)
+```
+
+```{r, include=FALSE}
+wormbase <- list.files(path = "data-raw/wormbase", pattern = "wormpep.table*") %>%
+    stringr::str_extract("[0-9]{3}") %>%
+    paste0("WormBase WS", .)
+ensembl <- biomaRt::listMarts(host = "useast.ensembl.org") %>%
+    dplyr::filter(biomart == "ENSEMBL_MART_ENSEMBL") %>%
+    dplyr::select(version) %>%
+    .[[1]]
+panther <- list.files(path = "data-raw", pattern = "PTHR*") %>%
+    stringr::str_extract(., "([0-9]{2}\\.[0-9]{1})") %>%
+    paste0("PANTHER ", .)
+rstats <- paste0(R.Version()$version.string,
+                 " running on ",
+                 R.Version()$platform)
+```
+
+[Ahringer]: http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/
+[Ensembl]: http://www.ensembl.org/Caenorhabditis_elegans
+[ORFeome]: http://worfdb.dfci.harvard.edu
+[PANTHER]: http://pantherdb.org
+[R]: https://www.r-project.org
+[WormBase]: http://www.wormbase.org
+
+[![Build Status](https://travis-ci.org/steinbaugh/worminfo.svg?branch=master)](https://travis-ci.org/steinbaugh/worminfo)
+
+*C. elegans* genome annotations assembled from [WormBase][], [Ensembl][], and [PANTHER][]. RNAi clone mapping support for [ORFeome][], [Ahringer][] and cherrypick *E. coli* feeding libraries.
+
+# Installation
+
+This is an [R][] data package.
+
+To install, run `devtools::install_github("steinbaugh/worminfo")`
+
+# Annotations
+
+- `r nrow(geneData)` gene annotations
+- `r nrow(rnaiData)` RNAi clones
+
+Compiled from `r wormbase`, `r ensembl` and `r panther` with `r rstats`.

@@ -1,13 +1,13 @@
 #' Gene annotations.
 #'
 #' @import dplyr
+#' @import seqcloudr
 #'
 #' @param id Gene identifier.
 #' @param format Identifier type (gene, name, sequence).
 #' @param select Columns to select (report, simple).
 #'
 #' @return tibble.
-#'
 #' @export
 #'
 #' @examples
@@ -17,48 +17,48 @@
 gene <- function(id = NULL, format = "gene", select = "simple") {
     # Subset if \code{id} declared
     if (!is.null(id)) {
-        id <- sort(id) %>% unique %>% stats::na.omit(.)
+        id <- seqcloudr::toStringUnique(id)
         if (format == "gene") {
-            data <- filter(worminfo::geneData, gene %in% id)
+            data <- dplyr::filter(geneData, gene %in% id)
         }
         if (format == "sequence") {
-            data <- filter(worminfo::geneData, sequence %in% id)
+            data <- dplyr::filter(geneData, sequence %in% id)
         }
         if (format == "name") {
-            data <- filter(worminfo::geneData, name %in% id)
+            data <- dplyr::filter(geneData, name %in% id)
         }
     } else {
-        data <- worminfo::geneData
+        data <- geneData
     }
     if (!is.null(select)) {
         if (select == "simple") {
-            data <- select_(data, .dots = c("gene",
-                                            "sequence",
-                                            "name"))
+            data <- dplyr::select_(data, .dots = c("gene",
+                                                   "sequence",
+                                                   "name"))
         } else if (select == "report") {
-            data <- select_(data, .dots = c("gene",
-                                           "sequence",
-                                           "name",
-                                           "class",
-                                           "otherIdentifier",
-                                           "ncbi",
-                                           "descriptionConcise",
-                                           "descriptionProvisional",
-                                           "descriptionAutomated",
-                                           "descriptionEnsembl",
-                                           "blastpHsapiensGene",
-                                           "blastpHsapiensName",
-                                           "blastpHsapiensDescription",
-                                           "geneOntologyName",
-                                           "interproName",
-                                           "pantherFamilyName",
-                                           "pantherSubfamilyName",
-                                           "pantherGeneOntologyMolecularFunction",
-                                           "pantherGeneOntologyBiologicalProcess",
-                                           "pantherGeneOntologyCellularComponent",
-                                           "pantherClass"))
+            data <- dplyr::select_(data, .dots = c("gene",
+                                                   "sequence",
+                                                   "name",
+                                                   "class",
+                                                   "otherIdentifier",
+                                                   "ncbi",
+                                                   "descriptionConcise",
+                                                   "descriptionProvisional",
+                                                   "descriptionAutomated",
+                                                   "descriptionEnsembl",
+                                                   "blastpHsapiensGene",
+                                                   "blastpHsapiensName",
+                                                   "blastpHsapiensDescription",
+                                                   "geneOntologyName",
+                                                   "interproName",
+                                                   "pantherFamilyName",
+                                                   "pantherSubfamilyName",
+                                                   "pantherGeneOntologyMolecularFunction",
+                                                   "pantherGeneOntologyBiologicalProcess",
+                                                   "pantherGeneOntologyCellularComponent",
+                                                   "pantherClass"))
         } else {
-            data <- select_(data, .dots = c(format, select))
+            data <- dplyr::select_(data, .dots = c(format, select))
         }
     }
     return(data)

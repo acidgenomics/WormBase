@@ -20,7 +20,4 @@ vignettes/*.pdf
 .Rproj.user
 
 .DS_Store
-
-#! data-raw/*.xlsx
-#! data-raw/PTHR*
-#! data-raw/wormbase/
+*.html
