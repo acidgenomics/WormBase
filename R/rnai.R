@@ -26,7 +26,7 @@ rnai <- function(identifier = NULL,
                   format = "clone",
                   library = "orfeome96") {
     if (!is.null(identifier)) {
-        identifier <- seqcloudr::toStringUnique(identifier)
+        identifier <- seqcloudr::unique(identifier)
         list <- parallel::mclapply(seq_along(identifier), function(a) {
             id <- identifier[a]
             if (format == "clone") {

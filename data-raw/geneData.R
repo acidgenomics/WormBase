@@ -1,3 +1,4 @@
+devtools::load_all()
 library(dplyr)
 library(magrittr)
 library(seqcloudr)
@@ -35,7 +36,7 @@ names(panther)[2:length(panther)] <-
 # Join And Save ====
 geneData <- Reduce(function(...) dplyr::left_join(..., by = "gene"),
                    list(wormbase, ensembl, panther)) %>%
-    seqcloudr::cruft(.) %>%
+    seqcloudr::wash(.) %>%
     dplyr::select(noquote(order(names(.)))) %>%
     dplyr::arrange(gene)
 devtools::use_data(geneData, overwrite = TRUE)

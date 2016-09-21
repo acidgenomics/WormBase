@@ -39,7 +39,7 @@ nrow(mv) + nrow(ja)
 
 unique <- dplyr::bind_rows(mv, ja) %>%
     dplyr::group_by(historical) %>%
-    dplyr::summarise_each(funs(toStringUnique))
+    dplyr::summarise_each(funs(toString))
 # NAs are set as "NA" here...can use \code{seqcloudr::wash(.)}
 
 
@@ -131,7 +131,7 @@ rnaiData <- dplyr::bind_rows(matched, unmatched) %>%
     dplyr::left_join(gene(.["gene"][[1]], format = "gene"),
                      by = "gene") %>%
     dplyr::group_by(historical) %>%
-    dplyr::summarise_each(funs(toStringUnique)) %>%
+    dplyr::summarise_each(funs(toString)) %>%
     dplyr::select(noquote(order(names(.)))) %>%
     dplyr::arrange(historical) %>%
     seqcloudr::wash(.)
@@ -143,27 +143,27 @@ dupeGene <- rnaiData %>%
     dplyr::filter(duplicated(gene)) %>%
     dplyr::select(gene) %>%
     .[[1]] %>%
-    seqcloudr::toStringUnique(.)
+    seqcloudr::unique(.)
 dupeHistorical <- rnaiData %>%
     dplyr::filter(duplicated(historical)) %>%
     dplyr::select(historical) %>%
     .[[1]] %>%
-    seqcloudr::toStringUnique(.)
+    seqcloudr::unique(.)
 dupeAhringer96 <- rnaiData %>%
     dplyr::filter(duplicated(ahringer96)) %>%
     dplyr::select(ahringer96) %>%
     .[[1]] %>%
-    seqcloudr::toStringUnique(.)
+    seqcloudr::unique(.)
 dupeAhringer384 <- rnaiData %>%
     dplyr::filter(duplicated(ahringer384)) %>%
     dplyr::select(ahringer384) %>%
     .[[1]] %>%
-    seqcloudr::toStringUnique(.)
+    seqcloudr::unique(.)
 dupeOrfeome96 <- rnaiData %>%
     dplyr::filter(duplicated(orfeome96)) %>%
     dplyr::select(orfeome96) %>%
     .[[1]] %>%
-    seqcloudr::toStringUnique(.)
+    seqcloudr::unique(.)
 head(dupeAhringer96)
 head(dupeAhringer384)
 head(dupeOrfeome96)
