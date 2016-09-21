@@ -1,6 +1,5 @@
 worminfo
 ================
-Michael J. Steinbaugh
 September 21, 2016
 
 [![Build Status](https://travis-ci.org/steinbaugh/worminfo.svg?branch=master)](https://travis-ci.org/steinbaugh/worminfo)
