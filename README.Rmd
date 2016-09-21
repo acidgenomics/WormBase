@@ -5,9 +5,7 @@ output: github_document
 
 ```{r, include=FALSE}
 library(dplyr)
-library(magrittr)
 library(stringr)
-library(tibble)
 info <- installed.packages() %>% as_tibble %>% filter(Package == "worminfo")
 data(cloneData)
 data(geneData)
@@ -22,13 +20,13 @@ data(geneData)
 
 *C. elegans* genome annotations assembled from [WormBase][], [Ensembl][], and [PANTHER][]. RNAi clone mapping support for [ORFeome][], [Ahringer][] and cherrypick *E. coli* feeding libraries.
 
+[![Build Status](https://travis-ci.org/steinbaugh/worminfo.svg?branch=master)](https://travis-ci.org/steinbaugh/worminfo)
+
 # Installation
 
 This is an [R][] data package.
 
 To install, run `devtools::install_github("steinbaugh/worminfo")`
-
-[![Build Status](https://travis-ci.org/steinbaugh/worminfo.svg?branch=master)](https://travis-ci.org/steinbaugh/worminfo)
 
 # Annotations
 
