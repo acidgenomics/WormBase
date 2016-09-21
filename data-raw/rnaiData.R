@@ -46,7 +46,7 @@ unique <- dplyr::bind_rows(mv, ja) %>%
 # WormBase RESTful queries (CPU intensive) ====
 load("data-raw/rnai.rda")
 if (!exists("rnai")) {
-    rnai <- worminfo::historical2rnai(unique$historical)
+    rnai <- wormbaseHistorical2rnai(unique$historical)
     save(rnai, file = "data-raw/rnai.rda")
 }
 
@@ -55,7 +55,7 @@ if (!exists("sequence")) {
     sequence <- list()
     # Separate requests to server (slower, but more reliable)
     for (i in 1:nrow(rnai)) {
-        sequence[[i]] <- worminfo::wormbaseRestRnaiSequence(rnai$rnai[i])
+        sequence[[i]] <- wormbaseRestRnaiSequence(rnai$rnai[i])
     }
     sequence <- dplyr::bind_rows(sequence)
     save(sequence, file = "data-raw/sequence.rda")
@@ -65,7 +65,7 @@ load("data-raw/targets.rda")
 if (!exists("targets")) {
     targets <- list()
     for (i in 1:nrow(rnai)) {
-        targets[[i]] <- worminfo::wormbaseRestRnaiTargets(rnai$rnai[i])
+        targets[[i]] <- wormbaseRestRnaiTargets(rnai$rnai[i])
     }
     targets <- dplyr::bind_rows(targets)
     save(targets, file = "data-raw/targets.rda")
@@ -112,7 +112,7 @@ unmatched
 
 # Matched by gene()
 matched[["gene"]] <- unmatched$genePair %>%
-    worminfo::gene(., format = "sequence") %>%
+    gene(., format = "sequence") %>%
     dplyr::mutate(genePair = sequence) %>%
     dplyr::left_join(unmatched, by = "genePair") %>%
     dplyr::select(-c(name, sequence))
@@ -121,14 +121,14 @@ unmatched <- unmatched %>%
 
 # Matched by deadSequence()
 matched[["dead"]] <- unmatched$genePair %>%
-    worminfo::deadSequence(.) %>%
+    wormbaseGeneMerge(.) %>%
     dplyr::left_join(unmatched, by = "genePair")
 unmatched <- unmatched %>%
     dplyr::filter(!(genePair %in% matched[["dead"]]["genePair"][[1]]))
 
 rnaiData <- dplyr::bind_rows(matched, unmatched) %>%
     dplyr::select(-genePair) %>%
-    dplyr::left_join(worminfo::gene(.["gene"][[1]], format = "gene"),
+    dplyr::left_join(gene(.["gene"][[1]], format = "gene"),
                      by = "gene") %>%
     dplyr::group_by(historical) %>%
     dplyr::summarise_each(funs(toStringUnique)) %>%
