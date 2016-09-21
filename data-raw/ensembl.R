@@ -1,8 +1,7 @@
 # \code{external_gene_name} = Ensembl public name
 # \code{wormbase_locus} = WormBase public name
 # \code{wormbase_gene_seq_name} for clean sequence identifier.
-
-#! library(biomaRt) - conflicts with dplyr
+library(biomaRt)
 library(dplyr)
 
 ensembl <- list()
@@ -20,11 +19,11 @@ ensembl[["basic"]] <-
                                   "end_position",
                                   "strand",
                                   "description")) %>%
-    rename(biotype = gene_biotype,
-           chromosome = chromosome_name,
-           description_ensembl = description,
-           position_start = start_position,
-           position_end = end_position)
+    dplyr::rename(biotype = gene_biotype,
+                  chromosome = chromosome_name,
+                  description_ensembl = description,
+                  position_start = start_position,
+                  position_end = end_position)
 
 
 # Gene Ontology ====
@@ -33,9 +32,9 @@ ensembl[["go"]] <-
                    attributes = c("ensembl_gene_id",
                                   "go_id",
                                   "name_1006")) %>%
-    group_by(ensembl_gene_id) %>%
-    summarize(gene_ontology = na.omit(unique(sort(toString(go_id)))),
-              gene_ontology_name = na.omit(unique(sort(toString(name_1006)))))
+    dplyr::group_by(ensembl_gene_id) %>%
+    dplyr::summarize(gene_ontology = toString(sort(unique(stats::na.omit(go_id)))),
+                     gene_ontology_name = toString(sort(unique(stats::na.omit(name_1006)))))
 
 
 # Interpro ====
@@ -44,9 +43,9 @@ ensembl[["interpro"]] <-
                    attributes = c("ensembl_gene_id",
                                   "interpro",
                                   "interpro_description")) %>%
-    group_by(ensembl_gene_id) %>%
-    summarize(interpro = na.omit(unique(sort(toString(interpro)))),
-              interpro_name = na.omit(unique(sort(toString(interpro_description)))))
+    dplyr::group_by(ensembl_gene_id) %>%
+    dplyr::summarize(interpro = toString(sort(unique(stats::na.omit(interpro)))),
+                     interpro_name = toString(sort(unique(stats::na.omit(interpro_description)))))
 
 
 # Save ====
