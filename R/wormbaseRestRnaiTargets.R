@@ -1,7 +1,7 @@
 #' WormBase RESTful RNAi targets query.
 #'
 #' @import dplyr
-#' @import stats
+#' @import seqcloudr
 #' @import stringr
 #'
 #' @param rnai WormBase RNAi identifier vector.
@@ -12,10 +12,7 @@
 #' @examples
 #' wormbaseRestRnaiTargets("WBRNAi00031683")
 wormbaseRestRnaiTargets <- function(rnai) {
-    rnai <- rnai %>%
-        stats::na.omit(.) %>%
-        unique(.) %>%
-        sort(.)
+    rnai <- seqcloudr::toStringUnique(rnai)
     list <- lapply(seq_along(rnai), function(a) {
         data <- worminfo::wormbaseRest(rnai[a], class = "rnai", instance = "targets") %>%
             .[["targets"]] %>%
