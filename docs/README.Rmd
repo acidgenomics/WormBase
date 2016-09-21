@@ -1,15 +1,32 @@
 ---
 title: worminfo
-output: github_document
+author: Michael J. Steinbaugh
+date: '`r format(Sys.time(), "%B %d, %Y")`'
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = normalizePath("../"))
+```
+
+```{r data, include=FALSE}
+devtools::load_all()
+utils::data(geneData, rnaiData)
+```
+
 ```{r, include=FALSE}
-library(dplyr)
-library(stringr)
-library(tibble)
-info <- installed.packages() %>% tibble::as_tibble %>% filter(Package == "worminfo")
-data(cloneData)
-data(geneData)
+wormbase <- list.files(path = "data-raw/wormbase", pattern = "wormpep.table*") %>%
+    stringr::str_extract("[0-9]{3}") %>%
+    paste0("WormBase WS", .)
+ensembl <- biomaRt::listMarts(host = "useast.ensembl.org") %>%
+    dplyr::filter(biomart == "ENSEMBL_MART_ENSEMBL") %>%
+    dplyr::select(version) %>%
+    .[[1]]
+panther <- list.files(path = "data-raw", pattern = "PTHR*") %>%
+    stringr::str_extract(., "([0-9]{2}\\.[0-9]{1})") %>%
+    paste0("PANTHER ", .)
+rstats <- paste0(R.Version()$version.string,
+                 " running on ",
+                 R.Version()$platform)
 ```
 
 [Ahringer]: http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/
@@ -19,9 +36,9 @@ data(geneData)
 [R]: https://www.r-project.org
 [WormBase]: http://www.wormbase.org
 
-*C. elegans* genome annotations assembled from [WormBase][], [Ensembl][], and [PANTHER][]. RNAi clone mapping support for [ORFeome][], [Ahringer][] and cherrypick *E. coli* feeding libraries.
-
 [![Build Status](https://travis-ci.org/steinbaugh/worminfo.svg?branch=master)](https://travis-ci.org/steinbaugh/worminfo)
+
+*C. elegans* genome annotations assembled from [WormBase][], [Ensembl][], and [PANTHER][]. RNAi clone mapping support for [ORFeome][], [Ahringer][] and cherrypick *E. coli* feeding libraries.
 
 # Installation
 
@@ -32,10 +49,6 @@ To install, run `devtools::install_github("steinbaugh/worminfo")`
 # Annotations
 
 - `r nrow(geneData)` gene annotations
-- `r nrow(cloneData)` RNAi clones
+- `r nrow(rnaiData)` RNAi clones
 
-Compiled from
-WormBase WS`r list.files(path = "data-raw/wormbase", pattern = "wormpep.table*") %>% str_extract("[0-9]{3}")`,
-`r biomaRt::listMarts(host = "useast.ensembl.org") %>% filter(biomart == "ENSEMBL_MART_ENSEMBL") %>% select(version)`
-and PANTHER `r list.files(path = "data-raw", pattern = "PTHR*") %>% str_extract("([0-9]{2}\\.[0-9]{1})")`
-with `r R.Version()$version.string` running on `r R.Version()$platform`.
+Compiled from `r wormbase`, `r ensembl` and `r panther` with `r rstats`.
