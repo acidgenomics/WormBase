@@ -65,21 +65,9 @@ if (!file.exists("data-raw/wormbase/rnai_phenotypes.tsv")) {
     utils::download.file(file, "data-raw/wormbase/rnai_phenotypes.tsv")
     rm(dir, file)
 }
-raw <- readr::read_tsv("data-raw/wormbase/rnai_phenotypes.tsv",
-                       col_names = c("gene", "sequence", "unsorted"))
-wormbase[["rnai"]] <-
-    parallel::mclapply(seq_along(rownames(raw)), function(i) {
-        stringr::str_split(as.character(raw[i, "unsorted"]), ", ") %>%
-            .[[1]] %>%
-            unique(.) %>%
-            sort(.) %>%
-            toString(.)
-    }) %>%
-    unlist(.) %>%
-    tibble::tibble(rnaiPhenotypes = .) %>%
-    dplyr::bind_cols(raw, .) %>%
-    dplyr::select(-c(sequence, unsorted))
-rm(raw)
+wormbase[["rnai"]] <- readr::read_tsv("data-raw/wormbase/rnai_phenotypes.tsv",
+                                      col_names = c("gene", "sequence", "rnaiPhenotypes")) %>%
+    dplyr::select(-sequence)
 
 
 # Orthologs ====
@@ -99,9 +87,7 @@ hsapiens <-
         stringr::str_split(list[[x]][2], " // ")[[1]] %>%
             stringr::str_subset(., "Homo sapiens") %>%
             stringr::str_extract(., "ENSG[0-9]+") %>%
-            unique(.) %>%
-            sort(.) %>%
-            toString(.)
+            seqcloudr::toString(.)
     }) %>%
     unlist(.)
 wormbase[["ortholog"]] <-
@@ -161,9 +147,7 @@ blastp <- dplyr::left_join(blastp, wormpep, by = "wormpep", all = TRUE) %>%
 rm(wormpep)
 
 # Map Ensembl Peptide IDs:
-mart <- biomaRt::useMart("ENSEMBL_MART_ENSEMBL",
-                         "hsapiens_gene_ensembl",
-                         host = "useast.ensembl.org")
+mart <- biomaRt::useMart("ensembl", dataset = "hsapiens_gene_ensembl")
 options <- biomaRt::listAttributes(mart)
 blastpHsapiens <-
     biomaRt::getBM(mart = mart,

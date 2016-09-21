@@ -5,7 +5,7 @@ library(biomaRt)
 library(dplyr)
 
 ensembl <- list()
-mart <- biomaRt::useMart("ENSEMBL_MART_ENSEMBL", "celegans_gene_ensembl", host = "useast.ensembl.org")
+mart <- biomaRt::useMart("ensembl", dataset = "celegans_gene_ensembl")
 options <- biomaRt::listAttributes(mart)
 
 
@@ -33,8 +33,8 @@ ensembl[["go"]] <-
                                   "go_id",
                                   "name_1006")) %>%
     dplyr::group_by(ensembl_gene_id) %>%
-    dplyr::summarize(gene_ontology = toString(sort(unique(stats::na.omit(go_id)))),
-                     gene_ontology_name = toString(sort(unique(stats::na.omit(name_1006)))))
+    dplyr::summarize(gene_ontology = seqcloudr::toString(go_id),
+                     gene_ontology_name = paste(name_1006, collapse = " / "))
 
 
 # Interpro ====
@@ -44,8 +44,8 @@ ensembl[["interpro"]] <-
                                   "interpro",
                                   "interpro_description")) %>%
     dplyr::group_by(ensembl_gene_id) %>%
-    dplyr::summarize(interpro = toString(sort(unique(stats::na.omit(interpro)))),
-                     interpro_name = toString(sort(unique(stats::na.omit(interpro_description)))))
+    dplyr::summarize(interpro = seqcloudr::toString(interpro),
+                     interpro_name = seqcloudr::toString(interpro_description))
 
 
 # Save ====

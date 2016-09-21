@@ -17,7 +17,7 @@
 gene <- function(id = NULL, format = "gene", select = "simple") {
     # Subset if \code{id} declared
     if (!is.null(id)) {
-        id <- seqcloudr::toStringUnique(id)
+        id <- seqcloudr::unique(id)
         if (format == "gene") {
             data <- dplyr::filter(geneData, gene %in% id)
         }
