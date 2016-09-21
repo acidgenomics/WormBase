@@ -19,16 +19,16 @@ gene <- function(id = NULL, format = "gene", select = "simple") {
     if (!is.null(id)) {
         id <- seqcloudr::toStringUnique(id)
         if (format == "gene") {
-            data <- dplyr::filter(worminfo::geneData, gene %in% id)
+            data <- dplyr::filter(geneData, gene %in% id)
         }
         if (format == "sequence") {
-            data <- dplyr::filter(worminfo::geneData, sequence %in% id)
+            data <- dplyr::filter(geneData, sequence %in% id)
         }
         if (format == "name") {
-            data <- dplyr::filter(worminfo::geneData, name %in% id)
+            data <- dplyr::filter(geneData, name %in% id)
         }
     } else {
-        data <- worminfo::geneData
+        data <- geneData
     }
     if (!is.null(select)) {
         if (select == "simple") {

@@ -54,15 +54,15 @@ rnai <- function(identifier = NULL,
                 "\\s", id, "$")
             if (format == "clone") {
                 if (library == "ahringer384") {
-                    match <- dplyr::filter(worminfo::rnaiData, grepl(grepl, ahringer384))
+                    match <- dplyr::filter(rnaiData, grepl(grepl, ahringer384))
                 } else if (library == "ahringer96") {
-                    match <- dplyr::filter(worminfo::rnaiData, grepl(grepl, ahringer96))
+                    match <- dplyr::filter(rnaiData, grepl(grepl, ahringer96))
                 } else if (library == "ahringer96Historical") {
-                    match <- dplyr::filter(worminfo::rnaiData, grepl(grepl, ahringer96Historical))
+                    match <- dplyr::filter(rnaiData, grepl(grepl, ahringer96Historical))
                 } else if (library == "cherrypick") {
-                    match <- dplyr::filter(worminfo::rnaiData, grepl(grepl, cherrypick))
+                    match <- dplyr::filter(rnaiData, grepl(grepl, cherrypick))
                 } else if (grepl("^(orfeome|vidal)", library)) {
-                    match <- dplyr::filter(worminfo::rnaiData, grepl(grepl, orfeome96))
+                    match <- dplyr::filter(rnaiData, grepl(grepl, orfeome96))
                 }
                 # Add the clone identifier back to match:
                 if (nrow(match) == 1) {
@@ -77,13 +77,13 @@ rnai <- function(identifier = NULL,
                                      cherrypick,
                                      orfeome96))
             } else if (format == "gene") {
-                match <- dplyr::filter(worminfo::rnaiData, grepl(grepl, gene))
+                match <- dplyr::filter(rnaiData, grepl(grepl, gene))
             } else if (format == "historical") {
-                match <- dplyr::filter(worminfo::rnaiData, grepl(grepl, historical))
+                match <- dplyr::filter(rnaiData, grepl(grepl, historical))
             } else if (format == "name") {
-                match <- dplyr::filter(worminfo::rnaiData, grepl(grepl, name))
+                match <- dplyr::filter(rnaiData, grepl(grepl, name))
             } else if (format == "sequence") {
-                match <- dplyr::filter(worminfo::rnaiData, grepl(grepl, sequence))
+                match <- dplyr::filter(rnaiData, grepl(grepl, sequence))
             }
         })
         dplyr::bind_rows(list)

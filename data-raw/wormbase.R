@@ -12,12 +12,12 @@ devtools::load_all()
 wormbase <- list()
 
 # Gene Identifiers ====
-gene <- worminfo::wormbaseFile("geneIDs") %>%
+gene <- wormbaseFile("geneIDs") %>%
     readr::read_csv(.,
                     col_names = c("X", "gene", "name", "sequence", "status"),
                     na = "") %>%
     dplyr::select(-1)
-geneOtherIdentifier <- worminfo::wormbaseFile("geneOtherIDs") %>%
+geneOtherIdentifier <- wormbaseFile("geneOtherIDs") %>%
     readr::read_file(.) %>%
     # Take out dead or live status, we have this already from \code{wormbase$gene}:
     gsub("\t(Dead|Live)", "", .) %>%
@@ -33,7 +33,7 @@ rm(gene, geneOtherIdentifier)
 
 
 # Functional Descriptions ====
-file <- worminfo::wormbaseFile("functional_descriptions")
+file <- wormbaseFile("functional_descriptions")
 names <- readr::read_lines(file, n_max = 1, skip = 3) %>%
     stringr::str_split(., " ") %>%
     .[[1]] %>%
@@ -83,7 +83,7 @@ rm(raw)
 
 
 # Orthologs ====
-raw <- worminfo::wormbaseFile("orthologs") %>%
+raw <- wormbaseFile("orthologs") %>%
     readr::read_file(.) %>%
     gsub("\t", " | ", .) %>%
     gsub("\n", " // ", .) %>%
@@ -111,7 +111,7 @@ rm(list, raw)
 
 # Best BLASTP Hits ====
 # Get the highest match for each peptide:
-blastp <- worminfo::wormbaseFile("best_blast_hits") %>%
+blastp <- wormbaseFile("best_blast_hits") %>%
     readr::read_csv(., col_names = FALSE) %>%
     dplyr::select(X1, X4, X5) %>%
     dplyr::rename(wormpep = X1, peptide = X4, eValue = X5) %>%
@@ -184,7 +184,7 @@ rm(blastp, blastpHsapiens, file, mart, options)
 
 
 # External Identifiers ====
-wormbase[["external"]] <- worminfo::wormbaseRestGeneExternal(wormbase$gene$gene)
+wormbase[["external"]] <- wormbaseRestGeneExternal(wormbase$gene$gene)
 
 
 # Save ====
