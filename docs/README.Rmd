@@ -6,7 +6,8 @@ output: github_document
 ```{r, include=FALSE}
 library(dplyr)
 library(stringr)
-info <- installed.packages() %>% as_tibble %>% filter(Package == "worminfo")
+library(tibble)
+info <- installed.packages() %>% tibble::as_tibble %>% filter(Package == "worminfo")
 data(cloneData)
 data(geneData)
 ```
