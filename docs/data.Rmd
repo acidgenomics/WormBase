@@ -1,6 +1,5 @@
 ---
 title: data
-author: Michael J. Steinbaugh
 date: '`r format(Sys.time(), "%B %d, %Y")`'
 ---
 
