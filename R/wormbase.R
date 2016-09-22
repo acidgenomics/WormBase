@@ -37,7 +37,7 @@ wormbaseFile <- function(request) {
 #' @examples
 #' wormbaseGeneMerge("M01E10.2")
 wormbaseGeneMerge <- function(sequence) {
-    sequence <- seqcloudr::unique(sequence)
+    sequence <- seqcloudr::sortUnique(sequence)
     list <- lapply(seq_along(sequence), function(a) {
         query <- sequence[a]
         request <- httr::GET(paste0("http://www.wormbase.org/search/gene/", query, "?species=c_elegans"),
@@ -79,7 +79,7 @@ wormbaseGeneMerge <- function(sequence) {
 #' @examples
 #' wormbaseHistorical2rnai("JA:K10E9.1")
 wormbaseHistorical2rnai <- function(historical) {
-    historical <- seqcloudr::unique(historical)
+    historical <- seqcloudr::sortUnique(historical)
     list <- lapply(seq_along(historical), function(a) {
         request <- httr::GET(paste0("http://www.wormbase.org/search/rnai/", historical[a]))
         # Server is now returning 400, need to set error method here?
@@ -131,7 +131,7 @@ wormbaseRest <- function(query, class, instance) {
 #' @examples
 #' wormbaseRestGeneExternal("WBGene00000001")
 wormbaseRestGeneExternal <- function(gene) {
-    gene <- seqcloudr::unique(gene)
+    gene <- seqcloudr::sortUnique(gene)
     list <- lapply(seq_along(gene), function(a) {
         rest <- httr::GET(paste0("http://api.wormbase.org/rest/widget/gene/", gene[a], "/external_links"),
                           config = httr::content_type_json()) %>%
@@ -163,7 +163,7 @@ wormbaseRestGeneExternal <- function(gene) {
 #' @examples
 #' wormbaseRestRnaiSequence("WBRNAi00003982")
 wormbaseRestRnaiSequence <- function(rnai) {
-    rnai <- seqcloudr::unique(rnai)
+    rnai <- seqcloudr::sortUnique(rnai)
     list <- lapply(seq_along(rnai), function(a) {
         data <- wormbaseRest(rnai[a], class = "rnai", instance = "sequence") %>%
             .[["sequence"]] %>%
@@ -200,7 +200,7 @@ wormbaseRestRnaiSequence <- function(rnai) {
 #' @examples
 #' wormbaseRestRnaiTargets("WBRNAi00031683")
 wormbaseRestRnaiTargets <- function(rnai) {
-    rnai <- seqcloudr::unique(rnai)
+    rnai <- seqcloudr::sortUnique(rnai)
     list <- lapply(seq_along(rnai), function(a) {
         data <- wormbaseRest(rnai[a], class = "rnai", instance = "targets") %>%
             .[["targets"]] %>%
