@@ -1,0 +1,19 @@
+---
+title: "rnai"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{rnai}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+options(tibble.print_min = 4L, tibble.print_max = 4L)
+library(worminfo)
+```
+
+`worminfo::rnai()`
+
+`r seqcloudr::mdlist(names(rnaiData), ordered = TRUE)`
