@@ -1,11 +1,3 @@
-#' WormBase FTP server file download.
-#'
-#' @import utils
-#'
-#' @param request WormBase FTP server file request.
-#'
-#' @return Local file path of downloaded file.
-#' @export
 wormbaseFile <- function(request) {
     annotation <- "ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/"
     version <- "canonical_bioproject.current"
@@ -23,19 +15,6 @@ wormbaseFile <- function(request) {
 }
 
 
-#' Map a dead sequence to current WormBase gene identifier.
-#'
-#' @import dplyr
-#' @import httr
-#' @import seqcloudr
-#'
-#' @param sequence Sequence (ORF).
-#'
-#' @return tibble.
-#' @export
-#'
-#' @examples
-#' wormbaseGeneMerge("M01E10.2")
 wormbaseGeneMerge <- function(sequence) {
     sequence <- seqcloudr::sortUnique(sequence)
     list <- lapply(seq_along(sequence), function(a) {
@@ -64,20 +43,6 @@ wormbaseGeneMerge <- function(sequence) {
 }
 
 
-#' Convert historical RNAi identifier to WBRNAi with WormBase RESTful API.
-#'
-#' @import httr
-#' @import dplyr
-#' @import seqcloudr
-#' @import stringr
-#'
-#' @param historical WormBase historical RNAi experiment vector.
-#'
-#' @return tibble.
-#' @export
-#'
-#' @examples
-#' wormbaseHistorical2rnai("JA:K10E9.1")
 wormbaseHistorical2rnai <- function(historical) {
     historical <- seqcloudr::sortUnique(historical)
     list <- lapply(seq_along(historical), function(a) {
@@ -95,18 +60,6 @@ wormbaseHistorical2rnai <- function(historical) {
 }
 
 
-#' WormBase RESTful API query.
-#'
-#' @import httr
-#'
-#' @param query A WormBase gene identifier (e.g. WBGene00000001).
-#' @param class A class (e.g. gene).
-#' @param instance An instance (e.g. concise_description).
-#'
-#' @description
-#' \url{http://www.wormbase.org/about/userguide/for_developers/API-REST}
-#'
-#' @export
 wormbaseRest <- function(query, class, instance) {
     httr::GET(paste0("http://api.wormbase.org/rest/field/", class, "/", query, "/", instance),
               config = httr::content_type_json()) %>%
@@ -114,22 +67,6 @@ wormbaseRest <- function(query, class, instance) {
 }
 
 
-#' WormBase RESTful gene identifier query.
-#'
-#' @import httr
-#' @import dplyr
-#' @import seqcloudr
-#' @import stringr
-#' @import tibble
-#' @import xml2
-#'
-#' @param gene WormBase gene identifier.
-#'
-#' @return tibble.
-#' @export
-#'
-#' @examples
-#' wormbaseRestGeneExternal("WBGene00000001")
 wormbaseRestGeneExternal <- function(gene) {
     gene <- seqcloudr::sortUnique(gene)
     list <- lapply(seq_along(gene), function(a) {
@@ -150,18 +87,6 @@ wormbaseRestGeneExternal <- function(gene) {
 }
 
 
-#' WormBase RESTful RNAi sequence query.
-#'
-#' @import dplyr
-#' @import seqcloudr
-#'
-#' @param rnai WormBase RNAi identifier.
-#'
-#' @return tibble.
-#' @export
-#'
-#' @examples
-#' wormbaseRestRnaiSequence("WBRNAi00003982")
 wormbaseRestRnaiSequence <- function(rnai) {
     rnai <- seqcloudr::sortUnique(rnai)
     list <- lapply(seq_along(rnai), function(a) {
@@ -186,19 +111,6 @@ wormbaseRestRnaiSequence <- function(rnai) {
 }
 
 
-#' WormBase RESTful RNAi targets query.
-#'
-#' @import dplyr
-#' @import seqcloudr
-#' @import stringr
-#'
-#' @param rnai WormBase RNAi identifier vector.
-#'
-#' @return tibble.
-#' @export
-#'
-#' @examples
-#' wormbaseRestRnaiTargets("WBRNAi00031683")
 wormbaseRestRnaiTargets <- function(rnai) {
     rnai <- seqcloudr::sortUnique(rnai)
     list <- lapply(seq_along(rnai), function(a) {
@@ -216,7 +128,7 @@ wormbaseRestRnaiTargets <- function(rnai) {
             tbl <- dplyr::bind_rows(list) %>%
                 dplyr::filter(grepl("WBGene", id)) %>%
                 dplyr::group_by(type) %>%
-                dplyr::summarize(id = seqcloudr::toString(id))
+                dplyr::summarize(id = seqcloudr::toStringUnique(id))
             primary <- tbl %>%
                 dplyr::filter(type == "primary") %>%
                 dplyr::select(id) %>%
