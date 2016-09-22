@@ -33,7 +33,7 @@ ensembl[["go"]] <-
                                   "go_id",
                                   "name_1006")) %>%
     dplyr::group_by(ensembl_gene_id) %>%
-    dplyr::summarize(gene_ontology = seqcloudr::toString(go_id),
+    dplyr::summarize(gene_ontology = toString(go_id),
                      gene_ontology_name = paste(name_1006, collapse = " / "))
 
 
@@ -44,8 +44,8 @@ ensembl[["interpro"]] <-
                                   "interpro",
                                   "interpro_description")) %>%
     dplyr::group_by(ensembl_gene_id) %>%
-    dplyr::summarize(interpro = seqcloudr::toString(interpro),
-                     interpro_name = seqcloudr::toString(interpro_description))
+    dplyr::summarize(interpro = toString(interpro),
+                     interpro_name = paste(interpro_description, collapse = " / "))
 
 
 # Save ====

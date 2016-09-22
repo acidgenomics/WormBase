@@ -39,8 +39,8 @@ nrow(mv) + nrow(ja)
 
 unique <- dplyr::bind_rows(mv, ja) %>%
     dplyr::group_by(historical) %>%
-    dplyr::summarise_each(funs(toString))
-# NAs are set as "NA" here...can use \code{seqcloudr::wash(.)}
+    dplyr::summarise_each(funs(toStringUnique)) %>%
+    dplyr::mutate_each(funs(fixNA))
 
 
 # WormBase RESTful queries (CPU intensive) ====
@@ -89,7 +89,7 @@ master <- unique %>%
 
 matched <- list()
 
-# Matched by historical2rnai()
+# Matched by wormbaseHistorical2rnai()
 matched[["historical"]] <- master %>%
     dplyr::filter(!is.na(gene))
 matched$historical
@@ -119,7 +119,7 @@ matched[["gene"]] <- unmatched$genePair %>%
 unmatched <- unmatched %>%
     dplyr::filter(!(genePair %in% matched[["gene"]]["genePair"][[1]]))
 
-# Matched by deadSequence()
+# Matched by wormbaseGeneMerge()
 matched[["dead"]] <- unmatched$genePair %>%
     wormbaseGeneMerge(.) %>%
     dplyr::left_join(unmatched, by = "genePair")
@@ -131,10 +131,10 @@ rnaiData <- dplyr::bind_rows(matched, unmatched) %>%
     dplyr::left_join(gene(.["gene"][[1]], format = "gene"),
                      by = "gene") %>%
     dplyr::group_by(historical) %>%
-    dplyr::summarise_each(funs(toString)) %>%
+    dplyr::summarise_each(funs(toStringUnique)) %>%
+    dplyr::mutate_each(funs(fixNA)) %>%
     dplyr::select(noquote(order(names(.)))) %>%
-    dplyr::arrange(historical) %>%
-    seqcloudr::wash(.)
+    dplyr::arrange(historical)
 devtools::use_data(rnaiData, overwrite = TRUE)
 
 
@@ -143,27 +143,27 @@ dupeGene <- rnaiData %>%
     dplyr::filter(duplicated(gene)) %>%
     dplyr::select(gene) %>%
     .[[1]] %>%
-    seqcloudr::unique(.)
+    seqcloudr::sortUnique(.)
 dupeHistorical <- rnaiData %>%
     dplyr::filter(duplicated(historical)) %>%
     dplyr::select(historical) %>%
     .[[1]] %>%
-    seqcloudr::unique(.)
+    seqcloudr::sortUnique(.)
 dupeAhringer96 <- rnaiData %>%
     dplyr::filter(duplicated(ahringer96)) %>%
     dplyr::select(ahringer96) %>%
     .[[1]] %>%
-    seqcloudr::unique(.)
+    seqcloudr::sortUnique(.)
 dupeAhringer384 <- rnaiData %>%
     dplyr::filter(duplicated(ahringer384)) %>%
     dplyr::select(ahringer384) %>%
     .[[1]] %>%
-    seqcloudr::unique(.)
+    seqcloudr::sortUnique(.)
 dupeOrfeome96 <- rnaiData %>%
     dplyr::filter(duplicated(orfeome96)) %>%
     dplyr::select(orfeome96) %>%
     .[[1]] %>%
-    seqcloudr::unique(.)
+    seqcloudr::sortUnique(.)
 head(dupeAhringer96)
 head(dupeAhringer384)
 head(dupeOrfeome96)
