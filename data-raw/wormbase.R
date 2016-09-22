@@ -87,7 +87,7 @@ hsapiens <-
         stringr::str_split(list[[x]][2], " // ")[[1]] %>%
             stringr::str_subset(., "Homo sapiens") %>%
             stringr::str_extract(., "ENSG[0-9]+") %>%
-            seqcloudr::toString(.)
+            seqcloudr::toStringUnique(.)
     }) %>%
     unlist(.)
 wormbase[["ortholog"]] <-
