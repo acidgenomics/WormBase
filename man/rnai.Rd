@@ -4,7 +4,7 @@
 \alias{rnai}
 \title{RNAi clone matching.}
 \usage{
-rnai(identifier = NULL, format = "clone", library = "orfeome96")
+rnai(identifier, format = "clone", library = "orfeome96")
 }
 \arguments{
 \item{identifier}{Identifier.}
