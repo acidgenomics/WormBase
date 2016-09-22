@@ -39,8 +39,7 @@ nrow(mv) + nrow(ja)
 
 unique <- dplyr::bind_rows(mv, ja) %>%
     dplyr::group_by(historical) %>%
-    dplyr::summarise_each(funs(toStringUnique)) %>%
-    dplyr::mutate_each(funs(fixNA))
+    seqcloudr::rowCollapse(.)
 
 
 # WormBase RESTful queries (CPU intensive) ====
@@ -92,23 +91,23 @@ matched <- list()
 # Matched by wormbaseHistorical2rnai()
 matched[["historical"]] <- master %>%
     dplyr::filter(!is.na(gene))
-matched$historical
+print(matched$historical)
 unmatched <- master %>%
     dplyr::filter(is.na(gene)) %>%
     dplyr::select(-gene) %>%
     dplyr::mutate(oligo = historical,
                   oligo = gsub("^MV_SV:", "", oligo),
                   oligo = gsub("^JA:", "sjj_", oligo))
-unmatched
+print(unmatched)
 
 # Matched by oligo2gene
 matched[["oligo"]] <- unmatched %>%
     dplyr::left_join(oligo2gene, by = "oligo") %>%
     dplyr::filter(!is.na(gene))
-matched$oligo
+print(matched$oligo)
 unmatched <- unmatched %>%
     dplyr::filter(!(oligo %in% matched[["oligo"]]["oligo"][[1]]))
-unmatched
+print(unmatched)
 
 # Matched by gene()
 matched[["gene"]] <- unmatched$genePair %>%
@@ -116,23 +115,24 @@ matched[["gene"]] <- unmatched$genePair %>%
     dplyr::mutate(genePair = sequence) %>%
     dplyr::left_join(unmatched, by = "genePair") %>%
     dplyr::select(-c(name, sequence))
+print(matched$gene)
 unmatched <- unmatched %>%
     dplyr::filter(!(genePair %in% matched[["gene"]]["genePair"][[1]]))
+print(unmatched)
 
 # Matched by wormbaseGeneMerge()
-matched[["dead"]] <- unmatched$genePair %>%
-    wormbaseGeneMerge(.) %>%
+matched[["merge"]] <- wormbaseGeneMerge(unmatched$genePair) %>%
     dplyr::left_join(unmatched, by = "genePair")
+print(matched$merge)
 unmatched <- unmatched %>%
-    dplyr::filter(!(genePair %in% matched[["dead"]]["genePair"][[1]]))
+    dplyr::filter(!(genePair %in% matched[["merge"]]["genePair"][[1]]))
+print(unmatched)
 
 rnaiData <- dplyr::bind_rows(matched, unmatched) %>%
     dplyr::select(-genePair) %>%
-    dplyr::left_join(gene(.["gene"][[1]], format = "gene"),
-                     by = "gene") %>%
+    dplyr::left_join(gene(.["gene"][[1]], format = "gene"), by = "gene") %>%
     dplyr::group_by(historical) %>%
-    dplyr::summarise_each(funs(toStringUnique)) %>%
-    dplyr::mutate_each(funs(fixNA)) %>%
+    seqcloudr::rowCollapse(.) %>%
     dplyr::select(noquote(order(names(.)))) %>%
     dplyr::arrange(historical)
 devtools::use_data(rnaiData, overwrite = TRUE)
