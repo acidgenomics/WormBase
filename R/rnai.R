@@ -1,14 +1,16 @@
-#' RNAi clone matching.
+#' RNAi clone matching
 #'
 #' @import dplyr
 #' @import parallel
 #' @import seqcloudr
 #'
-#' @param identifier Identifier.
-#' @param format Identifier format.
-#' @param library Library type.
+#' @param identifier Identifier
+#' @param format Identifier format (\code{gene}, \code{historical}, \code{name},
+#'   \code{rnai} or \code{sequence})
+#' @param library Library type (\code{ahringer96}, \code{ahringer96Historical},
+#'   \code{ahringer384}, \code{cherrypick} or \code{orfeome})
 #'
-#' @return tibble.
+#' @return tibble
 #'
 #' @export
 #'
@@ -22,10 +24,10 @@
 #' rnai("WBRNAi00009186", format = "rnai")
 #' rnai("T19E7.2", format = "sequence")
 #' rnai("skn-1", format = "name")
-rnai <- function(identifier = NULL,
-                  format = "clone",
-                  library = "orfeome96") {
-    if (!is.null(identifier)) {
+rnai <- function(identifier,
+                 format = "clone",
+                 library = "orfeome96") {
+    if (!missing(identifier)) {
         identifier <- seqcloudr::sortUnique(identifier)
         list <- parallel::mclapply(seq_along(identifier), function(a) {
             id <- identifier[a]
@@ -54,40 +56,58 @@ rnai <- function(identifier = NULL,
                 "\\s", id, "$")
             if (format == "clone") {
                 if (library == "ahringer384") {
-                    match <- dplyr::filter(rnaiData, grepl(grepl, ahringer384))
+                    data <- dplyr::filter(rnaiData, grepl(grepl, ahringer384))
                 } else if (library == "ahringer96") {
-                    match <- dplyr::filter(rnaiData, grepl(grepl, ahringer96))
+                    data <- dplyr::filter(rnaiData, grepl(grepl, ahringer96))
                 } else if (library == "ahringer96Historical") {
-                    match <- dplyr::filter(rnaiData, grepl(grepl, ahringer96Historical))
+                    data <- dplyr::filter(rnaiData, grepl(grepl, ahringer96Historical))
                 } else if (library == "cherrypick") {
-                    match <- dplyr::filter(rnaiData, grepl(grepl, cherrypick))
-                } else if (grepl("^(orfeome|vidal)", library)) {
-                    match <- dplyr::filter(rnaiData, grepl(grepl, orfeome96))
+                    data <- dplyr::filter(rnaiData, grepl(grepl, cherrypick))
+                } else if (grepl("^(orfeome|vidal)(96)?$", library)) {
+                    data <- dplyr::filter(rnaiData, grepl(grepl, orfeome96))
+                } else {
+                    stop("Invalid library.")
                 }
-                # Add the clone identifier back to match:
-                if (nrow(match) == 1) {
-                    match <- match %>%
+                # Add the clone identifier back to data:
+                if (nrow(data)) {
+                    data <- data %>%
                         dplyr::mutate(clone = identifier[a])
                 }
-                # Clone location columns are unnecessary here:
-                match <- match %>%
-                    dplyr::select(-c(ahringer384,
-                                     ahringer96,
-                                     ahringer96Historical,
-                                     cherrypick,
-                                     orfeome96))
             } else if (format == "gene") {
-                match <- dplyr::filter(rnaiData, grepl(grepl, gene))
+                data <- dplyr::filter(rnaiData, grepl(grepl, gene))
             } else if (format == "historical") {
-                match <- dplyr::filter(rnaiData, grepl(grepl, historical))
+                data <- dplyr::filter(rnaiData, grepl(grepl, historical))
             } else if (format == "name") {
-                match <- dplyr::filter(rnaiData, grepl(grepl, name))
+                data <- dplyr::filter(rnaiData, grepl(grepl, name))
+            } else if (format == "rnai") {
+                data <- dplyr::filter(rnaiData, grepl(grepl, rnai))
             } else if (format == "sequence") {
-                match <- dplyr::filter(rnaiData, grepl(grepl, sequence))
+                data <- dplyr::filter(rnaiData, grepl(grepl, sequence))
+            } else {
+                stop("Invalid format.")
             }
         })
-        dplyr::bind_rows(list)
+        data <- dplyr::bind_rows(list)
+        # Fix clone identifier columns:
+        if (format == "clone") {
+            # Clone location columns are unnecessary here:
+            data <- data %>%
+                dplyr::select(-c(ahringer384,
+                                 ahringer96,
+                                 ahringer96Historical,
+                                 cherrypick,
+                                 orfeome96))
+        } else {
+            # Clean up the appearance of clone locations:
+            data <- data %>%
+                dplyr::mutate(
+                    # Add dash separator:
+                    ahringer384 = gsub("^([IVX]+)(\\d+)", "\\1-\\2", ahringer384),
+                    cherrypick = gsub("^([a-z_]+)", "\\1-", cherrypick)
+                )
+        }
     } else {
-        return(data)
+        stop("An identifier is required.")
     }
+    return(data)
 }
