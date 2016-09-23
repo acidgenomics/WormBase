@@ -102,8 +102,14 @@ rnai <- function(identifier,
             data <- data %>%
                 dplyr::mutate(
                     # Add dash separator:
-                    ahringer384 = gsub("^([IVX]+)(\\d+)", "\\1-\\2", ahringer384),
-                    cherrypick = gsub("^([a-z_]+)", "\\1-", cherrypick)
+                    ahringer384 = gsub("(^|,\\s)([IVX]+)(\\d+)", "\\1\\2-\\3", ahringer384),
+                    cherrypick = gsub("(^|,\\s)([a-z_]+)", "\\1\\2-", cherrypick),
+                    # Pad well numbers:
+                    ahringer384 = gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", ahringer384),
+                    ahringer96 = gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", ahringer96),
+                    ahringer96Historical = gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", ahringer96Historical),
+                    cherrypick = gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", cherrypick),
+                    orfeome96 = gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", orfeome96)
                 )
         }
     } else {
