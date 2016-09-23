@@ -6,28 +6,15 @@ Author: Michael J. Steinbaugh <mike@steinbaugh.com>
 Maintainer: Michael J. Steinbaugh <mike@steinbaugh.com>
 Description: Genome annotations are dynamically assembled from WormBase, Ensembl, and PANTHER. RNAi clone mappings from ORFeome, Ahringer and cherrypick feeding libraries are supported.
 License: MIT + file LICENSE
-LazyData: true
-URL: https://github.com/seqcloud/worminfo
+URL: https://github.com/steinbaugh/worminfo
 Depends:
     R (>= 3.1.0)
 Imports:
     dplyr,
-    httr,
-    magrittr,
     parallel,
-    readr,
-    readxl,
-    seqcloudr,
-    stringr,
-    tibble,
-    tidyr,
     utils,
-    xml2
 Suggests:
     knitr,
     rmarkdown
-Remotes:
-    seqcloud/seqcloudr
-biocViews:
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr

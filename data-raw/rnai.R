@@ -1,9 +1,10 @@
+devtools::load_all()
 library(dplyr)
 library(magrittr)
 library(readxl)
 library(seqcloudr)
 library(stringr)
-devtools::load_all()
+library(worminfo)
 
 load("data-raw/ahringer.rda")
 if (!exists("ahringer")) {
@@ -111,11 +112,10 @@ print(unmatched)
 
 # Matched by gene()
 matched[["gene"]] <- unmatched$genePair %>%
-    gene(., format = "sequence") %>%
-    dplyr::mutate(genePair = sequence) %>%
+    worminfo::gene(., format = "sequence", select = "gene") %>%
+    dplyr::rename(genePair = sequence) %>%
     dplyr::left_join(unmatched, by = "genePair") %>%
-    dplyr::select(-c(name, sequence))
-print(matched$gene)
+    print(matched$gene)
 unmatched <- unmatched %>%
     dplyr::filter(!(genePair %in% matched[["gene"]]["genePair"][[1]]))
 print(unmatched)
@@ -130,7 +130,10 @@ print(unmatched)
 
 rnaiData <- dplyr::bind_rows(matched, unmatched) %>%
     dplyr::select(-genePair) %>%
-    dplyr::left_join(gene(.["gene"][[1]], format = "gene"), by = "gene") %>%
+    dplyr::left_join(worminfo::gene(.["gene"][[1]],
+                                    format = "gene",
+                                    select = c("name", "sequence")),
+                     by = "gene") %>%
     dplyr::group_by(historical) %>%
     seqcloudr::rowCollapse(.) %>%
     dplyr::select(noquote(order(names(.)))) %>%

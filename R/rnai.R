@@ -2,7 +2,6 @@
 #'
 #' @import dplyr
 #' @import parallel
-#' @import seqcloudr
 #'
 #' @param identifier Identifier
 #' @param format Identifier format (\code{gene}, \code{historical}, \code{name},
@@ -27,8 +26,15 @@
 rnai <- function(identifier,
                  format = "clone",
                  library = "orfeome96") {
+    # Download RNAi source data:
+    if (!exists("rnaiData", envir = parent.frame())) {
+        assign("rnaiData", tempfile(), envir = parent.frame())
+        utils::download.file(rnaiDataFile, get("rnaiData", envir = parent.frame()))
+        load(get("rnaiData", envir = parent.frame()))
+    }
+    data <- get("rnaiData", envir = parent.frame())
     if (!missing(identifier)) {
-        identifier <- seqcloudr::sortUnique(identifier)
+        identifier <- sort(unique(identifier))
         list <- parallel::mclapply(seq_along(identifier), function(a) {
             id <- identifier[a]
             if (format == "clone") {
@@ -56,15 +62,15 @@ rnai <- function(identifier,
                 "\\s", id, "$")
             if (format == "clone") {
                 if (library == "ahringer384") {
-                    data <- dplyr::filter(rnaiData, grepl(grepl, ahringer384))
+                    data <- dplyr::filter(data, grepl(grepl, ahringer384))
                 } else if (library == "ahringer96") {
-                    data <- dplyr::filter(rnaiData, grepl(grepl, ahringer96))
+                    data <- dplyr::filter(data, grepl(grepl, ahringer96))
                 } else if (library == "ahringer96Historical") {
-                    data <- dplyr::filter(rnaiData, grepl(grepl, ahringer96Historical))
+                    data <- dplyr::filter(data, grepl(grepl, ahringer96Historical))
                 } else if (library == "cherrypick") {
-                    data <- dplyr::filter(rnaiData, grepl(grepl, cherrypick))
+                    data <- dplyr::filter(data, grepl(grepl, cherrypick))
                 } else if (grepl("^(orfeome|vidal)(96)?$", library)) {
-                    data <- dplyr::filter(rnaiData, grepl(grepl, orfeome96))
+                    data <- dplyr::filter(data, grepl(grepl, orfeome96))
                 } else {
                     stop("Invalid library.")
                 }
@@ -74,15 +80,15 @@ rnai <- function(identifier,
                         dplyr::mutate(clone = identifier[a])
                 }
             } else if (format == "gene") {
-                data <- dplyr::filter(rnaiData, grepl(grepl, gene))
+                data <- dplyr::filter(data, grepl(grepl, gene))
             } else if (format == "historical") {
-                data <- dplyr::filter(rnaiData, grepl(grepl, historical))
+                data <- dplyr::filter(data, grepl(grepl, historical))
             } else if (format == "name") {
-                data <- dplyr::filter(rnaiData, grepl(grepl, name))
+                data <- dplyr::filter(data, grepl(grepl, name))
             } else if (format == "rnai") {
-                data <- dplyr::filter(rnaiData, grepl(grepl, rnai))
+                data <- dplyr::filter(data, grepl(grepl, rnai))
             } else if (format == "sequence") {
-                data <- dplyr::filter(rnaiData, grepl(grepl, sequence))
+                data <- dplyr::filter(data, grepl(grepl, sequence))
             } else {
                 stop("Invalid format.")
             }
