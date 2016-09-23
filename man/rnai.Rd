@@ -2,22 +2,24 @@
 % Please edit documentation in R/rnai.R
 \name{rnai}
 \alias{rnai}
-\title{RNAi clone matching.}
+\title{RNAi clone matching}
 \usage{
 rnai(identifier, format = "clone", library = "orfeome96")
 }
 \arguments{
-\item{identifier}{Identifier.}
+\item{identifier}{Identifier}
 
-\item{format}{Identifier format.}
+\item{format}{Identifier format (\code{gene}, \code{historical}, \code{name},
+\code{rnai} or \code{sequence})}
 
-\item{library}{Library type.}
+\item{library}{Library type (\code{ahringer96}, \code{ahringer96Historical},
+\code{ahringer384}, \code{cherrypick} or \code{orfeome})}
 }
 \value{
-tibble.
+tibble
 }
 \description{
-RNAi clone matching.
+RNAi clone matching
 }
 \examples{
 rnai("GHR-11049@F12", library = "orfeome")
