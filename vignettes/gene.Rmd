@@ -15,5 +15,3 @@ library(worminfo)
 ```
 
 `worminfo::gene()`
-
-`r seqcloudr::mdlist(names(geneData))`

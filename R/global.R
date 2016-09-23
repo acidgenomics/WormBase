@@ -1,16 +1,10 @@
+geneDataFile <- "https://github.com/steinbaugh/worminfo/blob/master/data/geneData.rda?raw=true"
+rnaiDataFile <- "https://github.com/steinbaugh/worminfo/blob/master/data/rnaiData.rda?raw=true"
 utils::globalVariables(c(".",
+                         "ahringer384",
                          "ahringer96",
                          "ahringer96Historical",
-                         "ahringer384",
                          "cherrypick",
-                         "gene",
-                         "geneData",
                          "historical",
-                         "length",
                          "name",
-                         "orfeome96",
-                         "rnaiData",
-                         "sequence",
-                         "targetPrimary",
-                         "targetSecondary",
-                         "type"))
+                         "orfeome96"))
