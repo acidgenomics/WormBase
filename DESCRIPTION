@@ -1,7 +1,7 @@
 Package: worminfo
 Type: Package
 Title: C. elegans genes and RNAi clones
-Version: 0.8.5
+Version: 0.9
 Author: Michael J. Steinbaugh <mike@steinbaugh.com>
 Maintainer: Michael J. Steinbaugh <mike@steinbaugh.com>
 Description: Genome annotations are dynamically assembled from WormBase, Ensembl, and PANTHER. RNAi clone mappings from ORFeome, Ahringer and cherrypick feeding libraries are supported.
@@ -12,7 +12,7 @@ Depends:
 Imports:
     dplyr,
     parallel,
-    utils,
+    utils
 Suggests:
     knitr,
     rmarkdown

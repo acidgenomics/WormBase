@@ -21,9 +21,7 @@ tibble
 Gene annotations
 }
 \examples{
-gene("WBGene00004804")
 gene("WBGene00004804", select = "ncbi")
-gene("WBGene00004804", select = "all")
 gene("skn-1", format = "name")
 gene("T19E7.2", format = "sequence")
 }
