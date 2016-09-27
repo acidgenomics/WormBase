@@ -1,65 +1,68 @@
-#' Gene annotations.
+#' Gene annotations
 #'
-#' @import dplyr
-#' @import seqcloudr
+#' @param identifier Gene identifier
+#' @param format Identifier type (\code{gene}, \code{name} or \code{sequence})
+#' @param select Columns to select (e.g. \code{ncbi}).
+#'   Optionally, you can use \code{all} or \code{report} declarations here.
 #'
-#' @param id Gene identifier.
-#' @param format Identifier type (gene, name, sequence).
-#' @param select Columns to select (report, simple).
-#'
-#' @return tibble.
+#' @return tibble
 #' @export
 #'
 #' @examples
-#' gene(id = "WBGene00004804", format = "gene")
-#' gene(id = "skn-1", format = "name")
-#' gene(id = "T19E7.2", format = "sequence")
-gene <- function(id = NULL, format = "gene", select = "simple") {
-    # Subset if \code{id} declared
-    if (!is.null(id)) {
-        id <- seqcloudr::toStringUnique(id)
-        if (format == "gene") {
-            data <- dplyr::filter(geneData, gene %in% id)
+#' gene("WBGene00004804", select = "ncbi")
+#' gene("skn-1", format = "name")
+#' gene("T19E7.2", format = "sequence")
+gene <- function(identifier,
+                 format = "gene",
+                 select = NULL) {
+    data <- get("geneSource", envir = asNamespace("worminfo"))
+    if (!missing(identifier)) {
+        if (!is.character(identifier)) {
+            stop("Identifier must be a character vector.")
         }
-        if (format == "sequence") {
-            data <- dplyr::filter(geneData, sequence %in% id)
+        identifier <- sort(unique(identifier))
+        if (any(grepl(format,
+                      c("gene",
+                        "name",
+                        "sequence")))) {
+            data <- data[data[[format]] %in% identifier, ]
+        } else {
+            stop("Invalid format.")
         }
-        if (format == "name") {
-            data <- dplyr::filter(geneData, name %in% id)
+        if (is.null(select)) {
+            data <- data[, c("gene",
+                             "sequence",
+                             "name",
+                             "class")]
+        } else if (select[1] == "report") {
+            data <- data[, c("gene",
+                             "sequence",
+                             "name",
+                             "class",
+                             "otherIdentifier",
+                             "ncbi",
+                             "descriptionConcise",
+                             "descriptionProvisional",
+                             "descriptionAutomated",
+                             "descriptionEnsembl",
+                             "blastpHsapiensGene",
+                             "blastpHsapiensName",
+                             "blastpHsapiensDescription",
+                             "geneOntologyName",
+                             "interproName",
+                             "pantherFamilyName",
+                             "pantherSubfamilyName",
+                             "pantherGeneOntologyMolecularFunction",
+                             "pantherGeneOntologyBiologicalProcess",
+                             "pantherGeneOntologyCellularComponent",
+                             "pantherClass")]
+        } else if (select[1] == "all") {
+            data <- data
+        } else {
+            data <- data[, c(format, select)]
         }
     } else {
-        data <- geneData
-    }
-    if (!is.null(select)) {
-        if (select == "simple") {
-            data <- dplyr::select_(data, .dots = c("gene",
-                                                   "sequence",
-                                                   "name"))
-        } else if (select == "report") {
-            data <- dplyr::select_(data, .dots = c("gene",
-                                                   "sequence",
-                                                   "name",
-                                                   "class",
-                                                   "otherIdentifier",
-                                                   "ncbi",
-                                                   "descriptionConcise",
-                                                   "descriptionProvisional",
-                                                   "descriptionAutomated",
-                                                   "descriptionEnsembl",
-                                                   "blastpHsapiensGene",
-                                                   "blastpHsapiensName",
-                                                   "blastpHsapiensDescription",
-                                                   "geneOntologyName",
-                                                   "interproName",
-                                                   "pantherFamilyName",
-                                                   "pantherSubfamilyName",
-                                                   "pantherGeneOntologyMolecularFunction",
-                                                   "pantherGeneOntologyBiologicalProcess",
-                                                   "pantherGeneOntologyCellularComponent",
-                                                   "pantherClass"))
-        } else {
-            data <- dplyr::select_(data, .dots = c(format, select))
-        }
+        stop("An identifier is required.")
     }
     return(data)
 }

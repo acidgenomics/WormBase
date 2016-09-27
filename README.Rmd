@@ -1,20 +1,17 @@
 ---
 title: worminfo
 date: '`r format(Sys.time(), "%B %d, %Y")`'
+output: github_document
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_knit$set(root.dir = normalizePath("../"))
-```
 
 ```{r data, include=FALSE}
 devtools::load_all()
-utils::data(geneData, rnaiData)
+library(dplyr)
 ```
 
 ```{r, include=FALSE}
 wormbase <- list.files(path = "data-raw/wormbase", pattern = "wormpep.table*") %>%
-    stringr::str_extract("[0-9]{3}") %>%
+    stringr::str_extract(., "[0-9]{3}") %>%
     paste0("WormBase WS", .)
 ensembl <- biomaRt::listMarts(host = "useast.ensembl.org") %>%
     dplyr::filter(biomart == "ENSEMBL_MART_ENSEMBL") %>%
@@ -36,6 +33,7 @@ rstats <- paste0(R.Version()$version.string,
 [WormBase]: http://www.wormbase.org
 
 [![Build Status](https://travis-ci.org/steinbaugh/worminfo.svg?branch=master)](https://travis-ci.org/steinbaugh/worminfo)
+[![codecov](https://codecov.io/gh/steinbaugh/worminfo/branch/master/graph/badge.svg)](https://codecov.io/gh/steinbaugh/worminfo)
 
 *C. elegans* genome annotations assembled from [WormBase][], [Ensembl][], and [PANTHER][]. RNAi clone mapping support for [ORFeome][], [Ahringer][] and cherrypick *E. coli* feeding libraries.
 

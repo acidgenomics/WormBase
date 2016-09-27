@@ -1,0 +1,28 @@
+---
+title: "Gene Annotations"
+author: "Michael J. Steinbaugh"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{gene}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Source data
+
+WormBase is updated on a bi-monthly [release schedule](http://www.wormbase.org/about/release_schedule). If you notice that the source data here is outdated, file an update request as a [GitHub issue](https://github.com/steinbaugh/worminfo/issues).
+
+```{r}
+data <- get("geneSource", envir = asNamespace("worminfo"))
+```
+
+## More Examples
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(data, 10))
+```
+
+# Joining results with your data
+
+`dplyr::left_join`

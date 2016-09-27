@@ -1,7 +1,7 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
-
+cache: packages
 language: R
 r: bioc-release
-sudo: false
-cache: packages
 r_github_packages: seqcloud/seqcloudr
+sudo: false
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

@@ -2,32 +2,34 @@
 % Please edit documentation in R/rnai.R
 \name{rnai}
 \alias{rnai}
-\title{RNAi clone matching.}
+\title{RNAi clone matching}
 \usage{
-rnai(identifier = NULL, format = "clone", library = "orfeome96")
+rnai(identifier, format = "clone", library = "orfeome96")
 }
 \arguments{
-\item{identifier}{Identifier.}
+\item{identifier}{Identifier}
 
-\item{format}{Identifier format.}
+\item{format}{Identifier format (\code{gene}, \code{historical}, \code{name},
+\code{rnai} or \code{sequence})}
 
-\item{library}{Library type.}
+\item{library}{Library type (\code{ahringer96}, \code{ahringer384},
+\code{cherrypick} or \code{orfeome96})}
 }
 \value{
-tibble.
+tibble
 }
 \description{
-RNAi clone matching.
+RNAi clone matching
 }
 \examples{
-rnai("GHR-11049@F12", library = "orfeome")
 rnai("IV-2N18", library = "ahringer384")
 rnai("99G09", library = "ahringer96")
-rnai("99G09", library = "ahringer96Historical")
 rnai("tf_all-3C06", library = "cherrypick")
-rnai("MV_SV:mv_T19E7.2", format = "historical")
+rnai("GHR-11049@F12", library = "orfeome96")
+rnai("WBGene00004804", format = "gene")
+rnai("JA:T19E7.2", format = "historical")
+rnai("skn-1", format = "name")
 rnai("WBRNAi00009186", format = "rnai")
 rnai("T19E7.2", format = "sequence")
-rnai("skn-1", format = "name")
 }
 
