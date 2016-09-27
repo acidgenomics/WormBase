@@ -3,8 +3,4 @@ language: R
 r: bioc-release
 r_github_packages:
   - seqcloud/seqcloudr
-r_packages:
-  - covr
 sudo: false
-after_success:
-  - Rscript -e 'library(covr); codecov()'
