@@ -10,6 +10,9 @@ library(dplyr)
 ```
 
 ```{r, include=FALSE}
+numGenes <- nrow(get("geneSource", envir = asNamespace("worminfo")))
+numClones <- nrow(get("rnaiSource", envir = asNamespace("worminfo")))
+
 wormbase <- list.files(path = "data-raw/wormbase", pattern = "wormpep.table*") %>%
     stringr::str_extract(., "[0-9]{3}") %>%
     paste0("WormBase WS", .)
@@ -44,7 +47,7 @@ To install, run `devtools::install_github("steinbaugh/worminfo")`
 
 # Annotations
 
-- `r nrow(geneData)` gene annotations
-- `r nrow(rnaiData)` RNAi clones
+- `r numGenes` gene annotations
+- `r numClones` RNAi clones
 
 Compiled from `r wormbase`, `r ensembl` and `r panther` with `r rstats`.
