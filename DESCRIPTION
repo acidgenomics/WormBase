@@ -11,22 +11,10 @@ Depends:
     R (>= 3.1.0)
 Imports:
     dplyr,
-    httr,
-    magrittr,
     parallel,
-    seqcloudr,
-    stringr,
     utils
 Suggests:
-    biomaRt,
     knitr,
-    RCurl,
-    readr,
-    readxl,
     rmarkdown,
-    tibble
-Remotes:
-    seqcloud/seqcloudr
-biocViews:
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr

@@ -14,15 +14,13 @@ vignette: >
 WormBase is updated on a bi-monthly [release schedule](http://www.wormbase.org/about/release_schedule). If you notice that the source data here is outdated, file an update request as a [GitHub issue](https://github.com/steinbaugh/worminfo/issues).
 
 ```{r}
-head(geneSource)
+data <- get("geneSource", envir = asNamespace("worminfo"))
 ```
 
 ## More Examples
 
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
 ```{r, echo=FALSE, results='asis'}
-knitr::kable(head(geneSource, 10))
+knitr::kable(head(data, 10))
 ```
 
 # Joining results with your data
