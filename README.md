@@ -1,6 +1,6 @@
 worminfo
 ================
-September 22, 2016
+September 27, 2016
 
 [![Build Status](https://travis-ci.org/steinbaugh/worminfo.svg?branch=master)](https://travis-ci.org/steinbaugh/worminfo)
 
@@ -19,4 +19,4 @@ Annotations
 -   50970 gene annotations
 -   30242 RNAi clones
 
-Compiled from WormBase WS254, Ensembl Genes 85 and PANTHER 11.0 with R version 3.3.1 (2016-06-21) running on x86\_64-apple-darwin13.4.0.
+Compiled from WormBase WS, Ensembl Genes 85 and PANTHER with R version 3.3.1 (2016-06-21) running on x86\_64-apple-darwin13.4.0.
