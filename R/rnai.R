@@ -26,11 +26,9 @@
 rnai <- function(identifier,
                  format = "clone",
                  library = "orfeome96") {
-    data <- get("rnaiData", envir = asNamespace("worminfo"))
-
+    data <- get("rnaiSource", envir = asNamespace("worminfo"))
     # Don't expose ahringer96Historical values to the user:
     data$ahringer96Historical <- NULL
-
     if (!missing(identifier)) {
         if (!is.character(identifier)) {
             stop("Identifier must be a character vector.")

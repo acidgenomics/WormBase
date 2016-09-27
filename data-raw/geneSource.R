@@ -1,6 +1,5 @@
 devtools::load_all()
 library(dplyr)
-library(magrittr)
 library(seqcloudr)
 
 # Wormbase ====
@@ -20,7 +19,7 @@ if (!exists("ensembl")) {
 ensembl <- Reduce(function(...) dplyr::full_join(..., by = "ensembl_gene_id"),
                   ensembl) %>%
     dplyr::rename(gene = ensembl_gene_id) %>%
-    magrittr::set_names(seqcloudr::camel(names(.)))
+    stats::setNames(., seqcloudr::camel(names(.)))
 
 
 # PANTHER ====
@@ -34,8 +33,8 @@ names(panther)[2:length(panther)] <-
 
 
 # Join And Save ====
-geneData <- Reduce(function(...) dplyr::left_join(..., by = "gene"),
+geneSource <- Reduce(function(...) dplyr::left_join(..., by = "gene"),
                    list(wormbase, ensembl, panther)) %>%
     dplyr::select(noquote(order(names(.)))) %>%
     dplyr::arrange(gene)
-devtools::use_data(geneData, overwrite = TRUE)
+devtools::use_data(geneSource, overwrite = TRUE)

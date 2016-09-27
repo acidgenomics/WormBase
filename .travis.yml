@@ -1,3 +1,7 @@
 cache: packages
 language: R
+r: bioc-release
+r_github_packages: seqcloud/seqcloudr
 sudo: false
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

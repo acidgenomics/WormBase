@@ -1,22 +1,22 @@
 library(dplyr)
-library(magrittr)
 library(readr)
+library(seqcloudr)
 library(tidyr)
 file <- list.files(path = "data-raw", pattern = "PTHR*", full.names = TRUE)
 if (!length(file)) {
     file <- seqcloudr::downloadFile("ftp://ftp.pantherdb.org/sequence_classifications/current_release/PANTHER_Sequence_Classification_files/", "nematode")
 }
 panther <- readr::read_tsv(file, col_names = FALSE) %>%
-    magrittr::set_names(c("id",
-                          "protein",
-                          "subfamily",
-                          "familyName",
-                          "subfamilyName",
-                          "geneOntologyMolecularFunction",
-                          "geneOntologyBiologicalProcess",
-                          "geneOntologyCellularComponent",
-                          "class",
-                          "pathway")) %>%
+    stats::setNames(., c("id",
+                         "protein",
+                         "subfamily",
+                         "familyName",
+                         "subfamilyName",
+                         "geneOntologyMolecularFunction",
+                         "geneOntologyBiologicalProcess",
+                         "geneOntologyCellularComponent",
+                         "class",
+                         "pathway")) %>%
     dplyr::mutate(id = gsub("CAEEL\\|", "", id),
                   id = gsub("(EnsemblGenome|Gene|GeneID|UniProtKB|WormBase)=", "", id)) %>%
     tidyr::separate(id, c("gene", "uniprotKb"), sep = "\\|") %>%
