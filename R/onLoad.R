@@ -1,11 +1,11 @@
-.onAttach <- function(libname, pkgname) {
-    packageStartupMessage("Source data: https://github.com/steinbaugh/worminfo")
-}
+# .onAttach <- function(libname, pkgname) {
+#     packageStartupMessage("Source data: https://github.com/steinbaugh/worminfo/tree/data")
+# }
 
 #' @importFrom utils download.file
 .onLoad <- function(libname, pkgname) {
     envir = asNamespace("worminfo")
-    # Download source data from GitHub repo:
+    # Download source data from the `data` branch on GitHub:
     # geneSource
     assign("geneSource", tempfile(), envir = envir)
     utils::download.file("https://raw.githubusercontent.com/steinbaugh/worminfo/data/data/geneSource.rda",
@@ -19,6 +19,3 @@
                          quiet = TRUE)
     load(get("rnaiSource", envir = envir), envir = envir)
 }
-
-# dot global for magrittr piping
-utils::globalVariables(c("."))
