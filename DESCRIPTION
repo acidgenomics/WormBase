@@ -7,6 +7,7 @@ Maintainer: Michael J. Steinbaugh <mike@steinbaugh.com>
 Description: Genome annotations are dynamically assembled from WormBase, Ensembl, and PANTHER. RNAi clone mappings from ORFeome, Ahringer and cherrypick feeding libraries are supported.
 License: MIT + file LICENSE
 URL: https://github.com/steinbaugh/worminfo
+Encoding: UTF-8
 Depends:
     R (>= 3.1.0)
 Imports:
