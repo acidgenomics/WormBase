@@ -1,7 +1,10 @@
 cache: packages
 language: R
 r: bioc-release
-r_github_packages: seqcloud/seqcloudr
+r_github_packages:
+  - seqcloud/seqcloudr
+r_packages:
+  - covr
 sudo: false
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - Rscript -e 'library(covr); codecov()'
