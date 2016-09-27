@@ -33,6 +33,7 @@ rstats <- paste0(R.Version()$version.string,
 [WormBase]: http://www.wormbase.org
 
 [![Build Status](https://travis-ci.org/steinbaugh/worminfo.svg?branch=master)](https://travis-ci.org/steinbaugh/worminfo)
+[![codecov](https://codecov.io/gh/steinbaugh/worminfo/branch/master/graph/badge.svg)](https://codecov.io/gh/steinbaugh/worminfo)
 
 *C. elegans* genome annotations assembled from [WormBase][], [Ensembl][], and [PANTHER][]. RNAi clone mapping support for [ORFeome][], [Ahringer][] and cherrypick *E. coli* feeding libraries.
 

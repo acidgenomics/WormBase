@@ -1,7 +1,7 @@
 Package: worminfo
 Type: Package
 Title: C. elegans genes and RNAi clones
-Version: 0.9
+Version: 0.9.1
 Author: Michael J. Steinbaugh <mike@steinbaugh.com>
 Maintainer: Michael J. Steinbaugh <mike@steinbaugh.com>
 Description: Genome annotations are dynamically assembled from WormBase, Ensembl, and PANTHER. RNAi clone mappings from ORFeome, Ahringer and cherrypick feeding libraries are supported.
@@ -11,10 +11,22 @@ Depends:
     R (>= 3.1.0)
 Imports:
     dplyr,
+    httr,
+    magrittr,
     parallel,
+    seqcloudr,
+    stringr,
     utils
 Suggests:
+    biomaRt,
     knitr,
-    rmarkdown
+    RCurl,
+    readr,
+    readxl,
+    rmarkdown,
+    tibble
+Remotes:
+    seqcloud/seqcloudr
+biocViews:
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr

@@ -3,7 +3,6 @@
 # \code{wormbase_gene_seq_name} for clean sequence identifier.
 library(biomaRt)
 library(dplyr)
-
 ensembl <- list()
 mart <- biomaRt::useMart("ensembl", dataset = "celegans_gene_ensembl")
 options <- biomaRt::listAttributes(mart)

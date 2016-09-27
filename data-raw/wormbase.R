@@ -1,15 +1,14 @@
-# library(biomaRt) - conflicts with dplyr
+devtools::load_all()
+library(biomaRt) # conflicts with dplyr
 library(dplyr)
-library(magrittr)
 library(parallel)
 library(RCurl)
 library(readr)
 library(seqcloudr)
 library(stringr)
 library(tibble)
-devtools::load_all()
-
 wormbase <- list()
+
 
 # Gene Identifiers ====
 gene <- wormbaseFile("geneIDs") %>%
@@ -92,7 +91,7 @@ hsapiens <-
     unlist(.)
 wormbase[["ortholog"]] <-
     tibble::tibble(gene = raw[[1]], hsapiensGene = hsapiens)
-rm(list, raw)
+rm(hsapiens, list, raw)
 
 
 # Best BLASTP Hits ====
@@ -168,7 +167,7 @@ rm(blastp, blastpHsapiens, file, mart, options)
 
 
 # External Identifiers ====
-wormbase[["external"]] <- wormbaseRestGeneExternal(wormbase$gene$gene)
+wormbase[["external"]] <- wormbaseRestGeneExternal(wormbase$gene$gene[1:10])
 
 
 # Save ====

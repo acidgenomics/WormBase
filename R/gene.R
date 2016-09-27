@@ -15,7 +15,7 @@
 gene <- function(identifier,
                  format = "gene",
                  select = NULL) {
-    data <- get("geneData", envir = asNamespace("worminfo"))
+    data <- get("geneSource", envir = asNamespace("worminfo"))
     if (!missing(identifier)) {
         if (!is.character(identifier)) {
             stop("Identifier must be a character vector.")
