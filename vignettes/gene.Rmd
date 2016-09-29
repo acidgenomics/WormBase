@@ -1,28 +1,143 @@
 ---
-title: "Gene Annotations"
+title: "Gene annotations with the `gene()` function"
 author: "Michael J. Steinbaugh"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{gene}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    %\VignetteIndexEntry{gene}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
 ---
 
-# Source data
+[dplyr]: https://cran.r-project.org/web/packages/dplyr/index.html
+[tibble]: https://cran.r-project.org/web/packages/tibble/vignettes/tibble.html
 
-WormBase is updated on a bi-monthly [release schedule](http://www.wormbase.org/about/release_schedule). If you notice that the source data here is outdated, file an update request as a [GitHub issue](https://github.com/steinbaugh/worminfo/issues).
-
-```{r}
-data <- get("geneSource", envir = asNamespace("worminfo"))
+```{r, echo = FALSE}
+library(knitr)
+library(seqcloudr)
+library(worminfo)
 ```
 
-## More Examples
+The function outputs a [tibble][] `data.frame`, which can be manipulated using the [dplyr][] package. The `dplyr::left_join` function is particularly useful for appending these annotations onto your results.
 
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(data, 10))
+The source data for this function is obtained from WormBase, Ensembl, and PANTHER. WormBase is updated on a bi-monthly [release schedule](http://www.wormbase.org/about/release_schedule). If the source data here appears outdated, file an update request as a [GitHub issue](https://github.com/steinbaugh/worminfo/issues), and we'll promptly rebuild.
+
+
+## Identifier queries
+
+```{r, eval = FALSE}
+# WormBase identifier
+identifier <- c("WBGene00000898",
+                "WBGene00000912",
+                "WBGene00004804")
+gene(identifier, format = "gene")
 ```
 
-# Joining results with your data
+```{r, eval = FALSE}
+# Sequence, a.k.a open reading frame (ORF):
+identifier <- c("Y55D5A.5",
+                "R13H8.1",
+                "T19E7.2")
+gene(identifier, format = "sequence")
+```
 
-`dplyr::left_join`
+```{r, eval = FALSE}
+# Public name
+identifier <- c("daf-2",
+                "daf-16",
+                "skn-1")
+gene(identifier, format = "name")
+```
+
+These queries all return the same [tibble][] `data.frame`:
+
+```{r, echo = FALSE, results = "asis"}
+identifier <- c("WBGene00000898",
+                "WBGene00000912",
+                "WBGene00004804")
+kable(gene(identifier))
+```
+
+
+## Parameters for the `select` declaration
+
+Current list of fields available in `select`:
+
+```{r, echo = FALSE, results = "asis"}
+markdownList(names(
+    gene(identifier, select = "all")
+))
+```
+
+When `select` is not declared, a simple result is returned:
+
+```{r, echo = FALSE, results = "asis"}
+markdownList(names(
+    gene(identifier)
+))
+```
+
+Additionally, special `select = "identifiers"` and `select = "report"` declarations are available. These shortcuts are useful for generating summarises of gene lists, which may be applicable to screening and sequencing expeirments:
+
+
+## Examples with the `select` declaration
+
+### Report for daf-2, insulin/IGF receptor ortholog
+
+```{r, eval = FALSE}
+gene("daf-2", format = "name", select = "report")
+```
+
+```{r, echo = FALSE, results = "asis"}
+kable(t(
+    gene("daf-2", format = "name", select = "report")
+), col.names = "report")
+```
+
+
+### Identifiers for sbp-1, bHLH transcription factor
+
+```{r, eval = FALSE}
+gene("sbp-1", format = "name", select = "identifiers")
+```
+
+```{r, echo = FALSE, results = "asis"}
+kable(t(
+    gene("sbp-1", format = "name", select = "identifiers")
+), col.names = "identifiers")
+```
+
+
+### Descriptions for daf-16, forkhead transcription factor
+
+```{r, eval = FALSE}
+gene("daf-16", format = "name",
+     select = c("blastpHsapiensDescription",
+                "descriptionAutomated",
+                "descriptionConcise",
+                "descriptionEnsembl",
+                "descriptionProvisional"))
+```
+
+```{r echo = FALSE, results = "asis"}
+kable(t(
+    gene("daf-16", format = "name",
+     select = c("blastpHsapiensDescription",
+                "descriptionAutomated",
+                "descriptionConcise",
+                "descriptionEnsembl",
+                "descriptionProvisional"))
+), col.names = "descriptions")
+```
+
+### All fields for skn-1, bZIP transcription factor
+
+```{r, eval = FALSE}
+gene("skn-1", format = "name", select = "all")
+```
+
+```{r echo = FALSE, results = "asis"}
+kable(t(
+    gene("skn-1", format = "name", select = "all")
+), col.names = "all")
+```
