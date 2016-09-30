@@ -2,7 +2,7 @@
 % Please edit documentation in R/gene.R
 \name{gene}
 \alias{gene}
-\title{Gene annotations}
+\title{Gene mapping}
 \usage{
 gene(identifier, format = "gene", select = NULL)
 }
@@ -18,10 +18,10 @@ Optionally, you can use \code{all} or \code{report} declarations here.}
 tibble
 }
 \description{
-Gene annotations
+Gene mapping
 }
 \examples{
-gene("WBGene00004804", select = "ncbi")
+gene("WBGene00004804", select = "report")
 gene("skn-1", format = "name")
 gene("T19E7.2", format = "sequence")
 }

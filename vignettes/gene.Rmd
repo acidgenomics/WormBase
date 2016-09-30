@@ -21,21 +21,24 @@ vignette: >
 [*sbp-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004735
 [*skn-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004804
 
-
 ```{r, include = FALSE}
 devtools::load_all()
+knitr::opts_chunk$set(results = "asis", render = pander::pander)
+pander::panderOptions("table.style", "rmarkdown")
+pander::panderOptions("table.alignment.default", "left")
+pander::panderOptions("table.alignment.rownames", "right")
 ```
-
 
 The goal of the [worminfo][] package is to quickly and simply provide correct, up-to-date annotation data for the entire *C. elegans* genome. The underlying annotations provided by the `gene()` function are automatically sourced from [WormBase][], [Ensembl][] and [PANTHER][]. These source files are saved at the [data branch](https://github.com/steinbaugh/worminfo/tree/data) of the [worminfo GitHub repository][worminfo]. [WormBase][] is updated on a bi-monthly [release schedule](http://www.wormbase.org/about/release_schedule). If the source data appears outdated, file an [update request](https://github.com/steinbaugh/worminfo/issues) on GitHub, and we'll promptly issue a rebuild.
 
-`gene()` accepts 3 types of identifiers: `gene`, `name` or `sequence`. Output from the function is controlled using the `select` parameter. The function returns a [tibble][] `data.frame` that can be manipulated using the [dplyr][] package or the `base::merge()` function. We recommend using `dplyr::left_join()` to bind these annotations to other `data.frames`.
+`gene()` accepts 4 types of identifiers: `gene`, `name`, `sequence` or `class`. Output from the function is controlled using the `select` parameter. The function returns a [tibble][] `data.frame` that can be manipulated using the [dplyr][] package or the `base::merge()` function. We recommend using `dplyr::left_join()` to bind these annotations to other `data.frames`.
+
 
 ## `identifier` examples
 
 [WormBase][] **gene**:
 
-```{r, eval = FALSE}
+```{r}
 identifier <- c("WBGene00000898", "WBGene00000912", "WBGene00004804")
 gene(identifier, format = "gene")
 ```
@@ -43,7 +46,7 @@ gene(identifier, format = "gene")
 
 **Sequence**, commonly the open reading frame (ORF):
 
-```{r, eval = FALSE}
+```{r}
 identifier <- c("Y55D5A.5", "R13H8.1", "T19E7.2")
 gene(identifier, format = "sequence")
 ```
@@ -51,27 +54,40 @@ gene(identifier, format = "sequence")
 
 Public **name**:
 
-```{r, eval = FALSE}
+```{r}
 identifier <- c("daf-2", "daf-16", "skn-1")
 gene(identifier, format = "name")
 ```
 
 
-These queries return the same [tibble][] `data.frame`:
+See how these queries all return the same [tibble][] `data.frame`, but with different sorting.
 
-```{r, echo = FALSE, results = "asis"}
-identifier <- c("WBGene00000898", "WBGene00000912", "WBGene00004804")
-knitr::kable(gene(identifier))
+You can also return all genes in a named **class**. For example, let's get the current list of *daf* (**D**auer **A**rrest **F**orming) genes:
+
+```{r}
+head(
+    gene("daf", format = "class")
+)
+```
+
+
+You can perform a **keyword** search. For example, let's query all genes that have been implicated in the regulation of worm lifespan:
+
+```{r}
+head(
+    gene("lifespan", format = "keyword",
+         select = c("gene", "sequence", "name"))
+)
 ```
 
 
 ## `select` options
 
-Annotations available with `select`:
+The `gene()` function is bundled with source data that can be queried using the `select` parameter. Here's the current list of data annotations that can be called with `select`:
 
 ```{r, echo = FALSE, results = "asis"}
 seqcloudr::markdownList(names(
-    gene(identifier, select = "all")
+    gene(identifier, select = NULL)
 ))
 ```
 
@@ -85,64 +101,47 @@ seqcloudr::markdownList(names(
 ```
 
 
-Additionally, special `select = "identifiers"` and `select = "report"` declarations are available. These shortcuts are useful for generating summaries and may be relevant to experiments involving large gene lists.
+Additionally, special `identifiers`, `report` and `NULL` declarations are available. These shortcuts are useful for generating summaries and may be relevant to experiments involving large gene lists.
 
 
 ## `gene()` function examples
 
+
 External/other **identifiers** for [*daf-2*][] (insulin/IGF receptor ortholog):
 
-```{r, eval = FALSE}
-gene("daf-2", format = "name", select = "identifiers")
-```
-
-```{r, echo = FALSE, results = "asis"}
-knitr::kable(t(
+```{r}
+t(
     gene("daf-2", format = "name", select = "identifiers")
-), col.names = NA)
+)
 ```
 
 
 **Report** for [*daf-16*][] (forkhead transcription factor):
 
-```{r, eval = FALSE}
-gene("daf-16", format = "name", select = "report")
-```
-
-```{r, echo = FALSE, results = "asis"}
-knitr::kable(t(
+```{r}
+t(
     gene("daf-16", format = "name", select = "report")
-), col.names = NA)
+)
 ```
 
 
-Manually select descriptions for [*sbp-1*][] (bHLH transcription factor):
+Select [WormBase][] and [Ensembl][] descriptions for [*sbp-1*][] (bHLH transcription factor):
 
-```{r, eval = FALSE}
-gene("sbp-1", format = "name",
-     select = c("descriptionConcise",
-                "descriptionProvisional",
-                "descriptionEnsembl"))
-```
-
-```{r echo = FALSE, results = "asis"}
-knitr::kable(t(
+```{r}
+t(
     gene("sbp-1", format = "name",
      select = c("descriptionConcise",
                 "descriptionProvisional",
                 "descriptionEnsembl"))
-), col.names = NA)
+)
 ```
 
 
-**All** fields for [*skn-1*][] (bZIP transcription factor):
+**All fields** for [*skn-1*][] (bZIP transcription factor), using the `NULL` delcaration:
 
-```{r, eval = FALSE}
-gene("skn-1", format = "name", select = "all")
+```{r}
+t(
+    gene("skn-1", format = "name", select = NULL)
+)
 ```
 
-```{r echo = FALSE, results = "asis"}
-knitr::kable(t(
-    gene("skn-1", format = "name", select = "all")
-), col.names = NA)
-```

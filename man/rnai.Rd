@@ -2,7 +2,7 @@
 % Please edit documentation in R/rnai.R
 \name{rnai}
 \alias{rnai}
-\title{RNAi clone matching}
+\title{RNAi clone mapping}
 \usage{
 rnai(identifier, format = "clone", library = "orfeome96")
 }
@@ -19,7 +19,7 @@ rnai(identifier, format = "clone", library = "orfeome96")
 tibble
 }
 \description{
-RNAi clone matching
+RNAi clone mapping
 }
 \examples{
 rnai("IV-2N18", library = "ahringer384")

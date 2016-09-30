@@ -31,7 +31,7 @@ rnai <- function(identifier,
     } else if (!is.character(identifier)) {
         stop("Identifier must be a character vector.")
     }
-    data <- get("rnaiSource", envir = asNamespace("worminfo"))
+    source <- get("rnaiSource", envir = asNamespace("worminfo"))
     identifier <- sort(unique(identifier))
     list <- parallel::mclapply(seq_along(identifier), function(a) {
         id <- identifier[a]
@@ -63,7 +63,7 @@ rnai <- function(identifier,
                             "ahringer96",
                             "cherrypick",
                             "orfeome96")))) {
-                data <- data[grepl(grepl, data[[library]]), ]
+                data <- source[grepl(grepl, source[[library]]), ]
             } else {
                 stop("Invalid library.")
             }
@@ -77,7 +77,7 @@ rnai <- function(identifier,
                                "name",
                                "rnai",
                                "sequence")))) {
-            data <- data[grepl(grepl, data[[format]]), ]
+            data <- source[grepl(grepl, source[[format]]), ]
         } else {
             stop("Invalid format.")
         }
