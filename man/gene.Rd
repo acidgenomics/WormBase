@@ -4,15 +4,18 @@
 \alias{gene}
 \title{Gene mapping}
 \usage{
-gene(identifier, format = "gene", select = NULL)
+gene(identifier, format = "gene", select = "simple", sort = NULL)
 }
 \arguments{
 \item{identifier}{Gene identifier}
 
-\item{format}{Identifier type (\code{gene}, \code{name} or \code{sequence})}
+\item{format}{Identifier type (\code{gene}, \code{name}, \code{sequence},
+\code{class} or \code{keyword})}
 
-\item{select}{Columns to select (e.g. \code{ncbi}).
-Optionally, you can use \code{all} or \code{report} declarations here.}
+\item{select}{Columns to select (e.g. \code{ncbi}). Optionally, you can use
+\code{simple}, \code{report} or \code{NULL} declarations here.}
+
+\item{sort}{Columns to use for sorting.}
 }
 \value{
 tibble
@@ -24,5 +27,7 @@ Gene mapping
 gene("WBGene00004804", select = "report")
 gene("skn-1", format = "name")
 gene("T19E7.2", format = "sequence")
+gene("daf", format = "class")
+gene("bzip", format = "keyword")
 }
 

@@ -22,11 +22,11 @@ vignette: >
 [*skn-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004804
 
 ```{r, include = FALSE}
-devtools::load_all()
 knitr::opts_chunk$set(results = "asis", render = pander::pander)
 pander::panderOptions("table.style", "rmarkdown")
 pander::panderOptions("table.alignment.default", "left")
 pander::panderOptions("table.alignment.rownames", "right")
+devtools::load_all()
 ```
 
 The goal of the [worminfo][] package is to quickly and simply provide correct, up-to-date annotation data for the entire *C. elegans* genome. The underlying annotations provided by the `gene()` function are automatically sourced from [WormBase][], [Ensembl][] and [PANTHER][]. These source files are saved at the [data branch](https://github.com/steinbaugh/worminfo/tree/data) of the [worminfo GitHub repository][worminfo]. [WormBase][] is updated on a bi-monthly [release schedule](http://www.wormbase.org/about/release_schedule). If the source data appears outdated, file an [update request](https://github.com/steinbaugh/worminfo/issues) on GitHub, and we'll promptly issue a rebuild.

@@ -8,6 +8,7 @@
 #'   \code{class} or \code{keyword})
 #' @param select Columns to select (e.g. \code{ncbi}). Optionally, you can use
 #'   \code{simple}, \code{report} or \code{NULL} declarations here.
+#' @param sort Columns to use for sorting.
 #'
 #' @return tibble
 #' @export

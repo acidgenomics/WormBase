@@ -2,6 +2,7 @@
 
 export(gene)
 export(rnai)
+importFrom(dplyr,arrange_)
 importFrom(dplyr,bind_rows)
 importFrom(parallel,mclapply)
 importFrom(tidyr,separate_)
