@@ -21,7 +21,7 @@ vignette: >
 [*sbp-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004735
 [*skn-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004804
 
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(results = "asis", render = pander::pander)
 pander::panderOptions("table.style", "rmarkdown")
 pander::panderOptions("table.alignment.default", "left")
