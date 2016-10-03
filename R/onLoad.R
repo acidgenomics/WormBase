@@ -5,6 +5,7 @@
 #' @importFrom utils download.file
 .onLoad <- function(libname, pkgname) {
     envir = asNamespace("worminfo")
+
     # Download source data from the `data` branch on GitHub:
     # geneSource
     assign("geneSource", tempfile(), envir = envir)
@@ -12,10 +13,19 @@
                          get("geneSource", envir = envir),
                          quiet = TRUE)
     load(get("geneSource", envir = envir), envir = envir)
+
     # rnaiSource
     assign("rnaiSource", tempfile(), envir = envir)
     utils::download.file("https://raw.githubusercontent.com/steinbaugh/worminfo/data/data/rnaiSource.rda",
                          get("rnaiSource", envir = envir),
                          quiet = TRUE)
     load(get("rnaiSource", envir = envir), envir = envir)
+
+
+    # Download the source data build information:
+    assign("build", tempfile(), envir = envir)
+    utils::download.file("https://raw.githubusercontent.com/steinbaugh/worminfo/data/data/build.rda",
+                         get("build", envir = envir),
+                         quiet = TRUE)
+    load(get("build", envir = envir), envir = envir)
 }
