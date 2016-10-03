@@ -23,7 +23,7 @@
 #' rnai("III-6C01", library = "ahringer384")
 #' rnai("86B01", library = "ahringer96")
 #' rnai("GHR-11010@G06", library = "orfeome96")
-#' rnai("tf_all-1E1", library = "cherrypick")
+#' rnai("tf_all-1E01", library = "cherrypick")
 rnai <- function(identifier,
                  format = "clone",
                  library = "orfeome96") {
@@ -37,13 +37,17 @@ rnai <- function(identifier,
     list <- parallel::mclapply(seq_along(identifier), function(a) {
         id <- identifier[a]
         if (format == "clone") {
-            if (library != "ahringer384") {
-                # Prefix (chromosome) is only needed for \code{ahringer384}:
-                id <- gsub("^[A-Za-z0-9]+-", "", id)
+            # Roman chromosome prefix is needed for \code{ahringer384}.
+            # Otherwise, it's okay to gsub the clone prefix.
+            if (!grepl("^[IVX]+", id)) {
+                id <- gsub("^[A-Za-z]+(96|384)?-", "", id)
             }
+            # Remove padded zeroes:
+            id <- gsub("(^|-)[0]+", "", id)
+            id <- gsub("([A-Z]{1})[0]+(\\d)$", "\\1\\2", id)
+            # Strip separators:
             id <- gsub("-|@", "", id)
-            id <- gsub("^[0]+", "", id)
-            id <- gsub("([A-Z]{1})[0]+", "\\1", id)
+        
         }
         # Match beginning of line or after comma:
         grepl <- paste0(

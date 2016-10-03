@@ -95,6 +95,6 @@ Here's how you query well E01 ([*daf-16*][]) from the first plate of the transcr
 
 ```{r}
 t(
-    rnai("tf_all-1E1", library = "cherrypick")
+    rnai("tf_all-1E01", library = "cherrypick")
 )
 ```
