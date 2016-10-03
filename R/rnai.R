@@ -2,6 +2,7 @@
 #'
 #' @importFrom dplyr bind_rows
 #' @importFrom parallel mclapply
+#' @importFrom stats na.omit
 #'
 #' @param identifier Identifier
 #' @param format Identifier format (\code{gene}, \code{historical}, \code{name},
@@ -32,7 +33,7 @@ rnai <- function(identifier,
         stop("Identifier must be a character vector.")
     }
     source <- get("rnaiSource", envir = asNamespace("worminfo"))
-    identifier <- sort(unique(identifier))
+    identifier <- sort(unique(stats::na.omit(identifier)))
     list <- parallel::mclapply(seq_along(identifier), function(a) {
         id <- identifier[a]
         if (format == "clone") {

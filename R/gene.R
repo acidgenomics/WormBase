@@ -1,6 +1,7 @@
 #' Gene mapping
 #'
 #' @importFrom dplyr arrange_ bind_rows
+#' @importFrom stats na.omit
 #' @importFrom tidyr separate_
 #'
 #' @param identifier Gene identifier
@@ -28,7 +29,7 @@ gene <- function(identifier,
     } else if (!is.character(identifier)) {
         stop("Identifier must be a character vector.")
     }
-    identifier <- sort(unique(identifier))
+    identifier <- sort(unique(stats::na.omit(identifier)))
     source <- get("geneSource", envir = asNamespace("worminfo"))
     # Format ====
     if (any(grepl(format,
