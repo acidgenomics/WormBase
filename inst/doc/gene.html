@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Michael J. Steinbaugh" />
+
+<meta name="date" content="2016-10-03" />
+
+<title>Gene annotations with the gene() function</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Gene annotations with the <code>gene()</code> function</h1>
+<h4 class="author"><em>Michael J. Steinbaugh</em></h4>
+<h4 class="date"><em>2016-10-03</em></h4>
+
+
+
+<p>The goal of the <a href="https://github.com/steinbaugh/worminfo">worminfo</a> package is to quickly and simply provide correct, up-to-date annotation data for the entire <em>C. elegans</em> genome. The underlying annotations provided by the <code>gene()</code> function are automatically sourced from <a href="http://www.wormbase.org">WormBase</a>, <a href="http://useast.ensembl.org/Caenorhabditis_elegans/Info/Index">Ensembl</a> and <a href="http://www.pantherdb.org">PANTHER</a>. These source files are saved at the <a href="https://github.com/steinbaugh/worminfo/tree/data">data branch</a> of the <a href="https://github.com/steinbaugh/worminfo">worminfo GitHub repository</a>. <a href="http://www.wormbase.org">WormBase</a> is updated on a bi-monthly <a href="http://www.wormbase.org/about/release_schedule">release schedule</a>. If the source data appears outdated, file an <a href="https://github.com/steinbaugh/worminfo/issues">update request</a> on GitHub, and we’ll promptly issue a rebuild.</p>
+<p><code>gene()</code> accepts 4 types of identifiers: <code>gene</code>, <code>name</code>, <code>sequence</code> or <code>class</code>. Output from the function is controlled using the <code>select</code> parameter. The function returns a <a href="https://cran.r-project.org/web/packages/tibble/vignettes/tibble.html">tibble</a> <code>data.frame</code> that can be manipulated using the <a href="https://cran.r-project.org/web/packages/dplyr/index.html">dplyr</a> package or the <code>base::merge()</code> function. We recommend using <code>dplyr::left_join()</code> to bind these annotations to other <code>data.frames</code>.</p>
+<div id="identifier-examples" class="section level2">
+<h2><code>identifier</code> examples</h2>
+<p><a href="http://www.wormbase.org">WormBase</a> <strong>gene</strong>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">identifier &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;WBGene00000898&quot;</span>, <span class="st">&quot;WBGene00000912&quot;</span>, <span class="st">&quot;WBGene00004804&quot;</span>)
+<span class="kw">gene</span>(identifier, <span class="dt">format =</span> <span class="st">&quot;gene&quot;</span>)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">gene</th>
+<th align="left">sequence</th>
+<th align="left">name</th>
+<th align="left">class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">WBGene00000898</td>
+<td align="left">Y55D5A.5</td>
+<td align="left">daf-2</td>
+<td align="left">abnormal DAuer Formation</td>
+</tr>
+<tr class="even">
+<td align="left">WBGene00000912</td>
+<td align="left">R13H8.1</td>
+<td align="left">daf-16</td>
+<td align="left">abnormal DAuer Formation</td>
+</tr>
+<tr class="odd">
+<td align="left">WBGene00004804</td>
+<td align="left">T19E7.2</td>
+<td align="left">skn-1</td>
+<td align="left">SKiNhead</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sequence</strong>, commonly the open reading frame (ORF):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">identifier &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Y55D5A.5&quot;</span>, <span class="st">&quot;R13H8.1&quot;</span>, <span class="st">&quot;T19E7.2&quot;</span>)
+<span class="kw">gene</span>(identifier, <span class="dt">format =</span> <span class="st">&quot;sequence&quot;</span>)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">sequence</th>
+<th align="left">gene</th>
+<th align="left">name</th>
+<th align="left">class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">R13H8.1</td>
+<td align="left">WBGene00000912</td>
+<td align="left">daf-16</td>
+<td align="left">abnormal DAuer Formation</td>
+</tr>
+<tr class="even">
+<td align="left">T19E7.2</td>
+<td align="left">WBGene00004804</td>
+<td align="left">skn-1</td>
+<td align="left">SKiNhead</td>
+</tr>
+<tr class="odd">
+<td align="left">Y55D5A.5</td>
+<td align="left">WBGene00000898</td>
+<td align="left">daf-2</td>
+<td align="left">abnormal DAuer Formation</td>
+</tr>
+</tbody>
+</table>
+<p>Public <strong>name</strong>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">identifier &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;daf-2&quot;</span>, <span class="st">&quot;daf-16&quot;</span>, <span class="st">&quot;skn-1&quot;</span>)
+<span class="kw">gene</span>(identifier, <span class="dt">format =</span> <span class="st">&quot;name&quot;</span>)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">name</th>
+<th align="left">gene</th>
+<th align="left">sequence</th>
+<th align="left">class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">daf-2</td>
+<td align="left">WBGene00000898</td>
+<td align="left">Y55D5A.5</td>
+<td align="left">abnormal DAuer Formation</td>
+</tr>
+<tr class="even">
+<td align="left">daf-16</td>
+<td align="left">WBGene00000912</td>
+<td align="left">R13H8.1</td>
+<td align="left">abnormal DAuer Formation</td>
+</tr>
+<tr class="odd">
+<td align="left">skn-1</td>
+<td align="left">WBGene00004804</td>
+<td align="left">T19E7.2</td>
+<td align="left">SKiNhead</td>
+</tr>
+</tbody>
+</table>
+<p>See how these queries all return the same <a href="https://cran.r-project.org/web/packages/tibble/vignettes/tibble.html">tibble</a> <code>data.frame</code>, but with different sorting.</p>
+<p>You can also return all genes in a named <strong>class</strong>. For example, let’s get the current list of <em>daf</em> (<strong>D</strong>auer <strong>A</strong>rrest <strong>F</strong>orming) genes:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(
+    <span class="kw">gene</span>(<span class="st">&quot;daf&quot;</span>, <span class="dt">format =</span> <span class="st">&quot;class&quot;</span>)
+)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">class</th>
+<th align="left">gene</th>
+<th align="left">sequence</th>
+<th align="left">name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">abnormal DAuer Formation</td>
+<td align="left">WBGene00000897</td>
+<td align="left">F29C4.1</td>
+<td align="left">daf-1</td>
+</tr>
+<tr class="even">
+<td align="left">abnormal DAuer Formation</td>
+<td align="left">WBGene00000898</td>
+<td align="left">Y55D5A.5</td>
+<td align="left">daf-2</td>
+</tr>
+<tr class="odd">
+<td align="left">abnormal DAuer Formation</td>
+<td align="left">WBGene00000899</td>
+<td align="left">F25E2.5</td>
+<td align="left">daf-3</td>
+</tr>
+<tr class="even">
+<td align="left">abnormal DAuer Formation</td>
+<td align="left">WBGene00000900</td>
+<td align="left">C05D2.1</td>
+<td align="left">daf-4</td>
+</tr>
+<tr class="odd">
+<td align="left">abnormal DAuer Formation</td>
+<td align="left">WBGene00000901</td>
+<td align="left">W01G7.1</td>
+<td align="left">daf-5</td>
+</tr>
+<tr class="even">
+<td align="left">abnormal DAuer Formation</td>
+<td align="left">WBGene00000902</td>
+<td align="left">F31F6.5</td>
+<td align="left">daf-6</td>
+</tr>
+</tbody>
+</table>
+<p>You can perform a <strong>keyword</strong> search. For example, let’s query all genes that have been implicated in the regulation of worm lifespan:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(
+    <span class="kw">gene</span>(<span class="st">&quot;lifespan&quot;</span>, <span class="dt">format =</span> <span class="st">&quot;keyword&quot;</span>,
+         <span class="dt">select =</span> <span class="kw">c</span>(<span class="st">&quot;gene&quot;</span>, <span class="st">&quot;sequence&quot;</span>, <span class="st">&quot;name&quot;</span>))
+)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">keyword</th>
+<th align="left">gene</th>
+<th align="left">sequence</th>
+<th align="left">name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">lifespan</td>
+<td align="left">WBGene00000001</td>
+<td align="left">Y110A7A.10</td>
+<td align="left">aap-1</td>
+</tr>
+<tr class="even">
+<td align="left">lifespan</td>
+<td align="left">WBGene00000083</td>
+<td align="left">F08C6.1</td>
+<td align="left">adt-2</td>
+</tr>
+<tr class="odd">
+<td align="left">lifespan</td>
+<td align="left">WBGene00000090</td>
+<td align="left">B0334.8</td>
+<td align="left">age-1</td>
+</tr>
+<tr class="even">
+<td align="left">lifespan</td>
+<td align="left">WBGene00000102</td>
+<td align="left">C12D8.10</td>
+<td align="left">akt-1</td>
+</tr>
+<tr class="odd">
+<td align="left">lifespan</td>
+<td align="left">WBGene00000103</td>
+<td align="left">F28H6.1</td>
+<td align="left">akt-2</td>
+</tr>
+<tr class="even">
+<td align="left">lifespan</td>
+<td align="left">WBGene00000229</td>
+<td align="left">C34E10.6</td>
+<td align="left">atp-2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="select-options" class="section level2">
+<h2><code>select</code> options</h2>
+<p>The <code>gene()</code> function is bundled with source data that can be queried using the <code>select</code> parameter. Here’s the current list of data annotations that can be called with <code>select</code>:</p>
+<ul>
+<li>aceview</li>
+<li>biotype</li>
+<li>blastpHsapiensDescription</li>
+<li>blastpHsapiensGene</li>
+<li>blastpHsapiensName</li>
+<li>chromosome</li>
+<li>class</li>
+<li>descriptionAutomated</li>
+<li>descriptionConcise</li>
+<li>descriptionDetailed</li>
+<li>descriptionEnsembl</li>
+<li>descriptionProvisional</li>
+<li>gene</li>
+<li>geneOntology</li>
+<li>geneOntologyName</li>
+<li>hsapiensGene</li>
+<li>interpro</li>
+<li>interproName</li>
+<li>name</li>
+<li>ncbi</li>
+<li>otherIdentifier</li>
+<li>pantherClass</li>
+<li>pantherFamilyName</li>
+<li>pantherGeneOntologyBiologicalProcess</li>
+<li>pantherGeneOntologyCellularComponent</li>
+<li>pantherGeneOntologyMolecularFunction</li>
+<li>pantherPathway</li>
+<li>pantherSubfamily</li>
+<li>pantherSubfamilyName</li>
+<li>peptide</li>
+<li>positionEnd</li>
+<li>positionStart</li>
+<li>refseqMrna</li>
+<li>refseqProtein</li>
+<li>rnaiPhenotypes</li>
+<li>sequence</li>
+<li>status</li>
+<li>strand</li>
+<li>treefam</li>
+<li>uniprot</li>
+<li>wormpep</li>
+</ul>
+<p>When <code>select</code> is not declared, a simple result is returned:</p>
+<ul>
+<li>gene</li>
+<li>sequence</li>
+<li>name</li>
+<li>class</li>
+</ul>
+<p>Additionally, special <code>identifiers</code>, <code>report</code> and <code>NULL</code> declarations are available. These shortcuts are useful for generating summaries and may be relevant to experiments involving large gene lists.</p>
+</div>
+<div id="gene-function-examples" class="section level2">
+<h2><code>gene()</code> function examples</h2>
+<p>External/other <strong>identifiers</strong> for <a href="http://www.wormbase.org/species/c_elegans/gene/WBGene00000898"><em>daf-2</em></a> (insulin/IGF receptor ortholog):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t</span>(
+    <span class="kw">gene</span>(<span class="st">&quot;daf-2&quot;</span>, <span class="dt">format =</span> <span class="st">&quot;name&quot;</span>, <span class="dt">select =</span> <span class="st">&quot;identifiers&quot;</span>)
+)</code></pre></div>
+<table>
+<tbody>
+<tr class="odd">
+<td align="right"><strong>name</strong></td>
+<td align="left">daf-2</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>aceview</strong></td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>blastpHsapiensGene</strong></td>
+<td align="left">ENSG00000171105</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>blastpHsapiensName</strong></td>
+<td align="left">INSR</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>gene</strong></td>
+<td align="left">WBGene00000898</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>hsapiensGene</strong></td>
+<td align="left">ENSG00000171105, ENSG00000027644, ENSG00000140443</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>ncbi</strong></td>
+<td align="left">175410</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>otherIdentifier</strong></td>
+<td align="left">Y55D5A.5, daf-2, CELE_Y55D5A.5</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>peptide</strong></td>
+<td align="left">ENSP00000342838</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>refseqMrna</strong></td>
+<td align="left">NM_065249.4</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>refseqProtein</strong></td>
+<td align="left">NP_001122734.2</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>sequence</strong></td>
+<td align="left">Y55D5A.5</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>treefam</strong></td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>uniprot</strong></td>
+<td align="left">A0A0K3ARZ1</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>wormpep</strong></td>
+<td align="left">CE50158</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Report</strong> for <a href="http://www.wormbase.org/species/c_elegans/gene/WBGene00000912"><em>daf-16</em></a> (forkhead transcription factor):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t</span>(
+    <span class="kw">gene</span>(<span class="st">&quot;daf-16&quot;</span>, <span class="dt">format =</span> <span class="st">&quot;name&quot;</span>, <span class="dt">select =</span> <span class="st">&quot;report&quot;</span>)
+)</code></pre></div>
+<table>
+<colgroup>
+<col width="2%"></col>
+<col width="97%"></col>
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="right"><strong>name</strong></td>
+<td align="left">daf-16</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>gene</strong></td>
+<td align="left">WBGene00000912</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>sequence</strong></td>
+<td align="left">R13H8.1</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>class</strong></td>
+<td align="left">abnormal DAuer Formation</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>descriptionConcise</strong></td>
+<td align="left">daf-16 encodes the sole C. elegans forkhead box O (FOXO) homologue; DAF-16 functions as a transcription factor that acts in the insulin/IGF-1-mediated signaling (IIS) pathway that regulates dauer formation, longevity, fat metabolism, stress response, and innate immunity; DAF-16 regulates these various processes through isoform-specific expression, isoform-specific regulation by different AKT kinases, and differential regulation of target genes; DAF-16 can interact with the CBP-1 transcription cofactor in vitro, and interacts genetically with other genes in the insulin signaling and with daf-12, which encodes a nuclear hormone receptor; DAF-16 is activated in response to DNA damage during development and co-regulated by EGL-27, alleviates DNA-damage-induced developmental arrest by inducing DAF-16-associated element (DAE)-regulated genes; DAF-16 is broadly expressed but displays isoform-specific tissue enrichment; DAF-16 localizes to both the cytoplasm and the nucleus, with the ratio between the two an important regulator of function.</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>descriptionProvisional</strong></td>
+<td align="left">daf-16 encodes the sole C. elegans forkhead box O (FOXO) homologue; DAF-16 functions as a transcription factor that acts in the insulin/IGF-1-mediated signaling (IIS) pathway that regulates dauer formation, longevity, fat metabolism, stress response, and innate immunity; DAF-16 regulates these various processes through isoform-specific expression, isoform-specific regulation by different AKT kinases, and differential regulation of target genes; DAF-16 can interact with the CBP-1 transcription cofactor in vitro, and interacts genetically with other genes in the insulin signaling and with daf-12, which encodes a nuclear hormone receptor; DAF-16 is activated in response to DNA damage during development and co-regulated by EGL-27, alleviates DNA-damage-induced developmental arrest by inducing DAF-16-associated element (DAE)-regulated genes; DAF-16 is broadly expressed but displays isoform-specific tissue enrichment; DAF-16 localizes to both the cytoplasm and the nucleus, with the ratio between the two an important regulator of function.</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>descriptionAutomated</strong></td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>descriptionEnsembl</strong></td>
+<td align="left">Forkhead box protein O [Source:UniProtKB/Swiss-Prot;Acc:O16850]</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>blastpHsapiensGene</strong></td>
+<td align="left">ENSG00000118689</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>blastpHsapiensName</strong></td>
+<td align="left">FOXO3</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>blastpHsapiensDescription</strong></td>
+<td align="left">forkhead box O3 [Source:HGNC Symbol;Acc:HGNC:3821]</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>geneOntologyName</strong></td>
+<td align="left">transcription factor activity, sequence-specific DNA binding / sequence-specific DNA binding / regulation of transcription, DNA-templated / / nucleus / cytoplasm / cytosol / DNA binding / cell differentiation / innate immune response / transcription, DNA-templated / RNA polymerase II regulatory region sequence-specific DNA binding / RNA polymerase II transcription factor activity, sequence-specific DNA binding / anatomical structure morphogenesis / multicellular organism development / ubiquitin protein ligase binding / cellular response to DNA damage stimulus / nematode larval development / negative regulation of transcription from RNA polymerase II promoter / protein binding / beta-catenin binding / positive regulation of transcription from RNA polymerase II promoter / determination of adult lifespan / dauer larval development / defense response to Gram-negative bacterium / response to UV / response to starvation / positive regulation of apoptotic process / aging / positive regulation of dauer larval development / insulin receptor signaling pathway / cellular response to oxidative stress / negative regulation of multicellular organism growth / short-term memory / immune system process / positive regulation of adaptive immune response / regulation of cell cycle process / activating transcription factor binding / cellular response to heat / regulation of growth / regulation of DNA-templated transcription in response to stress / regulation of lipid biosynthetic process / muscle tissue development / 14-3-3 protein binding / positive regulation of defense response to bacterium / ubiquitin-specific protease binding</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>interproName</strong></td>
+<td align="left">Fork head domain / Winged helix-turn-helix DNA-binding domain /</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>pantherFamilyName</strong></td>
+<td align="left">FORKHEAD BOX PROTEIN</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>pantherSubfamilyName</strong></td>
+<td align="left">FORKHEAD BOX PROTEIN O</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>pantherGeneOntologyMolecularFunction</strong></td>
+<td align="left">nucleic acid binding / nucleic acid binding transcription factor activity / sequence-specific DNA binding transcription factor activity / binding / sequence-specific DNA binding RNA polymerase II transcription factor activity / DNA binding</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>pantherGeneOntologyBiologicalProcess</strong></td>
+<td align="left">regulation of biological process / cell differentiation / transcription, DNA-dependent / regulation of transcription from RNA polymerase II promoter / anatomical structure morphogenesis / RNA metabolic process / nitrogen compound metabolic process / regulation of nucleobase-containing compound metabolic process / developmental process / biological regulation / biosynthetic process / cellular process / transcription from RNA polymerase II promoter / nucleobase-containing compound metabolic process / primary metabolic process / metabolic process</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>pantherGeneOntologyCellularComponent</strong></td>
+<td align="left">cell part / organelle / nucleus / intracellular</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>pantherClass</strong></td>
+<td align="left">DNA binding protein / transcription factor / nucleic acid binding</td>
+</tr>
+</tbody>
+</table>
+<p>Select <a href="http://www.wormbase.org">WormBase</a> and <a href="http://useast.ensembl.org/Caenorhabditis_elegans/Info/Index">Ensembl</a> descriptions for <a href="http://www.wormbase.org/species/c_elegans/gene/WBGene00004735"><em>sbp-1</em></a> (bHLH transcription factor):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t</span>(
+    <span class="kw">gene</span>(<span class="st">&quot;sbp-1&quot;</span>, <span class="dt">format =</span> <span class="st">&quot;name&quot;</span>,
+     <span class="dt">select =</span> <span class="kw">c</span>(<span class="st">&quot;descriptionConcise&quot;</span>,
+                <span class="st">&quot;descriptionProvisional&quot;</span>,
+                <span class="st">&quot;descriptionEnsembl&quot;</span>))
+)</code></pre></div>
+<table>
+<colgroup>
+<col width="3%"></col>
+<col width="96%"></col>
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="right"><strong>name</strong></td>
+<td align="left">sbp-1</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>descriptionConcise</strong></td>
+<td align="left">sbp-1 encodes a basic helix-loop-helix (bHLH) transcription factor homologous to the mammalian Sterol Regulatory Element Binding Proteins (SREBPs, OMIM:184756, overexpression of nuclear form of SREBP-1c is associated with insulin resistance and features of congenital generalized lipodystrophy); in C. elegans, SBP-1 activity is required for normal lipid metabolism and wild-type levels of lipogenic enzyme expression, as well as for embryonic and larval development; in addition, sbp-1 is required for mediating the lipid accumulation and increased body width/length ratio that occurs in response to oxygen deprivation; sbp-1 expression is detected in the intestine, the major site of fat storage, from early embryogenesis through adulthood and also in the amphid neurons.</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>descriptionProvisional</strong></td>
+<td align="left">Mutations in sbp-1 result in defects in lipid synthesis and storage and a lack of lipid droplets in the intestine, a phenotype similar to that of worms that have been starved for food. Such lipid synthesis and storage defects can be weakly suppressed by dauer pathway mutations that result in constitutive dauer formation and the accumulation of intestinal lipid droplets.</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>descriptionEnsembl</strong></td>
+<td align="left">Sterol regulatory element Binding Protein [Source:RefSeq peptide;Acc:NP_499472]</td>
+</tr>
+</tbody>
+</table>
+<p><strong>All fields</strong> for <a href="http://www.wormbase.org/species/c_elegans/gene/WBGene00004804"><em>skn-1</em></a> (bZIP transcription factor), using the <code>NULL</code> delcaration:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t</span>(
+    <span class="kw">gene</span>(<span class="st">&quot;skn-1&quot;</span>, <span class="dt">format =</span> <span class="st">&quot;name&quot;</span>, <span class="dt">select =</span> <span class="ot">NULL</span>)
+)</code></pre></div>
+<table>
+<colgroup>
+<col width="3%"></col>
+<col width="96%"></col>
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="right"><strong>aceview</strong></td>
+<td align="left">4G416</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>biotype</strong></td>
+<td align="left">protein_coding</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>blastpHsapiensDescription</strong></td>
+<td align="left">nuclear factor, erythroid 2 like 2 [Source:HGNC Symbol;Acc:HGNC:7782]</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>blastpHsapiensGene</strong></td>
+<td align="left">ENSG00000116044</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>blastpHsapiensName</strong></td>
+<td align="left">NFE2L2</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>chromosome</strong></td>
+<td align="left">IV</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>class</strong></td>
+<td align="left">SKiNhead</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>descriptionAutomated</strong></td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>descriptionConcise</strong></td>
+<td align="left">skn-1 encodes a bZip transcription factor orthologous to the mammalian Nrf (Nuclear factor-erythroid-related factor) transcription factors; during early embryogenesis, maternally provided SKN-1 is required for specification of the EMS blastomere, a mesendodermal precursor that gives rise to pharyngeal, muscle, and intestinal cells; later, during postembryonic development, SKN-1 functions in the p38 MAPK pathway to regulate the oxidative stress response and in parallel to DAF-16/FOXO in the DAF-2-mediated insulin/IGF-1-like signaling pathway to regulate adult lifespan; in vitro assays indicate that SKN-1 can be directly phosphorylated by the AKT-1, AKT-2, and SGK-1 kinases that lie downstream of DAF-2 in the insulin signaling pathway and in vivo experiments suggest that this phosphorylation is essential for regulation of SKN-1 nuclear accumulation and hence, transcriptional regulator activity; in the early embryo, SKN-1 is detected at highest levels in nuclei of the P1 blastomere and its descendants through the 8-cell stage of embryogenesis; later in embryogenesis, SKN-1 is observed in all hypodermal and intestinal nuclei, with reporter constructs indicating that intestinal expression begins as early as the 50-100-cell stage; in larvae and young adults, SKN-1::GFP reporters are expressed in the intestine and ASI neurons, with expression in intestinal nuclei enhanced under conditions of stress or reduced DAF-2 signaling.</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>descriptionDetailed</strong></td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>descriptionEnsembl</strong></td>
+<td align="left">SKiNhead [Source:RefSeq peptide;Acc:NP_001293683]</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>descriptionProvisional</strong></td>
+<td align="left">skn-1 encodes a bZip transcription factor orthologous to the mammalian Nrf (Nuclear factor-erythroid-related factor) transcription factors; during early embryogenesis, maternally provided SKN-1 is required for specification of the EMS blastomere, a mesendodermal precursor that gives rise to pharyngeal, muscle, and intestinal cells; later, during postembryonic development, SKN-1 functions in the p38 MAPK pathway to regulate the oxidative stress response and in parallel to DAF-16/FOXO in the DAF-2-mediated insulin/IGF-1-like signaling pathway to regulate adult lifespan; in vitro assays indicate that SKN-1 can be directly phosphorylated by the AKT-1, AKT-2, and SGK-1 kinases that lie downstream of DAF-2 in the insulin signaling pathway and in vivo experiments suggest that this phosphorylation is essential for regulation of SKN-1 nuclear accumulation and hence, transcriptional regulator activity; in the early embryo, SKN-1 is detected at highest levels in nuclei of the P1 blastomere and its descendants through the 8-cell stage of embryogenesis; later in embryogenesis, SKN-1 is observed in all hypodermal and intestinal nuclei, with reporter constructs indicating that intestinal expression begins as early as the 50-100-cell stage; in larvae and young adults, SKN-1::GFP reporters are expressed in the intestine and ASI neurons, with expression in intestinal nuclei enhanced under conditions of stress or reduced DAF-2 signaling.</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>gene</strong></td>
+<td align="left">WBGene00004804</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>geneOntology</strong></td>
+<td align="left">0005634, 0005737, 0005783, 0003677, 0003700, 0006355, 0043565, 0005739, 0006351, 0000977, 0007275, 0006990, 0001708, 0005515, 0045944, 0008340, 0006979, 0006417, 0009408, 0009880, 0001714, 0030544, 0000303, 0048382, 0061408, 1900409</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>geneOntologyName</strong></td>
+<td align="left">nucleus / cytoplasm / endoplasmic reticulum / DNA binding / transcription factor activity, sequence-specific DNA binding / regulation of transcription, DNA-templated / sequence-specific DNA binding / mitochondrion / transcription, DNA-templated / RNA polymerase II regulatory region sequence-specific DNA binding / multicellular organism development / positive regulation of transcription from RNA polymerase II promoter involved in unfolded protein response / cell fate specification / protein binding / positive regulation of transcription from RNA polymerase II promoter / determination of adult lifespan / response to oxidative stress / regulation of translation / response to heat / embryonic pattern specification / endodermal cell fate specification / Hsp70 protein binding / response to superoxide / mesendoderm development / positive regulation of transcription from RNA polymerase II promoter in response to heat stress / positive regulation of cellular response to oxidative stress</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>hsapiensGene</strong></td>
+<td align="left">ENSG00000082641, ENSG00000050344, ENSG00000116044, ENSG00000123405</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>interpro</strong></td>
+<td align="left">IPR004826, IPR004827, IPR008917</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>interproName</strong></td>
+<td align="left">Basic leucine zipper domain, Maf-type / Basic-leucine zipper domain / Transcription factor, Skn-1-like, DNA-binding domain</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>name</strong></td>
+<td align="left">skn-1</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>ncbi</strong></td>
+<td align="left">177343</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>otherIdentifier</strong></td>
+<td align="left">T19E7.2, skn-1, sow-1, CELE_T19E7.2</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>pantherClass</strong></td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>pantherFamilyName</strong></td>
+<td align="left">FAMILY NOT NAMED</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>pantherGeneOntologyBiologicalProcess</strong></td>
+<td align="left">neurological system process / cellular component organization / anatomical structure morphogenesis / cellular component morphogenesis / system process / developmental process</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>pantherGeneOntologyCellularComponent</strong></td>
+<td align="left">cytoskeleton / actin cytoskeleton</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>pantherGeneOntologyMolecularFunction</strong></td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>pantherPathway</strong></td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>pantherSubfamily</strong></td>
+<td align="left">PTHR26379:SF196</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>pantherSubfamilyName</strong></td>
+<td align="left">PROTEIN SKINHEAD-1</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>peptide</strong></td>
+<td align="left">ENSP00000380252</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>positionEnd</strong></td>
+<td align="left">5660523</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>positionStart</strong></td>
+<td align="left">5651085</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>refseqMrna</strong></td>
+<td align="left">NM_001306754.1</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>refseqProtein</strong></td>
+<td align="left">NP_741405.1</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>rnaiPhenotypes</strong></td>
+<td align="left">sterile, cell differentiation variant, metal response variant, paraquat hypersensitive, small, sister cell division timing asynchrony reduced, pathogen susceptibility increased, protein ubiquitination variant, dead eggs laid, muscle missing, sick, larval lethal, protein expression reduced, organism toxic chemical response variant, neuron degeneration variant, organism oxidative stress response hypersensitive, ectopic expression transgene, organism temperature response variant, embryonic lethal, transgene subcellular localization variant, reduced brood size, mRNA expression variant, embryonic development variant, organism development variant, cell fate transformation, extended life span, no pharynx, chemical response variant, autophagy increased, body wall muscle development variant, muscle excess, transgene expression undetectable, mRNA levels increased, autophagy reduced, gene expression level reduced, mRNA levels reduced, gut granule biogenesis reduced, slow growth, intestinal development variant, proteasome core activity variant, lethal, no Intestine, drug induced gene expression variant, drug hypersensitive, transgene expression reduced, shortened life span, endoderm absent, transgene expression increased</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>sequence</strong></td>
+<td align="left">T19E7.2</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>status</strong></td>
+<td align="left">Live</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>strand</strong></td>
+<td align="left">-1</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>treefam</strong></td>
+<td align="left">TF317782</td>
+</tr>
+<tr class="even">
+<td align="right"><strong>uniprot</strong></td>
+<td align="left">V6CLA3</td>
+</tr>
+<tr class="odd">
+<td align="right"><strong>wormpep</strong></td>
+<td align="left">CE31239</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

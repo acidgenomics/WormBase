@@ -8,7 +8,7 @@
 *-Ex.R
 data/
 data-raw/
-inst/doc
+# inst/doc
 README.html
 vignettes/*.html
 vignettes/*.pdf
