@@ -13,11 +13,14 @@ Depends:
 Imports:
     dplyr,
     parallel,
+    stats,
     tidyr,
     utils
 Suggests:
     devtools,
+    httr,
     knitr,
+    magrittr,
     pander,
     rmarkdown,
     roxygen2,
