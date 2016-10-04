@@ -30,6 +30,6 @@ rnai("WBRNAi00009345", format = "rnai")
 rnai("III-6C01", library = "ahringer384")
 rnai("86B01", library = "ahringer96")
 rnai("GHR-11010@G06", library = "orfeome96")
-rnai("tf_all-1E1", library = "cherrypick")
+rnai("tf_all-1E01", library = "cherrypick")
 }
 
