@@ -6,8 +6,6 @@
 .Rproj.user
 .Rproj.user/
 *-Ex.R
-data/
-data-raw/
 inst/doc
 README.html
 vignettes/*.html
