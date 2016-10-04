@@ -1,5 +1,5 @@
 ---
-title: "RNAi Clone Mappings"
+title: "RNAi clone mapping"
 author: "Michael J. Steinbaugh"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -9,50 +9,92 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+[ruvkun lab]: https://molbio.mgh.harvard.edu/laboratories/ruvkun
+[ahringer]: http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/
+[orfeome]: http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai/
+[orfeome sbs]: http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-orfeome-version-11/
+[worfdb]: http://worfdb.dfci.harvard.edu
+[wormbase]: http://www.wormbase.org
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
+[*daf-16*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00000912
+[*sbp-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004735
 
-## Vignette Info
-
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(results = "asis", render = pander::pander)
+pander::panderOptions("table.style", "rmarkdown")
+pander::panderOptions("table.alignment.default", "left")
+pander::panderOptions("table.alignment.rownames", "right")
+devtools::load_all()
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+RNA interference libraries are commonly used in *C. elegans* research. RNAi clones are typically referenced by a gene pair or open reading frame (ORF) sequence, which are often difficult to map to an up-to-date gene identifier. We have written the `rnai()` function to solve this problem. The function enables a researcher to search for RNAi clones by a gene identifier, or map an RNAi clone by plate location and return the up-to-date [WormBase][] gene identifier. The function also obtains primary and secondary target information from [WormBase][], which can be informative since many RNAi clones have off-target effects.
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+The function has built-in support for the commonly used [Ahringer][ahringer] and [ORFeome][] v1.1 RNAi libraries, as well as the cherrypick libraries designed by the [Ruvkun Lab][].
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+## Finding clones by gene identifier
 
-## More Examples
+Let's find the locations of [*sbp-1*][] in the [Ahringer][] and [ORFeome][] libraries. This can be done easily with the `rnai()` function, just search by **name**:
 
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+```{r}
+t(
+    rnai("sbp-1", format = "name")
+)
 ```
 
-Also a quote using `>`:
+Alternatively, you can search by [WormBase][] **gene** identifier or **sequence**, aka open reading frame (ORF). These queries will return the same result:
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+```{r, eval = FALSE}
+rnai("WBGene00004735", format = "gene")
+rnai("Y47D3B.7", format = "sequence")
+```
+
+
+## Mapping RNAi clones to gene identifiers
+
+The `rnai()` function was written to simplify the task of identifying wells of interest in an RNAi screen. You can simply input the well identifiers by plate location, and `rnai()` will return up-to-date gene identifiers from [WormBase][].
+
+### [Ahringer][] library
+
+Here's how you map wells from the [Ahringer][] library in 384 well format. Note that plate location identifiers must include the chromosome in roman numeral format at the beginning:
+
+```{r}
+t(
+    rnai("III-6C01", library = "ahringer384")
+)
+```
+
+Wells from the [Ahringer][] library in 96 well format are also supported. Since this library has unique plate numbers, the chromosome prefix is not necessary:
+
+```{r}
+t(
+    rnai("86B01", library = "ahringer96")
+)
+```
+
+### [ORFeome][] library
+
+`rnai()` has mapping support for the [ORFeome][] library, in 96 well format. Plate position should be entered in the same format as the [WORFDB][]. The function is flexible, and also supports entries in the historical format (e.g. `GHR-11010@G06`), or without a separator:
+
+```{r}
+t(
+    rnai("11010G06", library = "orfeome96")
+)
+```
+
+### Cherrypick libraries
+
+`rnai()` supports clone mapping for cherrypick libraries from the [Ruvkun Lab][], including the G protein coupled receptor (GPCR), kinase, nuclear hormone receptor, and transcription factor libraries. These identifiers require the following prefixes:
+
+- gpcr
+- kinase
+- nhr
+- tf_all
+- tf_bzip
+
+Here's how you query well E01 ([*daf-16*][]) from the first plate of the transcription factor cherrypick library:
+
+```{r}
+t(
+    rnai("tf_all-1E01", library = "cherrypick")
+)
+```

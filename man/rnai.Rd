@@ -2,7 +2,7 @@
 % Please edit documentation in R/rnai.R
 \name{rnai}
 \alias{rnai}
-\title{RNAi clone matching}
+\title{RNAi clone mapping}
 \usage{
 rnai(identifier, format = "clone", library = "orfeome96")
 }
@@ -19,17 +19,17 @@ rnai(identifier, format = "clone", library = "orfeome96")
 tibble
 }
 \description{
-RNAi clone matching
+RNAi clone mapping
 }
 \examples{
-rnai("IV-2N18", library = "ahringer384")
-rnai("99G09", library = "ahringer96")
-rnai("tf_all-3C06", library = "cherrypick")
-rnai("GHR-11049@F12", library = "orfeome96")
-rnai("WBGene00004804", format = "gene")
-rnai("JA:T19E7.2", format = "historical")
-rnai("skn-1", format = "name")
-rnai("WBRNAi00009186", format = "rnai")
-rnai("T19E7.2", format = "sequence")
+rnai("sbp-1", format = "name")
+rnai("WBGene00004735", format = "gene")
+rnai("Y47D3B.7", format = "sequence")
+rnai("JA:Y47D3B.7", format = "historical")
+rnai("WBRNAi00009345", format = "rnai")
+rnai("III-6C01", library = "ahringer384")
+rnai("86B01", library = "ahringer96")
+rnai("GHR-11010@G06", library = "orfeome96")
+rnai("tf_all-1E01", library = "cherrypick")
 }
 

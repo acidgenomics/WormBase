@@ -1,7 +1,8 @@
-#' RNAi clone matching
+#' RNAi clone mapping
 #'
-#' @importFrom dplyr bind_rows
+#' @import dplyr
 #' @importFrom parallel mclapply
+#' @importFrom stats na.omit
 #'
 #' @param identifier Identifier
 #' @param format Identifier format (\code{gene}, \code{historical}, \code{name},
@@ -14,97 +15,97 @@
 #' @export
 #'
 #' @examples
-#' rnai("IV-2N18", library = "ahringer384")
-#' rnai("99G09", library = "ahringer96")
-#' rnai("tf_all-3C06", library = "cherrypick")
-#' rnai("GHR-11049@F12", library = "orfeome96")
-#' rnai("WBGene00004804", format = "gene")
-#' rnai("JA:T19E7.2", format = "historical")
-#' rnai("skn-1", format = "name")
-#' rnai("WBRNAi00009186", format = "rnai")
-#' rnai("T19E7.2", format = "sequence")
+#' rnai("sbp-1", format = "name")
+#' rnai("WBGene00004735", format = "gene")
+#' rnai("Y47D3B.7", format = "sequence")
+#' rnai("JA:Y47D3B.7", format = "historical")
+#' rnai("WBRNAi00009345", format = "rnai")
+#' rnai("III-6C01", library = "ahringer384")
+#' rnai("86B01", library = "ahringer96")
+#' rnai("GHR-11010@G06", library = "orfeome96")
+#' rnai("tf_all-1E01", library = "cherrypick")
 rnai <- function(identifier,
                  format = "clone",
                  library = "orfeome96") {
-    data <- get("rnaiSource", envir = asNamespace("worminfo"))
-    # Don't expose ahringer96Historical values to the user:
-    data$ahringer96Historical <- NULL
-    if (!missing(identifier)) {
-        if (!is.character(identifier)) {
-            stop("Identifier must be a character vector.")
-        }
-        identifier <- sort(unique(identifier))
-        list <- parallel::mclapply(seq_along(identifier), function(a) {
-            id <- identifier[a]
-            if (format == "clone") {
-                if (library != "ahringer384") {
-                    # Prefix (chromosome) is only needed for \code{ahringer384}:
-                    id <- gsub("^[A-Za-z0-9]+-", "", id)
-                }
-                id <- gsub("-|@", "", id)
-                id <- gsub("^[0]+", "", id)
-                id <- gsub("([A-Z]{1})[0]+", "\\1", id)
-            }
-            # Match beginning of line or after comma:
-            grepl <- paste0(
-                # Unique:
-                "^", id, "$",
-                "|",
-                # Beginning of list:
-                "^", id, ",",
-                "|",
-                # Middle of list:
-                "\\s", id, ",",
-                "|",
-                # End of list:
-                "\\s", id, "$")
-            if (format == "clone") {
-                if (any(grepl(library,
-                              c("ahringer384",
-                                "ahringer96",
-                                "cherrypick",
-                                "orfeome96")))) {
-                    data <- data[grepl(grepl, data[[library]]), ]
-                } else {
-                    stop("Invalid library.")
-                }
-                # Add the clone identifier back to data:
-                if (nrow(data)) {
-                    data$clone <- identifier[a]
-                }
-            } else if (any(grepl(format,
-                                 c("gene",
-                                   "historical",
-                                   "name",
-                                   "rnai",
-                                   "sequence")))) {
-                data <- data[grepl(grepl, data[[format]]), ]
-            } else {
-                stop("Invalid format.")
-            }
-            return(data)
-        })
-        data <- dplyr::bind_rows(list)
-        # Fix clone identifier columns:
-        if (format == "clone") {
-            # Clone location columns are unnecessary here:
-            data <- data[, !(names(data) %in% c("ahringer384",
-                                                "ahringer96",
-                                                "cherrypick",
-                                                "orfeome96"))]
-        } else {
-            # Clean up the appearance of clone locations
-            # Plate separator:
-            data$ahringer384 <- gsub("(^|,\\s)([IVX]+)(\\d+)", "\\1\\2-\\3", data$ahringer384)
-            data$cherrypick <- gsub("(^|,\\s)([a-z_]+)", "\\1\\2-", data$cherrypick)
-            # Pad well numbers:
-            data$ahringer384 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$ahringer384)
-            data$ahringer96 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$ahringer96)
-            data$cherrypick <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$cherrypick)
-            data$orfeome96 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$orfeome96)
-        }
-    } else {
+    if (missing(identifier)) {
         stop("An identifier is required.")
+    } else if (!is.character(identifier)) {
+        stop("Identifier must be a character vector.")
+    }
+    source <- get("rnaiSource", envir = asNamespace("worminfo"))
+    identifier <- sort(unique(stats::na.omit(identifier)))
+    list <- parallel::mclapply(seq_along(identifier), function(a) {
+        id <- identifier[a]
+        if (format == "clone") {
+            # Roman chromosome prefix is needed for \code{ahringer384}.
+            # Otherwise, it's okay to gsub the clone prefix.
+            if (!grepl("^[IVX]+", id)) {
+                id <- gsub("^[A-Za-z]+(96|384)?-", "", id)
+            }
+            # Remove padded zeroes:
+            id <- gsub("(^|-)[0]+", "", id)
+            id <- gsub("([A-Z]{1})[0]+(\\d)$", "\\1\\2", id)
+            # Strip separators:
+            id <- gsub("-|@", "", id)
+        
+        }
+        # Match beginning of line or after comma:
+        grepl <- paste0(
+            # Unique:
+            "^", id, "$",
+            "|",
+            # Beginning of list:
+            "^", id, ",",
+            "|",
+            # Middle of list:
+            "\\s", id, ",",
+            "|",
+            # End of list:
+            "\\s", id, "$")
+        if (format == "clone") {
+            if (any(grepl(library,
+                          c("ahringer384",
+                            "ahringer96",
+                            "cherrypick",
+                            "orfeome96")))) {
+                data <- source[grepl(grepl, source[[library]]), ]
+            } else {
+                stop("Invalid library.")
+            }
+            # Add the clone identifier back to data:
+            if (nrow(data)) {
+                data$clone <- identifier[a]
+            }
+        } else if (any(grepl(format,
+                             c("gene",
+                               "historical",
+                               "name",
+                               "rnai",
+                               "sequence")))) {
+            data <- source[grepl(grepl, source[[format]]), ]
+        } else {
+            stop("Invalid format.")
+        }
+        return(data)
+    })
+    data <- dplyr::bind_rows(list)
+    # Hide cherrypick identifiers from user:
+    data$ahringer96Historical <- NULL
+    data$cherrypick <- NULL
+    # Hide unnecessary clone library identifiers:
+    if (format == "clone") {
+        # Clone location columns are unnecessary here:
+        data <- data[, !(names(data) %in% c("ahringer384",
+                                            "ahringer96",
+                                            "cherrypick",
+                                            "orfeome96"))]
+    } else {
+        # Plate separator:
+        data$ahringer384 <- gsub("(^|,\\s)([IVX]+)(\\d+)", "\\1\\2-\\3", data$ahringer384)
+        # Pad well numbers:
+        data$ahringer384 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$ahringer384)
+        data$ahringer96 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$ahringer96)
+        data$orfeome96 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$orfeome96)
     }
     return(data)
 }

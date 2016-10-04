@@ -2,6 +2,8 @@
 
 export(gene)
 export(rnai)
-importFrom(dplyr,bind_rows)
+import(dplyr)
 importFrom(parallel,mclapply)
+importFrom(stats,na.omit)
+importFrom(tidyr,separate_)
 importFrom(utils,download.file)

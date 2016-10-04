@@ -2,27 +2,32 @@
 % Please edit documentation in R/gene.R
 \name{gene}
 \alias{gene}
-\title{Gene annotations}
+\title{Gene mapping}
 \usage{
-gene(identifier, format = "gene", select = NULL)
+gene(identifier, format = "gene", select = "simple", sort = NULL)
 }
 \arguments{
 \item{identifier}{Gene identifier}
 
-\item{format}{Identifier type (\code{gene}, \code{name} or \code{sequence})}
+\item{format}{Identifier type (\code{gene}, \code{name}, \code{sequence},
+\code{class} or \code{keyword})}
 
-\item{select}{Columns to select (e.g. \code{ncbi}).
-Optionally, you can use \code{all} or \code{report} declarations here.}
+\item{select}{Columns to select (e.g. \code{ncbi}). Optionally, you can use
+\code{simple}, \code{report} or \code{NULL} declarations here.}
+
+\item{sort}{Columns to use for sorting.}
 }
 \value{
 tibble
 }
 \description{
-Gene annotations
+Gene mapping
 }
 \examples{
-gene("WBGene00004804", select = "ncbi")
 gene("skn-1", format = "name")
 gene("T19E7.2", format = "sequence")
+gene("WBGene00004804", format = "gene", select = "report")
+gene("daf", format = "class")
+gene("bzip", format = "keyword")
 }
 
