@@ -24,9 +24,9 @@ tibble
 Gene mapping
 }
 \examples{
-gene("WBGene00004804", select = "report")
 gene("skn-1", format = "name")
 gene("T19E7.2", format = "sequence")
+gene("WBGene00004804", format = "gene", select = "report")
 gene("daf", format = "class")
 gene("bzip", format = "keyword")
 }
