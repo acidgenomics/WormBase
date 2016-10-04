@@ -1,6 +1,6 @@
 #' Gene mapping
 #'
-#' @importFrom dplyr arrange_ bind_rows
+#' @import dplyr
 #' @importFrom stats na.omit
 #' @importFrom tidyr separate_
 #'

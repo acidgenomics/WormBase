@@ -1,6 +1,6 @@
 #' RNAi clone mapping
 #'
-#' @importFrom dplyr bind_rows
+#' @import dplyr
 #' @importFrom parallel mclapply
 #' @importFrom stats na.omit
 #'

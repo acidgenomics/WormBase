@@ -1,6 +1,6 @@
 # https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html
 # https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html
-user_agent <- httr::user_agent("http://github.com/steinbaugh/worminfo")
+user_agent <- httr::user_agent("https://github.com/steinbaugh/worminfo")
 
 
 # @import httr
