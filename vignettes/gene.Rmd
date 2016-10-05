@@ -9,10 +9,10 @@ vignette: >
     %\VignetteEncoding{UTF-8}
 ---
 
-[dplyr]: https://cran.r-project.org/web/packages/dplyr/index.html
-[ensembl]: http://useast.ensembl.org/Caenorhabditis_elegans/Info/Index
+[dplyr]: https://cran.r-project.org/package=dplyr
+[ensembl]: http://www.ensembl.org/Caenorhabditis_elegans
 [panther]: http://www.pantherdb.org
-[tibble]: https://cran.r-project.org/web/packages/tibble/vignettes/tibble.html
+[tibble]: https://cran.r-project.org/package=tibble
 [worminfo]: https://github.com/steinbaugh/worminfo
 [wormbase]: http://www.wormbase.org
 
@@ -21,12 +21,21 @@ vignette: >
 [*sbp-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004735
 [*skn-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004804
 
-```{r setup, include = FALSE}
+```{r, include = FALSE}
 knitr::opts_chunk$set(results = "asis", render = pander::pander)
 pander::panderOptions("table.style", "rmarkdown")
 pander::panderOptions("table.alignment.default", "left")
 pander::panderOptions("table.alignment.rownames", "right")
 devtools::load_all()
+```
+
+```{r, include = FALSE}
+markdownList <- function(character) {
+    string <- sapply(seq_along(character), function(a) {
+        paste0("- ", character[a])
+    })
+    return(cat(paste(string, collapse = "\n")))
+}
 ```
 
 The goal of the [worminfo][] package is to quickly and simply provide correct, up-to-date annotation data for the entire *C. elegans* genome. The underlying annotations provided by the `gene()` function are automatically sourced from [WormBase][], [Ensembl][] and [PANTHER][]. These source files are saved at the [data branch](https://github.com/steinbaugh/worminfo/tree/data) of the [worminfo GitHub repository][worminfo]. [WormBase][] is updated on a bi-monthly [release schedule](http://www.wormbase.org/about/release_schedule). If the source data appears outdated, file an [update request](https://github.com/steinbaugh/worminfo/issues) on GitHub, and we'll promptly issue a rebuild.
@@ -86,7 +95,7 @@ head(
 The `gene()` function is bundled with source data that can be queried using the `select` parameter. Here's the current list of data annotations that can be called with `select`:
 
 ```{r, echo = FALSE, results = "asis"}
-seqcloudr::markdownList(names(
+markdownList(names(
     gene(identifier, select = NULL)
 ))
 ```
@@ -95,7 +104,7 @@ seqcloudr::markdownList(names(
 When `select` is not declared, a simple result is returned:
 
 ```{r, echo = FALSE, results = "asis"}
-seqcloudr::markdownList(names(
+markdownList(names(
     gene(identifier)
 ))
 ```
@@ -144,4 +153,3 @@ t(
     gene("skn-1", format = "name", select = NULL)
 )
 ```
-

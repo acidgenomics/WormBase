@@ -39,7 +39,7 @@ rnai <- function(identifier,
         if (format == "clone") {
             # Roman chromosome prefix is needed for \code{ahringer384}.
             # Otherwise, it's okay to gsub the clone prefix.
-            if (!grepl("^[IVX]+", id)) {
+            if (!grepl("^[IVX]+", id) && library != "cherrypick") {
                 id <- gsub("^[A-Za-z]+(96|384)?-", "", id)
             }
             # Remove padded zeroes:

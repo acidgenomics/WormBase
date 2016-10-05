@@ -5,7 +5,14 @@ date: "`r Sys.Date()`"
 output: github_document
 ---
 
-```{r data, include=FALSE}
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
 devtools::load_all()
 build <- get("build", envir = asNamespace("worminfo"))
 numGenes <- nrow(get("geneSource", envir = asNamespace("worminfo")))
@@ -19,19 +26,15 @@ numClones <- nrow(get("rnaiSource", envir = asNamespace("worminfo")))
 [R]: https://www.r-project.org
 [WormBase]: http://www.wormbase.org
 
-
 *C. elegans* genome annotations assembled from [WormBase][], [Ensembl][], and [PANTHER][]. RNAi clone mapping support for [ORFeome][], [Ahringer][] and cherrypick libraries.
 
-
 [![Build Status](https://travis-ci.org/steinbaugh/worminfo.svg?branch=master)](https://travis-ci.org/steinbaugh/worminfo)
-
 
 # Installation
 
 This is an [R][] data package.
 
 To install, run `devtools::install_github("steinbaugh/worminfo")`
-
 
 # Annotations
 

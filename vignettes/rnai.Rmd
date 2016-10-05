@@ -1,5 +1,5 @@
 ---
-title: "RNAi clone mapping"
+title: "RNAi clone mapping with the `rnai()` function"
 author: "Michael J. Steinbaugh"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

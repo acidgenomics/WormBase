@@ -8,5 +8,6 @@
 *-Ex.R
 inst/doc
 README.html
+revdep/
 vignettes/*.html
 vignettes/*.pdf
