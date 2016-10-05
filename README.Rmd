@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
   fig.path = "README-"
 )
 devtools::load_all()
-
 build <- get("build", envir = asNamespace("worminfo"))
 numGenes <- nrow(get("geneSource", envir = asNamespace("worminfo")))
 numClones <- nrow(get("rnaiSource", envir = asNamespace("worminfo")))
