@@ -21,9 +21,6 @@ Suggests:
     knitr,
     pander,
     rmarkdown,
-    roxygen2,
-    seqcloudr
-Remotes:
-    seqcloud/seqcloudr
+    roxygen2
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr
