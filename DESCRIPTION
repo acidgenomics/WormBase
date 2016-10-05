@@ -3,7 +3,6 @@ Type: Package
 Title: Worm Genes and RNAi Clones
 Version: 1.0.0
 Author: Michael J. Steinbaugh <mike@steinbaugh.com>
-Maintainer: Michael J. Steinbaugh <mike@steinbaugh.com>
 Description: C. elegans genome annotations dynamically assembled from WormBase, Ensembl and PANTHER. Mapping support for ORFeome, Ahringer and cherrypick RNAi feeding libraries.
 License: MIT + file LICENSE
 URL: https://github.com/steinbaugh/worminfo
