@@ -3,6 +3,6 @@
 ^\.travis\.yml$
 ^data-raw/
 ^NEWS\.md$
-^revdep$
 ^README\.Rmd$
 ^README-.*\.png$
+^revdep$
