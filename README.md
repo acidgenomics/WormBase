@@ -1,6 +1,6 @@
 worminfo
 ================
-Michael J. Steinbaugh
+Michael J. Steinbaugh  
 2016-10-19
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
