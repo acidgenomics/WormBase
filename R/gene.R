@@ -38,6 +38,7 @@ gene <- function(identifier,
                     "sequence")))) {
         data <- source[source[[format]] %in% identifier, ]
     } else if (format == "class") {
+        sort <- "name"
         list <- lapply(seq_along(identifier), function(a) {
             name <- source[grepl(paste0("^", identifier[a], "-"),
                                  source[["name"]]), "name"]
@@ -127,7 +128,8 @@ gene <- function(identifier,
                             "pantherGeneOntologyMolecularFunction",
                             "pantherGeneOntologyBiologicalProcess",
                             "pantherGeneOntologyCellularComponent",
-                            "pantherClass")
+                            "pantherClass",
+                            "rnaiPhenotypes")
             }
         }
         select <- unique(c(format, select))
@@ -142,7 +144,10 @@ gene <- function(identifier,
         if (sort[1] == "name") {
             data$temp <- data$name
             # Split to temporary columns for proper sorting later
-            data <- tidyr::separate_(data, "temp", c("tempPrefix", "tempNum"))
+            ### THIS IS WHERE THE ERROR HAPPENS
+            data <- tidyr::separate_(data, "temp",
+                                     into = c("tempPrefix", "tempNum"),
+                                     sep = "-")
             data$tempNum <- as.numeric(data$tempNum)
             # Sort by class then number
             data <- dplyr::arrange_(data, .dots = c("tempPrefix", "tempNum"))
