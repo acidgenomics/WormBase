@@ -1,7 +1,7 @@
 Package: worminfo
 Type: Package
 Title: Worm Genes and RNAi Clones
-Version: 1.0.0
+Version: 1.0.1
 Author: Michael J. Steinbaugh <mike@steinbaugh.com>
 Maintainer: Michael J. Steinbaugh <mike@steinbaugh.com>
 Description: C. elegans genome annotations assembled from WormBase, Ensembl and PANTHER. RNAi clone mapping support for ORFeome, Ahringer and cherrypick libraries.
