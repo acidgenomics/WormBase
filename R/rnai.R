@@ -107,9 +107,9 @@ rnai <- function(identifier,
         data$ahringer96 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$ahringer96)
         data$orfeome96 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$orfeome96)
         # Plate separator:
-        data$ahringer384 <- gsub("(\\D\\d{2})$", "-\\1", data$ahringer384)
-        data$ahringer96 <- gsub("(\\D\\d{2})$", "-\\1", data$ahringer96)
-        data$orfeome96 <- gsub("(\\D\\d{2})$", "-\\1", data$orfeome96)
+        data$ahringer384 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$ahringer384)
+        data$ahringer96 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$ahringer96)
+        data$orfeome96 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$orfeome96)
     }
     return(data)
 }
