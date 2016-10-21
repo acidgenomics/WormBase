@@ -100,12 +100,16 @@ rnai <- function(identifier,
                                             "cherrypick",
                                             "orfeome96"))]
     } else {
-        # Plate separator:
+        # Chromosome separator:
         data$ahringer384 <- gsub("(^|,\\s)([IVX]+)(\\d+)", "\\1\\2-\\3", data$ahringer384)
         # Pad well numbers:
         data$ahringer384 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$ahringer384)
         data$ahringer96 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$ahringer96)
         data$orfeome96 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$orfeome96)
+        # Plate separator:
+        data$ahringer384 <- gsub("(\\D\\d{2})$", "-\\1", data$ahringer384)
+        data$ahringer96 <- gsub("(\\D\\d{2})$", "-\\1", data$ahringer96)
+        data$orfeome96 <- gsub("(\\D\\d{2})$", "-\\1", data$orfeome96)
     }
     return(data)
 }
