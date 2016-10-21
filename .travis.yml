@@ -1,6 +1,4 @@
 cache: packages
 language: R
 r: bioc-release
-r_github_packages:
-  - seqcloud/seqcloudr
 sudo: false
