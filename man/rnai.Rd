@@ -10,9 +10,9 @@ rnai(identifier, format = "clone", library = "orfeome96")
 \item{identifier}{Identifier}
 
 \item{format}{Identifier format (\code{gene}, \code{historical}, \code{name},
-\code{rnai} or \code{sequence})}
+\code{oligo}, \code{rnai} or \code{sequence})}
 
-\item{library}{Library type (\code{ahringer96}, \code{ahringer384},
+\item{library}{Library type (\code{ahringer96}, \code{ahringer384}, 
 \code{cherrypick} or \code{orfeome96})}
 }
 \value{
@@ -26,6 +26,7 @@ rnai("sbp-1", format = "name")
 rnai("WBGene00004735", format = "gene")
 rnai("Y47D3B.7", format = "sequence")
 rnai("JA:Y47D3B.7", format = "historical")
+rnai("sjj_Y47D3B.7", format = "oligo")
 rnai("WBRNAi00009345", format = "rnai")
 rnai("III-6C01", library = "ahringer384")
 rnai("86B01", library = "ahringer96")
