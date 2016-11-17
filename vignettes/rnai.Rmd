@@ -27,18 +27,22 @@ pander::panderOptions("table.alignment.rownames", "right")
 devtools::load_all()
 ```
 
+```{r}
+# %>% pipe function requires the `magrittr` package:
+library(magrittr)
+```
+
 RNA interference libraries are commonly used in *C. elegans* research. RNAi clones are typically referenced by a gene pair or open reading frame (ORF) sequence, which are often difficult to map to an up-to-date gene identifier. We have written the `rnai()` function to solve this problem. The function enables a researcher to search for RNAi clones by a gene identifier, or map an RNAi clone by plate location and return the up-to-date [WormBase][] gene identifier. The function also obtains primary and secondary target information from [WormBase][], which can be informative since many RNAi clones have off-target effects.
 
 The function has built-in support for the commonly used [Ahringer][ahringer] and [ORFeome][] v1.1 RNAi libraries, as well as the cherrypick libraries designed by the [Ruvkun Lab][].
+
 
 ## Finding clones by gene identifier
 
 Let's find the locations of [*sbp-1*][] in the [Ahringer][] and [ORFeome][] libraries. This can be done easily with the `rnai()` function, just search by **name**:
 
 ```{r}
-t(
-    rnai("sbp-1", format = "name")
-)
+rnai("sbp-1", format = "name") %>% t
 ```
 
 Alternatively, you can search by [WormBase][] **gene** identifier or **sequence**, aka open reading frame (ORF). These queries will return the same result:
@@ -58,17 +62,13 @@ The `rnai()` function was written to simplify the task of identifying wells of i
 Here's how you map wells from the [Ahringer][] library in 384 well format. Note that plate location identifiers must include the chromosome in roman numeral format at the beginning:
 
 ```{r}
-t(
-    rnai("III-6C01", library = "ahringer384")
-)
+rnai("III-6C01", library = "ahringer384") %>% t
 ```
 
 Wells from the [Ahringer][] library in 96 well format are also supported. Since this library has unique plate numbers, the chromosome prefix is not necessary:
 
 ```{r}
-t(
-    rnai("86B01", library = "ahringer96")
-)
+rnai("86B01", library = "ahringer96") %>% t
 ```
 
 ### [ORFeome][] library
@@ -76,9 +76,7 @@ t(
 `rnai()` has mapping support for the [ORFeome][] library, in 96 well format. Plate position should be entered in the same format as the [WORFDB][]. The function is flexible, and also supports entries in the historical format (e.g. `GHR-11010@G06`), or without a separator:
 
 ```{r}
-t(
-    rnai("11010G06", library = "orfeome96")
-)
+rnai("11010G06", library = "orfeome96") %>% t
 ```
 
 ### Cherrypick libraries
@@ -94,7 +92,5 @@ t(
 Here's how you query well E01 ([*daf-16*][]) from the first plate of the transcription factor cherrypick library:
 
 ```{r}
-t(
-    rnai("tf_all-1E01", library = "cherrypick")
-)
+rnai("tf_all-1E01", library = "cherrypick") %>% t
 ```
