@@ -29,6 +29,11 @@ pander::panderOptions("table.alignment.rownames", "right")
 devtools::load_all()
 ```
 
+```{r}
+# %>% pipe function requires the `magrittr` package:
+library(magrittr)
+```
+
 ```{r, include = FALSE}
 markdownList <- function(character) {
     string <- sapply(seq_along(character), function(a) {
@@ -74,19 +79,15 @@ See how these queries all return the same [tibble][] `data.frame`, but with diff
 You can also return all genes in a named **class**. For example, let's get the current list of *daf* (**D**auer **A**rrest **F**orming) genes:
 
 ```{r}
-head(
-    gene("daf", format = "class")
-)
+gene("daf", format = "class") %>% head
 ```
 
 
 You can perform a **keyword** search. For example, let's query all genes that have been implicated in the regulation of worm lifespan:
 
 ```{r}
-head(
-    gene("lifespan", format = "keyword",
-         select = c("gene", "sequence", "name"))
-)
+gene("lifespan", format = "keyword",
+     select = c("gene", "sequence", "name")) %>% head
 ```
 
 
@@ -95,18 +96,14 @@ head(
 The `gene()` function is bundled with source data that can be queried using the `select` parameter. Here's the current list of data annotations that can be called with `select`:
 
 ```{r, echo = FALSE, results = "asis"}
-markdownList(names(
-    gene(identifier, select = NULL)
-))
+gene(identifier, select = NULL) %>% names %>% markdownList
 ```
 
 
 When `select` is not declared, a simple result is returned:
 
 ```{r, echo = FALSE, results = "asis"}
-markdownList(names(
-    gene(identifier)
-))
+gene(identifier) %>% names %>% markdownList
 ```
 
 
@@ -119,37 +116,29 @@ Additionally, special `identifiers`, `report` and `NULL` declarations are availa
 External/other **identifiers** for [*daf-2*][] (insulin/IGF receptor ortholog):
 
 ```{r}
-t(
-    gene("daf-2", format = "name", select = "identifiers")
-)
+gene("daf-2", format = "name", select = "identifiers") %>% t
 ```
 
 
 **Report** for [*daf-16*][] (forkhead transcription factor):
 
 ```{r}
-t(
-    gene("daf-16", format = "name", select = "report")
-)
+gene("daf-16", format = "name", select = "report") %>% t
 ```
 
 
 Select [WormBase][] and [Ensembl][] descriptions for [*sbp-1*][] (bHLH transcription factor):
 
 ```{r}
-t(
-    gene("sbp-1", format = "name",
+gene("sbp-1", format = "name",
      select = c("descriptionConcise",
                 "descriptionProvisional",
-                "descriptionEnsembl"))
-)
+                "descriptionEnsembl")) %>% t
 ```
 
 
 **All fields** for [*skn-1*][] (bZIP transcription factor), using the `NULL` delcaration:
 
 ```{r}
-t(
-    gene("skn-1", format = "name", select = NULL)
-)
+gene("skn-1", format = "name", select = NULL) %>% t
 ```
