@@ -6,8 +6,8 @@
 #'
 #' @param identifier Identifier
 #' @param format Identifier format (\code{gene}, \code{historical}, \code{name},
-#'   \code{rnai} or \code{sequence})
-#' @param library Library type (\code{ahringer96}, \code{ahringer384},
+#'   \code{oligo}, \code{rnai} or \code{sequence})
+#' @param library Library type (\code{ahringer96}, \code{ahringer384}, 
 #'   \code{cherrypick} or \code{orfeome96})
 #'
 #' @return tibble
@@ -19,6 +19,7 @@
 #' rnai("WBGene00004735", format = "gene")
 #' rnai("Y47D3B.7", format = "sequence")
 #' rnai("JA:Y47D3B.7", format = "historical")
+#' rnai("sjj_Y47D3B.7", format = "oligo)
 #' rnai("WBRNAi00009345", format = "rnai")
 #' rnai("III-6C01", library = "ahringer384")
 #' rnai("86B01", library = "ahringer96")
@@ -80,6 +81,7 @@ rnai <- function(identifier,
                              c("gene",
                                "historical",
                                "name",
+                               "oligo",
                                "rnai",
                                "sequence")))) {
             data <- source[grepl(grepl, source[[format]]), ]
@@ -100,12 +102,16 @@ rnai <- function(identifier,
                                             "cherrypick",
                                             "orfeome96"))]
     } else {
-        # Plate separator:
+        # Chromosome separator:
         data$ahringer384 <- gsub("(^|,\\s)([IVX]+)(\\d+)", "\\1\\2-\\3", data$ahringer384)
         # Pad well numbers:
         data$ahringer384 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$ahringer384)
         data$ahringer96 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$ahringer96)
         data$orfeome96 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$orfeome96)
+        # Plate separator:
+        data$ahringer384 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$ahringer384)
+        data$ahringer96 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$ahringer96)
+        data$orfeome96 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$orfeome96)
     }
     return(data)
 }
