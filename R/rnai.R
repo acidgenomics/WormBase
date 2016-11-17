@@ -19,7 +19,7 @@
 #' rnai("WBGene00004735", format = "gene")
 #' rnai("Y47D3B.7", format = "sequence")
 #' rnai("JA:Y47D3B.7", format = "historical")
-#' rnai("sjj_Y47D3B.7", format = "oligo)
+#' rnai("sjj_Y47D3B.7", format = "oligo")
 #' rnai("WBRNAi00009345", format = "rnai")
 #' rnai("III-6C01", library = "ahringer384")
 #' rnai("86B01", library = "ahringer96")
