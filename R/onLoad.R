@@ -1,6 +1,10 @@
-# .onAttach <- function(libname, pkgname) {
-#     packageStartupMessage("Source data: https://github.com/steinbaugh/worminfo")
-# }
+.onAttach <- function(libname, pkgname) {
+    packageStartupMessage(
+        paste("Downloading source data...",
+              "https://github.com/steinbaugh/worminfo/tree/data",
+              sep = "\n")
+    )
+}
 
 #' @importFrom utils download.file
 .onLoad <- function(libname, pkgname) {
@@ -21,7 +25,7 @@
                          quiet = TRUE)
     load(get("rnaiSource", envir = envir), envir = envir)
 
-    
+
     # Download the source data build information:
     assign("build", tempfile(), envir = envir)
     utils::download.file("https://github.com/steinbaugh/worminfo/raw/data/data/build.rda",

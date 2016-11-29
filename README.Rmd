@@ -1,22 +1,16 @@
 ---
 title: worminfo
-author: "Michael J. Steinbaugh"
-date: "`r Sys.Date()`"
 output: github_document
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "README-"
+    collapse = TRUE,
+    comment = "#>",
+    fig.path = "README-"
 )
-devtools::load_all()
-build <- get("build", envir = asNamespace("worminfo"))
-numGenes <- nrow(get("geneSource", envir = asNamespace("worminfo")))
-numClones <- nrow(get("rnaiSource", envir = asNamespace("worminfo")))
 ```
 
 [Ahringer]: http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/
@@ -27,38 +21,32 @@ numClones <- nrow(get("rnaiSource", envir = asNamespace("worminfo")))
 [R]: https://www.r-project.org
 [WormBase]: http://www.wormbase.org
 
-*C. elegans* genome annotations assembled from [WormBase][], [Ensembl][], and [PANTHER][]. RNAi clone mapping support for [ORFeome][], [Ahringer][] and cherrypick libraries.
+*C. elegans* genome annotations assembled from [WormBase][], [Ensembl][], and
+[PANTHER][]. RNAi clone mapping support for [ORFeome][], [Ahringer][] and
+cherrypick libraries.
 
 [![Build Status](https://travis-ci.org/steinbaugh/worminfo.svg?branch=master)](https://travis-ci.org/steinbaugh/worminfo)
 
 
 # Installation
 
-This is an [R][] data package. [`devtools`][] is required to install the latest version directly from GitHub.
+This is an [R][] data package.
 
-To install, run this code in [R][]:
+[`devtools`][] is required to install the latest
+version directly from GitHub:
 
 ```{r, eval = FALSE}
 install.packages("devtools")
 devtools::install_github("steinbaugh/worminfo", build_vignettes = TRUE)
 ```
 
-Instructions on how to use the functions in this package are available as vignettes:
+Instructions on how to use the functions in this package are available as
+vignettes:
 
 ```{r, eval = FALSE}
 browseVignettes("worminfo")
 ```
 
-
-# Annotations
-
-- `r numGenes` gene annotations
-- `r numClones` RNAi clones
-
-Compiled from these sources:
-
-- `r build$wormbase`
-- `r build$ensembl`
-- `r build$panther`
-
-Built with `r build$rstats`.
+Build information for the underlying source data used in this package is
+available at the [data branch](https://github.com/steinbaugh/worminfo/tree/data)
+of this repository.
