@@ -1,7 +1,7 @@
 worminfo
 ================
 Michael J. Steinbaugh
-2016-11-21
+2016-11-29
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 *C. elegans* genome annotations assembled from [WormBase](http://www.wormbase.org), [Ensembl](http://www.ensembl.org/Caenorhabditis_elegans), and [PANTHER](http://pantherdb.org). RNAi clone mapping support for [ORFeome](http://worfdb.dfci.harvard.edu), [Ahringer](http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/) and cherrypick libraries.
