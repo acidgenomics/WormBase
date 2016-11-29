@@ -48,7 +48,7 @@ rnai <- function(identifier,
             id <- gsub("([A-Z]{1})[0]+(\\d)$", "\\1\\2", id)
             # Strip separators:
             id <- gsub("-|@", "", id)
-        
+            
         }
         # Match beginning of line or after comma:
         grepl <- paste0(
