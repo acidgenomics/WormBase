@@ -1,6 +1,6 @@
 .onAttach <- function(libname, pkgname) {
     packageStartupMessage(
-        paste("Downloading current data build...",
+        paste("Downloading source data...",
               "https://github.com/steinbaugh/worminfo/tree/data",
               sep = "\n")
     )
