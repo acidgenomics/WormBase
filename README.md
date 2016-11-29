@@ -24,4 +24,4 @@ Instructions on how to use the functions in this package are available as vignet
 browseVignettes("worminfo")
 ```
 
-Build information for the underlying source data used in this package is available at the [data branch](tree/data) of this repository.
+Build information for the underlying source data used in this package is available at the [data branch](https://github.com/steinbaugh/worminfo/tree/data) of this repository.
