@@ -30,18 +30,25 @@ gene <- function(identifier,
         stop("Identifier must be a character vector.")
     }
     identifier <- sort(unique(stats::na.omit(identifier)))
-    annotations <- get("geneAnnotations", envir = asNamespace("worminfo"))
+    annotation <- get("geneAnnotation", envir = asNamespace("worminfo"))
     # Format ====
-    if (any(grepl(format, c("gene", "name", "sequence")))) {
-        data <- annotations %>%
+    if (any(grepl(format, c("gene", "name")))) {
+        data <- annotation %>%
             .[.[[format]] %in% identifier, ]
+    } else if (format == "sequence") {
+        # Strip out isoform information
+        identifierClean <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$",
+                                "\\1.\\2",
+                                identifier)
+        data <- annotation %>%
+            .[.[[format]] %in% identifierClean, ]
     } else if (format == "class") {
         sort <- "name"
         list <- lapply(seq_along(identifier), function(a) {
-            name <- annotations %>%
+            name <- annotation %>%
                 .[grepl(paste0("^", identifier[a], "-"), .[["name"]]), "name"]
             name <- name[[1]]
-            data <- annotations %>% .[.[["name"]] %in% name, ]
+            data <- annotation %>% .[.[["name"]] %in% name, ]
             return(data)
         })
         data <- dplyr::bind_rows(list)
@@ -57,15 +64,15 @@ gene <- function(identifier,
                         "pantherGeneOntologyMolecularFunction",
                         "pantherPathway")
         # Subset columns for keyword searching:
-        keywordData <- annotations[, keywordCol]
+        keywordData <- annotation[, keywordCol]
         list <- lapply(seq_along(identifier), function(a) {
             # `apply(..., 1)` processes by row:
             grepl <- apply(keywordData, 1, function(b) {
                 any(grepl(identifier[a], b, ignore.case = TRUE))
             })
-            gene <- annotations[grepl, "gene"]
+            gene <- annotation[grepl, "gene"]
             gene <- gene[[1]]
-            data <- annotations %>% .[.[["gene"]] %in% gene, ]
+            data <- annotation %>% .[.[["gene"]] %in% gene, ]
             data$keyword <- identifier[a]
             return(data)
         })

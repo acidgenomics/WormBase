@@ -33,7 +33,7 @@ rnai <- function(identifier,
     } else if (!is.character(identifier)) {
         stop("Identifier must be a character vector.")
     }
-    annotations <- get("rnaiAnnotations", envir = asNamespace("worminfo"))
+    annotation <- get("rnaiAnnotation", envir = asNamespace("worminfo"))
     identifier <- sort(unique(stats::na.omit(identifier)))
     list <- parallel::mclapply(seq_along(identifier), function(a) {
         id <- identifier[a]
@@ -48,7 +48,11 @@ rnai <- function(identifier,
             id <- gsub("([A-Z]{1})[0]+(\\d)$", "\\1\\2", id)
             # Strip separators:
             id <- gsub("-|@", "", id)
-
+        } else if (format == "sequence") {
+            # Strip out isoform information
+            id <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$",
+                       "\\1.\\2",
+                       id)
         }
         # Match beginning of line or after comma:
         grepl <- paste0(
@@ -69,7 +73,7 @@ rnai <- function(identifier,
                             "ahringer96",
                             "cherrypick",
                             "orfeome96")))) {
-                data <- annotations %>% .[grepl(grepl, .[[library]]), ]
+                data <- annotation %>% .[grepl(grepl, .[[library]]), ]
             } else {
                 stop("Invalid library.")
             }
@@ -84,7 +88,7 @@ rnai <- function(identifier,
                                "oligo",
                                "rnai",
                                "sequence")))) {
-            data <- annotations %>% .[grepl(grepl, .[[format]]), ]
+            data <- annotation %>% .[grepl(grepl, .[[format]]), ]
         } else {
             stop("Invalid format.")
         }
