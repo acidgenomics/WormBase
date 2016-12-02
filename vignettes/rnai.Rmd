@@ -9,6 +9,15 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(results = "asis", render = pander::pander)
+pander::panderOptions("table.style", "rmarkdown")
+pander::panderOptions("table.alignment.default", "left")
+pander::panderOptions("table.alignment.rownames", "right")
+library(magrittr)
+devtools::load_all()
+```
+
 [ruvkun lab]: https://molbio.mgh.harvard.edu/laboratories/ruvkun
 [ahringer]: http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/
 [orfeome]: http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai/
@@ -18,19 +27,6 @@ vignette: >
 
 [*daf-16*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00000912
 [*sbp-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004735
-
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(results = "asis", render = pander::pander)
-pander::panderOptions("table.style", "rmarkdown")
-pander::panderOptions("table.alignment.default", "left")
-pander::panderOptions("table.alignment.rownames", "right")
-devtools::load_all()
-```
-
-```{r}
-# %>% pipe function requires the `magrittr` package:
-library(magrittr)
-```
 
 RNA interference libraries are commonly used in *C. elegans* research. RNAi
 clones are typically referenced by a gene pair or open reading frame (ORF)

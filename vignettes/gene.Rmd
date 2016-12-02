@@ -10,11 +10,11 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-library(pander)
-panderOptions("table.style", "rmarkdown")
-panderOptions("table.alignment.default", "left")
-panderOptions("table.alignment.rownames", "right")
-knitr::opts_chunk$set(results = "asis", render = pander)
+knitr::opts_chunk$set(results = "asis", render = pander::pander)
+pander::panderOptions("table.style", "rmarkdown")
+pander::panderOptions("table.alignment.default", "left")
+pander::panderOptions("table.alignment.rownames", "right")
+library(magrittr)
 devtools::load_all()
 ```
 
@@ -27,8 +27,6 @@ markdownList <- function(character) {
 }
 ```
 
-
-
 [dplyr]: https://cran.r-project.org/package=dplyr
 [ensembl]: http://www.ensembl.org/Caenorhabditis_elegans
 [panther]: http://www.pantherdb.org
@@ -40,11 +38,6 @@ markdownList <- function(character) {
 [*daf-16*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00000912
 [*sbp-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004735
 [*skn-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004804
-
-```{r}
-# `%>%` piping requires the `magrittr` package:
-library(magrittr)
-```
 
 The goal of the [worminfo][] package is to quickly and simply provide correct,
 up-to-date annotation data for the entire *C. elegans* genome. The underlying
@@ -69,7 +62,8 @@ package or the `base::merge()` function. We recommend using
 [WormBase][] **gene**:
 
 ```{r}
-c("WBGene00000898", "WBGene00000912", "WBGene00004804") %>% gene
+identifier <- c("WBGene00000898", "WBGene00000912", "WBGene00004804")
+gene(identifier)
 ```
 
 
