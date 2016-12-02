@@ -99,7 +99,6 @@ rnai <- function(identifier,
     # Hide internal data:
     data$ahringer96Historical <- NULL
     data$cherrypick <- NULL
-    # data$historical <- NULL
 
     # Hide unnecessary clone library identifiers:
     if (format == "clone") {
