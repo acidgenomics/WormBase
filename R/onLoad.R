@@ -1,7 +1,7 @@
 .onAttach <- function(libname, pkgname) {
     packageStartupMessage(
-        paste("Downloading source data...",
-              "https://github.com/steinbaugh/worminfo/tree/data",
+        paste("Downloading annotations...",
+              "https://github.com/steinbaugh/worminfo",
               sep = "\n")
     )
 }
@@ -11,19 +11,18 @@
     envir = asNamespace("worminfo")
 
     # Download source data from the `data` branch on GitHub:
-    # geneSource
-    assign("geneSource", tempfile(), envir = envir)
-    utils::download.file("https://github.com/steinbaugh/worminfo/raw/data/data/geneSource.rda",
-                         get("geneSource", envir = envir),
-                         quiet = TRUE)
-    load(get("geneSource", envir = envir), envir = envir)
+    # geneAnnotations
+    assign("geneAnnotations", tempfile(), envir = envir)
+    utils::download.file("https://github.com/steinbaugh/worminfo/raw/data/data/geneAnnotations.rda",
+        get("geneAnnotations", envir = envir), quiet = TRUE)
+    load(get("geneAnnotations", envir = envir), envir = envir)
 
-    # rnaiSource
-    assign("rnaiSource", tempfile(), envir = envir)
-    utils::download.file("https://github.com/steinbaugh/worminfo/raw/data/data/rnaiSource.rda",
-                         get("rnaiSource", envir = envir),
+    # rnaiAnnotations
+    assign("rnaiAnnotations", tempfile(), envir = envir)
+    utils::download.file("https://github.com/steinbaugh/worminfo/raw/data/data/rnaiAnnotations.rda",
+                         get("rnaiAnnotations", envir = envir),
                          quiet = TRUE)
-    load(get("rnaiSource", envir = envir), envir = envir)
+    load(get("rnaiAnnotations", envir = envir), envir = envir)
 
 
     # Download the source data build information:
