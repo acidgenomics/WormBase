@@ -9,6 +9,26 @@ vignette: >
     %\VignetteEncoding{UTF-8}
 ---
 
+```{r setup, include = FALSE}
+library(pander)
+panderOptions("table.style", "rmarkdown")
+panderOptions("table.alignment.default", "left")
+panderOptions("table.alignment.rownames", "right")
+knitr::opts_chunk$set(results = "asis", render = pander)
+devtools::load_all()
+```
+
+```{r, include = FALSE}
+markdownList <- function(character) {
+    string <- sapply(seq_along(character), function(a) {
+        paste0("- ", character[a])
+    })
+    return(cat(paste(string, collapse = "\n")))
+}
+```
+
+
+
 [dplyr]: https://cran.r-project.org/package=dplyr
 [ensembl]: http://www.ensembl.org/Caenorhabditis_elegans
 [panther]: http://www.pantherdb.org
@@ -21,26 +41,9 @@ vignette: >
 [*sbp-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004735
 [*skn-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004804
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(results = "asis", render = pander::pander)
-pander::panderOptions("table.style", "rmarkdown")
-pander::panderOptions("table.alignment.default", "left")
-pander::panderOptions("table.alignment.rownames", "right")
-devtools::load_all()
-```
-
 ```{r}
-# %>% pipe function requires the `magrittr` package:
+# `%>%` piping requires the `magrittr` package:
 library(magrittr)
-```
-
-```{r, include = FALSE}
-markdownList <- function(character) {
-    string <- sapply(seq_along(character), function(a) {
-        paste0("- ", character[a])
-    })
-    return(cat(paste(string, collapse = "\n")))
-}
 ```
 
 The goal of the [worminfo][] package is to quickly and simply provide correct,
@@ -56,8 +59,8 @@ promptly issue a rebuild.
 
 `gene()` accepts 4 types of identifiers: `gene`, `name`, `sequence` or `class`.
 Output from the function is controlled using the `select` parameter. The
-function returns a [tibble][] `data.frame` that can be manipulated using the
-[dplyr][] package or the `base::merge()` function. We recommend using
+function returns a [tibble][] that can be manipulated using the [dplyr][]
+package or the `base::merge()` function. We recommend using
 `dplyr::left_join()` to bind these annotations to other `data.frames`.
 
 
@@ -66,8 +69,10 @@ function returns a [tibble][] `data.frame` that can be manipulated using the
 [WormBase][] **gene**:
 
 ```{r}
-identifier <- c("WBGene00000898", "WBGene00000912", "WBGene00004804")
-gene(identifier, format = "gene")
+c("WBGene00000898",
+  "WBGene00000912",
+  "WBGene00004804") %>%
+    gene(format = "gene")
 ```
 
 
@@ -154,7 +159,7 @@ transcription factor):
 gene("sbp-1", format = "name",
      select = c("descriptionConcise",
                 "descriptionProvisional",
-                "descriptionEnsembl")) %>% t
+                "ensemblDescription")) %>% t
 ```
 
 
