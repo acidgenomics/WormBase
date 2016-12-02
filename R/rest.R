@@ -68,20 +68,14 @@ restRnaiReagent <- function(rnai) {
         rest <- paste0("field/rnai/", rnai[a], "/reagent") %>% rest %>%
             .$reagent %>% .$data %>% .[[1]]
         if (length(rest)) {
-            mrc <- rest$mrc_id
-            id <- rest$reagent$id
-            label <- rest$reagent$label
-        } else {
-            mrc <- NA
-            id <- NA
-            label <- NA
+            list(rnai = rnai[a],
+                 oligo = rest$reagent$id,
+                 mrc = rest$mrc_id)
         }
-        list(rnai = rnai[a],
-             mrc = mrc,
-             id = id,
-             label = label)
     })
-    dplyr::bind_rows(list)
+    dplyr::bind_rows(lapply(list, function(a) {
+        tibble::as_tibble(Filter(Negate(is.null), a))
+    }))
 }
 
 
@@ -103,20 +97,15 @@ restRnaiSequence <- function(rnai) {
         rest <- paste0("field/rnai/", rnai[a], "/sequence") %>% rest %>%
             .$sequence %>% .$data %>% .[[1]]
         if (length(rest)) {
-            oligo <- rest$header
-            length <- rest$length
-            sequence <- rest$sequence
-        } else {
-            oligo <- NA
-            length <- NA
-            sequence <- NA
+            list(rnai = rnai[a],
+                 oligo = rest$header,
+                 length = rest$length,
+                 sequence = rest$sequence)
         }
-        list(rnai = rnai[a],
-             oligo = oligo,
-             length = length,
-             sequence = sequence)
     })
-    dplyr::bind_rows(list)
+    dplyr::bind_rows(lapply(list, function(a) {
+        tibble::as_tibble(Filter(Negate(is.null), a))
+    }))
 }
 
 
