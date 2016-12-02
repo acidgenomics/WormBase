@@ -69,26 +69,21 @@ package or the `base::merge()` function. We recommend using
 [WormBase][] **gene**:
 
 ```{r}
-c("WBGene00000898",
-  "WBGene00000912",
-  "WBGene00004804") %>%
-    gene(format = "gene")
+c("WBGene00000898", "WBGene00000912", "WBGene00004804") %>% gene
 ```
 
 
 **Sequence**, commonly the open reading frame (ORF):
 
 ```{r}
-identifier <- c("Y55D5A.5", "R13H8.1", "T19E7.2")
-gene(identifier, format = "sequence")
+c("Y55D5A.5", "R13H8.1", "T19E7.2") %>% gene(format = "sequence")
 ```
 
 
 Public **name**:
 
 ```{r}
-identifier <- c("daf-2", "daf-16", "skn-1")
-gene(identifier, format = "name")
+c("daf-2", "daf-16", "skn-1") %>% gene(format = "name")
 ```
 
 
@@ -156,7 +151,8 @@ Select [WormBase][] and [Ensembl][] descriptions for [*sbp-1*][] (bHLH
 transcription factor):
 
 ```{r}
-gene("sbp-1", format = "name",
+gene("sbp-1",
+     format = "name",
      select = c("descriptionConcise",
                 "descriptionProvisional",
                 "ensemblDescription")) %>% t
