@@ -95,9 +95,12 @@ rnai <- function(identifier,
         return(data)
     })
     data <- dplyr::bind_rows(list)
-    # Hide cherrypick identifiers from user:
+
+    # Hide internal data:
     data$ahringer96Historical <- NULL
     data$cherrypick <- NULL
+    data$historical <- NULL
+
     # Hide unnecessary clone library identifiers:
     if (format == "clone") {
         # Clone location columns are unnecessary here:
