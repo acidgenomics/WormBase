@@ -88,13 +88,11 @@ gene <- function(identifier,
                             "name",
                             "ncbi",
                             "otherIdentifier",
-                            "peptide",
                             "refseqMrna",
                             "refseqProtein",
                             "sequence",
                             "treefam",
-                            "uniprot",
-                            "wormpep")
+                            "uniprot")
             } else if (select == "keyword") {
                 select <- c("gene",
                             "sequence",
