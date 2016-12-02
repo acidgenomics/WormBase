@@ -15,17 +15,17 @@
 
     # Download source data from the `data` branch on GitHub:
     # geneAnnotations
-    assign("geneAnnotations", tempfile(), envir = envir)
-    utils::download.file("https://github.com/steinbaugh/worminfo/raw/data/data/geneAnnotations.rda",
-        get("geneAnnotations", envir = envir), quiet = TRUE)
-    load(get("geneAnnotations", envir = envir), envir = envir)
+    assign("geneAnnotation", tempfile(), envir = envir)
+    utils::download.file("https://github.com/steinbaugh/worminfo/raw/data/data/geneAnnotation.rda",
+        get("geneAnnotation", envir = envir), quiet = TRUE)
+    load(get("geneAnnotation", envir = envir), envir = envir)
 
     # rnaiAnnotations
-    assign("rnaiAnnotations", tempfile(), envir = envir)
-    utils::download.file("https://github.com/steinbaugh/worminfo/raw/data/data/rnaiAnnotations.rda",
-                         get("rnaiAnnotations", envir = envir),
+    assign("rnaiAnnotation", tempfile(), envir = envir)
+    utils::download.file("https://github.com/steinbaugh/worminfo/raw/data/data/rnaiAnnotation.rda",
+                         get("rnaiAnnotation", envir = envir),
                          quiet = TRUE)
-    load(get("rnaiAnnotations", envir = envir), envir = envir)
+    load(get("rnaiAnnotation", envir = envir), envir = envir)
 
 
     # Download the source data build information:
