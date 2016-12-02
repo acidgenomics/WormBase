@@ -30,31 +30,25 @@ gene <- function(identifier,
         stop("Identifier must be a character vector.")
     }
     identifier <- sort(unique(stats::na.omit(identifier)))
-    source <- get("geneSource", envir = asNamespace("worminfo"))
+    annotations <- get("geneAnnotations", envir = asNamespace("worminfo"))
     # Format ====
-    if (any(grepl(format,
-                  c("gene",
-                    "name",
-                    "sequence")))) {
-        data <- source[source[[format]] %in% identifier, ]
+    if (any(grepl(format, c("gene", "name", "sequence")))) {
+        data <- annotations %>%
+            .[.[[format]] %in% identifier, ]
     } else if (format == "class") {
         sort <- "name"
         list <- lapply(seq_along(identifier), function(a) {
-            name <- source[grepl(paste0("^", identifier[a], "-"),
-                                 source[["name"]]), "name"]
+            name <- annotations %>%
+                .[grepl(paste0("^", identifier[a], "-"), .[["name"]]), "name"]
             name <- name[[1]]
-            data <- source[source[["name"]] %in% name, ]
+            data <- annotations %>% .[.[["name"]] %in% name, ]
             return(data)
         })
         data <- dplyr::bind_rows(list)
     } else if (format == "keyword") {
         keywordCol <- c("class",
                         "blastpHsapiensDescription",
-                        # "descriptionAutomated",
-                        # "descriptionConcise",
-                        # "descriptionDetailed",
-                        # "descriptionProvisional",
-                        "geneOntologyName",
+                        "ensemblGeneOntologyName",
                         "interproName",
                         "pantherClass",
                         "pantherFamilyName",
@@ -63,15 +57,15 @@ gene <- function(identifier,
                         "pantherGeneOntologyMolecularFunction",
                         "pantherPathway")
         # Subset columns for keyword searching:
-        keywordData <- source[, keywordCol]
+        keywordData <- annotations[, keywordCol]
         list <- lapply(seq_along(identifier), function(a) {
             # `apply(..., 1)` processes by row:
             grepl <- apply(keywordData, 1, function(b) {
                 any(grepl(identifier[a], b, ignore.case = TRUE))
             })
-            gene <- source[grepl, "gene"]
+            gene <- annotations[grepl, "gene"]
             gene <- gene[[1]]
-            data <- source[source[["gene"]] %in% gene, ]
+            data <- annotations %>% .[.[["gene"]] %in% gene, ]
             data$keyword <- identifier[a]
             return(data)
         })
@@ -90,12 +84,9 @@ gene <- function(identifier,
             } else if (select == "identifiers") {
                 select <- c("aceview",
                             "blastpHsapiensGene",
-                            "blastpHsapiensName",
                             "gene",
-                            "hsapiensGene",
                             "name",
                             "ncbi",
-                            # "omim",
                             "otherIdentifier",
                             "peptide",
                             "refseqMrna",
@@ -117,11 +108,11 @@ gene <- function(identifier,
                             "descriptionConcise",
                             "descriptionProvisional",
                             "descriptionAutomated",
-                            "descriptionEnsembl",
+                            "ensemblDescription",
+                            "ensemblGeneOntologyName",
                             "blastpHsapiensGene",
                             "blastpHsapiensName",
                             "blastpHsapiensDescription",
-                            "geneOntologyName",
                             "interproName",
                             "pantherFamilyName",
                             "pantherSubfamilyName",

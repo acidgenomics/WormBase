@@ -7,7 +7,7 @@
 #' @param identifier Identifier
 #' @param format Identifier format (\code{gene}, \code{historical}, \code{name},
 #'   \code{oligo}, \code{rnai} or \code{sequence})
-#' @param library Library type (\code{ahringer96}, \code{ahringer384}, 
+#' @param library Library type (\code{ahringer96}, \code{ahringer384},
 #'   \code{cherrypick} or \code{orfeome96})
 #'
 #' @return tibble
@@ -33,7 +33,7 @@ rnai <- function(identifier,
     } else if (!is.character(identifier)) {
         stop("Identifier must be a character vector.")
     }
-    source <- get("rnaiSource", envir = asNamespace("worminfo"))
+    annotations <- get("rnaiAnnotations", envir = asNamespace("worminfo"))
     identifier <- sort(unique(stats::na.omit(identifier)))
     list <- parallel::mclapply(seq_along(identifier), function(a) {
         id <- identifier[a]
@@ -48,7 +48,7 @@ rnai <- function(identifier,
             id <- gsub("([A-Z]{1})[0]+(\\d)$", "\\1\\2", id)
             # Strip separators:
             id <- gsub("-|@", "", id)
-            
+
         }
         # Match beginning of line or after comma:
         grepl <- paste0(
@@ -69,7 +69,7 @@ rnai <- function(identifier,
                             "ahringer96",
                             "cherrypick",
                             "orfeome96")))) {
-                data <- source[grepl(grepl, source[[library]]), ]
+                data <- annotations %>% .[grepl(grepl, .[[library]]), ]
             } else {
                 stop("Invalid library.")
             }
@@ -84,7 +84,7 @@ rnai <- function(identifier,
                                "oligo",
                                "rnai",
                                "sequence")))) {
-            data <- source[grepl(grepl, source[[format]]), ]
+            data <- annotations %>% .[grepl(grepl, .[[format]]), ]
         } else {
             stop("Invalid format.")
         }
