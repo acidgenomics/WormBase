@@ -12,7 +12,7 @@ rnai(identifier, format = "clone", library = "orfeome96")
 \item{format}{Identifier format (\code{gene}, \code{historical}, \code{name},
 \code{oligo}, \code{rnai} or \code{sequence})}
 
-\item{library}{Library type (\code{ahringer96}, \code{ahringer384}, 
+\item{library}{Library type (\code{ahringer96}, \code{ahringer384},
 \code{cherrypick} or \code{orfeome96})}
 }
 \value{
