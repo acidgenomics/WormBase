@@ -86,8 +86,7 @@ gene <- function(identifier,
             if (select == "simple") {
                 select <- c("gene",
                             "sequence",
-                            "name",
-                            "class")
+                            "name")
             } else if (select == "identifiers") {
                 select <- c("aceview",
                             "blastpHsapiensGene",
@@ -125,14 +124,14 @@ gene <- function(identifier,
                             "pantherGeneOntologyBiologicalProcess",
                             "pantherGeneOntologyCellularComponent",
                             "pantherClass",
-                            "rnaiPhenotypes")
+                            "rnaiPhenotype")
             }
         }
         select <- unique(c(format, select))
         data <- data[, select]
     }
     # Sort ====
-    # `format` is used for sorting (except "keyword") unless specified:
+    # `format` is used for sorting (except `keyword`), unless specified:
     if (is.null(sort) && format != "keyword") {
         sort <- format
     }
