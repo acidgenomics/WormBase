@@ -1,8 +1,11 @@
 .onAttach <- function(libname, pkgname) {
     packageStartupMessage(
-        paste("Downloading annotations...",
-              "https://github.com/steinbaugh/worminfo",
-              sep = "\n")
+        paste(paste0("Annotations Build ", build$date),
+              paste(build$wormbase,
+                    build$ensembl,
+                    build$panther,
+                    sep = ", "),
+              "https://github.com/steinbaugh/worminfo", sep = "\n")
     )
 }
 
