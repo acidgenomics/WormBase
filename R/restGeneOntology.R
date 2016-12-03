@@ -12,10 +12,11 @@
 #' @examples
 #' restGeneOntology("WBGene00000001")
 restGeneOntology <- function(gene) {
-    parallel::mclapply(seq_along(gene), function(w) {
+    lapply(seq_along(gene), function(w) {
         x <- gene[[w]]
         rest <- rest(paste0("widget/gene/", x, "/gene_ontology")) %>%
             .$fields %>% .$gene_ontology %>% .$data
+        # Parallelize the recursive loops for each REST query:
         parallel::mclapply(seq_along(rest), function(x) {
             y <- rest[[x]]
             lapply(seq_along(y), function(z) {
