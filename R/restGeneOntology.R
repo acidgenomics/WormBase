@@ -25,8 +25,7 @@ restGeneOntology <- function(gene) {
                       sep = "~")
             }) %>% unique %>% toString
         }) %>% magrittr::set_names(names(rest)) %>%
-            tibble::as_tibble(.)
-    }) %>% magrittr::set_names(gene) %>%
-        dplyr::bind_rows(.) %>%
-        dplyr::mutate(gene = gene)
+            tibble::as_tibble(.) %>%
+            dplyr::mutate_(.dots = magrittr::set_names(list(~x), "gene"))
+    }) %>% dplyr::bind_rows(.)
 }
