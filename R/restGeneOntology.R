@@ -24,9 +24,7 @@ restGeneOntology <- function(gene) {
                       name = y[[z]]$term_description$label,
                       sep = "~")
             }) %>% unique %>% toString
-        }) %>% magrittr::set_names(c("biologicalProcess",
-                                     "cellularComponent",
-                                     "molecularFunction")) %>%
+        }) %>% magrittr::set_names(names(rest)) %>%
             tibble::as_tibble(.)
     }) %>% magrittr::set_names(gene) %>%
         dplyr::bind_rows(.) %>%
