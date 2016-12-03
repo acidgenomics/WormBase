@@ -2,6 +2,7 @@
 #'
 #' @import dplyr
 #' @import magrittr
+#' @import parallel
 #'
 #' @param gene Gene identifier
 #'
@@ -11,11 +12,11 @@
 #' @examples
 #' restGeneOntology("WBGene00000001")
 restGeneOntology <- function(gene) {
-    lapply(seq_along(gene), function(w) {
+    parallel::mclapply(seq_along(gene), function(w) {
         x <- gene[[w]]
         rest <- rest(paste0("widget/gene/", x, "/gene_ontology")) %>%
             .$fields %>% .$gene_ontology %>% .$data
-        lapply(seq_along(rest), function(x) {
+        parallel::mclapply(seq_along(rest), function(x) {
             y <- rest[[x]]
             lapply(seq_along(y), function(z) {
                 paste(identifier = y[[z]]$term_description$id,
