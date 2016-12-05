@@ -48,9 +48,7 @@ rnai <- function(identifier,
             id <- gsub("-|@", "", id)
         } else if (format == "sequence") {
             # Strip out isoform information
-            id <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$",
-                       "\\1.\\2",
-                       id)
+            id <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$", "\\1.\\2", id)
         }
         # Match beginning of line or after comma:
         grepl <- paste0(
@@ -95,7 +93,7 @@ rnai <- function(identifier,
 
     # Hide unnecessary clone library identifiers:
     if (format == "clone") {
-        # Clone location columns are unnecessary here:
+        # Clone location columns and other identifiers are unnecessary here:
         data <- data[, !(names(data) %in% c("ahringer384",
                                             "ahringer96",
                                             "orfeome96"))]
@@ -111,5 +109,10 @@ rnai <- function(identifier,
         data$ahringer96 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$ahringer96)
         data$orfeome96 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$orfeome96)
     }
+
+    # Hide internal identifiers:
+    data$historical <- NULL
+    data$oligo <- NULL
+
     return(data)
 }
