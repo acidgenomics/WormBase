@@ -56,7 +56,11 @@ gene <- function(identifier,
         keywordCol <- c("class",
                         "blastpHsapiensDescription",
                         "ensemblGeneOntologyName",
+                        "geneOntologyBiologicalProcess",
+                        "geneOntologyCellularComponent",
+                        "geneOntologyMolecularFunction",
                         "interproName",
+                        "orthologHsapiens",
                         "pantherClass",
                         "pantherFamilyName",
                         "pantherGeneOntologyBiologicalProcess",
@@ -109,22 +113,34 @@ gene <- function(identifier,
                             "sequence",
                             "name",
                             "class",
+
+                            # Ortholog:
+                            "blastpHsapiensGene",
+                            "blastpHsapiensName",
+                            "blastpHsapiensDescription",
+                            "orthologHsapiens",
+
+                            # Description:
                             "descriptionConcise",
                             "descriptionProvisional",
                             "descriptionAutomated",
                             "ensemblDescription",
-                            "ensemblGeneOntologyName",
-                            "blastpHsapiensGene",
-                            "blastpHsapiensName",
-                            "blastpHsapiensDescription",
+
+                            # WormBase Additional:
+                            "rnaiPhenotype",
+
+                            # Gene Ontology:
+                            # "ensemblGeneOntologyName",
+                            "geneOntologyBiologicalProcess",
+                            "geneOntologyCellularComponent",
+                            "geneOntologyMolecularFunction",
                             "interproName",
                             "pantherFamilyName",
                             "pantherSubfamilyName",
                             "pantherGeneOntologyMolecularFunction",
                             "pantherGeneOntologyBiologicalProcess",
                             "pantherGeneOntologyCellularComponent",
-                            "pantherClass",
-                            "rnaiPhenotype")
+                            "pantherClass")
             }
         }
         select <- unique(c(format, select))
@@ -139,7 +155,6 @@ gene <- function(identifier,
         if (sort[1] == "name") {
             data$temp <- data$name
             # Split to temporary columns for proper sorting later
-            ### THIS IS WHERE THE ERROR HAPPENS
             data <- tidyr::separate_(data, "temp",
                                      into = c("tempPrefix", "tempNum"),
                                      sep = "-")
