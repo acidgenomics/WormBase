@@ -12,8 +12,7 @@ rnai(identifier, format = "clone", library = "orfeome96")
 \item{format}{Identifier format (\code{gene}, \code{historical}, \code{name},
 \code{oligo}, \code{rnai} or \code{sequence})}
 
-\item{library}{Library type (\code{ahringer96}, \code{ahringer384},
-\code{cherrypick} or \code{orfeome96})}
+\item{library}{Library type (\code{ahringer96}, \code{ahringer384}, or \code{orfeome96})}
 }
 \value{
 tibble
@@ -31,6 +30,5 @@ rnai("WBRNAi00009345", format = "rnai")
 rnai("III-6C01", library = "ahringer384")
 rnai("86B01", library = "ahringer96")
 rnai("GHR-11010@G06", library = "orfeome96")
-rnai("tf_all-1E01", library = "cherrypick")
 }
 

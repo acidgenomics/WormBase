@@ -7,8 +7,7 @@
 #' @param identifier Identifier
 #' @param format Identifier format (\code{gene}, \code{historical}, \code{name},
 #'   \code{oligo}, \code{rnai} or \code{sequence})
-#' @param library Library type (\code{ahringer96}, \code{ahringer384},
-#'   \code{cherrypick} or \code{orfeome96})
+#' @param library Library type (\code{ahringer96}, \code{ahringer384}, or \code{orfeome96})
 #'
 #' @return tibble
 #'
@@ -24,7 +23,6 @@
 #' rnai("III-6C01", library = "ahringer384")
 #' rnai("86B01", library = "ahringer96")
 #' rnai("GHR-11010@G06", library = "orfeome96")
-#' rnai("tf_all-1E01", library = "cherrypick")
 rnai <- function(identifier,
                  format = "clone",
                  library = "orfeome96") {
@@ -40,7 +38,7 @@ rnai <- function(identifier,
         if (format == "clone") {
             # Roman chromosome prefix is needed for \code{ahringer384}.
             # Otherwise, it's okay to gsub the clone prefix.
-            if (!grepl("^[IVX]+", id) && library != "cherrypick") {
+            if (!grepl("^[IVX]+", id)) {
                 id <- gsub("^[A-Za-z]+(96|384)?-", "", id)
             }
             # Remove padded zeroes:
@@ -71,7 +69,6 @@ rnai <- function(identifier,
             if (any(grepl(library,
                           c("ahringer384",
                             "ahringer96",
-                            "cherrypick",
                             "orfeome96")))) {
                 data <- annotation %>% .[grepl(grepl, .[[library]]), ]
             } else {
@@ -96,16 +93,11 @@ rnai <- function(identifier,
     })
     data <- dplyr::bind_rows(list)
 
-    # Hide internal data:
-    data$ahringer96Historical <- NULL
-    data$cherrypick <- NULL
-
     # Hide unnecessary clone library identifiers:
     if (format == "clone") {
         # Clone location columns are unnecessary here:
         data <- data[, !(names(data) %in% c("ahringer384",
                                             "ahringer96",
-                                            "cherrypick",
                                             "orfeome96"))]
     } else {
         # Chromosome separator:
