@@ -13,3 +13,6 @@ README.html
 revdep/
 vignettes/*.html
 vignettes/*.pdf
+.gitattributes
+README.Rmd
+build.R
