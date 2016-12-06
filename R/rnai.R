@@ -21,8 +21,7 @@
 #' rnai("86B01", library = "ahringer96")
 rnai <- function(identifier,
                  format = "clone",
-                 library = "orfeome96",
-                 select = NULL) {
+                 library = "orfeome96") {
     if (missing(identifier)) {
         stop("An identifier is required.")
     } else if (!is.character(identifier)) {
@@ -60,12 +59,11 @@ rnai <- function(identifier,
                 "|",
                 # End of list:
                 "\\s", id, "$")
-            data <- annotation %>% .[grepl(grepl, .[[library]]), ]
+            data <- annotation %>%
+                .[grepl(grepl, .[[library]]), "gene"]
             if (nrow(data)) {
                 # Add the clone identifier back:
                 data$clone <- identifier[a]
-                # Remove the now unnecessary library mappings:
-                data <- data[, c("clone", "gene")]
             }
         } else if (any(grepl(format, c("gene", "name", "sequence")))) {
             if (format == "sequence") {
