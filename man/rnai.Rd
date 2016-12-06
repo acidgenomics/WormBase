@@ -4,13 +4,12 @@
 \alias{rnai}
 \title{RNAi clone mapping}
 \usage{
-rnai(identifier, format = "clone", library = "orfeome96")
+rnai(identifier, format = "clone", library = "orfeome96", select = NULL)
 }
 \arguments{
 \item{identifier}{Identifier}
 
-\item{format}{Identifier format (\code{gene}, \code{historical}, \code{name},
-\code{oligo}, \code{rnai} or \code{sequence})}
+\item{format}{Identifier format (\code{gene}, \code{name}, or \code{sequence})}
 
 \item{library}{Library type (\code{ahringer96}, \code{ahringer384}, or \code{orfeome96})}
 }
@@ -24,11 +23,8 @@ RNAi clone mapping
 rnai("sbp-1", format = "name")
 rnai("WBGene00004735", format = "gene")
 rnai("Y47D3B.7", format = "sequence")
-rnai("JA:Y47D3B.7", format = "historical")
-rnai("sjj_Y47D3B.7", format = "oligo")
-rnai("WBRNAi00009345", format = "rnai")
+rnai("GHR-11010@G06", library = "orfeome96")
 rnai("III-6C01", library = "ahringer384")
 rnai("86B01", library = "ahringer96")
-rnai("GHR-11010@G06", library = "orfeome96")
 }
 

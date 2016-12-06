@@ -16,9 +16,9 @@
 #' rnai("sbp-1", format = "name")
 #' rnai("WBGene00004735", format = "gene")
 #' rnai("Y47D3B.7", format = "sequence")
+#' rnai("GHR-11010@G06", library = "orfeome96")
 #' rnai("III-6C01", library = "ahringer384")
 #' rnai("86B01", library = "ahringer96")
-#' rnai("GHR-11010@G06", library = "orfeome96")
 rnai <- function(identifier,
                  format = "clone",
                  library = "orfeome96",
