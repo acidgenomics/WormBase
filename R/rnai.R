@@ -61,12 +61,12 @@ rnai <- function(identifier,
                 # End of list:
                 "\\s", id, "$")
             data <- annotation %>% .[grepl(grepl, .[[library]]), ]
-            # Add the clone identifier back:
             if (nrow(data)) {
+                # Add the clone identifier back:
                 data$clone <- identifier[a]
+                # Remove the now unnecessary library mappings:
+                data <- data[, c("clone", "gene")]
             }
-            # Remove the now unnecessary library mappings:
-            data <- data[, c("clone", "gene")]
         } else if (any(grepl(format, c("gene", "name", "sequence")))) {
             if (format == "sequence") {
                 # Strip out isoform information:
@@ -74,22 +74,25 @@ rnai <- function(identifier,
             }
             # Query `gene()` function and map to gene identifier:
             data <- gene(id, format = format,
-                         select = c("gene", "sequence", "name")) %>%
-                dplyr::left_join(annotation, by = "gene")
-            # Make the clone mappings human readable:
-            # Chromosome separator:
-            data$ahringer384 <- gsub("(^|,\\s)([IVX]+)(\\d+)", "\\1\\2-\\3", data$ahringer384)
-            # Pad well numbers:
-            data$ahringer384 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$ahringer384)
-            data$ahringer96 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$ahringer96)
-            data$orfeome96 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$orfeome96)
-            # Plate separator:
-            data$ahringer384 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$ahringer384)
-            data$ahringer96 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$ahringer96)
-            data$orfeome96 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$orfeome96)
-            # Add the original sequence query back:
-            if (format == "sequence") {
-                data$sequence <- identifier[a]
+                         select = c("gene", "sequence", "name"))
+            if (nrow(data)) {
+                data <- data %>%
+                    dplyr::left_join(annotation, by = "gene")
+                # Make the clone mappings human readable:
+                # Chromosome separator:
+                data$ahringer384 <- gsub("(^|,\\s)([IVX]+)(\\d+)", "\\1\\2-\\3", data$ahringer384)
+                # Pad well numbers:
+                data$ahringer384 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$ahringer384)
+                data$ahringer96 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$ahringer96)
+                data$orfeome96 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$orfeome96)
+                # Plate separator:
+                data$ahringer384 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$ahringer384)
+                data$ahringer96 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$ahringer96)
+                data$orfeome96 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$orfeome96)
+                # Add the original sequence query back:
+                if (format == "sequence") {
+                    data$sequence <- identifier[a]
+                }
             }
         } else {
             stop("Invalid format.")
