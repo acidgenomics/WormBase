@@ -1,10 +1,11 @@
 #' Gene mapping
 #'
 #' @import dplyr
+#' @importFrom parallel mclapply
 #' @importFrom stats na.omit
 #' @importFrom tidyr separate_
 #'
-#' @param identifier Gene identifier
+#' @param query Identifier query
 #' @param format Identifier type (\code{gene}, \code{name}, \code{sequence},
 #'   \code{class} or \code{keyword})
 #' @param select Columns to select (e.g. \code{ncbi}). Optionally, you can use
@@ -20,84 +21,76 @@
 #' gene("WBGene00004804", format = "gene", select = "report")
 #' gene("daf", format = "class")
 #' gene("bzip", format = "keyword")
-gene <- function(identifier,
+gene <- function(query,
                  format = "gene",
-                 select = "simple",
+                 select = NULL,
                  sort = NULL) {
-    if (missing(identifier)) {
+    if (missing(query)) {
         stop("An identifier is required.")
-    } else if (!is.character(identifier)) {
+    } else if (!is.character(query)) {
         stop("Identifier must be a character vector.")
     }
-    identifier <- sort(unique(stats::na.omit(identifier)))
     annotation <- get("geneAnnotation", envir = asNamespace("worminfo"))
-    # Format ====
-    if (any(grepl(format, c("gene", "name")))) {
-        data <- annotation %>%
-            .[.[[format]] %in% identifier, ]
-    } else if (format == "sequence") {
-        # Strip out isoform information
-        identifierGsub <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$",
-                                "\\1.\\2",
-                                identifier)
-        list <- lapply(seq_along(identifierGsub), function(a) {
+    query <- query %>% stats::na.omit(.) %>% unique %>% sort
+    list <- parallel::mclapply(seq_along(query), function(a) {
+        identifier <- query[a]
+        # Format ====
+        if (any(grepl(format, c("gene", "name")))) {
             data <- annotation %>%
-                .[.[[format]] %in% identifierGsub, ]
-            # Put the original sequence query back
-            data$sequence <- identifier[a]
-            return(data)
-        })
-        data <- dplyr::bind_rows(list)
-    } else if (format == "class") {
-        sort <- "name"
-        list <- lapply(seq_along(identifier), function(a) {
+                .[.[[format]] %in% identifier, ]
+        } else if (format == "sequence") {
+            # Strip out isoform if necessary
+            gsub <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$", "\\1.\\2", identifier)
+            data <- annotation %>% .[.[[format]] %in% gsub, ]
+            if (nrow(data)) {
+                data$sequence <- identifier
+            }
+        } else if (format == "class") {
             name <- annotation %>%
-                .[grepl(paste0("^", identifier[a], "-"), .[["name"]]), "name"]
+                .[grepl(paste0("^", identifier, "-"), .[["name"]]), "name"]
             name <- name[[1]]
-            data <- annotation %>% .[.[["name"]] %in% name, ]
-            return(data)
-        })
-        data <- dplyr::bind_rows(list)
-    } else if (format == "keyword") {
-        keywordCol <- c("class",
-                        "blastpHsapiensDescription",
-                        "orthologHsapiens",
-                        "geneOntologyBiologicalProcess",
-                        "geneOntologyCellularComponent",
-                        "geneOntologyMolecularFunction",
-                        "ensemblGeneOntology",
-                        "interpro",
-                        "pantherClass",
-                        "pantherFamilyName",
-                        "pantherGeneOntologyBiologicalProcess",
-                        "pantherGeneOntologyCellularComponent",
-                        "pantherGeneOntologyMolecularFunction",
-                        "pantherPathway")
-        # Subset columns for keyword searching:
-        keywordData <- annotation[, keywordCol]
-        list <- lapply(seq_along(identifier), function(a) {
+            data <- annotation %>% .[.$name %in% name, ]
+        } else if (format == "keyword") {
+            keywordCol <- c("class",
+                            "blastpHsapiensDescription",
+                            "orthologHsapiens",
+                            "geneOntologyBiologicalProcess",
+                            "geneOntologyCellularComponent",
+                            "geneOntologyMolecularFunction",
+                            "ensemblGeneOntology",
+                            "interpro",
+                            "pantherClass",
+                            "pantherFamilyName",
+                            "pantherGeneOntologyBiologicalProcess",
+                            "pantherGeneOntologyCellularComponent",
+                            "pantherGeneOntologyMolecularFunction",
+                            "pantherPathway")
+            # Subset columns for keyword searching:
+            keywordData <- annotation[, keywordCol]
             # `apply(..., 1)` processes by row:
             grepl <- apply(keywordData, 1, function(b) {
-                any(grepl(identifier[a], b, ignore.case = TRUE))
+                any(grepl(identifier, b, ignore.case = TRUE))
             })
             gene <- annotation[grepl, "gene"]
             gene <- gene[[1]]
-            data <- annotation %>% .[.[["gene"]] %in% gene, ]
-            data$keyword <- identifier[a]
-            return(data)
-        })
-        data <- dplyr::bind_rows(list)
-    } else {
-        stop("Invalid format.")
-    }
+            data <- annotation %>% .[.$gene %in% gene, ]
+            if (nrow(data)) {
+                data$keyword <- identifier[a]
+            }
+        } else {
+            stop("Invalid format.")
+        }
+        return(data)
+    })
+    data <- dplyr::bind_rows(list)
+
+
     # Select ====
-    if (!is.null(select)) {
+    if (is.null(select)) {
+        select <- c("gene", "sequence", "name")
+    } else {
         if (length(select) == 1) {
-            if (select == "simple") {
-                select <- c("gene",
-                            "sequence",
-                            "name")
-            } else if (select == "identifiers") {
+            if (select == "identifiers") {
                 select <- c("aceview",
                             "blastpHsapiensGene",
                             "gene",
@@ -149,12 +142,16 @@ gene <- function(identifier,
                             "pantherClass")
             }
         }
-        select <- unique(c(format, select))
-        data <- data[, select]
     }
+    select <- unique(c(format, select))
+    data <- data[, select]
+
+
     # Sort ====
     # `format` is used for sorting (except `keyword`), unless specified:
-    if (is.null(sort) && format != "keyword") {
+    if (format == "class") {
+        sort <- "name"
+    } else if (is.null(sort) && format != "keyword") {
         sort <- format
     }
     if (!is.null(sort)) {
