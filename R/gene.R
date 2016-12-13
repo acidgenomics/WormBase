@@ -37,11 +37,17 @@ gene <- function(identifier,
             .[.[[format]] %in% identifier, ]
     } else if (format == "sequence") {
         # Strip out isoform information
-        identifierClean <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$",
+        identifierGsub <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$",
                                 "\\1.\\2",
                                 identifier)
-        data <- annotation %>%
-            .[.[[format]] %in% identifierClean, ]
+        list <- lapply(seq_along(identifierGsub), function(a) {
+            data <- annotation %>%
+                .[.[[format]] %in% identifierGsub, ]
+            # Put the original sequence query back
+            data$sequence <- identifier[a]
+            return(data)
+        })
+        data <- dplyr::bind_rows(list)
     } else if (format == "class") {
         sort <- "name"
         list <- lapply(seq_along(identifier), function(a) {
