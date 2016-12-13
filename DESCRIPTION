@@ -8,6 +8,7 @@ Description: C. elegans genome annotations assembled from WormBase, Ensembl, and
 License: MIT + file LICENSE
 URL: https://github.com/steinbaugh/worminfo
 Encoding: UTF-8
+LazyData: no
 Depends:
     R (>= 3.3.0)
 Imports:
