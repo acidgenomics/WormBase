@@ -1,4 +1,3 @@
-library(worminfo)
 fileLocal <- "data-raw/sourcebioscience.xlsx"
 if (!file.exists(fileLocal)) {
     download.file("http://www.us.lifesciences.sourcebioscience.com/media/381254/C.%20elegans%20Database%202012.xlsx",

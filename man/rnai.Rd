@@ -4,10 +4,10 @@
 \alias{rnai}
 \title{RNAi clone mapping}
 \usage{
-rnai(identifier, format = "clone", library = "orfeome96")
+rnai(query, format = "clone", library = "orfeome96")
 }
 \arguments{
-\item{identifier}{Identifier}
+\item{query}{Identifier query}
 
 \item{format}{Identifier format (\code{gene}, \code{name}, or \code{sequence})}
 
