@@ -51,20 +51,6 @@ gene <- function(query,
             name <- name[[1]]
             data <- annotation %>% .[.$name %in% name, ]
         } else if (format == "keyword") {
-            keywordCol <- c("class",
-                            "blastpHsapiensDescription",
-                            "orthologHsapiens",
-                            "geneOntologyBiologicalProcess",
-                            "geneOntologyCellularComponent",
-                            "geneOntologyMolecularFunction",
-                            "ensemblGeneOntology",
-                            "interpro",
-                            "pantherClass",
-                            "pantherFamilyName",
-                            "pantherGeneOntologyBiologicalProcess",
-                            "pantherGeneOntologyCellularComponent",
-                            "pantherGeneOntologyMolecularFunction",
-                            "pantherPathway")
             # Subset columns for keyword searching:
             keywordData <- annotation[, keywordCol]
             # `apply(..., 1)` processes by row:
@@ -87,7 +73,7 @@ gene <- function(query,
 
     # Select ====
     if (is.null(select)) {
-        select <- c("gene", "sequence", "name")
+        select <- simpleCol
     } else {
         if (length(select) == 1) {
             if (select == "identifiers") {
@@ -103,14 +89,9 @@ gene <- function(query,
                             "treefam",
                             "uniprot")
             } else if (select == "keyword") {
-                select <- c("gene",
-                            "sequence",
-                            "name",
-                            keywordCol)
+                select <- c(simpleCol, keywordCol)
             } else if (select == "report") {
-                select <- c("gene",
-                            "sequence",
-                            "name",
+                select <- c(simpleCol,
                             "class",
 
                             # Ortholog:

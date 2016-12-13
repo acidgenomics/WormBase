@@ -65,14 +65,13 @@ rnai <- function(query,
                 # Add the clone identifier back:
                 data$clone <- identifier
             }
-        } else if (any(grepl(format, c("gene", "name", "sequence")))) {
+        } else if (any(grepl(format, simpleCol))) {
             if (format == "sequence") {
                 # Strip out isoform information:
                 identifier <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$", "\\1.\\2", identifier)
             }
             # Query `gene()` function and map to gene identifier:
-            data <- gene(identifier, format = format,
-                         select = c("gene", "sequence", "name"))
+            data <- gene(identifier, format = format, select = simpleCol)
             if (nrow(data)) {
                 data <- data %>%
                     dplyr::left_join(annotation, by = "gene")
