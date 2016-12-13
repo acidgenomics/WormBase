@@ -2,5 +2,7 @@
 ^\.Rproj\.user$
 ^\.travis\.yml$
 ^cran-comments\.md$
+^data$
+^data-raw$
 ^NEWS\.md$
 ^revdep$
