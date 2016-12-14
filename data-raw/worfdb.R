@@ -1,110 +1,92 @@
 # Functions ====
 worfdbHtml <- function(sequence) {
     sequence <- sequence %>% na.omit %>% unique
-    pbmcapply::pbmclapply(seq_along(sequence), function(a) {
-        httr::GET(paste0("http://worfdb.dfci.harvard.edu/searchallwormorfs.pl?by=name&sid=",
-                         sequence[a]),
-                  user_agent = httr::user_agent(ua)) %>%
+    pbmclapply(seq_along(sequence), function(a) {
+        GET(paste0("http://worfdb.dfci.harvard.edu/searchallwormorfs.pl?by=name&sid=",
+                   sequence[a]),
+            user_agent = user_agent(ua)) %>%
             content("text")
-    }) %>% magrittr::set_names(sequence)
+    }) %>% set_names(sequence)
 }
 
 worfdbData <- function(worfdbHtml) {
-    pbmcapply::pbmclapply(seq_along(worfdbHtml), function(a) {
+    pbmclapply(seq_along(worfdbHtml), function(a) {
         clone <- worfdbHtml[[a]] %>%
-            stringr::str_extract_all(., "GHR-[0-9]{5}@[A-H][0-9]+") %>%
+            str_extract_all("[0-9]{5}@[A-H][0-9]+") %>%
             unlist %>%
-            seqcloudr::toStringUnique(.)
+            toStringUnique
         inFrame <- worfdbHtml[[a]] %>%
-            stringr::str_extract_all(., "In Frame.+<font color=black>([NY])</font>") %>%
+            str_extract_all("In Frame.+<font color=black>([NY])</font>") %>%
             unlist %>%
-            stringr::str_replace(., "&nbsp;<font color=black>([NY])</font>", "\\1") %>%
-            stringr::str_replace_all(., "Y$", TRUE) %>%
-            stringr::str_replace_all(., "N$", FALSE) %>%
-            seqcloudr::toStringUnique(.)
-        sequence <- worfdbHtml[[a]] %>%
-            stringr::str_match_all(., "<A HREF=http://www.wormbase.org/db/seq/sequence\\?name=([A-Z0-9]+\\.[0-9]+[a-z]?)>") %>%
+            str_replace("&nbsp;<font color=black>([NY])</font>", "\\1") %>%
+            str_replace_all("Y$", TRUE) %>%
+            str_replace_all("N$", FALSE) %>%
+            toStringUnique
+        sequence2 <- worfdbHtml[[a]] %>%
+            str_match_all("<A HREF=http://www.wormbase.org/db/seq/sequence\\?name=([A-Z0-9]+\\.[0-9]+[a-z]?)>") %>%
             .[[1]] %>% .[, 2] %>%
-            seqcloudr::toStringUnique(.)
+            toStringUnique
         sequencingInformation <- worfdbHtml[[a]] %>%
-            stringr::str_extract_all(., "OST in ORFeome version.+\\(WS[0-9]+\\)") %>%
+            str_extract_all("OST in ORFeome version.+\\(WS[0-9]+\\)") %>%
             unlist %>%
-            seqcloudr::toStringUnique(.)
-        originalPosition <- worfdbHtml[[a]] %>%
-            stringr::str_match_all(., "Original Position: &nbsp;([0-9]{5}@[A-H][0-9]+)") %>%
-            .[[1]] %>% .[, 2] %>%
-            seqcloudr::toStringUnique(.)
+            toStringUnique
         primer <- worfdbHtml[[a]] %>%
-            stringr::str_match_all(., "<font color=red><B>([acgt]+)</B></font>") %>%
+            str_match_all("<font color=red><B>([acgt]+)</B></font>") %>%
             .[[1]] %>% .[, 2] %>%
             toupper %>%
             toString
         size <- worfdbHtml[[a]] %>%
-            stringr::str_match_all(., "size: &nbsp;([0-9]+)") %>%
+            str_match_all("size: &nbsp;([0-9]+)") %>%
             .[[1]] %>% .[, 2] %>%
             toString
         remap <- worfdbHtml[[a]] %>%
-            stringr::str_match_all(., "<TR><TD><A HREF=searchallwormorfs.pl\\?sid=([A-Z0-9]+\\.[0-9]+[a-z]?)>[A-Z0-9]+\\.[0-9]+[a-z]?</A></TD><TD>([0-9]{5}@[A-H][0-9]+)</TD><TD>([0-9]{5}@[A-H][0-9]+)?</TD><TD>(N|Y)</TD><TD>([0-9]+)</TD></TR>") %>%
+            str_match_all("<TR><TD><A HREF=searchallwormorfs.pl\\?sid=([A-Z0-9]+\\.[0-9]+[a-z]?)>[A-Z0-9]+\\.[0-9]+[a-z]?</A></TD><TD>([0-9]{5}@[A-H][0-9]+)</TD><TD>([0-9]{5}@[A-H][0-9]+)?</TD><TD>(N|Y)</TD><TD>([0-9]+)</TD></TR>") %>%
             .[[1]] %>% .[, 2] %>%
-            seqcloudr::toStringUnique(.)
-        list <- list(identifier = names(worfdbHtml)[a],
-                     sequence = sequence,
+            toStringUnique
+        list <- list(sequence = names(worfdbHtml)[a],
+                     sequence2 = sequence2,
                      clone = clone,
-                     originalPosition = originalPosition,
                      sequencingInformation = sequencingInformation,
                      inFrame = inFrame,
                      primer = primer,
                      size = size,
                      remap = remap)
         lapply(list, function(b) {
-            tibble::as_tibble(Filter(Negate(is.null), b))
+            as_tibble(Filter(Negate(is.null), b))
         })
-    }) %>%
-        dplyr::bind_rows(.) %>%
-        seqcloudr::wash(.)
+    }) %>% bind_rows %>% wash
 }
 
-
-# Scrape by WormBase identifier ====
-if (!file.exists("data/worfdbHtml1.rda")) {
+if (!file.exists("data-raw/worfdb/worfdbHtml.rda")) {
     data(wormbaseGene)
     sequence <- wormbaseGene$sequence
-    worfdbHtml1 <- worfdbHtml(sequence)
-    use_data(worfdbHtml1, overwrite = TRUE)
+    worfdbHtml <- worfdbHtml(sequence)
+    save(worfdbHtml, file = "data-raw/worfdb/worfdbHtml.rda")
 } else {
-    data(worfdb1Html1)
+    load("data-raw/worfdb/worfdbHtml.rda")
 }
 
-worfdb1 <- worfdbData(worfdbHtml1)
-
-if (!file.exists("data/worfdbHtml2.rda")) {
-    # Download and analyze sequence remaps
-    # Example: H15N14.1
-    sequenceRemap <- worfdb1 %>%
-        filter(!is.na(remap)) %>%
-        .$remap %>% toString %>%
-        str_split(", ") %>%
-        unlist
-    worfdbHtml2 <- worfdbHtml(sequenceRemap)
-    use_data(worfdbHtml2, overwrite = TRUE)
-} else {
-    data(worfdbHtml2)
-}
-
-worfdb2 <- worfdbData(worfdbHtml2)
-
-# Merge worfdb1 and worfdb2
-worfdb <- bind_rows(worfdb1, worfdb2) %>%
-    arrange(identifier, sequence)
-use_data(worfdb, overwrite = TRUE)
-rm(worfdb1, worfdb2)
-
-
-# Match to gene identifier with `gene()` function
-worfdb <- worfdb %>%
-    select(-identifier) %>%
-    filter(!is.na(sequence)) %>%
+worfdb <- worfdbData(worfdbHtml) %>%
+    arrange(sequence) %>%
+    filter(!is.na(clone)) %>%
+    mutate(clone = gsub("@", "", clone),
+           clone = gsub("([A-Z]{1})0", "\\1", clone)) %>%
     left_join(gene(.$sequence, format = "sequence", select = "gene"),
               by = "sequence")
+use_data(worfdb, overwrite = TRUE)
 
-flag <- worfdb %>% filter(grepl("does not confirm", sequencingInformation))
+
+
+# if (!file.exists("data-raw/worfdb/worfdbHtmlRemap.rda")) {
+#     # Example: H15N14.1
+#     sequenceRemap <- worfdb %>%
+#         filter(!is.na(remap)) %>%
+#         .$remap %>% toString %>%
+#         str_split(", ") %>%
+#         unlist
+#     worfdbHtmlRemap <- worfdbHtml(sequenceRemap)
+#     save(worfdbHtmlRemap, file = "data-raw/worfdb/worfdbHtmlRemap.rda")
+# } else {
+#     load("data-raw/worfdb/worfdbHtmlRemap.rda")
+# }
+# worfdbRemap <- worfdbData(worfdbHtmlRemap)

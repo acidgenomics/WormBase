@@ -1,7 +1,7 @@
 #' RNAi clone mapping
 #'
 #' @import dplyr
-#' @importFrom parallel mclapply
+#' @import pbmcapply
 #' @importFrom stats na.omit
 #'
 #' @param query Identifier query
@@ -29,7 +29,7 @@ rnai <- function(query,
     }
     annotation <- get("rnaiAnnotation", envir = asNamespace("worminfo"))
     query <- query %>% stats::na.omit(.) %>% unique %>% sort
-    list <- parallel::mclapply(seq_along(query), function(a) {
+    list <- pbmcapply::pbmclapply(seq_along(query), function(a) {
         identifier <- query[a]
         if (format == "clone") {
             if (!any(grepl(library, c("ahringer384",
