@@ -16,6 +16,7 @@ Imports:
     httr,
     magrittr,
     parallel,
+    pbmcapply,
     stats,
     stringr,
     tibble,
