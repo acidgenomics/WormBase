@@ -12,5 +12,5 @@ r: bioc-release
 r_github_packages:
   - steinbaugh/seqcloudr
 
-before_script: 
-  - git lfs pull
+# before_script: 
+#  - git lfs pull
