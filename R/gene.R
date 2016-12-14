@@ -1,7 +1,7 @@
 #' Gene mapping
 #'
 #' @import dplyr
-#' @import pbmcapply
+#' @importFrom parallel mclapply
 #' @importFrom stats na.omit
 #' @importFrom tidyr separate_
 #'
@@ -32,7 +32,7 @@ gene <- function(query,
     }
     annotation <- get("geneAnnotation", envir = asNamespace("worminfo"))
     query <- query %>% stats::na.omit(.) %>% unique %>% sort
-    list <- pbmcapply::pbmclapply(seq_along(query), function(a) {
+    list <- parallel::mclapply(seq_along(query), function(a) {
         identifier <- query[a]
         # Format ====
         if (any(grepl(format, c("gene", "name")))) {
@@ -43,7 +43,7 @@ gene <- function(query,
             gsub <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$", "\\1.\\2", identifier)
             data <- annotation %>% .[.[[format]] %in% gsub, ]
             if (nrow(data)) {
-                data$sequence <- identifier
+                data$sequence <- query[a]
             }
         } else if (format == "class") {
             name <- annotation %>%

@@ -75,8 +75,6 @@ worfdb <- worfdbData(worfdbHtml) %>%
               by = "sequence")
 use_data(worfdb, overwrite = TRUE)
 
-
-
 # if (!file.exists("data-raw/worfdb/worfdbHtmlRemap.rda")) {
 #     # Example: H15N14.1
 #     sequenceRemap <- worfdb %>%
@@ -89,4 +87,5 @@ use_data(worfdb, overwrite = TRUE)
 # } else {
 #     load("data-raw/worfdb/worfdbHtmlRemap.rda")
 # }
+#
 # worfdbRemap <- worfdbData(worfdbHtmlRemap)
