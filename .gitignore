@@ -1,13 +1,11 @@
 .DS_Store
 .httr-oauth
 .Rapp.history
-.RData
 .Rhistory
 .Rproj.user
 .Rproj.user/
 *-Ex.R
 data/
-data-raw/
 inst/doc
 README.html
 revdep/

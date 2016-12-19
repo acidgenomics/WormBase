@@ -9,7 +9,15 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-[ruvkun lab]: https://molbio.mgh.harvard.edu/laboratories/ruvkun
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(results = "asis", render = pander::pander)
+pander::panderOptions("table.style", "rmarkdown")
+pander::panderOptions("table.alignment.default", "left")
+pander::panderOptions("table.alignment.rownames", "right")
+library(magrittr)
+devtools::load_all()
+```
+
 [ahringer]: http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/
 [orfeome]: http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai/
 [orfeome sbs]: http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-orfeome-version-11/
@@ -18,19 +26,6 @@ vignette: >
 
 [*daf-16*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00000912
 [*sbp-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004735
-
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(results = "asis", render = pander::pander)
-pander::panderOptions("table.style", "rmarkdown")
-pander::panderOptions("table.alignment.default", "left")
-pander::panderOptions("table.alignment.rownames", "right")
-devtools::load_all()
-```
-
-```{r}
-# %>% pipe function requires the `magrittr` package:
-library(magrittr)
-```
 
 RNA interference libraries are commonly used in *C. elegans* research. RNAi
 clones are typically referenced by a gene pair or open reading frame (ORF)
@@ -43,8 +38,7 @@ function also obtains primary and secondary target information from
 effects.
 
 The function has built-in support for the commonly used [Ahringer][ahringer] and
-[ORFeome][] v1.1 RNAi libraries, as well as the cherrypick libraries designed by
-the [Ruvkun Lab][].
+[ORFeome][] v1.1 RNAi libraries.
 
 
 ## Finding clones by gene identifier
@@ -99,24 +93,4 @@ function is flexible, and also supports entries in the historical format
 
 ```{r}
 rnai("11010G06", library = "orfeome96") %>% t
-```
-
-### Cherrypick libraries
-
-`rnai()` supports clone mapping for cherrypick libraries from the [Ruvkun
-Lab][], including the G protein coupled receptor (GPCR), kinase, nuclear hormone
-receptor, and transcription factor libraries. These identifiers require the
-following prefixes:
-
-- gpcr
-- kinase
-- nhr
-- tf_all
-- tf_bzip
-
-Here's how you query well E01 ([*daf-16*][]) from the first plate of the
-transcription factor cherrypick library:
-
-```{r}
-rnai("tf_all-1E01", library = "cherrypick") %>% t
 ```

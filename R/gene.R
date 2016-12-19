@@ -1,10 +1,12 @@
 #' Gene mapping
 #'
 #' @import dplyr
+#' @import pbmcapply
+#' @importFrom parallel mclapply
 #' @importFrom stats na.omit
 #' @importFrom tidyr separate_
 #'
-#' @param identifier Gene identifier
+#' @param query Identifier query
 #' @param format Identifier type (\code{gene}, \code{name}, \code{sequence},
 #'   \code{class} or \code{keyword})
 #' @param select Columns to select (e.g. \code{ncbi}). Optionally, you can use
@@ -20,131 +22,129 @@
 #' gene("WBGene00004804", format = "gene", select = "report")
 #' gene("daf", format = "class")
 #' gene("bzip", format = "keyword")
-gene <- function(identifier,
+gene <- function(query,
                  format = "gene",
-                 select = "simple",
+                 select = NULL,
                  sort = NULL) {
-    if (missing(identifier)) {
+    if (missing(query)) {
         stop("An identifier is required.")
-    } else if (!is.character(identifier)) {
+    } else if (!is.character(query)) {
         stop("Identifier must be a character vector.")
     }
-    identifier <- sort(unique(stats::na.omit(identifier)))
-    source <- get("geneSource", envir = asNamespace("worminfo"))
-    # Format ====
-    if (any(grepl(format,
-                  c("gene",
-                    "name",
-                    "sequence")))) {
-        data <- source[source[[format]] %in% identifier, ]
-    } else if (format == "class") {
-        sort <- "name"
-        list <- lapply(seq_along(identifier), function(a) {
-            name <- source[grepl(paste0("^", identifier[a], "-"),
-                                 source[["name"]]), "name"]
+    annotation <- get("geneAnnotation", envir = asNamespace("worminfo"))
+    query <- query %>% stats::na.omit(.) %>% unique %>% sort
+    if (length(query) < 100) {
+        fxn <- parallel::mclapply
+    } else {
+        fxn <- pbmcapply::pbmclapply
+    }
+    list <- fxn(seq_along(query), function(a) {
+        identifier <- query[a]
+        # Format ====
+        if (any(grepl(format, c("gene", "name")))) {
+            data <- annotation %>%
+                .[.[[format]] %in% identifier, ]
+        } else if (format == "sequence") {
+            # Strip out isoform if necessary
+            gsub <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$", "\\1.\\2", identifier)
+            data <- annotation %>% .[.[[format]] %in% gsub, ]
+            if (nrow(data)) {
+                data$sequence <- query[a]
+            }
+        } else if (format == "class") {
+            name <- annotation %>%
+                .[grepl(paste0("^", identifier, "-"), .[["name"]]), "name"]
             name <- name[[1]]
-            data <- source[source[["name"]] %in% name, ]
-            return(data)
-        })
-        data <- dplyr::bind_rows(list)
-    } else if (format == "keyword") {
-        keywordCol <- c("class",
-                        "blastpHsapiensDescription",
-                        # "descriptionAutomated",
-                        # "descriptionConcise",
-                        # "descriptionDetailed",
-                        # "descriptionProvisional",
-                        "geneOntologyName",
-                        "interproName",
-                        "pantherClass",
-                        "pantherFamilyName",
-                        "pantherGeneOntologyBiologicalProcess",
-                        "pantherGeneOntologyCellularComponent",
-                        "pantherGeneOntologyMolecularFunction",
-                        "pantherPathway")
-        # Subset columns for keyword searching:
-        keywordData <- source[, keywordCol]
-        list <- lapply(seq_along(identifier), function(a) {
+            data <- annotation %>% .[.$name %in% name, ]
+        } else if (format == "keyword") {
+            # Subset columns for keyword searching:
+            keywordData <- annotation[, keywordCol]
             # `apply(..., 1)` processes by row:
             grepl <- apply(keywordData, 1, function(b) {
-                any(grepl(identifier[a], b, ignore.case = TRUE))
+                any(grepl(identifier, b, ignore.case = TRUE))
             })
-            gene <- source[grepl, "gene"]
+            gene <- annotation[grepl, "gene"]
             gene <- gene[[1]]
-            data <- source[source[["gene"]] %in% gene, ]
-            data$keyword <- identifier[a]
-            return(data)
-        })
-        data <- dplyr::bind_rows(list)
-    } else {
-        stop("Invalid format.")
-    }
+            data <- annotation %>% .[.$gene %in% gene, ]
+            if (nrow(data)) {
+                data$keyword <- identifier[a]
+            }
+        } else {
+            stop("Invalid format.")
+        }
+        return(data)
+    })
+    data <- dplyr::bind_rows(list)
+
+
     # Select ====
-    if (!is.null(select)) {
+    if (is.null(select)) {
+        select <- simpleCol
+    } else {
         if (length(select) == 1) {
-            if (select == "simple") {
-                select <- c("gene",
-                            "sequence",
-                            "name",
-                            "class")
-            } else if (select == "identifiers") {
+            if (select == "identifiers") {
                 select <- c("aceview",
                             "blastpHsapiensGene",
-                            "blastpHsapiensName",
                             "gene",
-                            "hsapiensGene",
                             "name",
                             "ncbi",
-                            # "omim",
                             "otherIdentifier",
-                            "peptide",
                             "refseqMrna",
                             "refseqProtein",
                             "sequence",
                             "treefam",
-                            "uniprot",
-                            "wormpep")
+                            "uniprot")
             } else if (select == "keyword") {
-                select <- c("gene",
-                            "sequence",
-                            "name",
-                            keywordCol)
+                select <- c(simpleCol, keywordCol)
             } else if (select == "report") {
-                select <- c("gene",
-                            "sequence",
-                            "name",
+                select <- c(simpleCol,
                             "class",
-                            "descriptionConcise",
-                            "descriptionProvisional",
-                            "descriptionAutomated",
-                            "descriptionEnsembl",
+
+                            # Ortholog:
                             "blastpHsapiensGene",
                             "blastpHsapiensName",
                             "blastpHsapiensDescription",
-                            "geneOntologyName",
-                            "interproName",
+                            "orthologHsapiens",
+
+                            # Description:
+                            "descriptionConcise",
+                            "descriptionProvisional",
+                            "descriptionAutomated",
+                            "ensemblDescription",
+
+                            # WormBase Additional:
+                            "rnaiPhenotype",
+
+                            # Gene Ontology:
+                            "geneOntologyBiologicalProcess",
+                            "geneOntologyCellularComponent",
+                            "geneOntologyMolecularFunction",
+                            "ensemblGeneOntology",
+                            "interpro",
                             "pantherFamilyName",
                             "pantherSubfamilyName",
                             "pantherGeneOntologyMolecularFunction",
                             "pantherGeneOntologyBiologicalProcess",
                             "pantherGeneOntologyCellularComponent",
-                            "pantherClass",
-                            "rnaiPhenotypes")
+                            "pantherClass")
             }
         }
-        select <- unique(c(format, select))
-        data <- data[, select]
     }
+    select <- unique(c(format, select))
+    data <- data[, select]
+
+
     # Sort ====
-    # `format` is used for sorting (except "keyword") unless specified:
-    if (is.null(sort) && format != "keyword") {
+    # `format` is used for sorting (except `keyword`), unless specified:
+    if (format == "class") {
+        sort <- "name"
+    } else if (is.null(sort) && format != "keyword") {
         sort <- format
     }
     if (!is.null(sort)) {
         if (sort[1] == "name") {
             data$temp <- data$name
             # Split to temporary columns for proper sorting later
-            ### THIS IS WHERE THE ERROR HAPPENS
             data <- tidyr::separate_(data, "temp",
                                      into = c("tempPrefix", "tempNum"),
                                      sep = "-")

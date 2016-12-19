@@ -9,6 +9,24 @@ vignette: >
     %\VignetteEncoding{UTF-8}
 ---
 
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(results = "asis", render = pander::pander)
+pander::panderOptions("table.style", "rmarkdown")
+pander::panderOptions("table.alignment.default", "left")
+pander::panderOptions("table.alignment.rownames", "right")
+library(magrittr)
+devtools::load_all()
+```
+
+```{r, include = FALSE}
+markdownList <- function(character) {
+    string <- sapply(seq_along(character), function(a) {
+        paste0("- ", character[a])
+    })
+    return(cat(paste(string, collapse = "\n")))
+}
+```
+
 [dplyr]: https://cran.r-project.org/package=dplyr
 [ensembl]: http://www.ensembl.org/Caenorhabditis_elegans
 [panther]: http://www.pantherdb.org
@@ -20,28 +38,6 @@ vignette: >
 [*daf-16*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00000912
 [*sbp-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004735
 [*skn-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004804
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(results = "asis", render = pander::pander)
-pander::panderOptions("table.style", "rmarkdown")
-pander::panderOptions("table.alignment.default", "left")
-pander::panderOptions("table.alignment.rownames", "right")
-devtools::load_all()
-```
-
-```{r}
-# %>% pipe function requires the `magrittr` package:
-library(magrittr)
-```
-
-```{r, include = FALSE}
-markdownList <- function(character) {
-    string <- sapply(seq_along(character), function(a) {
-        paste0("- ", character[a])
-    })
-    return(cat(paste(string, collapse = "\n")))
-}
-```
 
 The goal of the [worminfo][] package is to quickly and simply provide correct,
 up-to-date annotation data for the entire *C. elegans* genome. The underlying
@@ -56,8 +52,8 @@ promptly issue a rebuild.
 
 `gene()` accepts 4 types of identifiers: `gene`, `name`, `sequence` or `class`.
 Output from the function is controlled using the `select` parameter. The
-function returns a [tibble][] `data.frame` that can be manipulated using the
-[dplyr][] package or the `base::merge()` function. We recommend using
+function returns a [tibble][] that can be manipulated using the [dplyr][]
+package or the `base::merge()` function. We recommend using
 `dplyr::left_join()` to bind these annotations to other `data.frames`.
 
 
@@ -67,23 +63,21 @@ function returns a [tibble][] `data.frame` that can be manipulated using the
 
 ```{r}
 identifier <- c("WBGene00000898", "WBGene00000912", "WBGene00004804")
-gene(identifier, format = "gene")
+gene(identifier)
 ```
 
 
 **Sequence**, commonly the open reading frame (ORF):
 
 ```{r}
-identifier <- c("Y55D5A.5", "R13H8.1", "T19E7.2")
-gene(identifier, format = "sequence")
+c("Y55D5A.5", "R13H8.1", "T19E7.2") %>% gene(format = "sequence")
 ```
 
 
 Public **name**:
 
 ```{r}
-identifier <- c("daf-2", "daf-16", "skn-1")
-gene(identifier, format = "name")
+c("daf-2", "daf-16", "skn-1") %>% gene(format = "name")
 ```
 
 
@@ -151,10 +145,11 @@ Select [WormBase][] and [Ensembl][] descriptions for [*sbp-1*][] (bHLH
 transcription factor):
 
 ```{r}
-gene("sbp-1", format = "name",
+gene("sbp-1",
+     format = "name",
      select = c("descriptionConcise",
                 "descriptionProvisional",
-                "descriptionEnsembl")) %>% t
+                "ensemblDescription")) %>% t
 ```
 
 
