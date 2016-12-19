@@ -5,6 +5,7 @@
 .Rproj.user
 .Rproj.user/
 *-Ex.R
+data/
 inst/doc
 README.html
 revdep/
