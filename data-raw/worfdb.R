@@ -1,7 +1,7 @@
 # Functions ====
 worfdbHtml <- function(sequence) {
     sequence <- sequence %>% na.omit %>% unique
-    pbmclapply(seq_along(sequence), function(a) {
+    pbmcapply::pbmclapply(seq_along(sequence), function(a) {
         GET(paste0("http://worfdb.dfci.harvard.edu/searchallwormorfs.pl?by=name&sid=",
                    sequence[a]),
             user_agent = user_agent(ua)) %>%
@@ -10,7 +10,7 @@ worfdbHtml <- function(sequence) {
 }
 
 worfdbData <- function(worfdbHtml) {
-    pbmclapply(seq_along(worfdbHtml), function(a) {
+    pbmcapply::pbmclapply(seq_along(worfdbHtml), function(a) {
         clone <- worfdbHtml[[a]] %>%
             str_extract_all("[0-9]{5}@[A-H][0-9]+") %>%
             unlist %>%
