@@ -4,10 +4,10 @@
 \alias{restGeneOntology}
 \title{WormBase RESTful RNAi gene ontology query}
 \usage{
-restGeneOntology(gene)
+restGeneOntology(identifier)
 }
 \arguments{
-\item{gene}{Gene identifier}
+\item{identifier}{Gene identifier}
 }
 \value{
 JSON content tibble

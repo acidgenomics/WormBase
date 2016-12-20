@@ -4,10 +4,10 @@
 \alias{restGeneExternal}
 \title{WormBase RESTful gene external query}
 \usage{
-restGeneExternal(gene)
+restGeneExternal(identifier)
 }
 \arguments{
-\item{gene}{Gene identifier}
+\item{identifier}{Gene identifier}
 }
 \value{
 JSON content tibble
