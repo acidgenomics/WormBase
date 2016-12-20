@@ -1,16 +1,13 @@
 data(sourcebioscience, worfdb)
-ahringer <- sourcebioscience %>%
+sourcebioscience <- sourcebioscience %>%
     select(gene, genePair, ahringer384, ahringer96)
-orfeome <- worfdb %>%
+worfdb <- worfdb %>%
     select(gene, sequence, clone) %>%
     rename(genePair = sequence,
            orfeome96 = clone)
-rnaiAnnotation <- bind_rows(ahringer, orfeome) %>%
+rnaiAnnotation <- bind_rows(sourcebioscience, worfdb) %>%
     filter(!is.na(gene)) %>%
     group_by(gene) %>%
     rowCollapse
 use_data(rnaiAnnotation, overwrite = TRUE)
-rm(ahringer,
-   orfeome,
-   sourcebioscience,
-   worfdb)
+rm(sourcebioscience, worfdb)
