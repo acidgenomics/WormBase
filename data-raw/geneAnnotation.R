@@ -1,7 +1,6 @@
 data(wormbaseGene,
      wormbaseBlastp,
      wormbaseDescription,
-     wormbaseGeneExternal,
      wormbaseGeneOntology,
      wormbaseOrtholog,
      wormbaseRnaiPhenotype,
@@ -38,7 +37,6 @@ geneAnnotation <-
            list(wormbaseGene, # must go first
                 wormbaseBlastp,
                 wormbaseDescription,
-                wormbaseGeneExternal,
                 wormbaseGeneOntology,
                 wormbaseOrtholog,
                 wormbaseRnaiPhenotype,
