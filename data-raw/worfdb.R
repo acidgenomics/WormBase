@@ -11,40 +11,44 @@ worfdbHtml <- function(sequence) {
 
 worfdbData <- function(worfdbHtml) {
     pbmcapply::pbmclapply(seq_along(worfdbHtml), function(a) {
-        clone <- worfdbHtml[[a]] %>%
+        html <- worfdbHtml[[a]] %>%
+            # Remove map that has other clones
+            # This messes up well identifier matching otherwise
+            gsub("<map.+</map>", "", .)
+        clone <- html %>%
             str_extract_all("[0-9]{5}@[A-H][0-9]+") %>%
             unlist %>%
             toStringUnique
-        inFrame <- worfdbHtml[[a]] %>%
+        inFrame <- html %>%
             str_extract_all("In Frame.+<font color=black>([NY])</font>") %>%
             unlist %>%
             str_replace("&nbsp;<font color=black>([NY])</font>", "\\1") %>%
             str_replace_all("Y$", TRUE) %>%
             str_replace_all("N$", FALSE) %>%
             toStringUnique
-        sequence2 <- worfdbHtml[[a]] %>%
+        sequence <- html %>%
             str_match_all("<A HREF=http://www.wormbase.org/db/seq/sequence\\?name=([A-Z0-9]+\\.[0-9]+[a-z]?)>") %>%
             .[[1]] %>% .[, 2] %>%
             toStringUnique
-        sequencingInformation <- worfdbHtml[[a]] %>%
+        sequencingInformation <- html %>%
             str_extract_all("OST in ORFeome version.+\\(WS[0-9]+\\)") %>%
             unlist %>%
             toStringUnique
-        primer <- worfdbHtml[[a]] %>%
+        primer <- html %>%
             str_match_all("<font color=red><B>([acgt]+)</B></font>") %>%
             .[[1]] %>% .[, 2] %>%
             toupper %>%
             toString
-        size <- worfdbHtml[[a]] %>%
+        size <- html %>%
             str_match_all("size: &nbsp;([0-9]+)") %>%
             .[[1]] %>% .[, 2] %>%
             toString
-        remap <- worfdbHtml[[a]] %>%
+        remap <- html %>%
             str_match_all("<TR><TD><A HREF=searchallwormorfs.pl\\?sid=([A-Z0-9]+\\.[0-9]+[a-z]?)>[A-Z0-9]+\\.[0-9]+[a-z]?</A></TD><TD>([0-9]{5}@[A-H][0-9]+)</TD><TD>([0-9]{5}@[A-H][0-9]+)?</TD><TD>(N|Y)</TD><TD>([0-9]+)</TD></TR>") %>%
             .[[1]] %>% .[, 2] %>%
             toStringUnique
         list <- list(sequence = names(worfdbHtml)[a],
-                     sequence2 = sequence2,
+                     sequenceWorfdb = sequence,
                      clone = clone,
                      sequencingInformation = sequencingInformation,
                      inFrame = inFrame,
