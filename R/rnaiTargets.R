@@ -10,8 +10,8 @@
 #' @export
 #'
 #' @examples
-#' restRnaiTargets("WBRNAi00000001")
-restRnaiTargets <- function(rnai) {
+#' rnaiTargets("WBRNAi00000001")
+rnaiTargets <- function(rnai) {
     rnai <- rnai %>% unique %>% sort
     list <- lapply(seq_along(rnai), function(a) {
         rest <- paste0("field/rnai/", rnai[a], "/targets") %>% rest %>%

@@ -8,8 +8,8 @@
 #' @export
 #'
 #' @examples
-#' restRnaiReagent("WBRNAi00000001")
-restRnaiReagent <- function(rnai) {
+#' rnaiReagent("WBRNAi00000001")
+rnaiReagent <- function(rnai) {
     rnai <- rnai %>% unique %>% sort
     list <- lapply(seq_along(rnai), function(a) {
         rest <- paste0("field/rnai/", rnai[a], "/reagent") %>% rest %>%

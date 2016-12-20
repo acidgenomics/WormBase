@@ -12,8 +12,8 @@ gene(query, format = "gene", select = NULL, sort = NULL)
 \item{format}{Identifier type (\code{gene}, \code{name}, \code{sequence},
 \code{class} or \code{keyword})}
 
-\item{select}{Columns to select (e.g. \code{ncbi}). Optionally, you can use
-\code{simple}, \code{report} or \code{NULL} declarations here.}
+\item{select}{Columns to select. Optionally, you can use \code{simple},
+\code{report} or \code{NULL} declarations here.}
 
 \item{sort}{Columns to use for sorting.}
 }

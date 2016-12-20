@@ -11,8 +11,8 @@
 #' @export
 #'
 #' @examples
-#' restGeneExternal("WBGene00000001")
-restGeneExternal <- function(identifier) {
+#' geneExternal("WBGene00000001")
+geneExternal <- function(identifier) {
     lapply(seq_along(identifier), function(a) {
         b <- identifier[[a]]
         rest <- paste0("widget/gene/", b, "/external_links") %>%

@@ -11,8 +11,8 @@
 #' @export
 #'
 #' @examples
-#' restGeneOntology("WBGene00000001")
-restGeneOntology <- function(identifier) {
+#' geneOntology("WBGene00000001")
+geneOntology <- function(identifier) {
     lapply(seq_along(identifier), function(a) {
         b <- identifier[[a]]
         rest <- paste0("widget/gene/", b, "/gene_ontology") %>%

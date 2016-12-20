@@ -9,8 +9,8 @@
 #' @param query Identifier query
 #' @param format Identifier type (\code{gene}, \code{name}, \code{sequence},
 #'   \code{class} or \code{keyword})
-#' @param select Columns to select (e.g. \code{ncbi}). Optionally, you can use
-#'   \code{simple}, \code{report} or \code{NULL} declarations here.
+#' @param select Columns to select. Optionally, you can use \code{simple},
+#'   \code{report} or \code{NULL} declarations here.
 #' @param sort Columns to use for sorting.
 #'
 #' @return tibble
@@ -82,19 +82,7 @@ gene <- function(query,
         select <- simpleCol
     } else {
         if (length(select) == 1) {
-            if (select == "identifiers") {
-                select <- c("aceview",
-                            "blastpHsapiensGene",
-                            "gene",
-                            "name",
-                            "ncbi",
-                            "otherIdentifier",
-                            "refseqMrna",
-                            "refseqProtein",
-                            "sequence",
-                            "treefam",
-                            "uniprot")
-            } else if (select == "keyword") {
+            if (select == "keyword") {
                 select <- c(simpleCol, keywordCol)
             } else if (select == "report") {
                 select <- c(simpleCol,

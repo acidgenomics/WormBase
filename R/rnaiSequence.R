@@ -8,8 +8,8 @@
 #' @export
 #'
 #' @examples
-#' restRnaiSequence("WBRNAi00000001")
-restRnaiSequence <- function(rnai) {
+#' rnaiSequence("WBRNAi00000001")
+rnaiSequence <- function(rnai) {
     rnai <- rnai %>% unique %>% sort
     list <- lapply(seq_along(rnai), function(a) {
         rest <- paste0("field/rnai/", rnai[a], "/sequence") %>% rest %>%

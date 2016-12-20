@@ -119,20 +119,12 @@ gene(identifier) %>% names %>% markdownList
 ```
 
 
-Additionally, special `identifiers`, `report` and `NULL` declarations are
-available. These shortcuts are useful for generating summaries and may be
-relevant to experiments involving large gene lists.
+Additionally, a special `report` declaration is available. These shortcut is
+useful for generating summaries and may be relevant to experiments involving
+large gene lists.
 
 
 ## `gene()` function examples
-
-
-External/other **identifiers** for [*daf-2*][] (insulin/IGF receptor ortholog):
-
-```{r}
-gene("daf-2", format = "name", select = "identifiers") %>% t
-```
-
 
 **Report** for [*daf-16*][] (forkhead transcription factor):
 
