@@ -1,4 +1,4 @@
 data(wormbaseGene)
-wormbaseGeneOntology <- restGeneOntology(wormbaseGene$gene) %>%
+wormbaseGeneOntology <- geneOntology(wormbaseGene$gene) %>%
     setNamesCamel
 use_data(wormbaseGeneOntology, overwrite = TRUE)
