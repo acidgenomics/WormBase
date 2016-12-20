@@ -57,10 +57,8 @@ gene <- function(query,
             name <- name[[1]]
             data <- annotation %>% .[.$name %in% name, ]
         } else if (format == "keyword") {
-            # Subset columns for keyword searching:
-            keywordData <- annotation[, keywordCol]
             # `apply(..., 1)` processes by row:
-            grepl <- apply(keywordData, 1, function(b) {
+            grepl <- apply(annotation, 1, function(b) {
                 any(grepl(identifier, b, ignore.case = TRUE))
             })
             gene <- annotation[grepl, "gene"]
@@ -79,47 +77,18 @@ gene <- function(query,
 
     # Select ====
     if (is.null(select)) {
-        select <- simpleCol
+        data <- data[, simpleCol]
     } else {
-        if (length(select) == 1) {
-            if (select == "keyword") {
-                select <- c(simpleCol, keywordCol)
-            } else if (select == "report") {
-                select <- c(simpleCol,
-                            "class",
-
-                            # Ortholog:
-                            "blastpHsapiensGene",
-                            "blastpHsapiensName",
-                            "blastpHsapiensDescription",
-                            "orthologHsapiens",
-
-                            # Description:
-                            "descriptionConcise",
-                            "descriptionProvisional",
-                            "descriptionAutomated",
-                            "ensemblDescription",
-
-                            # WormBase Additional:
-                            "rnaiPhenotype",
-
-                            # Gene Ontology:
-                            "geneOntologyBiologicalProcess",
-                            "geneOntologyCellularComponent",
-                            "geneOntologyMolecularFunction",
-                            "ensemblGeneOntology",
-                            "interpro",
-                            "pantherFamilyName",
-                            "pantherSubfamilyName",
-                            "pantherGeneOntologyMolecularFunction",
-                            "pantherGeneOntologyBiologicalProcess",
-                            "pantherGeneOntologyCellularComponent",
-                            "pantherClass")
-            }
+        if (select[[1]] == "report") {
+            data <- data[, reportCol]
+            # WormBase REST calls:
+            data <- data %>%
+                dplyr::left_join(geneOntology(.$gene), by = "gene") %>%
+                dplyr::left_join(geneExternal(.$gene), by = "gene")
+        } else {
+            data <- data[, unique(c(format, select))]
         }
     }
-    select <- unique(c(format, select))
-    data <- data[, select]
 
 
     # Sort ====
@@ -132,14 +101,14 @@ gene <- function(query,
     if (!is.null(sort)) {
         if (sort[1] == "name") {
             data$temp <- data$name
-            # Split to temporary columns for proper sorting later
+            # Split to temporary columns for proper sorting later:
             data <- tidyr::separate_(data, "temp",
                                      into = c("tempPrefix", "tempNum"),
                                      sep = "-")
             data$tempNum <- as.numeric(data$tempNum)
-            # Sort by class then number
+            # Sort by class then number:
             data <- dplyr::arrange_(data, .dots = c("tempPrefix", "tempNum"))
-            # Drop the unnecessary temporary columns
+            # Drop the unnecessary temporary columns:
             data$tempPrefix <- NULL
             data$tempNum <- NULL
         } else {

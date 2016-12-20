@@ -9,27 +9,36 @@ simpleCol <- c("gene", "sequence", "name")
 
 
 
-#' Keyword columns
-#' @param keywordCol Keyword columns
-keywordCol <- c("class",
-                "blastpHsapiensDescription",
-                "orthologHsapiens",
-                "geneOntologyBiologicalProcess",
-                "geneOntologyCellularComponent",
-                "geneOntologyMolecularFunction",
-                "ensemblGeneOntology",
-                "interpro",
-                "pantherClass",
-                "pantherFamilyName",
-                "pantherGeneOntologyBiologicalProcess",
-                "pantherGeneOntologyCellularComponent",
-                "pantherGeneOntologyMolecularFunction",
-                "pantherPathway")
+#' Report columns
+#' @param reportCol Report columns
+reportCol <- c(simpleCol,
+               "class",
+               # Ortholog:
+               "blastpHsapiensGene",
+               "blastpHsapiensName",
+               "blastpHsapiensDescription",
+               "orthologHsapiens",
+               # Description:
+               "descriptionConcise",
+               "descriptionProvisional",
+               "descriptionAutomated",
+               "ensemblDescription",
+               # WormBase Additional:
+               "rnaiPhenotype",
+               # Gene Ontology:
+               "ensemblGeneOntology",
+               "interpro",
+               "pantherFamilyName",
+               "pantherSubfamilyName",
+               "pantherGeneOntologyMolecularFunction",
+               "pantherGeneOntologyBiologicalProcess",
+               "pantherGeneOntologyCellularComponent",
+               "pantherClass")
 
 
 
 #' REST query limit
-#' @param restLimit
+#' @param restLimit REST query limit
 restLimit = 1000
 
 

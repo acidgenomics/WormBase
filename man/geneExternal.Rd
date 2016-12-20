@@ -4,10 +4,12 @@
 \alias{geneExternal}
 \title{WormBase RESTful gene external query}
 \usage{
-geneExternal(identifier)
+geneExternal(identifier, all = FALSE)
 }
 \arguments{
 \item{identifier}{Gene identifier}
+
+\item{all}{Keep all identifiers (\code{TRUE}/\code{FALSE})}
 }
 \value{
 JSON content tibble

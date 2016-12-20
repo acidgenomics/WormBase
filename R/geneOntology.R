@@ -18,6 +18,9 @@ geneOntology <- function(identifier) {
     }
     lapply(seq_along(identifier), function(a) {
         b <- identifier[[a]]
+        if (!grepl("^WBGene[0-9]{8}$", b)) {
+            stop("Invalid gene identifier.")
+        }
         rest <- paste0("widget/gene/", b, "/gene_ontology") %>%
             rest %>% .$fields %>% .$gene_ontology %>% .$data
         parallel::mclapply(seq_along(rest), function(c) {
@@ -31,7 +34,10 @@ geneOntology <- function(identifier) {
             tibble::as_tibble(.) %>%
             dplyr::mutate_(.dots = magrittr::set_names(list(~b), "gene"))
     }) %>% dplyr::bind_rows(.) %>%
-        dplyr::rename_(.dots = c("geneOntologyBiologicalProcess" = "Biological_process",
-                                 "geneOntologyCellularComponent" = "Cellular_component",
-                                 "geneOntologyMolecularFunction" = "Molecular_function"))
+        dplyr::rename_(.dots = c("wormbaseGeneOntologyBiologicalProcess" =
+                                     "Biological_process",
+                                 "wormbaseGeneOntologyCellularComponent" =
+                                     "Cellular_component",
+                                 "wormbaseGeneOntologyMolecularFunction" =
+                                     "Molecular_function"))
 }
