@@ -10,6 +10,9 @@
 #' @examples
 #' rnaiReagent("WBRNAi00000001")
 rnaiReagent <- function(rnai) {
+    if (length(identifier) >= restLimit) {
+        stop(paste0("A maximum of ", restLimit, " identifiers is allowed."))
+    }
     rnai <- rnai %>% unique %>% sort
     list <- lapply(seq_along(rnai), function(a) {
         rest <- paste0("field/rnai/", rnai[a], "/reagent") %>% rest %>%

@@ -13,6 +13,9 @@
 #' @examples
 #' geneExternal("WBGene00000001")
 geneExternal <- function(identifier) {
+    if (length(identifier) >= restLimit) {
+        stop(paste0("A maximum of ", restLimit, " identifiers is allowed."))
+    }
     lapply(seq_along(identifier), function(a) {
         b <- identifier[[a]]
         rest <- paste0("widget/gene/", b, "/external_links") %>%

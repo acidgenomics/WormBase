@@ -2,9 +2,11 @@
 utils::globalVariables(c("."))
 
 
+
 #' Simple columns
 #' @param simpleCol Simple columns
 simpleCol <- c("gene", "sequence", "name")
+
 
 
 #' Keyword columns
@@ -23,6 +25,13 @@ keywordCol <- c("class",
                 "pantherGeneOntologyCellularComponent",
                 "pantherGeneOntologyMolecularFunction",
                 "pantherPathway")
+
+
+
+#' REST query limit
+#' @param restLimit
+restLimit = 1000
+
 
 
 #' User agent
