@@ -27,5 +27,8 @@ geneOntology <- function(identifier) {
         }) %>% magrittr::set_names(names(rest)) %>%
             tibble::as_tibble(.) %>%
             dplyr::mutate_(.dots = magrittr::set_names(list(~b), "gene"))
-    }) %>% dplyr::bind_rows(.) %>% setNamesCamel
+    }) %>% dplyr::bind_rows(.) %>%
+        dplyr::rename_(.dots = c("geneOntologyBiologicalProcess" = "Biological_process",
+                                 "geneOntologyCellularComponent" = "Cellular_component",
+                                 "geneOntologyMolecularFunction" = "Molecular_function"))
 }

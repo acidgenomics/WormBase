@@ -1,7 +1,6 @@
 data(wormbaseGene,
      wormbaseBlastp,
      wormbaseDescription,
-     wormbaseGeneOntology,
      wormbaseOrtholog,
      wormbaseRnaiPhenotype,
      ensembl,
@@ -17,12 +16,6 @@ ensembl <- ensembl %>%
     rename(ensemblDescription = description,
            ensemblGeneOntology = geneOntology)
 
-# Add `geneOntology` prefix:
-wormbaseGeneOntology <- wormbaseGeneOntology %>%
-    rename(geneOntologyBiologicalProcess = biologicalProcess,
-           geneOntologyCellularComponent = cellularComponent,
-           geneOntologyMolecularFunction = molecularFunction)
-
 # Add `ortholog` prefix:
 wormbaseOrtholog <- wormbaseOrtholog %>%
     rename(orthologHsapiens = hsapiens)
@@ -37,7 +30,6 @@ geneAnnotation <-
            list(wormbaseGene, # must go first
                 wormbaseBlastp,
                 wormbaseDescription,
-                wormbaseGeneOntology,
                 wormbaseOrtholog,
                 wormbaseRnaiPhenotype,
                 ensembl,
