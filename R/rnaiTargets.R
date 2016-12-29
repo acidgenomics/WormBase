@@ -12,9 +12,6 @@
 #' @examples
 #' rnaiTargets("WBRNAi00000001")
 rnaiTargets <- function(rnai) {
-    if (length(identifier) >= restLimit) {
-        stop(paste0("A maximum of ", restLimit, " identifiers is allowed."))
-    }
     rnai <- rnai %>% unique %>% sort
     list <- lapply(seq_along(rnai), function(a) {
         rest <- paste0("field/rnai/", rnai[a], "/targets") %>% rest %>%

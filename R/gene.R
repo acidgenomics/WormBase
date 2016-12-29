@@ -34,11 +34,11 @@ gene <- function(query,
     annotation <- get("geneAnnotation", envir = asNamespace("worminfo"))
     query <- query %>% stats::na.omit(.) %>% unique %>% sort
     if (length(query) < 100) {
-        fxn <- parallel::mclapply
+        lapply <- parallel::mclapply
     } else {
-        fxn <- pbmcapply::pbmclapply
+        lapply <- pbmcapply::pbmclapply
     }
-    list <- fxn(seq_along(query), function(a) {
+    data <- lapply(seq_along(query), function(a) {
         identifier <- query[a]
         # Format ====
         if (any(grepl(format, c("gene", "name")))) {
@@ -71,8 +71,7 @@ gene <- function(query,
             stop("Invalid format.")
         }
         return(data)
-    })
-    data <- dplyr::bind_rows(list)
+    }) %>% dplyr::bind_rows(.)
 
 
     # Select ====

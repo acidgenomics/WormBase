@@ -31,11 +31,11 @@ rnai <- function(query,
     annotation <- get("rnaiAnnotation", envir = asNamespace("worminfo"))
     query <- query %>% stats::na.omit(.) %>% unique %>% sort
     if (length(query) < 100) {
-        fxn <- parallel::mclapply
+        lapply <- parallel::mclapply
     } else {
-        fxn <- pbmcapply::pbmclapply
+        lapply <- pbmcapply::pbmclapply
     }
-    list <- fxn(seq_along(query), function(a) {
+    lapply(seq_along(query), function(a) {
         identifier <- query[a]
         if (format == "clone") {
             if (!any(grepl(library, c("ahringer384",
@@ -101,6 +101,5 @@ rnai <- function(query,
             stop("Invalid format.")
         }
         return(data)
-    })
-    dplyr::bind_rows(list)
+    }) %>% dplyr::bind_rows(.)
 }

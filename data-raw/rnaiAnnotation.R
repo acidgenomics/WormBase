@@ -8,6 +8,6 @@ worfdb <- worfdb %>%
 rnaiAnnotation <- bind_rows(sourcebioscience, worfdb) %>%
     filter(!is.na(gene)) %>%
     group_by(gene) %>%
-    rowCollapse
+    collapse
 use_data(rnaiAnnotation, overwrite = TRUE)
 rm(sourcebioscience, worfdb)

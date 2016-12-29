@@ -21,6 +21,7 @@ Imports:
     stringr,
     tibble,
     tidyr,
+    UniProt.ws,
     utils
 Suggests:
     devtools,

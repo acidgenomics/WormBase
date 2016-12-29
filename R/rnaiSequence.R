@@ -10,9 +10,6 @@
 #' @examples
 #' rnaiSequence("WBRNAi00000001")
 rnaiSequence <- function(rnai) {
-    if (length(identifier) >= restLimit) {
-        stop(paste0("A maximum of ", restLimit, " identifiers is allowed."))
-    }
     rnai <- rnai %>% unique %>% sort
     list <- lapply(seq_along(rnai), function(a) {
         rest <- paste0("field/rnai/", rnai[a], "/sequence") %>% rest %>%

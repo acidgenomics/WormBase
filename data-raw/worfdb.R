@@ -27,15 +27,17 @@ worfdbData <- function(worfdbHtml) {
             str_replace_all("N$", FALSE) %>%
             toStringUnique
         sequence <- html %>%
-            str_match_all("<A HREF=http://www.wormbase.org/db/seq/sequence\\?name=([A-Z0-9]+\\.[0-9]+[a-z]?)>") %>%
+            str_match_all("<A HREF=http://www.wormbase.org/db/seq/sequence\\?name=([A-Za-z0-9\\.]+)>") %>%
             .[[1]] %>% .[, 2] %>%
+            # Strip isoform
+            gsub("[a-z]$", "", .) %>%
             toStringUnique
         sequencingInformation <- html %>%
             str_extract_all("OST in ORFeome version.+\\(WS[0-9]+\\)") %>%
             unlist %>%
             toStringUnique
         primer <- html %>%
-            str_match_all("<font color=red><B>([acgt]+)</B></font>") %>%
+            str_match_all("<font color=red><B>([acgt]+)[\n]?</B></font>") %>%
             .[[1]] %>% .[, 2] %>%
             toupper %>%
             toString
@@ -47,18 +49,26 @@ worfdbData <- function(worfdbHtml) {
             str_match_all("<TR><TD><A HREF=searchallwormorfs.pl\\?sid=([A-Z0-9]+\\.[0-9]+[a-z]?)>[A-Z0-9]+\\.[0-9]+[a-z]?</A></TD><TD>([0-9]{5}@[A-H][0-9]+)</TD><TD>([0-9]{5}@[A-H][0-9]+)?</TD><TD>(N|Y)</TD><TD>([0-9]+)</TD></TR>") %>%
             .[[1]] %>% .[, 2] %>%
             toStringUnique
-        list <- list(sequence = names(worfdbHtml)[a],
-                     sequenceWorfdb = sequence,
+        list <- list(query = names(worfdbHtml)[a],
+                     sequence = sequence,
                      clone = clone,
                      sequencingInformation = sequencingInformation,
                      inFrame = inFrame,
                      primer = primer,
-                     size = size,
-                     remap = remap)
+                     remap = remap,
+                     size = size)
         lapply(list, function(b) {
             as_tibble(Filter(Negate(is.null), b))
         })
-    }) %>% bind_rows %>% wash
+    }) %>%
+        bind_rows %>%
+        wash %>%
+        arrange(sequence) %>%
+        filter(!is.na(clone)) %>%
+        mutate(clone = gsub("@", "", clone),
+               clone = gsub("([A-Z]{1})0", "\\1", clone)) %>%
+        left_join(gene(.$sequence, format = "sequence", select = "gene"),
+                  by = "sequence")
 }
 
 if (!file.exists("data-raw/worfdb/worfdbHtml.rda")) {
@@ -69,27 +79,30 @@ if (!file.exists("data-raw/worfdb/worfdbHtml.rda")) {
 } else {
     load("data-raw/worfdb/worfdbHtml.rda")
 }
+worfdb <- worfdbData(worfdbHtml)
 
-worfdb <- worfdbData(worfdbHtml) %>%
-    arrange(sequence) %>%
-    filter(!is.na(clone)) %>%
-    mutate(clone = gsub("@", "", clone),
-           clone = gsub("([A-Z]{1})0", "\\1", clone)) %>%
-    left_join(gene(.$sequence, format = "sequence", select = "gene"),
-              by = "sequence")
+if (!file.exists("data-raw/worfdb/worfdbHtmlRemap.rda")) {
+    # Example: H15N14.1
+    sequenceRemap <- worfdb %>%
+        filter(!is.na(remap)) %>%
+        .$remap %>% toString %>%
+        str_split(", ") %>%
+        unlist
+    worfdbHtmlRemap <- worfdbHtml(sequenceRemap)
+    save(worfdbHtmlRemap, file = "data-raw/worfdb/worfdbHtmlRemap.rda")
+} else {
+    load("data-raw/worfdb/worfdbHtmlRemap.rda")
+}
+worfdbRemap <- worfdbData(worfdbHtmlRemap)
+
+worfdb <- bind_rows(worfdb, worfdbRemap) %>%
+    filter(is.na(remap)) %>%
+    select(-c(query, remap)) %>%
+    #! group_by(clone) %>%
+    #! collapse %>%
+    arrange(clone)
 use_data(worfdb, overwrite = TRUE)
 
-# if (!file.exists("data-raw/worfdb/worfdbHtmlRemap.rda")) {
-#     # Example: H15N14.1
-#     sequenceRemap <- worfdb %>%
-#         filter(!is.na(remap)) %>%
-#         .$remap %>% toString %>%
-#         str_split(", ") %>%
-#         unlist
-#     worfdbHtmlRemap <- worfdbHtml(sequenceRemap)
-#     save(worfdbHtmlRemap, file = "data-raw/worfdb/worfdbHtmlRemap.rda")
-# } else {
-#     load("data-raw/worfdb/worfdbHtmlRemap.rda")
-# }
-#
-# worfdbRemap <- worfdbData(worfdbHtmlRemap)
+# Check for duplicates
+dupes <- worfdb %>%
+    filter(clone %in% unique(.[["clone"]][duplicated(.[["clone"]])]))

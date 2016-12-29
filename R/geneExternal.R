@@ -14,9 +14,6 @@
 #' @examples
 #' geneExternal("WBGene00000001")
 geneExternal <- function(identifier, all = FALSE) {
-    if (length(identifier) >= restLimit) {
-        stop(paste0("A maximum of ", restLimit, " identifiers is allowed."))
-    }
     result <- lapply(seq_along(identifier), function(a) {
         b <- identifier[[a]]
         if (!grepl("^WBGene[0-9]{8}$", b)) {
