@@ -15,7 +15,4 @@ tibble
 \description{
 UniProt web service query
 }
-\examples{
-uniprot("WBGene00004804")
-}
 

@@ -1,4 +1,4 @@
-data(sourcebioscience, worfdb)
+loadData(c("sourcebioscience", "worfdb"))
 sourcebioscience <- sourcebioscience %>%
     select(gene, genePair, ahringer384, ahringer96)
 worfdb <- worfdb %>%

@@ -1,17 +1,14 @@
 #' UniProt web service query
 #'
-#' @import dplyr
-#' @import magrittr
-#' @import pbmcapply
-#' @import UniProt.ws
+#' @importFrom dplyr bind_rows rename_
 #' @importFrom parallel mclapply
+#' @importFrom pbmcapply pbmclapply
+#' @importFrom UniProt.ws select UniProt.ws
 #'
 #' @param query WormBase identifier
 #' @return tibble
 #'
 #' @export
-#' @examples
-#' uniprot("WBGene00004804")
 uniprot <- function(query) {
     query <- query %>% stats::na.omit(.) %>% unique %>% sort
     if (length(query) < 100) {

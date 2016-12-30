@@ -1,6 +1,16 @@
-#' camelCase
+#' Pipe operator
 #'
-#' @import magrittr
+#' @name %>%
+#' @rdname pipe
+#' @keywords internal
+#' @export
+#' @importFrom magrittr %>%
+#' @usage lhs \%>\% rhs
+NULL
+
+
+
+#' camelCase
 #'
 #' @param string \code{string}.
 #'
@@ -23,9 +33,26 @@ camel <- function(string) {
 
 
 
+#' Load data and source if necessary
+#'
+#' @param data Data files
+#'
+#' @export
+loadData <- function(data) {
+    for (a in 1:length(data)) {
+        if (!file.exists(paste0("data/", data[a], ".rda"))) {
+            source(paste0("data-raw/", data[a], ".R"))
+        } else {
+            load(paste0("data/", data[a], ".rda"), envir = globalenv())
+        }
+    }
+}
+
+
+
 #' Collapse rows in a data.frame.
 #'
-#' @import dplyr
+#' @importFrom dplyr funs mutate_each summarise_each
 #'
 #' @param tibble long tibble.
 #'
@@ -39,9 +66,24 @@ collapse <- function(tibble) {
 
 
 
+#' Fix empty and "NA" character strings.
+#'
+#' @param a Values missing \code{NA}.
+#'
+#' @return Values containing \code{NA}.
+#' @export
+#'
+#' @examples
+#' fixNA(c(1, "x", "", "NA"))
+fixNA <- function(a) {
+    gsub("^$|^NA$", NA, a)
+}
+
+
+
 #' WormBase REST API query
 #'
-#' @import httr
+#' @importFrom httr content content_type_json GET user_agent
 #'
 #' @param url URL query to WormBase RESTful API
 #'
@@ -74,8 +116,6 @@ setNamesCamel <- function(data) {
 
 
 #' toString call that only outputs uniques.
-#'
-#' @import magrittr
 #'
 #' @param x vector.
 #'

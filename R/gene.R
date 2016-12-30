@@ -1,8 +1,8 @@
 #' Gene mapping
 #'
-#' @import dplyr
-#' @import pbmcapply
+#' @importFrom dplyr arrange_ bind_rows left_join
 #' @importFrom parallel mclapply
+#' @importFrom pbmcapply pbmclapply
 #' @importFrom stats na.omit
 #' @importFrom tidyr separate_
 #'

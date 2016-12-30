@@ -98,8 +98,7 @@ worfdbRemap <- worfdbData(worfdbHtmlRemap)
 worfdb <- bind_rows(worfdb, worfdbRemap) %>%
     filter(is.na(remap)) %>%
     select(-c(query, remap)) %>%
-    #! group_by(clone) %>%
-    #! collapse %>%
+    distinct %>%
     arrange(clone)
 use_data(worfdb, overwrite = TRUE)
 

@@ -1,6 +1,7 @@
 #' WormBase RESTful RNAi sequence query
 #'
-#' @import dplyr
+#' @importFrom dplyr bind_rows
+#' @importFrom tibble as_tibble
 #'
 #' @param rnai RNAi
 #'

@@ -23,7 +23,12 @@
 
 .onAttach <- function(libname, pkgname) {
     packageStartupMessage(
-        paste(paste0("Annotations ", build$date, ":"),
-              paste(build$wormbase, build$ensembl, build$panther, sep = ", "))
+        paste("Annotations:",
+              paste(build$ensembl,
+                    build$panther,
+                    build$wormbase,
+                    sep = ", "),
+              paste0("(", build$date, ")"),
+              sep = " ")
     )
 }

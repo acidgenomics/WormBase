@@ -1,9 +1,9 @@
 #' WormBase RESTful gene external query
 #'
-#' @import dplyr
-#' @import magrittr
-#' @import parallel
-#' @import tibble
+#' @importFrom dplyr bind_rows mutate_
+#' @importFrom magrittr set_names
+#' @importFrom parallel mclapply
+#' @importFrom tibble as_tibble
 #'
 #' @param identifier Gene identifier
 #' @param all Keep all identifiers (\code{TRUE}/\code{FALSE})
