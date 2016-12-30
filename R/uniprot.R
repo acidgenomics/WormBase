@@ -22,26 +22,30 @@ uniprot <- function(query) {
             .[, "uniprot"] %>% .[[1]] %>%
             gsub(",.+$", "", .)
         UniProt.ws::select(database, keytype = "UNIPROTKB", keys = key,
-                           columns = c("ENSEMBL_GENOMES",
+                           #! columns = UniProt.ws::columns(database)) %>%
+                           columns = c("CITATION",
                                        "EGGNOG",
-                                       "CITATION",
-                                       "ENTRY-NAME",
+                                       #! "ENTRY-NAME",
                                        "EXISTENCE",
                                        "FAMILIES",
-                                       "FEATURES",
-                                       "GENES",
+                                       #! "FEATURES",
+                                       #! "GENES",
                                        "GO",
-                                       "GO-ID",
+                                       #! "GO-ID",
                                        "HOGENOM",
+                                       #! "INTERACTOR",
                                        "INTERPRO",
-                                       "KEGG",
+                                       #! "KEGG",
                                        "KEYWORDS",
-                                       "LAST-MODIFIED",
+                                       #! "LAST-MODIFIED",
                                        "ORTHODB",
-                                       "PROTEIN-NAMES",
+                                       #! "PATHWAY",
+                                       #! "PROTEIN-NAMES",
+                                       "REACTOME",
                                        "REVIEWED",
-                                       "SCORE")) %>%
+                                       "SCORE",
+                                       "WORMBASE")) %>%
             collapse
     }) %>% dplyr::bind_rows(.) %>% setNamesCamel %>%
-        dplyr::rename_(.dots = c("gene" = "ensemblGenomes"))
+        dplyr::rename_(.dots = c("gene" = "wormbase"))
 }

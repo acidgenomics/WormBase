@@ -1,10 +1,49 @@
+#' @importFrom utils download.file
+.onLoad <- function(libname, pkgname) {
+    envir = asNamespace("worminfo")
+
+    # Download source data from the `data` branch on GitHub:
+    assign("geneAnnotation", tempfile(), envir = envir)
+    utils::download.file("http://worminfo.steinbaugh.com/data/geneAnnotation.rda",
+                         get("geneAnnotation", envir = envir), quiet = TRUE)
+    load(get("geneAnnotation", envir = envir), envir = envir)
+
+    assign("rnaiAnnotation", tempfile(), envir = envir)
+    utils::download.file("http://worminfo.steinbaugh.com/data/rnaiAnnotation.rda",
+                         get("rnaiAnnotation", envir = envir),
+                         quiet = TRUE)
+    load(get("rnaiAnnotation", envir = envir), envir = envir)
+
+    assign("build", tempfile(), envir = envir)
+    utils::download.file("http://worminfo.steinbaugh.com/data/build.rda",
+                         get("build", envir = envir),
+                         quiet = TRUE)
+    load(get("build", envir = envir), envir = envir)
+}
+
+
+
+.onAttach <- function(libname, pkgname) {
+    packageStartupMessage(
+        paste("Annotations:",
+              paste(build$ensembl,
+                    build$panther,
+                    build$wormbase,
+                    sep = ", "),
+              paste0("(", build$date, ")"),
+              sep = " ")
+    )
+}
+
+
+
 #' Pipe operator
 #'
-#' @name %>%
-#' @rdname pipe
-#' @keywords internal
 #' @export
 #' @importFrom magrittr %>%
+#' @keywords internal
+#' @name %>%
+#' @rdname pipe
 #' @usage lhs \%>\% rhs
 NULL
 
@@ -12,9 +51,7 @@ NULL
 
 #' camelCase
 #'
-#' @param string \code{string}.
-#'
-#' @return \code{string} with camelCase formatting.
+#' @keywords internal
 camel <- function(string) {
     string %>%
         # Convert non-alphanumeric characters to underscores:
@@ -35,9 +72,7 @@ camel <- function(string) {
 
 #' Load data and source if necessary
 #'
-#' @param data Data files
-#'
-#' @export
+#' @keywords internal
 loadData <- function(data) {
     for (a in 1:length(data)) {
         if (!file.exists(paste0("data/", data[a], ".rda"))) {
@@ -53,11 +88,7 @@ loadData <- function(data) {
 #' Collapse rows in a data.frame.
 #'
 #' @importFrom dplyr funs mutate_each summarise_each
-#'
-#' @param tibble long tibble.
-#'
-#' @return collapsed tibble.
-#' @export
+#' @keywords internal
 collapse <- function(tibble) {
     tibble %>%
         dplyr::summarise_each(funs(toStringUnique)) %>%
@@ -68,13 +99,7 @@ collapse <- function(tibble) {
 
 #' Fix empty and "NA" character strings.
 #'
-#' @param a Values missing \code{NA}.
-#'
-#' @return Values containing \code{NA}.
-#' @export
-#'
-#' @examples
-#' fixNA(c(1, "x", "", "NA"))
+#' @keywords internal
 fixNA <- function(a) {
     gsub("^$|^NA$", NA, a)
 }
@@ -84,14 +109,7 @@ fixNA <- function(a) {
 #' WormBase REST API query
 #'
 #' @importFrom httr content content_type_json GET user_agent
-#'
-#' @param url URL query to WormBase RESTful API
-#'
-#' @return JSON content
-#' @export
-#'
-#' @examples
-#' rest("field/gene/WBGene00000001/gene_class")
+#' @keywords internal
 rest <- function(url) {
     httr::GET(paste0("http://api.wormbase.org/rest/", url),
               config = httr::content_type_json(),
@@ -104,10 +122,7 @@ rest <- function(url) {
 #' Set names as camelCase
 #'
 #' @importFrom magrittr set_names
-#'
-#' @param data \code{data.frame}, \code{list}, or \code{tibble}
-#'
-#' @return data Same data but with reformatted camelCase names
+#' @keywords internal
 setNamesCamel <- function(data) {
     data %>%
         magrittr::set_names(., camel(names(.)))
@@ -117,9 +132,7 @@ setNamesCamel <- function(data) {
 
 #' toString call that only outputs uniques.
 #'
-#' @param x vector.
-#'
-#' @return string vector.
+#' @keywords internal
 toStringUnique <- function(x) {
     x %>%
         unique %>%
