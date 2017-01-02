@@ -3,5 +3,4 @@
 ^\.travis\.yml$
 ^data/
 ^data-raw/
-^data-build\.R$
 ^NEWS\.md$
