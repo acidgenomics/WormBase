@@ -1,5 +1,19 @@
-# Needed for piping
+# Dot global needed for \code{pipe} function:
 utils::globalVariables(c("."))
+
+
+
+.onAttach <- function(libname, pkgname) {
+    packageStartupMessage(
+        paste("Annotations:",
+              paste(build$ensembl,
+                    build$panther,
+                    build$wormbase,
+                    sep = ", "),
+              paste0("(", build$date, ")"),
+              sep = " ")
+    )
+}
 
 
 
@@ -57,9 +71,33 @@ camel <- function(string) {
 
 
 
+#' Collapse rows in a data.frame
+#'
+#' @importFrom dplyr funs mutate_each summarise_each
+#' @keywords internal
+#' @param tibble Tibble
+collapse <- function(tibble) {
+    tibble %>%
+        dplyr::summarise_each(funs(toStringUnique)) %>%
+        dplyr::mutate_each(funs(fixNA))
+}
+
+
+
+#' Fix empty and "NA" character strings
+#'
+#' @keywords internal
+#' @param string String
+fixNA <- function(string) {
+    gsub("^$|^NA$", NA, string)
+}
+
+
+
 #' Load data and source if necessary
 #'
 #' @keywords internal
+#' @param data Data filename
 loadData <- function(data) {
     for (a in 1:length(data)) {
         if (!file.exists(paste0("data/", data[a], ".rda"))) {
@@ -72,31 +110,11 @@ loadData <- function(data) {
 
 
 
-#' Collapse rows in a data.frame.
-#'
-#' @importFrom dplyr funs mutate_each summarise_each
-#' @keywords internal
-collapse <- function(tibble) {
-    tibble %>%
-        dplyr::summarise_each(funs(toStringUnique)) %>%
-        dplyr::mutate_each(funs(fixNA))
-}
-
-
-
-#' Fix empty and "NA" character strings.
-#'
-#' @keywords internal
-fixNA <- function(a) {
-    gsub("^$|^NA$", NA, a)
-}
-
-
-
 #' WormBase REST API query
 #'
 #' @importFrom httr content content_type_json GET user_agent
 #' @keywords internal
+#' @param url URL
 rest <- function(url) {
     httr::GET(paste0("http://api.wormbase.org/rest/", url),
               config = httr::content_type_json(),
@@ -107,6 +125,8 @@ rest <- function(url) {
 
 
 #' Simple columns
+#'
+#' @keywords internal
 #' @param simpleCol Simple columns
 simpleCol <- c("gene", "sequence", "name")
 
@@ -114,8 +134,8 @@ simpleCol <- c("gene", "sequence", "name")
 
 #' Set names as camelCase
 #'
-#' @importFrom magrittr set_names
 #' @keywords internal
+#' @importFrom magrittr set_names
 setNamesCamel <- function(data) {
     data %>%
         magrittr::set_names(., camel(names(.)))
@@ -123,11 +143,12 @@ setNamesCamel <- function(data) {
 
 
 
-#' toString call that only outputs uniques.
+#' toString call that only outputs uniques
 #'
 #' @keywords internal
-toStringUnique <- function(x) {
-    x %>%
+#' @param string String
+toStringUnique <- function(string) {
+    string %>%
         unique %>%
         sort %>%
         toString %>%
@@ -136,6 +157,8 @@ toStringUnique <- function(x) {
 
 
 
-#' User agent
+#' User agent for REST API calls
+#'
+#' @keywords internal
 #' @param ua User agent
 ua <- "https://github.com/steinbaugh/worminfo"
