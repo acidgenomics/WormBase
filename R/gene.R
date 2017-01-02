@@ -1,16 +1,16 @@
 #' Gene mapping
 #'
-#' @import dplyr
-#' @import pbmcapply
+#' @importFrom dplyr arrange_ bind_rows
 #' @importFrom parallel mclapply
+#' @importFrom pbmcapply pbmclapply
 #' @importFrom stats na.omit
 #' @importFrom tidyr separate_
 #'
 #' @param query Identifier query
 #' @param format Identifier type (\code{gene}, \code{name}, \code{sequence},
 #'   \code{class} or \code{keyword})
-#' @param select Columns to select. Optionally, you can use \code{simple},
-#'   \code{report} or \code{NULL} declarations here.
+#' @param select Columns to select. Consult the \code{gene} vignette for
+#'   available parameters.
 #' @param sort Columns to use for sorting.
 #'
 #' @return tibble
@@ -19,7 +19,7 @@
 #' @examples
 #' gene("skn-1", format = "name")
 #' gene("T19E7.2", format = "sequence")
-#' gene("WBGene00004804", format = "gene", select = "report")
+#' gene("WBGene00004804", format = "gene", select = "descriptionConcise")
 #' gene("daf", format = "class")
 #' gene("bzip", format = "keyword")
 gene <- function(query,
@@ -78,15 +78,7 @@ gene <- function(query,
     if (is.null(select)) {
         data <- data[, simpleCol]
     } else {
-        if (select[[1]] == "report") {
-            data <- data[, reportCol]
-            # WormBase REST calls:
-            data <- data %>%
-                dplyr::left_join(geneOntology(.$gene), by = "gene") %>%
-                dplyr::left_join(geneExternal(.$gene), by = "gene")
-        } else {
-            data <- data[, unique(c(format, select))]
-        }
+        data <- data[, unique(c(format, select))]
     }
 
 
