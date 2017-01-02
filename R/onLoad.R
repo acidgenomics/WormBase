@@ -1,29 +1,18 @@
 #' @importFrom utils download.file
 .onLoad <- function(libname, pkgname) {
+    data <- c("build",
+              "eggnogAnnotation",
+              "eggnogCategory",
+              "geneAnnotation",
+              "rnaiAnnotation")
     envir = asNamespace("worminfo")
 
-    # Download source data from the `data` branch on GitHub:
-    assign("geneAnnotation", tempfile(), envir = envir)
-    utils::download.file("http://worminfo.steinbaugh.com/data/geneAnnotation.rda",
-        get("geneAnnotation", envir = envir), quiet = TRUE)
-    load(get("geneAnnotation", envir = envir), envir = envir)
-
-    assign("rnaiAnnotation", tempfile(), envir = envir)
-    utils::download.file("http://worminfo.steinbaugh.com/data/rnaiAnnotation.rda",
-                         get("rnaiAnnotation", envir = envir),
-                         quiet = TRUE)
-    load(get("rnaiAnnotation", envir = envir), envir = envir)
-
-    assign("build", tempfile(), envir = envir)
-    utils::download.file("http://worminfo.steinbaugh.com/data/build.rda",
-                         get("build", envir = envir),
-                         quiet = TRUE)
-    load(get("build", envir = envir), envir = envir)
-}
-
-.onAttach <- function(libname, pkgname) {
-    packageStartupMessage(
-        paste(paste0("Annotations ", build$date, ":"),
-              paste(build$wormbase, build$ensembl, build$panther, sep = ", "))
-    )
+    # Download source data from steinbaugh.com:
+    for (a in 1:length(data)) {
+        assign(data[a], tempfile(), envir = envir)
+        utils::download.file(paste0("http://worminfo.steinbaugh.com/data/", data[a], ".rda"),
+                             get(data[a], envir = envir),
+                             quiet = TRUE)
+        load(get(data[a], envir = envir), envir = envir)
+    }
 }
