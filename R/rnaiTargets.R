@@ -1,7 +1,7 @@
 #' WormBase RESTful RNAi targets query
 #'
-#' @import dplyr
-#' @importFrom stats setNames
+#' @importFrom dplyr bind_rows group_by_ summarise_
+#' @importFrom magrittr set_names
 #' @importFrom stringr str_replace
 #'
 #' @param rnai RNAi
@@ -30,7 +30,7 @@ rnaiTargets <- function(rnai) {
             dots <- list(~toString(unique(id)))
             tbl <- tbl %>%
                 dplyr::group_by_(.dots = "type") %>%
-                dplyr::summarise_(.dots = stats::setNames(dots, c("id")))
+                dplyr::summarise_(.dots = magrittr::set_names(dots, c("id")))
             primary <- tbl[tbl$type == "primary", "id"] %>%
                 as.character
             if (primary == "character(0)") {

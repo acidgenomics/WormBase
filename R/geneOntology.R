@@ -1,9 +1,9 @@
 #' WormBase RESTful RNAi gene ontology query
 #'
-#' @import dplyr
-#' @import magrittr
-#' @import parallel
-#' @import tibble
+#' @importFrom dplyr bind_rows mutate_ rename_
+#' @importFrom magrittr set_names
+#' @importFrom parallel mclapply
+#' @importFrom tibble as_tibble
 #'
 #' @param identifier Gene identifier
 #'

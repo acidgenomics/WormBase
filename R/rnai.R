@@ -1,8 +1,8 @@
 #' RNAi clone mapping
 #'
-#' @import dplyr
-#' @import pbmcapply
+#' @importFrom dplyr bind_rows left_join
 #' @importFrom parallel mclapply
+#' @importFrom pbmcapply pbmclapply
 #' @importFrom stats na.omit
 #'
 #' @param query Identifier query
