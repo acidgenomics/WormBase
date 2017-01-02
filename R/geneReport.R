@@ -1,52 +1,48 @@
-# Split out the report special declaration from gene() function and rework here:
-# Use UniProt then EggNOG
-# Don't need to specify reportCol as a global variable when used here only.
-
-# #' Report columns
-# #' @param reportCol Report columns
-# reportCol <- c(simpleCol,
-#                "class",
-#                # Ortholog:
-#                "blastpHsapiensGene",
-#                "blastpHsapiensName",
-#                "blastpHsapiensDescription",
-#                "orthologHsapiens",
-#                # Description:
-#                "descriptionConcise",
-#                "descriptionProvisional",
-#                "descriptionAutomated",
-#                "ensemblDescription",
-#                # WormBase Additional:
-#                "rnaiPhenotype",
-#                # Gene Ontology:
-#                "ensemblGeneOntology",
-#                "interpro",
-#                "pantherFamilyName",
-#                "pantherSubfamilyName",
-#                "pantherGeneOntologyMolecularFunction",
-#                "pantherGeneOntologyBiologicalProcess",
-#                "pantherGeneOntologyCellularComponent",
-#                "pantherClass")
-
-# For EggNOG matching, use str_extract to pull only the LUCA identifier if both are present
-
 #' Gene list report
 #'
-#' @param query
-#'
-#' @return tibble
 #' @export
+#' @importFrom dplyr left_join
+#' @param query Gene identifier
+#' @return tibble
 #'
 #' @examples
 #' geneReport("WBGene00000001")
 geneReport <- function(query) {
-    # if (select[[1]] == "report") {
-    #     data <- data[, reportCol]
-    #     # WormBase REST and UniProt.ws calls:
-    #     data <- data %>%
-    #         dplyr::left_join(geneOntology(.$gene), by = "gene") %>%
-    #         dplyr::left_join(geneExternal(.$gene), by = "gene") %>%
-    #         dplyr::left_join(uniprot(.$gene), by = "gene")
-    # }
-    query
+    report <- gene(query, select = c(simpleCol,
+                                     "class",
+                                     "biotype",
+                                     # Ortholog:
+                                     "blastpHsapiensGene",
+                                     "blastpHsapiensName",
+                                     "blastpHsapiensDescription",
+                                     "orthologHsapiens",
+                                     # Description:
+                                     "descriptionConcise",
+                                     "descriptionProvisional",
+                                     "descriptionAutomated",
+                                     "ensemblDescription",
+                                     # WormBase Additional:
+                                     "rnaiPhenotype",
+                                     # Gene Ontology:
+                                     "ensemblGeneOntology",
+                                     "interpro",
+                                     "pantherFamilyName",
+                                     "pantherSubfamilyName",
+                                     "pantherGeneOntologyMolecularFunction",
+                                     "pantherGeneOntologyBiologicalProcess",
+                                     "pantherGeneOntologyCellularComponent",
+                                     "pantherClass")) %>%
+        dplyr::left_join(geneOntology(.$gene), by = "gene") %>%
+        dplyr::left_join(geneExternal(.$gene), by = "gene") %>%
+        dplyr::left_join(uniprot(.$gene), by = "gene")
+    report$groupName <- report$eggnog %>%
+        stringr::str_extract(., "ENOG41[A-Z0-9]{5}")
+    report <- dplyr::left_join(report,
+                               eggnog(x$groupName),
+                               by = "groupName")
+    report$groupName <- NULL
+    return(report)
 }
+
+# reorder columns, sort by eggNog category then UniProt score confidence
+# Write wormbaseCitation function -- PMID identifiers

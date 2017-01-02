@@ -7,7 +7,7 @@
 geneReport(query)
 }
 \arguments{
-\item{query}{}
+\item{query}{Gene identifier}
 }
 \value{
 tibble
