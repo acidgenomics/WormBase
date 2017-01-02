@@ -1,10 +1,11 @@
-data(wormbaseGene,
-     wormbaseBlastp,
-     wormbaseDescription,
-     wormbaseOrtholog,
-     wormbaseRnaiPhenotype,
-     ensembl,
-     panther)
+loadData(c("wormbaseGene",  # must go first
+           "wormbaseBlastp",
+           "wormbaseDescription",
+           "wormbaseOligo",
+           "wormbaseOrtholog",
+           "wormbaseRnaiPhenotype",
+           "ensembl",
+           "panther"))
 
 # Add `blastp` prefix:
 names(wormbaseBlastp)[2:length(wormbaseBlastp)] <-
