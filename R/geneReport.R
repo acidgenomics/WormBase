@@ -39,7 +39,7 @@
 #'
 #' @examples
 #' geneReport("WBGene00000001")
-report <- function(query) {
+geneReport <- function(query) {
     # if (select[[1]] == "report") {
     #     data <- data[, reportCol]
     #     # WormBase REST and UniProt.ws calls:
@@ -48,4 +48,5 @@ report <- function(query) {
     #         dplyr::left_join(geneExternal(.$gene), by = "gene") %>%
     #         dplyr::left_join(uniprot(.$gene), by = "gene")
     # }
+    query
 }
