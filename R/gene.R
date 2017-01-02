@@ -80,10 +80,11 @@ gene <- function(query,
     } else {
         if (select[[1]] == "report") {
             data <- data[, reportCol]
-            # WormBase REST calls:
+            # WormBase REST and UniProt.ws calls:
             data <- data %>%
                 dplyr::left_join(geneOntology(.$gene), by = "gene") %>%
-                dplyr::left_join(geneExternal(.$gene), by = "gene")
+                dplyr::left_join(geneExternal(.$gene), by = "gene") %>%
+                dplyr::left_join(uniprot(.$gene), by = "gene")
         } else {
             data <- data[, unique(c(format, select))]
         }

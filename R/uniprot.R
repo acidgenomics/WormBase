@@ -1,6 +1,6 @@
 #' UniProt web service query
 #'
-#' @importFrom dplyr bind_rows rename_
+#' @importFrom dplyr bind_rows rename_ select_
 #' @importFrom parallel mclapply
 #' @importFrom pbmcapply pbmclapply
 #' @importFrom UniProt.ws select UniProt.ws
@@ -24,6 +24,7 @@ uniprot <- function(query) {
         UniProt.ws::select(database, keytype = "UNIPROTKB", keys = key,
                            #! columns = UniProt.ws::columns(database)) %>%
                            columns = c("CITATION",
+                                       "DATABASE(PFAM)",
                                        "EGGNOG",
                                        #! "ENTRY-NAME",
                                        "EXISTENCE",
@@ -34,7 +35,7 @@ uniprot <- function(query) {
                                        #! "GO-ID",
                                        "HOGENOM",
                                        #! "INTERACTOR",
-                                       "INTERPRO",
+                                       #! "INTERPRO",
                                        #! "KEGG",
                                        "KEYWORDS",
                                        #! "LAST-MODIFIED",
@@ -47,5 +48,16 @@ uniprot <- function(query) {
                                        "WORMBASE")) %>%
             collapse
     }) %>% dplyr::bind_rows(.) %>% setNamesCamel %>%
-        dplyr::rename_(.dots = c("gene" = "wormbase"))
+        dplyr::rename_(.dots = c("gene" = "wormbase",
+                                 "pfam" = "databasePfam",
+                                 "uniprotCitation" = "citation",
+                                 "uniprotExistence" = "existence",
+                                 "uniprotFamilies" = "families",
+                                 "uniprotGeneOntology" = "go",
+                                 "uniprotKeywords" = "keywords",
+                                 "uniprotReviewed" = "reviewed",
+                                 "uniprotScore" = "score")) %>%
+        dplyr::select_(.dots = c("gene",
+                                 setdiff(sort(names(.)),
+                                         c("gene", "uniprotkb"))))
 }
