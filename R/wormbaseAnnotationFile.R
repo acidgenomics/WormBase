@@ -6,6 +6,9 @@
 #'
 #' @return File path of download
 wormbaseAnnotationFile <- function(file) {
+    if (!file.exists("data-raw/wormbase")) {
+        dir.create("data-raw/wormbase", recursive = TRUE)
+    }
     root <- "ftp://ftp.wormbase.org/pub/wormbase/species/c_elegans/annotation/"
     version <- "canonical_bioproject.current"
     if (file == "best_blast_hits") {
