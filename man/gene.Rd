@@ -12,8 +12,8 @@ gene(query, format = "gene", select = NULL, sort = NULL)
 \item{format}{Identifier type (\code{gene}, \code{name}, \code{sequence},
 \code{class} or \code{keyword})}
 
-\item{select}{Columns to select. Optionally, you can use \code{simple},
-\code{report} or \code{NULL} declarations here.}
+\item{select}{Columns to select. Consult the \code{gene} vignette for
+available parameters.}
 
 \item{sort}{Columns to use for sorting.}
 }
@@ -26,7 +26,7 @@ Gene mapping
 \examples{
 gene("skn-1", format = "name")
 gene("T19E7.2", format = "sequence")
-gene("WBGene00004804", format = "gene", select = "report")
+gene("WBGene00004804", format = "gene", select = "descriptionConcise")
 gene("daf", format = "class")
 gene("bzip", format = "keyword")
 }
