@@ -1,8 +1,11 @@
 ---
-title: "Gene annotations with the `gene()` function"
+title: "Gene annotations"
 author: "Michael J. Steinbaugh"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output:
+    rmarkdown::html_vignette:
+        css: http://static.steinbaugh.com/css/vignette.css
+        self_contained: false
 vignette: >
     %\VignetteIndexEntry{gene}
     %\VignetteEngine{knitr::rmarkdown}
@@ -14,8 +17,7 @@ knitr::opts_chunk$set(results = "asis", render = pander::pander)
 pander::panderOptions("table.style", "rmarkdown")
 pander::panderOptions("table.alignment.default", "left")
 pander::panderOptions("table.alignment.rownames", "right")
-library(magrittr)
-devtools::load_all()
+library(worminfo)
 ```
 
 ```{r, include = FALSE}
@@ -88,7 +90,7 @@ You can also return all genes in a named **class**. For example, let's get the
 current list of *daf* (**D**auer **A**rrest **F**orming) genes:
 
 ```{r}
-gene("daf", format = "class") %>% head
+gene("daf", format = "class")
 ```
 
 
@@ -96,7 +98,8 @@ You can perform a **keyword** search. For example, let's query all genes that
 have been implicated in the regulation of worm lifespan:
 
 ```{r}
-gene("lifespan", format = "keyword",
+gene("lifespan",
+     format = "keyword",
      select = c("gene", "sequence", "name")) %>% head
 ```
 
@@ -108,7 +111,9 @@ The `gene()` function is bundled with source data that can be queried using the
 called with `select`:
 
 ```{r, echo = FALSE, results = "asis"}
-gene(identifier, select = NULL) %>% names %>% markdownList
+get("geneAnnotation", envir = asNamespace("worminfo")) %>%
+    names %>%
+    markdownList
 ```
 
 
@@ -119,19 +124,13 @@ gene(identifier) %>% names %>% markdownList
 ```
 
 
-Additionally, a special `report` declaration is available. These shortcut is
-useful for generating summaries and may be relevant to experiments involving
-large gene lists.
-
-
 ## `gene()` function examples
 
-**Report** for [*daf-16*][] (forkhead transcription factor):
+Basic identifiers for [*skn-1*][] (bZIP transcription factor):
 
 ```{r}
-gene("daf-16", format = "name", select = "report") %>% t
+gene("skn-1", format = "name") %>% t
 ```
-
 
 Select [WormBase][] and [Ensembl][] descriptions for [*sbp-1*][] (bHLH
 transcription factor):
@@ -142,12 +141,4 @@ gene("sbp-1",
      select = c("descriptionConcise",
                 "descriptionProvisional",
                 "ensemblDescription")) %>% t
-```
-
-
-**All fields** for [*skn-1*][] (bZIP transcription factor), using the `NULL`
-delcaration:
-
-```{r}
-gene("skn-1", format = "name", select = NULL) %>% t
 ```

@@ -4,18 +4,15 @@
 \alias{geneReport}
 \title{Gene list report}
 \usage{
-geneReport(query)
+geneReport(identifier)
 }
 \arguments{
-\item{query}{Gene identifier}
+\item{identifier}{Gene identifier}
 }
 \value{
 tibble
 }
 \description{
 Gene list report
-}
-\examples{
-geneReport("WBGene00000001")
 }
 

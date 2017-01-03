@@ -4,10 +4,10 @@
 \alias{gene}
 \title{Gene mapping}
 \usage{
-gene(query, format = "gene", select = NULL, sort = NULL)
+gene(identifier, format = "gene", select = NULL, sort = NULL)
 }
 \arguments{
-\item{query}{Identifier query}
+\item{identifier}{Identifier}
 
 \item{format}{Identifier type (\code{gene}, \code{name}, \code{sequence},
 \code{class} or \code{keyword})}

@@ -4,10 +4,10 @@
 \alias{eggnog}
 \title{EggNOG annotations}
 \usage{
-eggnog(query)
+eggnog(identifier)
 }
 \arguments{
-\item{query}{EggNOG identifier}
+\item{identifier}{EggNOG identifier}
 }
 \value{
 tibble

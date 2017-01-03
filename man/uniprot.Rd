@@ -4,10 +4,10 @@
 \alias{uniprot}
 \title{UniProt web service query}
 \usage{
-uniprot(query)
+uniprot(identifier)
 }
 \arguments{
-\item{query}{WormBase identifier}
+\item{identifier}{WormBase gene identifier}
 }
 \value{
 tibble

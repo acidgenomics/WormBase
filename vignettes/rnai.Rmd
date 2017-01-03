@@ -1,12 +1,15 @@
 ---
-title: "RNAi clone mapping with the `rnai()` function"
+title: "Clone mapping to ORFeome and Ahringer feeding RNAi libraries"
 author: "Michael J. Steinbaugh"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output:
+    rmarkdown::html_vignette:
+        css: http://static.steinbaugh.com/css/vignette.css
+        self_contained: false
 vignette: >
-  %\VignetteIndexEntry{rnai}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    %\VignetteIndexEntry{rnai}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include = FALSE}
@@ -14,14 +17,13 @@ knitr::opts_chunk$set(results = "asis", render = pander::pander)
 pander::panderOptions("table.style", "rmarkdown")
 pander::panderOptions("table.alignment.default", "left")
 pander::panderOptions("table.alignment.rownames", "right")
-library(magrittr)
-devtools::load_all()
+library(worminfo)
 ```
 
 [ahringer]: http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/
-[orfeome]: http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai/
+[orfeome]: http://worfdb.dfci.harvard.edu
+[orfeome dharmacon]: http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai/
 [orfeome sbs]: http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-orfeome-version-11/
-[worfdb]: http://worfdb.dfci.harvard.edu
 [wormbase]: http://www.wormbase.org
 
 [*daf-16*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00000912
@@ -38,7 +40,7 @@ function also obtains primary and secondary target information from
 effects.
 
 The function has built-in support for the commonly used [Ahringer][ahringer] and
-[ORFeome][] v1.1 RNAi libraries.
+[ORFeome][] RNAi libraries.
 
 
 ## Finding clones by gene identifier
@@ -87,10 +89,11 @@ rnai("86B01", library = "ahringer96") %>% t
 ### [ORFeome][] library
 
 `rnai()` has mapping support for the [ORFeome][] library, in 96 well format.
-Plate position should be entered in the same format as the [WORFDB][]. The
-function is flexible, and also supports entries in the historical format
-(e.g. `GHR-11010@G06`), or without a separator:
+Plate position should be entered in the same format as seen on the WORFDB.
+However, the function is flexible, and also supports entries in the historical
+format (e.g. `GHR-11010@G06`), or without a separator:
 
 ```{r}
-rnai("11010G06", library = "orfeome96") %>% t
+rnai("GHR-11010@G06", library = "orfeome96") %>% t
+rnai("11010G6", library = "orfeome96") %>% t
 ```
