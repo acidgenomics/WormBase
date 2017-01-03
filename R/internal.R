@@ -84,21 +84,11 @@ collapse <- function(tibble) {
 
 
 
-#' Fix empty and "NA" character strings
-#'
-#' @keywords internal
-#' @param string String
-fixNA <- function(string) {
-    gsub("^$|^NA$", NA, string)
-}
-
-
-
-#' Load data and source if necessary
+#' Source data-raw R script if necessary then load data binary
 #'
 #' @keywords internal
 #' @param data Data filename
-loadData <- function(data) {
+dataRaw <- function(data) {
     for (a in 1:length(data)) {
         if (!file.exists(paste0("data/", data[a], ".rda"))) {
             source(paste0("data-raw/", data[a], ".R"))
@@ -106,6 +96,16 @@ loadData <- function(data) {
             load(paste0("data/", data[a], ".rda"), envir = globalenv())
         }
     }
+}
+
+
+
+#' Fix empty and "NA" character strings
+#'
+#' @keywords internal
+#' @param string String
+fixNA <- function(string) {
+    gsub("^$|^NA$", NA, string)
 }
 
 

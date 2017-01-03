@@ -5,7 +5,7 @@
 #' @importFrom pbmcapply pbmclapply
 #' @importFrom stats na.omit
 #'
-#' @param query Identifier query
+#' @param identifier Identifier
 #' @param format Identifier format (\code{gene}, \code{name}, or \code{sequence})
 #' @param library Library type (\code{ahringer96}, \code{ahringer384}, or \code{orfeome96})
 #'
@@ -20,23 +20,23 @@
 #' rnai("GHR-11010@G06", library = "orfeome96")
 #' rnai("III-6C01", library = "ahringer384")
 #' rnai("86B01", library = "ahringer96")
-rnai <- function(query,
+rnai <- function(identifier,
                  format = "clone",
                  library = "orfeome96") {
-    if (missing(query)) {
+    if (missing(identifier)) {
         stop("An identifier is required.")
-    } else if (!is.character(query)) {
+    } else if (!is.character(identifier)) {
         stop("Identifier must be a character vector.")
     }
     annotation <- get("rnaiAnnotation", envir = asNamespace("worminfo"))
-    query <- query %>% stats::na.omit(.) %>% unique %>% sort
-    if (length(query) < 100) {
+    identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
+    if (length(identifier) < 100) {
         lapply <- parallel::mclapply
     } else {
         lapply <- pbmcapply::pbmclapply
     }
-    lapply(seq_along(query), function(a) {
-        identifier <- query[a]
+    lapply(seq_along(identifier), function(a) {
+        well <- identifier[a]
         if (format == "clone") {
             if (!any(grepl(library, c("ahringer384",
                                       "ahringer96",
@@ -44,40 +44,41 @@ rnai <- function(query,
                 stop("Invalid library.")
             }
             # Roman chromosome prefix is needed for \code{ahringer384}:
-            if (!grepl("^[IVX]+", identifier)) {
-                identifier <- gsub("^[A-Za-z]+(96|384)?-", "", identifier)
+            if (!grepl("^[IVX]+", well)) {
+                well <- gsub("^[A-Za-z]+(96|384)?-", "", well)
             }
             # Remove padded zeroes:
-            identifier <- gsub("(^|-)[0]+", "", identifier)
-            identifier <- gsub("([A-Z]{1})[0]+(\\d)$", "\\1\\2", identifier)
+            well <- gsub("(^|-)[0]+", "", well)
+            well <- gsub("([A-Z]{1})[0]+(\\d)$", "\\1\\2", well)
             # Strip separators:
-            identifier <- gsub("-|@", "", identifier)
+            well <- gsub("-|@", "", well)
             # Match beginning of line or after comma:
             grepl <- paste0(
                 # Unique:
-                "^", identifier, "$",
+                "^", well, "$",
                 "|",
                 # Beginning of list:
-                "^", identifier, ",",
+                "^", well, ",",
                 "|",
                 # Middle of list:
-                "\\s", identifier, ",",
+                "\\s", well, ",",
                 "|",
                 # End of list:
-                "\\s", identifier, "$")
+                "\\s", well, "$")
             data <- annotation %>%
                 .[grepl(grepl, .[[library]]), "gene"]
             if (nrow(data)) {
-                # Add the clone identifier back:
-                data$clone <- query[a]
+                # Add the user input clone back:
+                data$clone <- identifier[a]
             }
         } else if (any(grepl(format, simpleCol))) {
+            geneIdentifier <- identifier[a]
             if (format == "sequence") {
                 # Strip out isoform information:
-                identifier <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$", "\\1.\\2", identifier)
+                geneIdentifier <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$", "\\1.\\2", geneIdentifier)
             }
             # Query `gene()` function and map to gene identifier:
-            data <- gene(identifier, format = format, select = simpleCol)
+            data <- gene(geneIdentifier, format = format, select = simpleCol)
             if (nrow(data)) {
                 data <- data %>%
                     dplyr::left_join(annotation, by = "gene")
@@ -93,8 +94,8 @@ rnai <- function(query,
                 data$ahringer96 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$ahringer96)
                 data$orfeome96 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$orfeome96)
                 if (format == "sequence") {
-                    # Add the original sequence query back:
-                    data$sequence <- identifier
+                    # Add the user input sequence back:
+                    data$sequence <- identifier[a]
                 }
             }
         } else {

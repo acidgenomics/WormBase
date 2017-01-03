@@ -5,20 +5,20 @@
 #' @importFrom pbmcapply pbmclapply
 #' @importFrom UniProt.ws select UniProt.ws
 #'
-#' @param query WormBase identifier
+#' @param identifier WormBase gene identifier
 #' @return tibble
 #'
 #' @export
-uniprot <- function(query) {
-    query <- query %>% stats::na.omit(.) %>% unique %>% sort
-    if (length(query) < 100) {
+uniprot <- function(identifier) {
+    identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
+    if (length(identifier) < 100) {
         lapply <- parallel::mclapply
     } else {
         lapply <- pbmcapply::pbmclapply
     }
     database <- UniProt.ws::UniProt.ws(taxId = 6239)  # NCBI C. elegans
-    lapply(seq_along(query), function(a) {
-        key <- geneExternal(query[a]) %>%
+    lapply(seq_along(identifier), function(a) {
+        key <- geneExternal(identifier[a]) %>%
             .[, "uniprot"] %>% .[[1]] %>%
             gsub(",.+$", "", .)
         UniProt.ws::select(database, keytype = "UNIPROTKB", keys = key,

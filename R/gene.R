@@ -6,7 +6,7 @@
 #' @importFrom stats na.omit
 #' @importFrom tidyr separate_
 #'
-#' @param query Identifier query
+#' @param identifier Identifier
 #' @param format Identifier type (\code{gene}, \code{name}, \code{sequence},
 #'   \code{class} or \code{keyword})
 #' @param select Columns to select. Consult the \code{gene} vignette for
@@ -22,44 +22,43 @@
 #' gene("WBGene00004804", format = "gene", select = "descriptionConcise")
 #' gene("daf", format = "class")
 #' gene("bzip", format = "keyword")
-gene <- function(query,
+gene <- function(identifier,
                  format = "gene",
                  select = NULL,
                  sort = NULL) {
-    if (missing(query)) {
+    if (missing(identifier)) {
         stop("An identifier is required.")
-    } else if (!is.character(query)) {
+    } else if (!is.character(identifier)) {
         stop("Identifier must be a character vector.")
     }
     annotation <- get("geneAnnotation", envir = asNamespace("worminfo"))
-    query <- query %>% stats::na.omit(.) %>% unique %>% sort
-    if (length(query) < 100) {
+    identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
+    if (length(identifier) < 100) {
         lapply <- parallel::mclapply
     } else {
         lapply <- pbmcapply::pbmclapply
     }
-    data <- lapply(seq_along(query), function(a) {
-        identifier <- query[a]
+    data <- lapply(seq_along(identifier), function(a) {
         # Format ====
         if (any(grepl(format, c("gene", "name")))) {
             data <- annotation %>%
-                .[.[[format]] %in% identifier, ]
+                .[.[[format]] %in% identifier[a], ]
         } else if (format == "sequence") {
             # Strip out isoform if necessary
-            gsub <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$", "\\1.\\2", identifier)
+            gsub <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$", "\\1.\\2", identifier[a])
             data <- annotation %>% .[.[[format]] %in% gsub, ]
             if (nrow(data)) {
-                data$sequence <- query[a]
+                data$sequence <- identifier[a]
             }
         } else if (format == "class") {
             name <- annotation %>%
-                .[grepl(paste0("^", identifier, "-"), .[["name"]]), "name"]
+                .[grepl(paste0("^", identifier[a], "-"), .[["name"]]), "name"]
             name <- name[[1]]
             data <- annotation %>% .[.$name %in% name, ]
         } else if (format == "keyword") {
             # `apply(..., 1)` processes by row:
             grepl <- apply(annotation, 1, function(b) {
-                any(grepl(identifier, b, ignore.case = TRUE))
+                any(grepl(identifier[a], b, ignore.case = TRUE))
             })
             gene <- annotation[grepl, "gene"]
             gene <- gene[[1]]

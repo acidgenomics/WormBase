@@ -2,17 +2,17 @@
 #'
 #' @export
 #' @importFrom dplyr left_join rename_ select_
-#' @param query EggNOG identifier
+#' @param identifier EggNOG identifier
 #' @return tibble
 #'
 #' @examples
 #' eggnog(c("ENOG410ZGMS", "KOG3863"))
-eggnog <- function(query) {
+eggnog <- function(identifier) {
     annotation <- get("eggnogAnnotation", envir = asNamespace("worminfo"))
     category <- get("eggnogCategory", envir = asNamespace("worminfo"))
-    query <- query %>% stats::na.omit(.) %>% unique %>% sort
+    identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
     annotation <- annotation %>%
-        .[.$groupName %in% query,
+        .[.$groupName %in% identifier,
           c("groupName",
             "consensusFunctionalDescription",
             "cogFunctionalCategory")] %>%
