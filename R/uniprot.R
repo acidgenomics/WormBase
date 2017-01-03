@@ -1,6 +1,6 @@
 #' UniProt web service query
 #'
-#' @importFrom dplyr bind_rows rename_ select_
+#' @importFrom dplyr bind_rows group_by_ rename_ select_
 #' @importFrom parallel mclapply
 #' @importFrom pbmcapply pbmclapply
 #' @importFrom UniProt.ws select UniProt.ws
