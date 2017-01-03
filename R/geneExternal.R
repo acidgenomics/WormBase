@@ -6,7 +6,6 @@
 #' @importFrom tibble as_tibble
 #'
 #' @param identifier Gene identifier
-#' @param all Keep all identifiers (\code{TRUE}/\code{FALSE})
 #'
 #' @return JSON content tibble
 #' @export
