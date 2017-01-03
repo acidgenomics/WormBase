@@ -19,14 +19,16 @@ geneOntology <- function(identifier) {
         }
         rest <- paste0("widget/gene/", identifier[[a]], "/gene_ontology") %>%
             rest %>% .$fields %>% .$gene_ontology %>% .$data
-        parallel::mclapply(seq_along(rest), function(b) {
-            lapply(seq_along(rest[[b]]), function(c) {
-                paste(identifier = rest[[b]][[c]]$term_description$id,
-                      name = rest[[b]][[c]]$term_description$label,
-                      sep = "~")
-            }) %>% unique %>% toString
-        }) %>% magrittr::set_names(camel(paste0("wormbaseGeneOntology_", names(rest)))) %>%
-            tibble::as_tibble(.) %>%
-            dplyr::mutate_(.dots = magrittr::set_names(list(~identifier[[a]]), "gene"))
+        if (!is.null(rest)) {
+            parallel::mclapply(seq_along(rest), function(b) {
+                lapply(seq_along(rest[[b]]), function(c) {
+                    paste(identifier = rest[[b]][[c]]$term_description$id,
+                          name = rest[[b]][[c]]$term_description$label,
+                          sep = "~")
+                }) %>% unique %>% toString
+            }) %>% magrittr::set_names(camel(paste0("wormbaseGeneOntology_", names(rest)))) %>%
+                tibble::as_tibble(.) %>%
+                dplyr::mutate_(.dots = magrittr::set_names(list(~identifier[[a]]), "gene"))
+        }
     }) %>% dplyr::bind_rows(.)
 }
