@@ -5,45 +5,48 @@
 #' @param identifier Gene identifier
 #' @return tibble
 geneReport <- function(identifier) {
-    gene <- gene(identifier,
-                 select = c(simpleCol,
-                            "class",
-                            "biotype",
-                            # Ortholog:
-                            "blastpHsapiensGene",
-                            "blastpHsapiensName",
-                            "blastpHsapiensDescription",
-                            "orthologHsapiens",
-                            # Description:
-                            "descriptionConcise",
-                            "descriptionProvisional",
-                            "descriptionAutomated",
-                            "ensemblDescription",
-                            # WormBase Additional:
-                            "rnaiPhenotype",
-                            # Gene Ontology:
-                            "ensemblGeneOntology",
-                            "interpro",
-                            "pantherFamilyName",
-                            "pantherSubfamilyName",
-                            "pantherGeneOntologyMolecularFunction",
-                            "pantherGeneOntologyBiologicalProcess",
-                            "pantherGeneOntologyCellularComponent",
-                            "pantherClass"))
-    geneOntology <- geneOntology(identifier)
-    geneExternal <- geneExternal(identifier)
-    uniprot <- uniprot(identifier)
-    eggnog <- uniprot$eggnog %>%
-        strsplit(", ") %>% .[[1]] %>%
-        eggnog %>%
-        collapse
-
-    gene %>%
-        dplyr::left_join(geneExternal, by = "gene") %>%
-        dplyr::left_join(geneOntology, by = "gene") %>%
-        dplyr::left_join(uniprot, by = "gene") %>%
-        dplyr::left_join(eggnog, by = "eggnog") %>%
-        dplyr::select_(.dots = c("gene",
-                                 setdiff(sort(names(.)), "gene"))) %>%
-        dplyr::arrange_(.dots = c("gene"))
+    lapply(seq_along(identifier), function(a) {
+        message(identifier[a])
+        gene <- gene(identifier[a],
+                     select = c(simpleCol,
+                                "class",
+                                "biotype",
+                                # Ortholog:
+                                "blastpHsapiensGene",
+                                "blastpHsapiensName",
+                                "blastpHsapiensDescription",
+                                "orthologHsapiens",
+                                # Description:
+                                "descriptionConcise",
+                                "descriptionProvisional",
+                                "descriptionAutomated",
+                                "ensemblDescription",
+                                # WormBase Additional:
+                                "rnaiPhenotype",
+                                # Gene Ontology:
+                                "ensemblGeneOntology",
+                                "interpro",
+                                "pantherFamilyName",
+                                "pantherSubfamilyName",
+                                "pantherGeneOntologyMolecularFunction",
+                                "pantherGeneOntologyBiologicalProcess",
+                                "pantherGeneOntologyCellularComponent",
+                                "pantherClass"))
+        geneOntology <- geneOntology(identifier[a])
+        uniprot <- uniprot(identifier[a])
+        result <- gene %>%
+            dplyr::left_join(geneOntology, by = "gene") %>%
+            dplyr::left_join(uniprot, by = "gene")
+        if (!is.na(uniprot$eggnog)) {
+            eggnog <- uniprot$eggnog %>%
+                strsplit(", ") %>% .[[1]] %>%
+                eggnog %>%
+                collapse
+            result <- dplyr::left_join(result, eggnog, by = "eggnog")
+        }
+        result <- result %>%
+            dplyr::select_(.dots = c("gene",
+                                     setdiff(sort(names(.)), "gene"))) %>%
+            dplyr::arrange_(.dots = c("gene"))
+    }) %>% dplyr::bind_rows(.)
 }
