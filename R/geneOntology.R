@@ -27,14 +27,8 @@ geneOntology <- function(identifier) {
                       name = d[[e]]$term_description$label,
                       sep = "~")
             }) %>% unique %>% toString
-        }) %>% magrittr::set_names(names(rest)) %>%
+        }) %>% magrittr::set_names(camel(paste0("wormbaseGeneOntology_", names(rest)))) %>%
             tibble::as_tibble(.) %>%
             dplyr::mutate_(.dots = magrittr::set_names(list(~b), "gene"))
-    }) %>% dplyr::bind_rows(.) %>%
-        dplyr::rename_(.dots = c("wormbaseGeneOntologyBiologicalProcess" =
-                                     "Biological_process",
-                                 "wormbaseGeneOntologyCellularComponent" =
-                                     "Cellular_component",
-                                 "wormbaseGeneOntologyMolecularFunction" =
-                                     "Molecular_function"))
+    }) %>% dplyr::bind_rows(.)
 }
