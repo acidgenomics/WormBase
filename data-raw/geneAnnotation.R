@@ -1,4 +1,4 @@
-loadData(c("wormbaseGene",  # must go first
+dataRaw(c("wormbaseGene",  # must go first
            "wormbaseBlastp",
            "wormbaseDescription",
            "wormbaseOligo",
