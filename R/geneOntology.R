@@ -14,21 +14,19 @@
 #' geneOntology("WBGene00000001")
 geneOntology <- function(identifier) {
     lapply(seq_along(identifier), function(a) {
-        b <- identifier[[a]]
-        if (!grepl("^WBGene[0-9]{8}$", b)) {
+        if (!grepl("^WBGene[0-9]{8}$", identifier[[a]])) {
             stop("Invalid gene identifier.")
         }
-        rest <- paste0("widget/gene/", b, "/gene_ontology") %>%
+        rest <- paste0("widget/gene/", identifier[[a]], "/gene_ontology") %>%
             rest %>% .$fields %>% .$gene_ontology %>% .$data
-        parallel::mclapply(seq_along(rest), function(c) {
-            d <- rest[[c]]
-            lapply(seq_along(d), function(e) {
-                paste(identifier = d[[e]]$term_description$id,
-                      name = d[[e]]$term_description$label,
+        parallel::mclapply(seq_along(rest), function(b) {
+            lapply(seq_along(rest[[b]]), function(c) {
+                paste(identifier = rest[[b]][[c]]$term_description$id,
+                      name = rest[[b]][[c]]$term_description$label,
                       sep = "~")
             }) %>% unique %>% toString
         }) %>% magrittr::set_names(camel(paste0("wormbaseGeneOntology_", names(rest)))) %>%
             tibble::as_tibble(.) %>%
-            dplyr::mutate_(.dots = magrittr::set_names(list(~b), "gene"))
+            dplyr::mutate_(.dots = magrittr::set_names(list(~identifier[[a]]), "gene"))
     }) %>% dplyr::bind_rows(.)
 }
