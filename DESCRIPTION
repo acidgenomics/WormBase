@@ -24,7 +24,6 @@ Imports:
     UniProt.ws,
     utils
 Suggests:
-    devtools,
     knitr,
     pander,
     rmarkdown,
