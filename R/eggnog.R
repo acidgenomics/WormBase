@@ -8,6 +8,11 @@
 #' @examples
 #' eggnog(c("ENOG410ZGMS", "KOG3863"))
 eggnog <- function(identifier) {
+    if (missing(identifier)) {
+        stop("An identifier is required.")
+    } else if (!is.character(identifier)) {
+        stop("Identifier must be a character vector.")
+    }
     annotation <- get("eggnogAnnotation", envir = asNamespace("worminfo"))
     category <- get("eggnogCategory", envir = asNamespace("worminfo"))
     identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
