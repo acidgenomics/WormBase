@@ -17,47 +17,56 @@ uniprot <- function(identifier) {
         lapply <- pbmcapply::pbmclapply
     }
     database <- UniProt.ws::UniProt.ws(taxId = 6239)  # NCBI C. elegans
-    lapply(seq_along(identifier), function(a) {
-        key <- geneExternal(identifier[a]) %>%
-            .[, "uniprot"] %>% .[[1]] %>%
-            gsub(",.+$", "", .)
-        UniProt.ws::select(database, keytype = "UNIPROTKB", keys = key,
-                           #! columns = UniProt.ws::columns(database)) %>%
-                           columns = c("CITATION",
-                                       "DATABASE(PFAM)",
-                                       "EGGNOG",
-                                       #! "ENTRY-NAME",
-                                       "EXISTENCE",
-                                       "FAMILIES",
-                                       #! "FEATURES",
-                                       #! "GENES",
-                                       "GO",
-                                       #! "GO-ID",
-                                       "HOGENOM",
-                                       #! "INTERACTOR",
-                                       #! "INTERPRO",
-                                       #! "KEGG",
-                                       "KEYWORDS",
-                                       #! "LAST-MODIFIED",
-                                       "ORTHODB",
-                                       #! "PATHWAY",
-                                       #! "PROTEIN-NAMES",
-                                       "REACTOME",
-                                       "REVIEWED",
-                                       "SCORE",
-                                       "WORMBASE")) %>%
-            collapse
-    }) %>% dplyr::bind_rows(.) %>% setNamesCamel %>%
-        dplyr::rename_(.dots = c("gene" = "wormbase",
-                                 "pfam" = "databasePfam",
-                                 "uniprotCitation" = "citation",
-                                 "uniprotExistence" = "existence",
-                                 "uniprotFamilies" = "families",
-                                 "uniprotGeneOntology" = "go",
-                                 "uniprotKeywords" = "keywords",
-                                 "uniprotReviewed" = "reviewed",
-                                 "uniprotScore" = "score")) %>%
-        dplyr::select_(.dots = c("gene",
-                                 setdiff(sort(names(.)),
-                                         c("gene", "uniprotkb"))))
+    result <- lapply(seq_along(identifier), function(a) {
+        key <- geneExternal(identifier[a])
+        if (nrow(key)) {
+            key <- key %>%
+                .[, "uniprot"] %>% .[[1]] %>%
+                strsplit(", ") %>% .[[1]]
+            UniProt.ws::select(database, keytype = "UNIPROTKB", keys = key,
+                               columns = c("CITATION",
+                                           "DATABASE(PFAM)",
+                                           "EGGNOG",
+                                           #! "ENTRY-NAME",
+                                           "EXISTENCE",
+                                           "FAMILIES",
+                                           #! "FEATURES",
+                                           #! "GENES",
+                                           "GO",
+                                           #! "GO-ID",
+                                           "HOGENOM",
+                                           #! "INTERACTOR",
+                                           #! "INTERPRO",
+                                           #! "KEGG",
+                                           "KEYWORDS",
+                                           #! "LAST-MODIFIED",
+                                           "ORTHODB",
+                                           #! "PATHWAY",
+                                           #! "PROTEIN-NAMES",
+                                           "REACTOME",
+                                           "REVIEWED",
+                                           "SCORE",
+                                           "WORMBASE")) %>%
+                setNamesCamel %>%
+                dplyr::group_by_(.dots = "uniprotkb") %>%
+                collapse %>%
+                .[order(-xtfrm(.$score), .$reviewed, .$uniprotkb), ] %>%
+                .[1, ]
+        }
+    }) %>% dplyr::bind_rows(.)
+    if (nrow(result)) {
+        result <- result %>%
+            dplyr::rename_(.dots = c("gene" = "wormbase",
+                                     "pfam" = "databasePfam",
+                                     "uniprotCitation" = "citation",
+                                     "uniprotExistence" = "existence",
+                                     "uniprotFamilies" = "families",
+                                     "uniprotGeneOntology" = "go",
+                                     "uniprotKeywords" = "keywords",
+                                     "uniprotReviewed" = "reviewed",
+                                     "uniprotScore" = "score")) %>%
+            dplyr::select_(.dots = c("gene",
+                                     setdiff(sort(names(.)), "gene")))
+    }
+    return(result)
 }
