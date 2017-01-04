@@ -29,6 +29,8 @@ geneOntology <- function(identifier) {
             }) %>% magrittr::set_names(camel(paste0("wormbaseGeneOntology_", names(rest)))) %>%
                 tibble::as_tibble(.) %>%
                 dplyr::mutate_(.dots = magrittr::set_names(list(~identifier[[a]]), "gene"))
+        } else {
+            tibble::tibble()
         }
     }) %>% dplyr::bind_rows(.)
 }

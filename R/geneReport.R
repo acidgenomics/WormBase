@@ -32,17 +32,21 @@ geneReport <- function(identifier) {
                                 "pantherGeneOntologyBiologicalProcess",
                                 "pantherGeneOntologyCellularComponent",
                                 "pantherClass"))
+        result <- gene
         geneOntology <- geneOntology(identifier[a])
+        if (nrow(geneOntology)) {
+            result <- dplyr::left_join(result, geneOntology, by = "gene")
+        }
         uniprot <- uniprot(identifier[a])
-        result <- gene %>%
-            dplyr::left_join(geneOntology, by = "gene") %>%
-            dplyr::left_join(uniprot, by = "gene")
-        if (!is.na(uniprot$eggnog)) {
-            eggnog <- uniprot$eggnog %>%
-                strsplit(", ") %>% .[[1]] %>%
-                eggnog %>%
-                collapse
-            result <- dplyr::left_join(result, eggnog, by = "eggnog")
+        if (nrow(uniprot)) {
+            result <- dplyr::left_join(result, uniprot, by = "gene")
+            if (!is.na(uniprot$eggnog)) {
+                eggnog <- uniprot$eggnog %>%
+                    strsplit(", ") %>% .[[1]] %>%
+                    eggnog %>%
+                    collapse
+                result <- dplyr::left_join(result, eggnog, by = "eggnog")
+            }
         }
         result <- result %>%
             dplyr::select_(.dots = c("gene",
