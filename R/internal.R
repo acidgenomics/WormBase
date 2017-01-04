@@ -3,17 +3,17 @@ utils::globalVariables(c("."))
 
 
 
-.onAttach <- function(libname, pkgname) {
-    packageStartupMessage(
-        paste("Annotations:",
-              paste(build$ensembl,
-                    build$panther,
-                    build$wormbase,
-                    sep = ", "),
-              paste0("(", build$date, ")"),
-              sep = " ")
-    )
-}
+# .onAttach <- function(libname, pkgname) {
+#     packageStartupMessage(
+#         paste("Annotations:",
+#               paste(build$ensembl,
+#                     build$panther,
+#                     build$wormbase,
+#                     sep = ", "),
+#               paste0("(", build$date, ")"),
+#               sep = " ")
+#     )
+# }
 
 
 
