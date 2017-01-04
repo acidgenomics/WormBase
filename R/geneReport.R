@@ -5,6 +5,7 @@
 #' @param identifier Gene identifier
 #' @return tibble
 geneReport <- function(identifier) {
+    identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
     lapply(seq_along(identifier), function(a) {
         message(identifier[a])
         gene <- gene(identifier[a],
