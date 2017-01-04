@@ -7,7 +7,7 @@
 uniprot(identifier)
 }
 \arguments{
-\item{identifier}{UniProtKB identifier}
+\item{identifier}{WormBase gene identifier}
 }
 \value{
 tibble

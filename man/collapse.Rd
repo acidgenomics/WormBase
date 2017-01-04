@@ -2,15 +2,18 @@
 % Please edit documentation in R/internal.R
 \name{collapse}
 \alias{collapse}
-\title{Collapse rows in a data.frame}
+\title{Collapse rows in a tibble}
 \usage{
 collapse(tibble)
 }
 \arguments{
-\item{tibble}{Tibble}
+\item{tibble}{Long \code{tibble}}
+}
+\value{
+Collapsed \code{tibble}
 }
 \description{
-Collapse rows in a data.frame
+Collapse rows in a tibble
 }
-\keyword{internal}
+\keyword{general}
 

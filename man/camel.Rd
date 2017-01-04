@@ -6,8 +6,17 @@
 \usage{
 camel(string)
 }
+\arguments{
+\item{string}{\code{string}}
+}
+\value{
+\code{string} with camelCase formatting
+}
 \description{
 camelCase
 }
-\keyword{internal}
+\examples{
+camel("RNAi clone")
+}
+\keyword{general}
 

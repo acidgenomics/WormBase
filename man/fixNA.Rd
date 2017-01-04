@@ -7,10 +7,16 @@
 fixNA(string)
 }
 \arguments{
-\item{string}{String}
+\item{string}{\code{string} missing \code{NA}.}
+}
+\value{
+\code{string} containing \code{NA}
 }
 \description{
 Fix empty and "NA" character strings
+}
+\examples{
+fixNA(c(1, "x", "", "NA"))
 }
 \keyword{internal}
 

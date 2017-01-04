@@ -3,6 +3,7 @@ utils::globalVariables(c("."))
 
 
 
+# #' @keywords internal
 # .onAttach <- function(libname, pkgname) {
 #     packageStartupMessage(
 #         paste("Annotations:",
@@ -18,6 +19,7 @@ utils::globalVariables(c("."))
 
 
 #' @importFrom utils download.file
+#' @keywords internal
 .onLoad <- function(libname, pkgname) {
     data <- c("build",
               "eggnogAnnotation",
@@ -52,7 +54,13 @@ NULL
 
 #' camelCase
 #'
-#' @keywords internal
+#' @export
+#' @keywords general
+#' @param string \code{string}
+#' @return \code{string} with camelCase formatting
+#'
+#' @examples
+#' camel("RNAi clone")
 camel <- function(string) {
     string %>%
         # Convert non-alphanumeric characters to underscores:
@@ -71,13 +79,17 @@ camel <- function(string) {
 
 
 
-#' Collapse rows in a data.frame
+#' Collapse rows in a tibble
 #'
-#' @importFrom dplyr funs mutate_each summarise_each
-#' @keywords internal
-#' @param tibble Tibble
+#' @export
+#' @importFrom dplyr mutate_each summarise_each
+#' @importFrom tibble as_tibble
+#' @keywords general
+#' @param tibble Long \code{tibble}
+#' @return Collapsed \code{tibble}
 collapse <- function(tibble) {
     tibble %>%
+        tibble::as_tibble(.) %>%
         dplyr::summarise_each(funs(toStringUnique)) %>%
         dplyr::mutate_each(funs(fixNA))
 }
@@ -103,7 +115,11 @@ dataRaw <- function(data) {
 #' Fix empty and "NA" character strings
 #'
 #' @keywords internal
-#' @param string String
+#' @param string \code{string} missing \code{NA}.
+#' @return \code{string} containing \code{NA}
+#'
+#' @examples
+#' fixNA(c(1, "x", "", "NA"))
 fixNA <- function(string) {
     gsub("^$|^NA$", NA, string)
 }
@@ -134,8 +150,11 @@ simpleCol <- c("gene", "sequence", "name")
 
 #' Set names as camelCase
 #'
-#' @keywords internal
+#' @export
 #' @importFrom magrittr set_names
+#' @keywords general
+#' @param data \code{data.frame}, \code{list}, or \code{tibble}
+#' @return data Same data but with reformatted camelCase names
 setNamesCamel <- function(data) {
     data %>%
         magrittr::set_names(., camel(names(.)))
@@ -143,12 +162,14 @@ setNamesCamel <- function(data) {
 
 
 
-#' toString call that only outputs uniques
+#' toString call that outputs sorted uniques
 #'
-#' @keywords internal
-#' @param string String
-toStringUnique <- function(string) {
-    string %>%
+#' @export
+#' @keywords general
+#' @param vector \code{vector}
+#' @return Sorted unique \code{string}
+toStringUnique <- function(vector) {
+    vector %>%
         unique %>%
         sort %>%
         toString %>%

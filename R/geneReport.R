@@ -31,16 +31,12 @@ geneReport <- function(identifier) {
                             "pantherGeneOntologyBiologicalProcess",
                             "pantherGeneOntologyCellularComponent",
                             "pantherClass"))
-    geneExternal <- geneExternal(identifier)
     geneOntology <- geneOntology(identifier)
-    uniprot <- geneExternal$uniprot %>%
-        toString %>%
-        strsplit(", ") %>% .[[1]] %>%
-        uniprot
+    uniprot <- uniprot(identifier)
     gene %>%
         dplyr::left_join(geneOntology, by = "gene") %>%
         dplyr::left_join(uniprot, by = "gene") %>%
-        dplyr::select_(.dots = c("gene",
-                                 setdiff(sort(names(.)), "gene"))) %>%
-        dplyr::arrange_(.dots = c("gene"))
+        dplyr::select_(.dots = c(simpleCol,
+                                 setdiff(sort(names(.)), simpleCol))) %>%
+        dplyr::arrange_(.dots = simpleCol)
 }

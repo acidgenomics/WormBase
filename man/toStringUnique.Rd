@@ -2,15 +2,18 @@
 % Please edit documentation in R/internal.R
 \name{toStringUnique}
 \alias{toStringUnique}
-\title{toString call that only outputs uniques}
+\title{toString call that outputs sorted uniques}
 \usage{
-toStringUnique(string)
+toStringUnique(vector)
 }
 \arguments{
-\item{string}{String}
+\item{vector}{\code{vector}}
+}
+\value{
+Sorted unique \code{string}
 }
 \description{
-toString call that only outputs uniques
+toString call that outputs sorted uniques
 }
-\keyword{internal}
+\keyword{general}
 

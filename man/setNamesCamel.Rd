@@ -6,8 +6,14 @@
 \usage{
 setNamesCamel(data)
 }
+\arguments{
+\item{data}{\code{data.frame}, \code{list}, or \code{tibble}}
+}
+\value{
+data Same data but with reformatted camelCase names
+}
 \description{
 Set names as camelCase
 }
-\keyword{internal}
+\keyword{general}
 
