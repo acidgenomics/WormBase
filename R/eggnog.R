@@ -26,8 +26,10 @@ eggnog <- function(identifier) {
         unlist %>%
         sort %>%
         unique
+    annotation$cogFunctionalCategory <- paste(letter, collapse = "")
     category <- get("eggnogCategory", envir = asNamespace("worminfo")) %>%
         .[.$cogFunctionalCategory %in% letter, ] %>%
         collapse
-    dplyr::left_join(annotation, category, by = "cogFunctionalCategory")
+    category$cogFunctionalCategory <- NULL
+    merge(annotation, category)
 }
