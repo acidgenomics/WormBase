@@ -16,6 +16,6 @@ tibble
 EggNOG annotations
 }
 \examples{
-eggnog(c("ENOG410ZGMS", "KOG3863"))
+eggnog(c("ENOG410XPQV", "KOG0289"))
 }
 
