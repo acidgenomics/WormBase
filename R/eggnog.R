@@ -19,16 +19,16 @@ eggnog <- function(identifier) {
             "consensusFunctionalDescription",
             "cogFunctionalCategory")] %>%
         dplyr::rename_(.dots = c("eggnog" = "groupName"))
+    category <- get("eggnogCategory", envir = asNamespace("worminfo"))
+    return <- lapply(seq_along(annotation$cogFunctionalCategory), function(a) {
+        letter <- annotation$cogFunctionalCategory[a] %>%
+            strsplit("") %>%
+            unlist %>%
+            sort %>%
+            unique
+        category %>% .[.$cogFunctionalCategory %in% letter, ] %>%
+            collapse
+    }) %>% dplyr::bind_rows(.)
+    return$cogFunctionalCategory <- gsub(", ", "", return$cogFunctionalCategory)
+    return(return)
 }
-
-# letter <- annotation$cogFunctionalCategory %>%
-#     gsub(", ", "", .) %>%
-#     strsplit("") %>%
-#     unlist %>%
-#     sort %>%
-#     unique
-# annotation$cogFunctionalCategory <- paste(letter, collapse = "")
-# category <- get("eggnogCategory", envir = asNamespace("worminfo")) %>%
-#     .[.$cogFunctionalCategory %in% letter, ]
-# category$cogFunctionalCategory <- NULL
-# merge(annotation, category)
