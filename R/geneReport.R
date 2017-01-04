@@ -1,18 +1,11 @@
 #' Gene list report
 #'
 #' @export
-#' @importFrom dplyr arrange_ left_join select_
-#' @importFrom parallel mclapply
-#' @importFrom pbmcapply pbmclapply
+#' @importFrom dplyr arrange_ bind_rows left_join select_
 #' @param identifier Gene identifier
 #' @return tibble
 geneReport <- function(identifier) {
     identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
-    if (length(identifier) < 20) {
-        lapply <- parallel::mclapply
-    } else {
-        lapply <- pbmcapply::pbmclapply
-    }
     lapply(seq_along(identifier), function(a) {
         message(identifier[a])
         gene <- gene(identifier[a],
