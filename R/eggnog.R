@@ -6,7 +6,7 @@
 #' @return tibble
 #'
 #' @examples
-#' eggnog(c("ENOG410XPQV", "KOG0289"))
+#' c("ENOG410XPQV", "KOG0289") %>% eggnog
 eggnog <- function(identifier) {
     if (missing(identifier)) {
         stop("An identifier is required.")
@@ -18,18 +18,17 @@ eggnog <- function(identifier) {
           c("groupName",
             "consensusFunctionalDescription",
             "cogFunctionalCategory")] %>%
-        dplyr::rename_(.dots = c("eggnog" = "groupName")) %>%
-        collapse
-    letter <- annotation$cogFunctionalCategory %>%
-        gsub(", ", "", .) %>%
-        strsplit("") %>%
-        unlist %>%
-        sort %>%
-        unique
-    annotation$cogFunctionalCategory <- paste(letter, collapse = "")
-    category <- get("eggnogCategory", envir = asNamespace("worminfo")) %>%
-        .[.$cogFunctionalCategory %in% letter, ] %>%
-        collapse
-    category$cogFunctionalCategory <- NULL
-    merge(annotation, category)
+        dplyr::rename_(.dots = c("eggnog" = "groupName"))
 }
+
+# letter <- annotation$cogFunctionalCategory %>%
+#     gsub(", ", "", .) %>%
+#     strsplit("") %>%
+#     unlist %>%
+#     sort %>%
+#     unique
+# annotation$cogFunctionalCategory <- paste(letter, collapse = "")
+# category <- get("eggnogCategory", envir = asNamespace("worminfo")) %>%
+#     .[.$cogFunctionalCategory %in% letter, ]
+# category$cogFunctionalCategory <- NULL
+# merge(annotation, category)
