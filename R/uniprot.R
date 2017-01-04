@@ -22,30 +22,34 @@ uniprot <- function(identifier) {
         if (!is.null(key[["uniprot"]])) {
             key <- key[, "uniprot"] %>% .[[1]] %>%
                 strsplit(", ") %>% .[[1]]
-            UniProt.ws::select(database, keytype = "UNIPROTKB", keys = key,
-                               columns = c("CITATION",
-                                           "DATABASE(PFAM)",
-                                           "EGGNOG",
-                                           #! "ENTRY-NAME",
-                                           "EXISTENCE",
-                                           "FAMILIES",
-                                           #! "FEATURES",
-                                           #! "GENES",
-                                           "GO",
-                                           #! "GO-ID",
-                                           "HOGENOM",
-                                           #! "INTERACTOR",
-                                           #! "INTERPRO",
-                                           #! "KEGG",
-                                           "KEYWORDS",
-                                           #! "LAST-MODIFIED",
-                                           "ORTHODB",
-                                           #! "PATHWAY",
-                                           #! "PROTEIN-NAMES",
-                                           "REACTOME",
-                                           "REVIEWED",
-                                           "SCORE",
-                                           "WORMBASE")) %>%
+            suppressMessages(
+                UniProt.ws::select(
+                    database, keytype = "UNIPROTKB", keys = key,
+                    columns = c("CITATION",
+                                "DATABASE(PFAM)",
+                                "EGGNOG",
+                                #! "ENTRY-NAME",
+                                "EXISTENCE",
+                                "FAMILIES",
+                                #! "FEATURES",
+                                #! "GENES",
+                                "GO",
+                                #! "GO-ID",
+                                "HOGENOM",
+                                #! "INTERACTOR",
+                                #! "INTERPRO",
+                                #! "KEGG",
+                                "KEYWORDS",
+                                #! "LAST-MODIFIED",
+                                "ORTHODB",
+                                #! "PATHWAY",
+                                #! "PROTEIN-NAMES",
+                                "REACTOME",
+                                "REVIEWED",
+                                "SCORE",
+                                "WORMBASE")
+                )
+            ) %>%
                 setNamesCamel %>%
                 dplyr::group_by_(.dots = "uniprotkb") %>%
                 collapse %>%
