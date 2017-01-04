@@ -19,9 +19,8 @@ uniprot <- function(identifier) {
     database <- UniProt.ws::UniProt.ws(taxId = 6239)  # NCBI C. elegans
     result <- lapply(seq_along(identifier), function(a) {
         key <- geneExternal(identifier[a])
-        if (nrow(key)) {
-            key <- key %>%
-                .[, "uniprot"] %>% .[[1]] %>%
+        if (!is.null(key[["uniprot"]])) {
+            key <- key[, "uniprot"] %>% .[[1]] %>%
                 strsplit(", ") %>% .[[1]]
             UniProt.ws::select(database, keytype = "UNIPROTKB", keys = key,
                                columns = c("CITATION",
