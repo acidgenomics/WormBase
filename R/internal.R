@@ -22,6 +22,7 @@ utils::globalVariables(c("."))
 #' @keywords internal
 .onLoad <- function(libname, pkgname) {
     data <- c("build",
+              "cherrypickAnnotation",
               "eggnogAnnotation",
               "eggnogCategory",
               "geneAnnotation",
