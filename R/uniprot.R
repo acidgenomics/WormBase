@@ -1,8 +1,6 @@
 #' UniProt web service query
 #'
 #' @importFrom dplyr bind_rows group_by_ rename_ select_
-#' @importFrom parallel mclapply
-#' @importFrom pbmcapply pbmclapply
 #' @importFrom UniProt.ws select UniProt.ws
 #'
 #' @param identifier WormBase gene identifier
@@ -12,11 +10,12 @@
 uniprot <- function(identifier) {
     identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
     database <- UniProt.ws::UniProt.ws(taxId = 6239)  # NCBI C. elegans
-    query1 <- suppressMessages(
+    query <- suppressMessages(
         UniProt.ws::select(database,
                            keytype = "WORMBASE",
                            keys = identifier,
-                           columns = c("EXISTENCE",
+                           columns = c("EGGNOG",
+                                       "EXISTENCE",
                                        "FAMILIES",
                                        "GO",
                                        "KEYWORDS",
@@ -28,13 +27,7 @@ uniprot <- function(identifier) {
         setNamesCamel %>%
         dplyr::select_(.dots = c("wormbase",
                                  setdiff(sort(names(.)), "wormbase"))) %>%
-        # Group by gene and select the highest confidence UniProt annotation:
         dplyr::group_by_(.dots = "wormbase") %>%
-        .[order(.$wormbase,
-                -xtfrm(.$score),
-                .$reviewed,
-                .$uniprotkb), ] %>%
-        dplyr::slice(1) %>%
         dplyr::rename_(.dots = c("gene" = "wormbase",
                                  "uniprotExistence" = "existence",
                                  "uniprotFamilies" = "families",
