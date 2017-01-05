@@ -17,4 +17,4 @@ rnaiAnnotation <- bind_rows(cherrypick,
     group_by(gene) %>%
     collapse
 use_data(rnaiAnnotation, overwrite = TRUE)
-rm(sourcebioscience, worfdb)
+rm(cherrypick, sourcebioscience, worfdb)
