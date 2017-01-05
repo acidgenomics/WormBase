@@ -1,16 +1,15 @@
 #' RNAi clone mapping
 #'
+#' @export
 #' @importFrom dplyr bind_rows left_join
 #' @importFrom parallel mclapply
 #' @importFrom stats na.omit
-#'
 #' @param identifier Identifier
-#' @param format Identifier format (\code{gene}, \code{name}, or \code{sequence})
-#' @param library Library type (\code{ahringer96}, \code{ahringer384}, or \code{orfeome96})
-#'
+#' @param format Identifier format (\code{gene}, \code{name}, or
+#'   \code{sequence})
+#' @param library Library type (\code{ahringer96}, \code{ahringer384},
+#'   \code{orfeome96}, or \code{cherrypick})
 #' @return tibble
-#'
-#' @export
 #'
 #' @examples
 #' rnai("sbp-1", format = "name")
@@ -28,6 +27,7 @@ rnai <- function(identifier,
         stop("Identifier must be a character vector.")
     }
     annotation <- get("rnaiAnnotation", envir = asNamespace("worminfo"))
+    #! cherrypick
     identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
     parallel::mclapply(seq_along(identifier), function(a) {
         well <- identifier[a]

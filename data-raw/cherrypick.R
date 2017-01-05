@@ -1,12 +1,10 @@
-cherrypickAnnotation <- read_excel("data-raw/cherrypickAnnotation.xlsx") %>%
+cherrypick <- read_excel("data-raw/cherrypick.xlsx") %>%
     mutate(clone = paste0(library,
-                          "-",
                           plateNum,
-                          "-",
                           plateRow,
-                          str_pad(plateCol, 2, pad = "0"))) %>%
+                          plateCol)) %>%
     filter(!is.na(sequence)) %>%
     select(clone, sequence) %>%
     arrange(clone) %>%
     left_join(worminfo::gene(.$sequence, format = "sequence"), by = "sequence")
-use_data(cherrypickAnnotation, overwrite = TRUE)
+use_data(cherrypick, overwrite = TRUE)
