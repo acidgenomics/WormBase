@@ -2,7 +2,6 @@
 #'
 #' @importFrom dplyr arrange_ bind_rows
 #' @importFrom parallel mclapply
-#' @importFrom pbmcapply pbmclapply
 #' @importFrom stats na.omit
 #' @importFrom tidyr separate_
 #'
@@ -33,12 +32,7 @@ gene <- function(identifier,
     }
     annotation <- get("geneAnnotation", envir = asNamespace("worminfo"))
     identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
-    if (length(identifier) < 100) {
-        lapply <- parallel::mclapply
-    } else {
-        lapply <- pbmcapply::pbmclapply
-    }
-    data <- lapply(seq_along(identifier), function(a) {
+    data <- parallel::mclapply(seq_along(identifier), function(a) {
         # Format ====
         if (any(grepl(format, c("gene", "name")))) {
             data <- annotation %>%

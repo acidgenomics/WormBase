@@ -2,7 +2,6 @@
 #'
 #' @importFrom dplyr bind_rows left_join
 #' @importFrom parallel mclapply
-#' @importFrom pbmcapply pbmclapply
 #' @importFrom stats na.omit
 #'
 #' @param identifier Identifier
@@ -30,12 +29,7 @@ rnai <- function(identifier,
     }
     annotation <- get("rnaiAnnotation", envir = asNamespace("worminfo"))
     identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
-    if (length(identifier) < 100) {
-        lapply <- parallel::mclapply
-    } else {
-        lapply <- pbmcapply::pbmclapply
-    }
-    lapply(seq_along(identifier), function(a) {
+    parallel::mclapply(seq_along(identifier), function(a) {
         well <- identifier[a]
         if (format == "clone") {
             if (!any(grepl(library, c("ahringer384",
