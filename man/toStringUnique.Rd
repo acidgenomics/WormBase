@@ -2,7 +2,7 @@
 % Please edit documentation in R/internal.R
 \name{toStringUnique}
 \alias{toStringUnique}
-\title{toString call that outputs sorted uniques}
+\title{toString call that outputs uniques}
 \usage{
 toStringUnique(vector)
 }
@@ -10,10 +10,10 @@ toStringUnique(vector)
 \item{vector}{\code{vector}}
 }
 \value{
-Sorted unique \code{string}
+Unique \code{string}
 }
 \description{
-toString call that outputs sorted uniques
+toString call that outputs uniques
 }
 \keyword{general}
 

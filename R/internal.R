@@ -162,13 +162,28 @@ setNamesCamel <- function(data) {
 
 
 
+#' toString call that outputs uniques
+#'
+#' @export
+#' @keywords general
+#' @param vector \code{vector}
+#' @return Unique \code{string}
+toStringUnique <- function(vector) {
+    vector %>%
+        unique %>%
+        toString %>%
+        gsub("NA,\\s|,\\sNA", "", .)
+}
+
+
+
 #' toString call that outputs sorted uniques
 #'
 #' @export
 #' @keywords general
 #' @param vector \code{vector}
 #' @return Sorted unique \code{string}
-toStringUnique <- function(vector) {
+toStringSortUnique <- function(vector) {
     vector %>%
         unique %>%
         sort %>%
