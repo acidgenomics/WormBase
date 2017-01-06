@@ -1,6 +1,5 @@
 #' EggNOG annotations
 #'
-#' @export
 #' @importFrom dplyr left_join rename_ select_
 #' @param identifier EggNOG identifier
 #' @return tibble

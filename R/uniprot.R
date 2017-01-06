@@ -2,11 +2,8 @@
 #'
 #' @importFrom dplyr bind_rows group_by_ rename_ select_
 #' @importFrom UniProt.ws select UniProt.ws
-#'
 #' @param identifier WormBase gene identifier
 #' @return tibble
-#'
-#' @export
 uniprot <- function(identifier) {
     identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
     database <- UniProt.ws::UniProt.ws(taxId = 6239)  # NCBI C. elegans

@@ -12,15 +12,15 @@ input <- bind_rows(list) %>%
     setNamesCamel %>%
     filter(!grepl("mismatch", extraInfo)) %>%
     rename(genePair = genePairsName,
-           ahringer384 = sourceBioscienceLocation) %>%
-    mutate(ahringer96 = paste0(plate, well),
-           ahringer96 = gsub("([A-Z]{1})0", "\\1", ahringer96),
-           ahringer384 = gsub("-", "", ahringer384),
-           ahringer384 = gsub("([A-Z]{1})0", "\\1", ahringer384),
+           clone384 = sourceBioscienceLocation) %>%
+    mutate(clone96 = paste0(plate, well),
+           clone96 = gsub("([A-Z]{1})0", "\\1", clone96),
+           clone384 = gsub("-", "", clone384),
+           clone384 = gsub("([A-Z]{1})0", "\\1", clone384),
            fwdPrimerSeq = toupper(fwdPrimerSeq),
            revPrimerSeq = toupper(revPrimerSeq)) %>%
     select(-c(chrom, plate, well)) %>%
-    arrange(genePair, ahringer384) %>%
+    arrange(genePair, clone384) %>%
     select(noquote(order(names(.))))
 nrow(input)
 

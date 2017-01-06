@@ -6,5 +6,5 @@ cherrypick <- read_excel("data-raw/cherrypick.xlsx") %>%
     filter(!is.na(sequence)) %>%
     select(clone, sequence) %>%
     arrange(clone) %>%
-    left_join(worminfo::gene(.$sequence, format = "sequence"), by = "sequence")
+    left_join(gene(.$sequence, format = "sequence"), by = "sequence")
 use_data(cherrypick, overwrite = TRUE)
