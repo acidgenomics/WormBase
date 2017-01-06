@@ -5,96 +5,67 @@
 #' @importFrom parallel mclapply
 #' @importFrom stats na.omit
 #' @param identifier Identifier
-#' @param format Identifier format (\code{gene}, \code{name}, or
-#'   \code{sequence})
-#' @param library Library type (\code{ahringer96}, \code{ahringer384},
-#'   \code{orfeome96}, or \code{cherrypick})
+#' @param format Identifier format (\code{clone}, \code{gene}, \code{genePair},
+#'   \code{name}, or \code{sequence})
 #' @return tibble
 #'
 #' @examples
-#' rnai("sbp-1", format = "name")
-#' rnai("WBGene00004735", format = "gene")
-#' rnai("Y47D3B.7", format = "sequence")
-#' rnai("GHR-11010@G06", library = "orfeome96")
-#' rnai("III-6C01", library = "ahringer384")
-#' rnai("86B01", library = "ahringer96")
-rnai <- function(identifier,
-                 format = "clone",
-                 library = "orfeome96") {
+#' c("GHR-11010@G06", "orfeome96-11010-G06", "ahringer384-III-6-C01", "ahringer96-86-B01") %>% rnai
+#' "sbp-1" %>% rnai(format = "name")
+#' "WBGene00004735" %>% rnai(format = "gene")
+#' "Y47D3B.7" %>% rnai(format = "sequence")
+#' "Y47D3B.7" %>% rnai(format = "genePair")
+rnai <- function(identifier, format = "clone") {
     if (missing(identifier)) {
         stop("An identifier is required.")
     } else if (!is.character(identifier)) {
         stop("Identifier must be a character vector.")
     }
-    annotation <- get("rnaiAnnotation", envir = asNamespace("worminfo"))
-    #! cherrypick
     identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
-    parallel::mclapply(seq_along(identifier), function(a) {
-        well <- identifier[a]
-        if (format == "clone") {
-            if (!any(grepl(library, c("ahringer384",
-                                      "ahringer96",
-                                      "orfeome96")))) {
-                stop("Invalid library.")
-            }
-            # Roman chromosome prefix is needed for \code{ahringer384}:
-            if (!grepl("^[IVX]+", well)) {
-                well <- gsub("^[A-Za-z]+(96|384)?-", "", well)
-            }
-            # Remove padded zeroes:
-            well <- gsub("(^|-)[0]+", "", well)
-            well <- gsub("([A-Z]{1})[0]+(\\d)$", "\\1\\2", well)
+    grep <- identifier
+    annotation <- get("rnaiAnnotation", envir = asNamespace("worminfo"))
+    if (!any(grepl(format, names(annotation)))) {
+        stop("Invalid format.")
+    }
+    if (format == "clone") {
+        grep <- grep %>%
+            # Strip prefixes:
+            gsub("^GHR", "", .) %>%
+            gsub("^([a-z]+)(96|384)", "", .) %>%
             # Strip separators:
-            well <- gsub("-|@", "", well)
-            # Match beginning of line or after comma:
-            grepl <- paste0(
-                # Unique:
-                "^", well, "$",
-                "|",
-                # Beginning of list:
-                "^", well, ",",
-                "|",
-                # Middle of list:
-                "\\s", well, ",",
-                "|",
-                # End of list:
-                "\\s", well, "$")
-            data <- annotation %>%
-                .[grepl(grepl, .[[library]]), "gene"]
-            if (nrow(data)) {
-                # Add the user input clone back:
-                data$clone <- identifier[a]
-            }
-        } else if (any(grepl(format, simpleCol))) {
-            geneIdentifier <- identifier[a]
-            if (format == "sequence") {
-                # Strip out isoform information:
-                geneIdentifier <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$", "\\1.\\2", geneIdentifier)
-            }
-            # Query `gene()` function and map to gene identifier:
-            data <- gene(geneIdentifier, format = format, select = simpleCol)
-            if (nrow(data)) {
-                data <- data %>%
-                    dplyr::left_join(annotation, by = "gene")
-                # Make the clone mappings human readable:
-                # Chromosome separator:
-                data$ahringer384 <- gsub("(^|,\\s)([IVX]+)(\\d+)", "\\1\\2-\\3", data$ahringer384)
-                # Pad well numbers:
-                data$ahringer384 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$ahringer384)
-                data$ahringer96 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$ahringer96)
-                data$orfeome96 <- gsub("(\\D)(\\d)(,|$)", "\\10\\2\\3", data$orfeome96)
-                # Plate separator:
-                data$ahringer384 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$ahringer384)
-                data$ahringer96 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$ahringer96)
-                data$orfeome96 <- gsub("(\\D\\d{2})(,|$)", "-\\1\\2", data$orfeome96)
-                if (format == "sequence") {
-                    # Add the user input sequence back:
-                    data$sequence <- identifier[a]
-                }
-            }
-        } else {
-            stop("Invalid format.")
-        }
-        return(data)
+            gsub("-|@", "", .) %>%
+            # Strip padded zeroes:
+            gsub("(^|-)[0]+", "", .) %>%
+            gsub("([A-Z]{1})[0]+(\\d)$", "\\1\\2", .)
+    } else if (format == "sequence") {
+        # Strip out isoforms:
+        grep <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$", "\\1.\\2", grep)
+    }
+    # Now create the grep string:
+    grep <- grep %>% grepString
+    return <- parallel::mclapply(seq_along(grep), function(a) {
+        return <- annotation %>% .[grepl(grep[a], .[[format]]), ]
+        return[[format]] <- identifier[a]
+        return(return)
     }) %>% dplyr::bind_rows(.)
+    if (format != "genePair") {
+        return$genePair <- NULL
+    }
+    if (format != "clone") {
+        # Sort the clones and make human readable:
+        return$clone <- return$clone %>%
+            strsplit(", ") %>% .[[1]] %>%
+            # Pad well numbers:
+            gsub("(\\D)(\\d)$", "\\10\\2", .) %>%
+            # Plate separator:
+            gsub("(\\d+)(\\D\\d{2})$", "-\\1-\\2", .) %>%
+            # ORFeome 96 well:
+            gsub("^-(\\d{5})-", "orfeome96-\\1-", .) %>%
+            # Ahringer 384 well:
+            gsub("^([IVX]{1,3})-", "ahringer384-\\1-", .) %>%
+            # Ahringer 96 well:
+            gsub("^-(\\d{1,3})-", "ahringer96-\\1-", .) %>%
+            toStringSortUnique
+    }
+    return(return)
 }
