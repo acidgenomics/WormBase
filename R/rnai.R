@@ -46,6 +46,25 @@ rnai <- function(identifier, format = "clone") {
     return <- parallel::mclapply(seq_along(grep), function(a) {
         return <- annotation %>% .[grepl(grep[a], .[[format]]), ]
         if (nrow(return)) {
+            if (format != "clone") {
+                # Sort the clones and make human readable:
+                return$clone <- return$clone %>%
+                    strsplit(", ") %>% .[[1]] %>%
+                    # Pad well numbers:
+                    gsub("(\\D)(\\d)$", "\\10\\2", .) %>%
+                    # Plate separator:
+                    gsub("(\\d+)(\\D\\d{2})$", "-\\1-\\2", .) %>%
+                    # ORFeome 96 well:
+                    gsub("^-(\\d{5})-", "orfeome96-\\1-", .) %>%
+                    # Ahringer 384 well:
+                    gsub("^([IVX]{1,3})-", "ahringer384-\\1-", .) %>%
+                    # Ahringer 96 well:
+                    gsub("^-(\\d{1,3})-", "ahringer96-\\1-", .) %>%
+                    # Present only Ahringer and ORFeome clones to user:
+                    # Cherrypick identifiers are for internal matching only.
+                    .[grepl("^(ahringer|orfeome)", .)] %>%
+                    toStringSortUnique
+            }
             return[[format]] <- identifier[a]
         }
         return(return)
@@ -53,25 +72,6 @@ rnai <- function(identifier, format = "clone") {
     if (nrow(return)) {
         if (format != "genePair") {
             return$genePair <- NULL
-        }
-        if (format != "clone") {
-            # Sort the clones and make human readable:
-            return$clone <- return$clone %>%
-                strsplit(", ") %>% .[[1]] %>%
-                # Pad well numbers:
-                gsub("(\\D)(\\d)$", "\\10\\2", .) %>%
-                # Plate separator:
-                gsub("(\\d+)(\\D\\d{2})$", "-\\1-\\2", .) %>%
-                # ORFeome 96 well:
-                gsub("^-(\\d{5})-", "orfeome96-\\1-", .) %>%
-                # Ahringer 384 well:
-                gsub("^([IVX]{1,3})-", "ahringer384-\\1-", .) %>%
-                # Ahringer 96 well:
-                gsub("^-(\\d{1,3})-", "ahringer96-\\1-", .) %>%
-                # Present only Ahringer and ORFeome clones to user:
-                # Cherrypick identifiers are for internal matching only.
-                .[grepl("^(ahringer|orfeome)", .)] %>%
-                toStringSortUnique
         }
     }
     return(return)
