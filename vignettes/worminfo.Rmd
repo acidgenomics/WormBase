@@ -54,33 +54,21 @@ package or the `base::merge()` function. We recommend using
 
 ## Gene `identifier` examples
 
-[WormBase][] **gene**:
+- `gene`: [WormBase][] **gene**:
+- `sequence`: [WormBase][] **sequence**, aka ORF:
+- `name`: [WormBase][] **name**:
 
 ```{r, eval = FALSE}
 gene("WBGene00004804", format = "gene")
-```
-
-
-[WormBase][] **sequence**, aka ORF:
-
-```{r, eval = FALSE}
 gene("T19E7.2", format = "sequence")
-```
-
-
-[WormBase][] **name**:
-
-```{r, eval = FALSE}
 gene("skn-1", format = "name")
 ```
-
 
 All 3 of these queries return the same result:
 
 ```{r, include = FALSE}
 gene("WBGene00004804") %>% t
 ```
-
 
 See how these queries all return the same [tibble][] `data.frame`, but with
 different sorting.
@@ -97,9 +85,7 @@ You can perform a **keyword** search. For example, let's query all genes that
 have been implicated in the regulation of worm lifespan:
 
 ```{r}
-gene("lifespan",
-     format = "keyword",
-     select = c("gene", "sequence", "name")) %>% head
+gene("lifespan", format = "keyword") %>% head
 ```
 
 
