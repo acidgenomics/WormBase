@@ -24,7 +24,7 @@ gene <- function(identifier, format = "gene", select = NULL) {
     } else if (!is.character(identifier)) {
         stop("Identifier must be a character vector.")
     }
-    identifier <- identifier %>% stats::na.omit(.) %>% unique
+    identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
     annotation <- get("geneAnnotation", envir = asNamespace("worminfo"))
     return <- parallel::mclapply(seq_along(identifier), function(a) {
         if (any(grepl(format, c("gene", "name")))) {
