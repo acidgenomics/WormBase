@@ -4,7 +4,7 @@
 \alias{gene}
 \title{Gene mapping}
 \usage{
-gene(identifier, format = "gene", select = NULL, sort = NULL)
+gene(identifier, format = "gene", select = NULL)
 }
 \arguments{
 \item{identifier}{Identifier}
@@ -14,8 +14,6 @@ gene(identifier, format = "gene", select = NULL, sort = NULL)
 
 \item{select}{Columns to select. Consult the \code{gene} vignette for
 available parameters.}
-
-\item{sort}{Columns to use for sorting.}
 }
 \value{
 tibble
