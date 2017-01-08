@@ -4,6 +4,7 @@
 #' @importFrom dplyr arrange_ bind_rows
 #' @importFrom parallel mclapply
 #' @importFrom stats na.omit
+#' @importFrom tibble as_tibble
 #' @importFrom tidyr separate_
 #' @param identifier Identifier
 #' @param format Identifier type (\code{gene}, \code{name}, \code{sequence},
@@ -68,7 +69,7 @@ gene <- function(identifier, format = "gene", select = NULL) {
     if (is.null(select)) {
         return <- return[, unique(c(format, simpleCol))]
     } else {
-        return <- return[, unique(c(format, "gene", select))]
+        return <- return[, unique(c(format, simpleCol, select))]
     }
 
     # Put \code{format} column first:
@@ -78,19 +79,16 @@ gene <- function(identifier, format = "gene", select = NULL) {
     # Arrange rows:
     # \code{format} is used to arrange, unless specified.
     if (any(grepl(format, c("class", "name")))) {
-        return$temp <- return$name
-        # Split to temporary columns:
-        return <- tidyr::separate_(return, "temp",
-                                   into = c("tempPrefix", "tempNum"),
-                                   sep = "-")
-        return$tempNum <- as.numeric(return$tempNum)
+        arrange <- stringr::str_match(return$name, "^(.+)([0-9\\.]+)$") %>%
+            tibble::as_tibble(.)
+        arrange$V3 <- as.numeric(arrange$V3)
+        return <- dplyr::left_join(return, arrange, by = c("name" = "V1"))
         # Arrange by class then number:
-        return <- dplyr::arrange_(return, .dots = c("tempPrefix", "tempNum"))
+        return <- dplyr::arrange_(return, .dots = c("V2", "V3"))
         # Drop the unnecessary temporary columns:
-        return$tempPrefix <- NULL
-        return$tempNum <- NULL
+        return <- return[, c("name", "gene", "sequence")]
     } else {
-        return <- dplyr::arrange_(return, .dots = unique(format, "gene"))
+        return <- dplyr::arrange_(return, .dots = unique(format, simpleCol))
     }
     return(return)
 }
