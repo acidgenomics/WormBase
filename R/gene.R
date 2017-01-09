@@ -1,5 +1,4 @@
 #' Gene mapping
-#'
 #' @export
 #' @importFrom dplyr arrange_ bind_rows
 #' @importFrom parallel mclapply
@@ -16,25 +15,19 @@
 #' @examples
 #' gene("skn-1", format = "name")
 #' gene("T19E7.2", format = "sequence")
-#' gene("WBGene00004804", format = "gene", select = "descriptionConcise")
+#' gene("WBGene00004804", select = "descriptionConcise")
 #' gene("daf", format = "class")
 #' gene("bzip", format = "keyword")
 gene <- function(identifier, format = "gene", select = NULL) {
-    if (missing(identifier)) {
-        stop("An identifier is required.")
-    } else if (!is.character(identifier)) {
-        stop("Identifier must be a character vector.")
-    }
-    identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
-    annotation <- get("geneAnnotation", envir = asNamespace("worminfo"))
+    identifier <- uniqueIdentifier(identifier)
+    annotation <- get("annotation", envir = asNamespace("worminfo"))$gene
     return <- parallel::mclapply(seq_along(identifier), function(a) {
         if (any(grepl(format, c("gene", "name")))) {
             return <- annotation %>%
                 .[.[[format]] %in% identifier[a], ]
         } else if (format == "sequence") {
-            # Strip out isoform if necessary
-            gsub <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$", "\\1.\\2", identifier[a])
-            return <- annotation %>% .[.[[format]] %in% gsub, ]
+            sequence <- removeIsoform(identifier)
+            return <- annotation %>% .[.[[format]] %in% sequence, ]
         } else if (format == "class") {
             name <- annotation %>%
                 .[grepl(paste0("^", identifier[a], "-"), .[["name"]]), "name"]
@@ -56,39 +49,37 @@ gene <- function(identifier, format = "gene", select = NULL) {
         }
         return(return)
     }) %>% dplyr::bind_rows(.)
-
-    # Collapse multiple keyword matches:
-    if (format == "keyword") {
-        return <- return %>%
-            dplyr::group_by_(.dots = "gene") %>%
-            collapse
-    }
-
     # Select columns:
     # Always return the WormBase gene identifier.
     if (is.null(select)) {
-        return <- return[, unique(c(format, simpleCol))]
+        return <- return[, unique(c(format, defaultCol))]
     } else {
-        return <- return[, unique(c(format, simpleCol, select))]
+        return <- return[, unique(c(format, defaultCol, select))]
     }
-
     # Put \code{format} column first:
     return <- return %>%
         dplyr::select_(.dots = c(format, setdiff(names(.), format)))
-
-    # Arrange rows:
-    # \code{format} is used to arrange, unless specified.
-    if (any(grepl(format, c("class", "name")))) {
-        arrange <- stringr::str_match(return$name, "^(.+)([0-9\\.]+)$") %>%
-            tibble::as_tibble(.)
-        arrange$V3 <- as.numeric(arrange$V3)
-        return <- dplyr::left_join(return, arrange, by = c("name" = "V1"))
-        # Arrange by class then number:
-        return <- dplyr::arrange_(return, .dots = c("V2", "V3"))
-        # Drop the unnecessary temporary columns:
-        return <- return[, c("name", "gene", "sequence")]
-    } else {
-        return <- dplyr::arrange_(return, .dots = unique(format, simpleCol))
+    if (nrow(return)) {
+        # Collapse multiple keyword matches:
+        if (format == "keyword") {
+            return <- return %>%
+                dplyr::group_by_(.dots = "gene") %>%
+                collapse
+        }
+        # Arrange rows:
+        # \code{format} is used to arrange, unless specified.
+        if (any(grepl(format, c("class", "name")))) {
+            arrange <- stringr::str_match(return$name, "^(.+)([0-9\\.]+)$") %>%
+                tibble::as_tibble(.)
+            arrange$V3 <- as.numeric(arrange$V3)
+            return <- dplyr::left_join(return, arrange, by = c("name" = "V1"))
+            # Arrange by class then number:
+            return <- dplyr::arrange_(return, .dots = c("V2", "V3"))
+            # Drop the unnecessary temporary columns:
+            return <- return[, c("name", "gene", "sequence")]
+        } else {
+            return <- dplyr::arrange_(return, .dots = unique(format, defaultCol))
+        }
     }
-    return(return)
+    return
 }
