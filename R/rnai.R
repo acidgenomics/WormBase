@@ -10,20 +10,18 @@
 #' @return tibble
 #'
 #' @examples
-#' c("GHR-11010@G06", "orfeome96-11010-G06", "ahringer384-III-6-C01", "ahringer96-86-B01") %>% rnai
-#' "sbp-1" %>% rnai(format = "name")
-#' "WBGene00004735" %>% rnai(format = "gene")
-#' "Y47D3B.7" %>% rnai(format = "sequence")
-#' "Y47D3B.7" %>% rnai(format = "genePair")
+#' rnai("ahringer384-III-6-C01")
+#' rnai("ahringer96-86-B01")
+#' rnai("GHR-11010@G06")
+#' rnai("orfeome96-11010-G06")
+#' rnai("sbp-1", format = "name")
+#' rnai("WBGene00004735", format = "gene")
+#' rnai("Y47D3B.7", format = "sequence")
+#' rnai("Y53H1C.b", format = "genePair")
 rnai <- function(identifier, format = "clone") {
-    if (missing(identifier)) {
-        stop("An identifier is required.")
-    } else if (!is.character(identifier)) {
-        stop("Identifier must be a character vector.")
-    }
-    identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
+    identifier <- uniqueIdentifier(identifier)
     grep <- identifier
-    annotation <- get("rnaiAnnotation", envir = asNamespace("worminfo"))
+    annotation <- get("annotation", envir = asNamespace("worminfo"))$rnai
     if (!any(grepl(format, names(annotation)))) {
         stop("Invalid format.")
     }
@@ -38,8 +36,7 @@ rnai <- function(identifier, format = "clone") {
             gsub("(^|-)[0]+", "", .) %>%
             gsub("([A-Z]{1})[0]+(\\d)$", "\\1\\2", .)
     } else if (format == "sequence") {
-        # Strip out isoforms:
-        grep <- gsub("^([A-Z0-9]+)\\.([0-9]+)[a-z]$", "\\1.\\2", grep)
+        grep <- removeIsoform(grep)
     }
     # Now create the grep string:
     grep <- grep %>% grepString
@@ -67,12 +64,9 @@ rnai <- function(identifier, format = "clone") {
             }
             return[[format]] <- identifier[a]
         }
-        return(return)
+        return
     }) %>% dplyr::bind_rows(.)
     if (nrow(return)) {
-        if (format != "genePair") {
-            return$genePair <- NULL
-        }
+        dplyr::select_(return, .dots = unique(c(format, defaultCol, "clone")))
     }
-    return(return)
 }
