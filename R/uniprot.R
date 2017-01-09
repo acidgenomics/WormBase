@@ -36,6 +36,13 @@ uniprot <- function(identifier) {
                     .$reviewed,
                     .$eggnog,
                     .$uniprotkb), ] %>%
-            collapse
+            collapse %>%
+            dplyr::rename_(.dots = c("gene" = "wormbase",
+                                     "uniprotExistence" = "existence",
+                                     "uniprotFamilies" = "families",
+                                     "uniprotGeneOntology" = "go",
+                                     "uniprotKeywords" = "keywords",
+                                     "uniprotReviewed" = "reviewed",
+                                     "uniprotScore" = "score"))
     }
 }
