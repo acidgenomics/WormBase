@@ -15,7 +15,4 @@ JSON content tibble
 \description{
 WormBase RESTful RNAi gene ontology query
 }
-\examples{
-geneOntology("WBGene00000001")
-}
 

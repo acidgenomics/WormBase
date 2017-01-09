@@ -4,10 +4,10 @@
 \alias{cherrypick}
 \title{Cherrypick RNAi clones by keyword}
 \usage{
-cherrypick(keyword)
+cherrypick(identifier)
 }
 \arguments{
-\item{keyword}{Keyword}
+\item{identifier}{Keyword identifier}
 }
 \value{
 RNAi clone list by gene

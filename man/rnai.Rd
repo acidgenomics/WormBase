@@ -19,10 +19,13 @@ tibble
 RNAi clone mapping
 }
 \examples{
-c("GHR-11010@G06", "orfeome96-11010-G06", "ahringer384-III-6-C01", "ahringer96-86-B01") \%>\% rnai
-"sbp-1" \%>\% rnai(format = "name")
-"WBGene00004735" \%>\% rnai(format = "gene")
-"Y47D3B.7" \%>\% rnai(format = "sequence")
-"Y47D3B.7" \%>\% rnai(format = "genePair")
+rnai("ahringer384-III-6-C01")
+rnai("ahringer96-86-B01")
+rnai("GHR-11010@G06")
+rnai("orfeome96-11010-G06")
+rnai("sbp-1", format = "name")
+rnai("WBGene00004735", format = "gene")
+rnai("Y47D3B.7", format = "sequence")
+rnai("Y53H1C.b", format = "genePair")
 }
 

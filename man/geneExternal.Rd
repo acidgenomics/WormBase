@@ -15,7 +15,4 @@ JSON content tibble
 \description{
 WormBase RESTful gene external query
 }
-\examples{
-geneExternal("WBGene00000001")
-}
 

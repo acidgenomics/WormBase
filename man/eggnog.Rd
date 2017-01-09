@@ -15,7 +15,4 @@ tibble
 \description{
 EggNOG annotations
 }
-\examples{
-c("ENOG410XPQV", "KOG0289") \%>\% eggnog
-}
 
