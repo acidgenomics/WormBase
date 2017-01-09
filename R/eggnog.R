@@ -1,25 +1,13 @@
 #' EggNOG annotations
-#'
-#' @importFrom dplyr left_join rename_ select_
+#' @export
+#' @importFrom dplyr distinct left_join rename_ select_
 #' @param identifier EggNOG identifier
 #' @return tibble
-#'
-#' @examples
-#' c("ENOG410XPQV", "KOG0289") %>% eggnog
 eggnog <- function(identifier) {
-    if (missing(identifier)) {
-        stop("An identifier is required.")
-    } else if (!is.character(identifier)) {
-        stop("Identifier must be a character vector.")
-    }
-    annotation <- get("eggnogAnnotation", envir = asNamespace("worminfo"))
-    annotationMatch <- annotation %>%
-        .[.$groupName %in% identifier,
-          c("groupName",
-            "consensusFunctionalDescription",
-            "cogFunctionalCategory")] %>%
-        dplyr::rename_(.dots = c("eggnog" = "groupName"))
-    category <- get("eggnogCategory", envir = asNamespace("worminfo"))
+    identifier <- uniqueIdentifier(identifier)
+    annotation <- get("annotation", envir = asNamespace("worminfo"))$eggnog$annotation
+    annotationMatch <- annotation %>% .[.$eggnog %in% identifier, ]
+    category <- get("annotation", envir = asNamespace("worminfo"))$eggnog$category
     categoryMatch <- lapply(seq_along(annotationMatch$cogFunctionalCategory),
                             function(a) {
         letter <- annotationMatch$cogFunctionalCategory[a] %>%
