@@ -5,9 +5,9 @@
 #' @param identifier Gene identifier
 #' @return tibble
 geneReport <- function(identifier) {
-    identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
+    identifier <- uniqueIdentifier(identifier)
     gene <- gene(identifier,
-                 select = c(simpleCol,
+                 select = c(defaultCol,
                             "class",
                             "biotype",
                             # Ortholog:
@@ -36,7 +36,7 @@ geneReport <- function(identifier) {
     gene %>%
         dplyr::left_join(geneOntology, by = "gene") %>%
         dplyr::left_join(uniprot, by = "gene") %>%
-        dplyr::select_(.dots = c(simpleCol,
-                                 setdiff(sort(names(.)), simpleCol))) %>%
-        dplyr::arrange_(.dots = simpleCol)
+        dplyr::select_(.dots = c(defaultCol,
+                                 setdiff(sort(names(.)), defaultCol))) %>%
+        dplyr::arrange_(.dots = defaultCol)
 }
