@@ -11,7 +11,7 @@ download.file("http://eggnogdb.embl.de/download/latest/README.txt",
 # Category ====
 download.file("http://eggnogdb.embl.de/download/latest/COG_functional_categories.txt",
               "data-raw/eggnog/category.txt")
-eggnogCategory <- readLines("data-raw/eggnog/category.txt") %>%
+category <- readLines("data-raw/eggnog/category.txt") %>%
     .[grepl("^\\s\\[", .)] %>%
     # Strip leading and trailing spaces:
     gsub("^\\s|\\s$", "", .) %>%
@@ -21,7 +21,6 @@ eggnogCategory <- readLines("data-raw/eggnog/category.txt") %>%
     set_names(c("cogFunctionalCategory",
                 "cogFunctionalDescription")) %>%
     arrange(cogFunctionalCategory)
-use_data(eggnogCategory, overwrite = TRUE)
 
 
 
@@ -29,11 +28,9 @@ use_data(eggnogCategory, overwrite = TRUE)
 # Eukaryota:
 download.file("http://eggnogdb.embl.de/download/latest/data/euNOG/euNOG.annotations.tsv.gz",
               "data-raw/eggnog/eunog.tsv.gz")
-
 # LUCA (All organisms):
 download.file("http://eggnogdb.embl.de/download/latest/data/NOG/NOG.annotations.tsv.gz",
               "data-raw/eggnog/nog.tsv.gz")
-
 # See README.txt for annotation file column names:
 colNames <- c("taxonomicLevel",
               "groupName",
@@ -43,6 +40,17 @@ colNames <- c("taxonomicLevel",
               "consensusFunctionalDescription")
 eunog <- read_tsv("data-raw/eggnog/eunog.tsv.gz", col_names = colNames)
 nog <- read_tsv("data-raw/eggnog/nog.tsv.gz", col_names = colNames)
-eggnogAnnotation <- bind_rows(eunog, nog)
-use_data(eggnogAnnotation, overwrite = TRUE)
+annotation <- bind_rows(eunog, nog) %>%
+    select(groupName,
+           consensusFunctionalDescription,
+           cogFunctionalCategory) %>%
+    rename(eggnog = groupName)
 rm(eunog, nog)
+
+
+
+# Final list ====
+eggnog <- list(annotation = annotation,
+               category = category)
+use_data(eggnog, overwrite = TRUE)
+
