@@ -1,19 +1,13 @@
 #' WormBase RESTful gene external query
-#'
+#' @export
 #' @importFrom dplyr bind_rows mutate_
 #' @importFrom magrittr set_names
 #' @importFrom parallel mclapply
 #' @importFrom tibble as_tibble
-#'
 #' @param identifier Gene identifier
-#'
 #' @return JSON content tibble
-#' @export
-#'
-#' @examples
-#' geneExternal("WBGene00000001")
 geneExternal <- function(identifier) {
-    identifier <- identifier %>% stats::na.omit(.) %>% unique %>% sort
+    identifier <- uniqueIdentifier(identifier)
     lapply(seq_along(identifier), function(a) {
         if (!grepl("^WBGene[0-9]{8}$", identifier[[a]])) {
             stop("Invalid gene identifier.")
