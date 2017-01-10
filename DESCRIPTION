@@ -28,7 +28,6 @@ Suggests:
     rmarkdown,
     roxygen2
 biocViews:
-    AnnotationData,
     Caenorhabditis_elegans
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr
