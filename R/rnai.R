@@ -57,9 +57,10 @@ rnai <- function(identifier, format = "clone") {
                     gsub("^([IVX]{1,3})-", "ahringer384-\\1-", .) %>%
                     # Ahringer 96 well:
                     gsub("^-(\\d{1,3})-", "ahringer96-\\1-", .) %>%
-                    # Present only Ahringer and ORFeome clones to user:
-                    # Cherrypick identifiers are for internal matching only.
-                    .[grepl("^(ahringer|orfeome)", .)] %>%
+                    # Present only `ahringer96` and `orfeome96` clones to user.
+                    # Other identifiers (`ahringer96`, `cherrypick`) are for
+                    # internal match functions only.
+                    .[grepl("^(ahringer384|orfeome96)", .)] %>%
                     toStringSortUnique
             }
             return[[format]] <- identifier[a]
