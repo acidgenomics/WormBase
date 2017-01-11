@@ -4,10 +4,12 @@
 \alias{geneReport}
 \title{Gene list report}
 \usage{
-geneReport(identifier)
+geneReport(identifier, format = "gene")
 }
 \arguments{
 \item{identifier}{Gene identifier}
+
+\item{format}{Identifier format}
 }
 \value{
 tibble

@@ -3,10 +3,12 @@
 #' @export
 #' @importFrom dplyr arrange_ bind_rows left_join select_
 #' @param identifier Gene identifier
+#' @param format Identifier format
 #' @return tibble
-geneReport <- function(identifier) {
+geneReport <- function(identifier, format = "gene") {
     identifier <- uniqueIdentifier(identifier)
     gene <- gene(identifier,
+                 format = format,
                  select = c(defaultCol,
                             "class",
                             "biotype",
@@ -32,6 +34,7 @@ geneReport <- function(identifier) {
                             "pantherGeneOntologyCellularComponent",
                             "pantherClass"))
     if (nrow(gene)) {
+        identifier <- gene$gene
         return <- gene
         geneOntology <- geneOntology(identifier)
         if (nrow(geneOntology)) {
