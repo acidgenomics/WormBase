@@ -1,10 +1,10 @@
 Package: worminfo
-Type: Package
 Title: Worm Genes and RNAi Clones
-Version: 0.99.0
-Author: Michael J. Steinbaugh <mike@steinbaugh.com>
-Maintainer: Michael J. Steinbaugh <mike@steinbaugh.com>
 Description: C. elegans genome annotations assembled from WormBase, Ensembl, and PANTHER. RNAi clone mapping support for ORFeome and Ahringer libraries.
+Version: 0.99.0
+Authors@R: person("Michael", "Steinbaugh", , "mike@steinbaugh.com", role = c("aut", "cre"))
+Author: Michael Steinbaugh <mike@steinbaugh.com>
+Maintainer: Michael Steinbaugh <mike@steinbaugh.com>
 License: MIT + file LICENSE
 URL: http://worminfo.steinbaugh.com
 Encoding: UTF-8
