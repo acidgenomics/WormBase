@@ -3,7 +3,9 @@
 #' @importFrom stringr str_pad
 #' @param plate Number of plates
 #' @param well Number of wells (\code{96}, \code{384})
-microplate <- function(plate = 1, well = 96) {
+microplate <- function(plate = 1,
+                       well = 96,
+                       prefix = NULL) {
     if (well == 96) {
         col <- 12
         row <- 8
@@ -17,6 +19,9 @@ microplate <- function(plate = 1, well = 96) {
     row <- LETTERS[1:row]
     plate <- 1:plate %>% stringr::str_pad(., max(stringr::str_length(.)), pad = "0")
     well <- expand.grid(plate, row, col)
-    well <- paste0(well$Var1, well$Var2, well$Var3) %>% sort
+    well <- paste0(well$Var1, "-", well$Var2, well$Var3) %>% sort
+    if (!is.null(prefix)) {
+        well <- paste0(prefix, "-", well)
+    }
     well
 }
