@@ -1,7 +1,6 @@
+^.*\.yml$
+^data-raw/
+^docs/
+^NEWS\.md$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^\.travis\.yml$
-^data/
-^data-raw/
-^data-build\.R$
-^NEWS\.md$

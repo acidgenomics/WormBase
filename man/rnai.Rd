@@ -4,14 +4,13 @@
 \alias{rnai}
 \title{RNAi clone mapping}
 \usage{
-rnai(query, format = "clone", library = "orfeome96")
+rnai(identifier, format = "clone")
 }
 \arguments{
-\item{query}{Identifier query}
+\item{identifier}{Identifier}
 
-\item{format}{Identifier format (\code{gene}, \code{name}, or \code{sequence})}
-
-\item{library}{Library type (\code{ahringer96}, \code{ahringer384}, or \code{orfeome96})}
+\item{format}{Identifier format (\code{clone}, \code{gene}, \code{genePair},
+\code{name}, or \code{sequence})}
 }
 \value{
 tibble
@@ -20,11 +19,13 @@ tibble
 RNAi clone mapping
 }
 \examples{
+rnai("ahringer384-III-6-C01")
+rnai("ahringer96-86-B01")
+rnai("GHR-11010@G06")
+rnai("orfeome96-11010-G06")
 rnai("sbp-1", format = "name")
 rnai("WBGene00004735", format = "gene")
 rnai("Y47D3B.7", format = "sequence")
-rnai("GHR-11010@G06", library = "orfeome96")
-rnai("III-6C01", library = "ahringer384")
-rnai("86B01", library = "ahringer96")
+rnai("Y53H1C.b", format = "genePair")
 }
 

@@ -1,17 +1,4 @@
 language: R
 cache: packages
 sudo: false
-
 r: bioc-release
-
-# matrix:
-#   include:
-#   - r: release
-#   - r: oldrel
-#   - r: devel
-
-# r_github_packages:
-#   - steinbaugh/seqcloudr
-
-# before_script:
-#  - git lfs pull
