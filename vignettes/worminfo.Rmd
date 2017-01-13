@@ -1,0 +1,219 @@
+---
+title: "worminfo"
+author: "Michael J. Steinbaugh"
+date: "`r Sys.Date()`"
+output:
+    rmarkdown::html_vignette:
+        css: http://static.steinbaugh.com/css/vignette.css
+        self_contained: false
+vignette: >
+    %\VignetteIndexEntry{worminfo}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(results = "asis", render = pander::pander)
+pander::panderOptions("table.style", "rmarkdown")
+pander::panderOptions("table.alignment.default", "left")
+pander::panderOptions("table.alignment.rownames", "right")
+library(worminfo)
+```
+
+[dplyr]: https://cran.r-project.org/package=dplyr
+[ensembl]: http://www.ensembl.org/Caenorhabditis_elegans
+[panther]: http://www.pantherdb.org
+[tibble]: https://cran.r-project.org/package=tibble
+[worminfo]: https://github.com/steinbaugh/worminfo
+[wormbase]: http://www.wormbase.org
+
+[*daf-2*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00000898
+[*daf-16*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00000912
+[*sbp-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004735
+[*skn-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004804
+
+*[ORF]: Open reading frame
+
+The goal of the [worminfo][] package is to quickly and simply provide correct,
+up-to-date annotation data for the entire *C. elegans* genome. The underlying
+annotations provided by the `gene()` function are automatically sourced from
+[WormBase][], [Ensembl][] and [PANTHER][]. These source files are saved at the
+[data branch](https://github.com/steinbaugh/worminfo/tree/data) of the [worminfo
+GitHub repository][worminfo]. [WormBase][] is updated on a bi-monthly [release
+schedule](http://www.wormbase.org/about/release_schedule). If the source data
+appears outdated, file an [update
+request](https://github.com/steinbaugh/worminfo/issues) on GitHub, and we'll
+promptly issue a rebuild.
+
+`gene()` accepts 4 types of identifiers: `gene`, `name`, `sequence` or `class`.
+Output from the function is controlled using the `select` parameter. The
+function returns a [tibble][] that can be manipulated using the [dplyr][]
+package or the `base::merge()` function. We recommend using
+`dplyr::left_join()` to bind these annotations to other `data.frames`.
+
+
+```{r}
+get("build", envir = asNamespace("worminfo"))
+```
+
+
+```{r}
+identifier <- "WBGene00004804"
+```
+
+
+## Gene `identifier` examples
+
+- `gene`: [WormBase][] **gene**:
+- `sequence`: [WormBase][] **sequence**, aka ORF:
+- `name`: [WormBase][] **name**:
+
+```{r, eval = FALSE}
+gene("WBGene00004804", format = "gene")
+gene("T19E7.2", format = "sequence")
+gene("skn-1", format = "name")
+```
+
+All 3 of these queries return the same result:
+
+```{r, include = FALSE}
+gene("WBGene00004804") %>% t
+```
+
+See how these queries all return the same [tibble][] `data.frame`, but with
+different sorting.
+
+You can also return all genes in a named **class**. For example, let's get the
+current list of *daf* (**D**auer **A**rrest **F**orming) genes:
+
+```{r}
+gene("daf", format = "class")
+```
+
+
+You can perform a **keyword** search. For example, let's query all genes that
+have been implicated in the regulation of worm lifespan:
+
+```{r}
+gene("lifespan", format = "keyword") %>% head
+```
+
+
+## `select` options
+
+The `gene()` function is bundled with source data that can be queried using the
+`select` parameter. Here's the current list of data annotations that can be
+called with `select`:
+
+```{r, echo = FALSE, results = "asis"}
+get("geneAnnotation", envir = asNamespace("worminfo")) %>%
+    names %>%
+    markdownList
+```
+
+
+When `select` is not declared, a simple result is returned:
+
+```{r, echo = FALSE, results = "asis"}
+gene(identifier) %>%
+    names %>%
+    markdownList
+```
+
+
+## `gene()` function examples
+
+Basic identifiers for [*skn-1*][] (bZIP transcription factor):
+
+```{r}
+gene("skn-1", format = "name") %>% t
+```
+
+Select [WormBase][] and [Ensembl][] descriptions for [*sbp-1*][] (bHLH
+transcription factor):
+
+```{r}
+gene("sbp-1",
+     format = "name",
+     select = "ensemblDescription") %>% t
+```
+
+
+
+
+
+
+[ahringer]: http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/
+[orfeome]: http://worfdb.dfci.harvard.edu
+[orfeome dharmacon]: http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai/
+[orfeome sbs]: http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-orfeome-version-11/
+[wormbase]: http://www.wormbase.org
+
+[*daf-16*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00000912
+[*sbp-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004735
+
+RNA interference libraries are commonly used in *C. elegans* research. RNAi
+clones are typically referenced by a gene pair or open reading frame (ORF)
+sequence, which are often difficult to map to an up-to-date gene identifier. We
+have written the `rnai()` function to solve this problem. The function enables a
+researcher to search for RNAi clones by a gene identifier, or map an RNAi clone
+by plate location and return the up-to-date [WormBase][] gene identifier. The
+function also obtains primary and secondary target information from
+[WormBase][], which can be informative since many RNAi clones have off-target
+effects.
+
+The function has built-in support for the commonly used [Ahringer][ahringer] and
+[ORFeome][] RNAi libraries.
+
+
+## Finding clones by gene identifier
+
+Let's find the locations of [*sbp-1*][] in the [Ahringer][] and [ORFeome][]
+libraries. This can be done easily with the `rnai()` function, just search by
+**name**:
+
+```{r}
+rnai("sbp-1", format = "name") %>% t
+```
+
+Alternatively, you can search by [WormBase][] **gene** identifier or
+**sequence**, aka open reading frame (ORF). These queries will return the same
+result:
+
+```{r, eval = FALSE}
+rnai("WBGene00004735", format = "gene")
+rnai("Y47D3B.7", format = "sequence")
+```
+
+
+## Mapping RNAi clones to gene identifiers
+
+The `rnai()` function was written to simplify the task of identifying wells of
+interest in an RNAi screen. You can simply input the well identifiers by plate
+location, and `rnai()` will return up-to-date gene identifiers from [WormBase][].
+
+### [Ahringer][] library
+
+Here's how you map wells from the [Ahringer][] library in 384 well format. Note
+that plate location identifiers must include the chromosome in roman numeral
+format at the beginning.
+
+Wells from the [Ahringer][] library in 96 well format are also supported. Since
+this library has unique plate numbers, the chromosome prefix is not necessary.
+
+```{r}
+c("ahringer384-III-6C01",
+  "ahringer96-86-B01") %>% rnai %>% t
+```
+
+### [ORFeome][] library
+
+`rnai()` has mapping support for the [ORFeome][] library, in 96 well format.
+Plate position should be entered in the same format as seen on the WORFDB.
+However, the function is flexible, and also supports entries in the historical
+format (e.g. `GHR-11010@G06`), or without a separator:
+
+```{r}
+rnai("GHR-11010@G06") %>% t
+rnai("orfeome96-11010-G06") %>% t
+```
