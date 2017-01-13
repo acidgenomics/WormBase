@@ -51,6 +51,9 @@
         <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="../articles/index.html">Articles</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -73,12 +76,23 @@
     <p>Cherrypick RNAi clones by keyword</p>
     
 
-    <pre><span class='fu'>cherrypick</span>(<span class='no'>identifier</span>)</pre>
+    <pre><span class='fu'>cherrypick</span>(<span class='no'>identifier</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"keyword"</span>, <span class='kw'>controls</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>ahringer384</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ahringer96</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>orfeome96</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>identifier</dt>
       <dd>Keyword identifier</dd>
+      <dt>format</dt>
+      <dd>Identifier format</dd>
+      <dt>controls</dt>
+      <dd>Names of control wells</dd>
+      <dt>ahringer384</dt>
+      <dd>Include Ahringer 384 well library</dd>
+      <dt>ahringer96</dt>
+      <dd>Include Ahringer 96 well library</dd>
+      <dt>orfeome96</dt>
+      <dd>Include ORFeome 96 well library</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>

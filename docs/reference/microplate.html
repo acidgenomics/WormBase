@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>WormBase RESTful gene external query — geneExternal • worminfo</title>
+<title>Generate well identifiers for a microplate — microplate • worminfo</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -69,24 +69,22 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>WormBase RESTful gene external query</h1>
+    <h1>Generate well identifiers for a microplate</h1>
     </div>
 
     
-    <p>WormBase RESTful gene external query</p>
+    <p>Generate well identifiers for a microplate</p>
     
 
-    <pre><span class='fu'>geneExternal</span>(<span class='no'>identifier</span>)</pre>
+    <pre><span class='fu'>microplate</span>(<span class='kw'>plate</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>well</span> <span class='kw'>=</span> <span class='fl'>96</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>identifier</dt>
-      <dd>Gene identifier</dd>
+      <dt>plate</dt>
+      <dd>Number of plates</dd>
+      <dt>well</dt>
+      <dd>Number of wells (<code>96</code>, <code>384</code>)</dd>
     </dl>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>JSON content tibble</p>
     
 
   </div>
@@ -94,9 +92,7 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>
