@@ -8,8 +8,7 @@ eggnog <- function(identifier) {
     annotation <- get("annotation", envir = asNamespace("worminfo"))$eggnog$annotation
     annotationMatch <- annotation %>% .[.$eggnog %in% identifier, ]
     category <- get("annotation", envir = asNamespace("worminfo"))$eggnog$category
-    categoryMatch <- lapply(seq_along(annotationMatch$cogFunctionalCategory),
-                            function(a) {
+    categoryMatch <- lapply(seq_along(annotationMatch$cogFunctionalCategory), function(a) {
         letter <- annotationMatch$cogFunctionalCategory[a] %>%
             strsplit("") %>%
             unlist %>%

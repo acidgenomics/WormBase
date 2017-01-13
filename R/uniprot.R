@@ -8,20 +8,18 @@
 uniprot <- function(identifier) {
     identifier <- uniqueIdentifier(identifier)
     database <- UniProt.ws::UniProt.ws(taxId = 6239)  # NCBI C. elegans
-    uniprot <- suppressMessages(
-        UniProt.ws::select(database,
-                           keytype = "WORMBASE",
-                           keys = identifier,
-                           columns = c("EGGNOG",
-                                       "EXISTENCE",
-                                       "FAMILIES",
-                                       "GO",
-                                       "KEYWORDS",
-                                       "REVIEWED",
-                                       "SCORE",
-                                       "UNIPROTKB",
-                                       "WORMBASE"))
-    )
+    uniprot <-  UniProt.ws::select(database,
+                                   keytype = "WORMBASE",
+                                   keys = identifier,
+                                   columns = c("EGGNOG",
+                                               "EXISTENCE",
+                                               "FAMILIES",
+                                               "GO",
+                                               "KEYWORDS",
+                                               "REVIEWED",
+                                               "SCORE",
+                                               "UNIPROTKB",
+                                               "WORMBASE"))
     if (nrow(uniprot)) {
         uniprot <- uniprot %>%
             setNamesCamel %>%
@@ -36,13 +34,14 @@ uniprot <- function(identifier) {
                     .$reviewed,
                     .$eggnog,
                     .$uniprotkb), ] %>%
-            collapse %>%
             dplyr::rename_(.dots = c("gene" = "wormbase",
                                      "uniprotExistence" = "existence",
                                      "uniprotFamilies" = "families",
                                      "uniprotGeneOntology" = "go",
                                      "uniprotKeywords" = "keywords",
                                      "uniprotReviewed" = "reviewed",
-                                     "uniprotScore" = "score"))
+                                     "uniprotScore" = "score")) %>%
+            group_by(gene) %>%
+            collapse
     }
 }
