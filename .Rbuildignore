@@ -1,5 +1,6 @@
 ^.*\.yml$
 ^data-raw/
+^docs/
 ^NEWS\.md$
 ^.*\.Rproj$
 ^\.Rproj\.user$
