@@ -60,7 +60,7 @@ rnai <- function(identifier, format = "clone") {
                     # Present only `ahringer96` and `orfeome96` clones to user.
                     # Other identifiers (`ahringer96`, `cherrypick`) are for
                     # internal match functions only.
-                    .[grepl("^(ahringer384|orfeome96)", .)] %>%
+                    .[grepl("^(ahringer|orfeome)", .)] %>%
                     toStringSortUnique
             }
             return[[format]] <- identifier[a]
