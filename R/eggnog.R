@@ -15,7 +15,7 @@ eggnog <- function(identifier) {
             sort %>%
             unique
         category %>% .[.$cogFunctionalCategory %in% letter, ] %>%
-            collapse
+            toStringSummarize
     }) %>% dplyr::bind_rows(.) %>%
         dplyr::distinct(.)
     categoryMatch$cogFunctionalCategory <- gsub(", ", "", categoryMatch$cogFunctionalCategory)

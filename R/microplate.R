@@ -3,6 +3,7 @@
 #' @importFrom stringr str_pad
 #' @param plate Number of plates
 #' @param well Number of wells (\code{96}, \code{384})
+#' @param prefix Plate name prefix
 microplate <- function(plate = 1,
                        well = 96,
                        prefix = NULL) {

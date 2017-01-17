@@ -41,6 +41,6 @@ uniprot <- function(identifier) {
                                      "uniprotReviewed" = "reviewed",
                                      "uniprotScore" = "score")) %>%
             dplyr::group_by_(.dots = "gene") %>%
-            collapse
+            toStringSummarize
     }
 }

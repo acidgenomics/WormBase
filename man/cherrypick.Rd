@@ -4,21 +4,21 @@
 \alias{cherrypick}
 \title{Cherrypick RNAi clones by keyword}
 \usage{
-cherrypick(identifier, format = "keyword", controls = 3,
-  ahringer384 = TRUE, ahringer96 = FALSE, orfeome96 = TRUE)
+cherrypick(identifier, format = "keyword", ahringer384 = TRUE,
+  ahringer96 = FALSE, orfeome96 = TRUE, plates = NULL)
 }
 \arguments{
 \item{identifier}{Keyword identifier}
 
 \item{format}{Identifier format}
 
-\item{controls}{Names of control wells}
-
 \item{ahringer384}{Include Ahringer 384 well library}
 
 \item{ahringer96}{Include Ahringer 96 well library}
 
 \item{orfeome96}{Include ORFeome 96 well library}
+
+\item{plates}{Reference character of plates to pick from}
 }
 \value{
 RNAi clone list by gene

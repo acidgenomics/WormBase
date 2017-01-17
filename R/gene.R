@@ -60,11 +60,11 @@ gene <- function(identifier, format = "gene", select = NULL) {
     return <- return %>%
         dplyr::select_(.dots = c(format, setdiff(names(.), format)))
     if (nrow(return)) {
-        # Collapse multiple keyword matches:
+        # Summarize multiple keyword matches:
         if (format == "keyword") {
             return <- return %>%
                 dplyr::group_by_(.dots = "gene") %>%
-                collapse
+                toStringSummarize
         }
         # Arrange rows:
         # \code{format} is used to arrange, unless specified.

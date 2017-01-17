@@ -10,6 +10,8 @@ microplate(plate = 1, well = 96, prefix = NULL)
 \item{plate}{Number of plates}
 
 \item{well}{Number of wells (\code{96}, \code{384})}
+
+\item{prefix}{Plate name prefix}
 }
 \description{
 Generate well identifiers for a microplate

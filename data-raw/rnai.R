@@ -15,7 +15,7 @@ rnai <- bind_rows(cherrypick,
                   worfdb) %>%
     filter(!is.na(gene)) %>%
     group_by(gene) %>%
-    collapse %>%
+    toStringSummarize %>%
     left_join(gene(.$gene), by = "gene") %>%
     select(noquote(order(names(.))))
 use_data(rnai, overwrite = TRUE)
