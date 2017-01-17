@@ -62,17 +62,6 @@ camel <- function(string) {
 
 
 
-#' @importFrom tibble as_tibble
-#' @importFrom dplyr mutate_each summarise_each
-collapse <- function(tibble) {
-    tibble %>%
-        tibble::as_tibble(.) %>%
-        dplyr::summarise_each(funs(toStringUnique)) %>%
-        dplyr::mutate_each(funs(fixNA))
-}
-
-
-
 dataRaw <- function(data) {
     for (a in 1:length(data)) {
         if (!file.exists(paste0("data/", data[a], ".rda"))) {
@@ -152,11 +141,16 @@ setNamesCamel <- function(data) {
 
 
 
-toStringUnique <- function(vector) {
-    vector %>%
-        unique %>%
-        toString %>%
-        gsub("NA,\\s|,\\sNA", "", .)
+#' Summarize rows using toString
+#' @export
+#' @importFrom tibble as_tibble
+#' @importFrom dplyr mutate_each summarise_each
+#' @param tibble tibble
+toStringSummarize <- function(tibble) {
+    tibble %>%
+        tibble::as_tibble(.) %>%
+        dplyr::summarise_each(funs(toStringUnique)) %>%
+        dplyr::mutate_each(funs(fixNA))
 }
 
 
@@ -165,6 +159,15 @@ toStringSortUnique <- function(vector) {
     vector %>%
         unique %>%
         sort %>%
+        toString %>%
+        gsub("NA,\\s|,\\sNA", "", .)
+}
+
+
+
+toStringUnique <- function(vector) {
+    vector %>%
+        unique %>%
         toString %>%
         gsub("NA,\\s|,\\sNA", "", .)
 }
