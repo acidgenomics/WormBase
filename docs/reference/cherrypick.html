@@ -76,8 +76,8 @@
     <p>Cherrypick RNAi clones by keyword</p>
     
 
-    <pre><span class='fu'>cherrypick</span>(<span class='no'>identifier</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"keyword"</span>, <span class='kw'>controls</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>ahringer384</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ahringer96</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>orfeome96</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre><span class='fu'>cherrypick</span>(<span class='no'>identifier</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"keyword"</span>, <span class='kw'>ahringer384</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>ahringer96</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>orfeome96</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>plates</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -85,14 +85,14 @@
       <dd>Keyword identifier</dd>
       <dt>format</dt>
       <dd>Identifier format</dd>
-      <dt>controls</dt>
-      <dd>Names of control wells</dd>
       <dt>ahringer384</dt>
       <dd>Include Ahringer 384 well library</dd>
       <dt>ahringer96</dt>
       <dd>Include Ahringer 96 well library</dd>
       <dt>orfeome96</dt>
       <dd>Include ORFeome 96 well library</dd>
+      <dt>plates</dt>
+      <dd>Reference character of plates to pick from</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
