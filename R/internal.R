@@ -141,11 +141,8 @@ setNamesCamel <- function(data) {
 
 
 
-#' Summarize rows using toString
-#' @export
-#' @importFrom tibble as_tibble
 #' @importFrom dplyr mutate_each summarise_each
-#' @param tibble tibble
+#' @importFrom tibble as_tibble
 toStringSummarize <- function(tibble) {
     tibble %>%
         tibble::as_tibble(.) %>%
