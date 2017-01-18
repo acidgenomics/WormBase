@@ -6,7 +6,8 @@ Authors@R: person("Michael", "Steinbaugh", , "mike@steinbaugh.com", role = c("au
 Author: Michael Steinbaugh <mike@steinbaugh.com>
 Maintainer: Michael Steinbaugh <mike@steinbaugh.com>
 License: MIT + file LICENSE
-URL: http://worminfo.steinbaugh.com
+URL: http://steinbaugh.com/worminfo
+BugReports: https://github.com/steinbaugh/worminfo/issues
 Encoding: UTF-8
 LazyData: no
 Depends:
