@@ -7,7 +7,7 @@
 
 ## Installation
 
-This is an [R](https://www.r-project.org) data package.
+This is an [R](https://www.r-project.org) package.
 
 [`devtools`](https://cran.r-project.org/package=devtools) is required to install the latest version directly from GitHub:
 
