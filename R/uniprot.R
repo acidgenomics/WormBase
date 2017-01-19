@@ -30,7 +30,7 @@ uniprot <- function(identifier) {
         x <- dplyr::left_join(uniprot, eggnog, by = "eggnog") %>%
             # Sort priority to put higher quality UniProtKB identifiers first:
             .[order(.$wormbase,
-                    .$cogFunctionalCategory,
+                    .$cogFunctionalDescription,
                     -xtfrm(.$score)), ] %>%
             dplyr::rename_(.dots = c("gene" = "wormbase",
                                      "uniprotExistence" = "existence",
