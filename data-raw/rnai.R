@@ -1,6 +1,6 @@
 dataRaw(c("cherrypick", "sourcebioscience", "worfdb"))
 cherrypick <- cherrypick %>%
-    select(gene, sequence, clone) %>%
+    dplyr::select(gene, sequence, clone) %>%
     filter(!is.na(gene)) %>%
     rename(genePair = sequence)
 sourcebioscience <- sourcebioscience %>%
@@ -16,7 +16,7 @@ rnai <- bind_rows(cherrypick,
     filter(!is.na(gene)) %>%
     group_by(gene) %>%
     toStringSummarize %>%
-    left_join(gene(.$gene), by = "gene") %>%
+    left_join(gene(.$gene, select = "biotype"), by = "gene") %>%
     select(noquote(order(names(.))))
 use_data(rnai, overwrite = TRUE)
 rm(cherrypick, sourcebioscience, worfdb)
