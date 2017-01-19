@@ -2,6 +2,7 @@
 #'
 #' @export
 #' @importFrom dplyr bind_rows group_by_ rename_ select_
+#' @importFrom tidyr nest
 #' @importFrom UniProt.ws select UniProt.ws
 #' @param identifier WormBase gene identifier
 #' @return tibble
@@ -26,13 +27,11 @@ uniprot <- function(identifier) {
             dplyr::select_(.dots = c("wormbase",
                                      setdiff(sort(names(.)), "wormbase")))
         eggnog <- eggnog(uniprot$eggnog)
-        dplyr::left_join(uniprot, eggnog, by = "eggnog") %>%
+        x <- dplyr::left_join(uniprot, eggnog, by = "eggnog") %>%
             # Sort priority to put higher quality UniProtKB identifiers first:
             .[order(.$wormbase,
-                    -xtfrm(.$score),
-                    .$reviewed,
-                    .$eggnog,
-                    .$uniprotkb), ] %>%
+                    .$cogFunctionalCategory,
+                    -xtfrm(.$score)), ] %>%
             dplyr::rename_(.dots = c("gene" = "wormbase",
                                      "uniprotExistence" = "existence",
                                      "uniprotFamilies" = "families",
@@ -40,6 +39,7 @@ uniprot <- function(identifier) {
                                      "uniprotKeywords" = "keywords",
                                      "uniprotReviewed" = "reviewed",
                                      "uniprotScore" = "score")) %>%
+            dplyr::select_(.dots = sort(names(.))) %>%
             dplyr::group_by_(.dots = "gene") %>%
             toStringSummarize
     }
