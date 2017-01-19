@@ -111,12 +111,6 @@ gene("sbp-1",
      select = "ensemblDescription") %>% t
 ```
 
-You can generate a detailed gene report:
-
-```{r}
-geneReport("WBGene00004804") %>% t
-```
-
 
 
 # RNAi clone identifier queries
