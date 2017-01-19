@@ -76,7 +76,8 @@ gene <- function(identifier, format = "gene", select = NULL) {
             # Arrange by class then number:
             return <- dplyr::arrange_(return, .dots = c("V2", "V3"))
             # Drop the unnecessary temporary columns:
-            return <- return[, c("name", "gene", "sequence")]
+            return$V2 <- NULL
+            return$V3 <- NULL
         } else {
             return <- dplyr::arrange_(return, .dots = unique(format, defaultCol))
         }
