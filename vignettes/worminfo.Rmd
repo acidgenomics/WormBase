@@ -58,11 +58,9 @@ gene("skn-1", format = "name")
 
 All 3 of these queries return the same result:
 
-```{r, include = FALSE}
+```{r, echo = FALSE}
 gene("WBGene00004804") %>% t
 ```
-
-See how these queries all return the same [tibble][] `data.frame`, but with different sorting.
 
 You can also return all genes in a named **class**. For example, let's get the current list of *daf* (**D**auer **A**rrest **F**orming) genes:
 
