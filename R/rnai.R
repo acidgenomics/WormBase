@@ -7,6 +7,8 @@
 #' @param identifier Identifier
 #' @param format Identifier format (\code{clone}, \code{gene}, \code{genePair},
 #'   \code{name}, or \code{sequence})
+#' @param proteinCoding Whether to only return protein coding matches
+#'   (\code{TRUE}, \code{FALSE})
 #' @return tibble
 #'
 #' @examples
@@ -18,7 +20,9 @@
 #' rnai("WBGene00004735", format = "gene")
 #' rnai("Y47D3B.7", format = "sequence")
 #' rnai("Y53H1C.b", format = "genePair")
-rnai <- function(identifier, format = "clone") {
+rnai <- function(identifier,
+                 format = "clone",
+                 proteinCoding = TRUE) {
     identifier <- uniqueIdentifier(identifier)
     grep <- identifier
     annotation <- get("annotation", envir = asNamespace("worminfo"))$rnai
@@ -68,6 +72,9 @@ rnai <- function(identifier, format = "clone") {
         return
     }) %>% dplyr::bind_rows(.)
     if (nrow(return)) {
+        if (isTRUE(proteinCoding)) {
+            return <- dplyr::filter_(return, .dots = quote(biotype == "protein_coding"))
+        }
         dplyr::select_(return, .dots = unique(c(format, defaultCol, "clone")))
     }
 }

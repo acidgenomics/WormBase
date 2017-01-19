@@ -4,13 +4,16 @@
 \alias{rnai}
 \title{RNAi clone mapping}
 \usage{
-rnai(identifier, format = "clone")
+rnai(identifier, format = "clone", proteinCoding = TRUE)
 }
 \arguments{
 \item{identifier}{Identifier}
 
 \item{format}{Identifier format (\code{clone}, \code{gene}, \code{genePair},
 \code{name}, or \code{sequence})}
+
+\item{proteinCoding}{Whether to only return protein coding matches
+(\code{TRUE}, \code{FALSE})}
 }
 \value{
 tibble

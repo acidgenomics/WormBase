@@ -27,7 +27,7 @@ gene <- function(identifier, format = "gene", select = NULL) {
                 .[.[[format]] %in% identifier[a], ]
         } else if (format == "sequence") {
             sequence <- removeIsoform(identifier)
-            return <- annotation %>% .[.[[format]] %in% sequence, ]
+            return <- annotation %>% .[.[[format]] %in% sequence[a], ]
         } else if (format == "class") {
             name <- annotation %>%
                 .[grepl(paste0("^", identifier[a], "-"), .[["name"]]), "name"]
