@@ -3,10 +3,15 @@
 #' @importFrom stringr str_pad
 #' @param plate Number of plates
 #' @param well Number of wells (\code{96}, \code{384})
+#' @param control Number of control wells
 #' @param prefix Plate name prefix
 microplate <- function(plate = 1,
                        well = 96,
+                       control = 0,
                        prefix = NULL) {
+    if (!is.numeric(plate) | plate < 1) {
+        stop("Invalid plate identifier.")
+    }
     if (well == 96) {
         col <- 12
         row <- 8
@@ -16,13 +21,32 @@ microplate <- function(plate = 1,
     } else {
         stop("Invalid plate format.")
     }
-    col <- 1:col %>% stringr::str_pad(., max(stringr::str_length(.)), pad = "0")
+    col <- 1:col %>%
+        stringr::str_pad(., max(stringr::str_length(.)), pad = "0")
     row <- LETTERS[1:row]
-    plate <- 1:plate %>% stringr::str_pad(., max(stringr::str_length(.)), pad = "0")
-    well <- expand.grid(plate, row, col)
-    well <- paste0(well$Var1, "-", well$Var2, well$Var3) %>% sort
-    if (!is.null(prefix)) {
-        well <- paste0(prefix, "-", well)
+    plate <- 1:plate %>%
+        stringr::str_pad(., max(stringr::str_length(.)), pad = "0")
+    df <- expand.grid(plate, row, col)
+    vector <- paste0(df$Var1, "-", df$Var2, df$Var3) %>% sort
+    # Remove control wells from vector:
+    if (!is.numeric(control) | !control %in% 0:12) {
+        stop("Please specify 0:12 control wells.")
     }
-    well
+    if (control > 0) {
+        # Create a grep string matching the control wells:
+        grep <- 1:control %>%
+            stringr::str_pad(., max(stringr::str_length(col)), pad = "0") %>%
+            paste(collapse = "|") %>%
+            paste0("A(", ., ")$")
+        # Remove the control wells using `grepl()`:
+        vector <- vector[!grepl(grep, vector)]
+    }
+    # Add a prefix, if desired:
+    if (length(prefix) != 1) {
+        stop("Only a single character prefix is allowed.")
+    }
+    if (!is.null(prefix) & is.character(prefix)) {
+        vector <- paste0(prefix, "-", vector)
+    }
+    return(vector)
 }

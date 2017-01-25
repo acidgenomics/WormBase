@@ -4,12 +4,14 @@
 \alias{microplate}
 \title{Generate well identifiers for a microplate}
 \usage{
-microplate(plate = 1, well = 96, prefix = NULL)
+microplate(plate = 1, well = 96, control = 0, prefix = NULL)
 }
 \arguments{
 \item{plate}{Number of plates}
 
 \item{well}{Number of wells (\code{96}, \code{384})}
+
+\item{control}{Number of control wells}
 
 \item{prefix}{Plate name prefix}
 }
