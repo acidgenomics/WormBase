@@ -49,40 +49,38 @@ gene <- function(identifier, format = "gene", select = NULL) {
         }
         return(return)
     }) %>% dplyr::bind_rows(.)
-    # Only continue if there are matches:
-    if (nrow(return)) {
-        # Select columns:
-        # Always return the WormBase gene identifier.
-        if (is.null(select)) {
-            return <- return[, unique(c(format, defaultCol))]
-        } else {
-            return <- return[, unique(c(format, defaultCol, select))]
-        }
-        # Put \code{format} column first:
-        return <- return %>%
-            dplyr::select_(.dots = c(format, setdiff(names(.), format)))
-        if (nrow(return)) {
-            # Summarize multiple keyword matches:
-            if (format == "keyword") {
-                return <- return %>%
-                    dplyr::group_by_(.dots = "gene") %>%
-                    toStringSummarize
-            }
-            # Arrange rows:
-            # \code{format} is used to arrange, unless specified.
-            if (any(grepl(format, c("class", "name")))) {
-                arrange <- stringr::str_match(return$name, "^(.+)([0-9\\.]+)$") %>%
-                    tibble::as_tibble(.)
-                arrange$V3 <- as.numeric(arrange$V3)
-                return <- dplyr::left_join(return, arrange, by = c("name" = "V1"))
-                # Arrange by class then number:
-                return <- dplyr::arrange_(return, .dots = c("V2", "V3"))
-                # Drop the unnecessary temporary columns:
-                return <- return[, c("name", "gene", "sequence")]
-            } else {
-                return <- dplyr::arrange_(return, .dots = unique(format, defaultCol))
-            }
-        }
-        return
+    # Select columns:
+    # Always return the WormBase gene identifier.
+    if (is.null(select)) {
+        return <- return[, unique(c(format, defaultCol))]
+    } else {
+        return <- return[, unique(c(format, defaultCol, select))]
     }
+    # Put \code{format} column first:
+    return <- return %>%
+        dplyr::select_(.dots = c(format, setdiff(names(.), format)))
+    if (nrow(return)) {
+        # Summarize multiple keyword matches:
+        if (format == "keyword") {
+            return <- return %>%
+                dplyr::group_by_(.dots = "gene") %>%
+                toStringSummarize
+        }
+        # Arrange rows:
+        # \code{format} is used to arrange, unless specified.
+        if (any(grepl(format, c("class", "name")))) {
+            arrange <- stringr::str_match(return$name, "^(.+)([0-9\\.]+)$") %>%
+                tibble::as_tibble(.)
+            arrange$V3 <- as.numeric(arrange$V3)
+            return <- dplyr::left_join(return, arrange, by = c("name" = "V1"))
+            # Arrange by class then number:
+            return <- dplyr::arrange_(return, .dots = c("V2", "V3"))
+            # Drop the unnecessary temporary columns:
+            return$V2 <- NULL
+            return$V3 <- NULL
+        } else {
+            return <- dplyr::arrange_(return, .dots = unique(format, defaultCol))
+        }
+    }
+    return
 }
