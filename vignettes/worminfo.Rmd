@@ -1,6 +1,9 @@
 ---
 title: "worminfo"
-date: "`r Sys.Date()`"
+date: "`r BiocStyle::doc_date()`"
+package: "`r BiocStyle::pkg_ver('worminfo')`"
+abstract: >
+    This is the abstract.
 output:
     rmarkdown::html_vignette:
         css: http://steinbaugh.com/css/vignette.css
