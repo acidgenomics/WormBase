@@ -22,7 +22,7 @@ Imports:
     UniProt.ws,
     utils
 Suggests:
-    BiocStyle
+    BiocStyle,
     knitr,
     pander,
     rmarkdown,
