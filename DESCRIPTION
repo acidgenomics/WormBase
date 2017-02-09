@@ -4,7 +4,7 @@ Description: C. elegans genome annotations assembled from WormBase, Ensembl, and
 Version: 0.99.0
 Authors@R: person("Michael", "Steinbaugh", , "mike@steinbaugh.com", role = c("aut", "cre"))
 License: MIT + file LICENSE
-URL: http://steinbaugh.com/worminfo
+URL: https://github.com/steinbaugh/worminfo
 BugReports: https://github.com/steinbaugh/worminfo/issues
 Encoding: UTF-8
 LazyData: no
