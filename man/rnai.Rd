@@ -31,4 +31,3 @@ rnai("WBGene00004735", format = "gene")
 rnai("Y47D3B.7", format = "sequence")
 rnai("Y53H1C.b", format = "genePair")
 }
-

@@ -15,4 +15,3 @@ Markdown list
 \description{
 Markdown formatted list
 }
-

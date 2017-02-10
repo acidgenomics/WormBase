@@ -35,7 +35,14 @@
   <a href="../articles/index.html">Articles</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/steinbaugh/worminfo">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -48,11 +55,19 @@
   <div class="col-md-9">
     <div class="page-header toc-ignore">
       <h1>worminfo</h1>
-            
-            <h4 class="date">2017-01-20</h4>
+                        <h4 class="author">Michael J. Steinbaugh</h4>
+            <address class="author_afil">
+      Department of Biostatistics, Harvard T.H. Chan School of Public Health<br><a class="author_email" href="mailto:#"></a><a href="mailto:mike@steinbaugh.com">mike@steinbaugh.com</a>
+      </address>
+                  
+            <h4 class="date">10 February 2017</h4>
           </div>
 
     
+        <div class="abstract">
+      <p class="abstract">Abstract</p>
+      <p>Abstract placeholder text.</p>
+    </div>
     
 <div class="contents">
 <p>The goal of the <a href="https://github.com/steinbaugh/worminfo">worminfo</a> package is to quickly and simply provide correct, up-to-date annotation data for the entire <em>C. elegans</em> genome. The underlying gene annotations are periodically sourced from <a href="http://www.wormbase.org">WormBase</a>, <a href="http://www.ensembl.org/Caenorhabditis_elegans">Ensembl</a>, and <a href="http://www.pantherdb.org">PANTHER</a>. RNAi clone annotations are sourced from the official <a href="http://worfdb.dfci.harvard.edu">ORFeome</a> and <a href="http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/">Ahringer</a> repositories. <a href="http://www.wormbase.org">WormBase</a> is updated on a bi-monthly <a href="http://www.wormbase.org/about/release_schedule">release schedule</a>. If the source data appears outdated, file an <a href="https://github.com/steinbaugh/worminfo/issues">update request</a> on our <a href="https://github.com/steinbaugh/worminfo">GitHub repository</a>, and we’ll promptly issue a rebuild. When the package is loaded, the most recent annotation data is downloaded from our server then cached locally for quick access.</p>
@@ -157,7 +172,7 @@
 <p>Let’s <code>select</code> the biotype and <a href="http://www.ensembl.org/Caenorhabditis_elegans">Ensembl</a> description for <a href="http://www.wormbase.org/species/c_elegans/gene/WBGene00004735"><em>sbp-1</em></a> (bHLH transcription factor):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/gene.html">gene</a></span>(<span class="st">"sbp-1"</span>,
      <span class="dt">format =</span> <span class="st">"name"</span>,
-     <span class="dt">select =</span> <span class="kw">c</span>(<span class="st">"biotype"</span>, <span class="st">"ensemblDescription"</span>)) %&gt;%<span class="st"> </span>t</code></pre></div>
+     <span class="dt">select =</span> <span class="kw">c</span>(<span class="st">"biotype"</span>, <span class="st">"ensemblDescription"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>t</code></pre></div>
 <pre><code>##                    [,1]                                                                              
 ## name               "sbp-1"                                                                           
 ## gene               "WBGene00004735"                                                                  
@@ -174,7 +189,7 @@
 <h2 class="hasAnchor">
 <html><body><a href="#find-clones-by-gene-identifier" class="anchor"> </a></body></html>Find clones by gene identifier</h2>
 <p>Let’s find the locations of <a href="http://www.wormbase.org/species/c_elegans/gene/WBGene00004735"><em>sbp-1</em></a> in the <a href="http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/">Ahringer</a> and <a href="http://worfdb.dfci.harvard.edu">ORFeome</a> libraries. This can be done easily with the <code><a href="../reference/rnai.html">rnai()</a></code> function, just search by <code>name</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/rnai.html">rnai</a></span>(<span class="st">"sbp-1"</span>, <span class="dt">format =</span> <span class="st">"name"</span>) %&gt;%<span class="st"> </span>t</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/rnai.html">rnai</a></span>(<span class="st">"sbp-1"</span>, <span class="dt">format =</span> <span class="st">"name"</span>) <span class="op">%&gt;%</span><span class="st"> </span>t</code></pre></div>
 <pre><code>##          [,1]                                                                                
 ## name     "sbp-1"                                                                             
 ## gene     "WBGene00004735"                                                                    
@@ -195,7 +210,7 @@
 <a href="http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/">Ahringer</a> library format</h3>
 <p>Well identifiers for the <a href="http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/">Ahringer</a> 384 well library must include a chromosome prefix in roman numeral format. The 96 well <a href="http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/">Ahringer</a> library has unique plate numbers and does not require a chromosome prefix.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="st">"ahringer384-III-6C01"</span>,
-  <span class="st">"ahringer96-86-B01"</span>) %&gt;%<span class="st"> </span>rnai %&gt;%<span class="st"> </span>t</code></pre></div>
+  <span class="st">"ahringer96-86-B01"</span>) <span class="op">%&gt;%</span><span class="st"> </span>rnai <span class="op">%&gt;%</span><span class="st"> </span>t</code></pre></div>
 <pre><code>##          [,1]                   [,2]               
 ## clone    "ahringer384-III-6C01" "ahringer96-86-B01"
 ## gene     "WBGene00004735"       "WBGene00004735"   
@@ -208,7 +223,7 @@
 <a href="http://worfdb.dfci.harvard.edu">ORFeome</a> library format</h3>
 <p>We advise formatting identifiers for the 96 well <a href="http://worfdb.dfci.harvard.edu">ORFeome</a> library as <code>orfeome96-10001-A01</code>. However, the function is flexible, and also supports the historical format (e.g. <code>GHR-11010@G06</code>):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="st">"GHR-11010@G06"</span>,
-  <span class="st">"orfeome96-11010-G06"</span>) %&gt;%<span class="st"> </span>rnai %&gt;%<span class="st"> </span>t</code></pre></div>
+  <span class="st">"orfeome96-11010-G06"</span>) <span class="op">%&gt;%</span><span class="st"> </span>rnai <span class="op">%&gt;%</span><span class="st"> </span>t</code></pre></div>
 <pre><code>##          [,1]             [,2]                 
 ## clone    "GHR-11010@G06"  "orfeome96-11010-G06"
 ## gene     "WBGene00004735" "WBGene00004735"     
@@ -240,9 +255,9 @@
 ## # ... with 169 more rows, and 1 more variables: clone &lt;chr&gt;</code></pre>
 </div>
 </div>
-<div id="current-annotation-build" class="section level1">
+<div id="annotation-data-build-information" class="section level1">
 <h1 class="hasAnchor">
-<html><body><a href="#current-annotation-build" class="anchor"> </a></body></html>Current annotation build</h1>
+<html><body><a href="#annotation-data-build-information" class="anchor"> </a></body></html>Annotation data build information</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">get</span>(<span class="st">"build"</span>, <span class="dt">envir =</span> <span class="kw">asNamespace</span>(<span class="st">"worminfo"</span>))</code></pre></div>
 <pre><code>## $date
 ## [1] "2017-01-19"
@@ -278,7 +293,7 @@
       <li><a href="#construct-a-cherrypick-library">Construct a cherrypick library</a></li>
       </ul>
 </li>
-      <li><a href="#current-annotation-build">Current annotation build</a></li>
+      <li><a href="#annotation-data-build-information">Annotation data build information</a></li>
       </ul>
 </div>
       </div>

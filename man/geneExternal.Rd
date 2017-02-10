@@ -15,4 +15,3 @@ JSON content tibble
 \description{
 WormBase RESTful gene external query
 }
-

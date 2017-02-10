@@ -15,4 +15,3 @@ tibble
 \description{
 UniProt web service query
 }
-

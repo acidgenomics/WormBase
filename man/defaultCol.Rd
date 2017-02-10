@@ -15,4 +15,3 @@ defaultCol
 Default columns for \code{select}
 }
 \keyword{datasets}
-

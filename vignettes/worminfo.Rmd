@@ -2,16 +2,18 @@
 title: "worminfo"
 date: "`r BiocStyle::doc_date()`"
 package: "`r BiocStyle::pkg_ver('worminfo')`"
+author:
+- name: Michael J. Steinbaugh
+  affiliation: Department of Biostatistics, Harvard T.H. Chan School of Public Health
+  email: mike@steinbaugh.com
 abstract: >
-    This is the abstract.
-output:
-    rmarkdown::html_vignette:
-        css: http://steinbaugh.com/css/vignette.css
-        self_contained: false
+  Abstract placeholder text.
+bibliography: bibliography.bib
+output: BiocStyle::html_document
 vignette: >
-    %\VignetteIndexEntry{worminfo}
-    %\VignetteEngine{knitr::rmarkdown}
-    %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{worminfo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include = FALSE}
@@ -74,6 +76,7 @@ You can perform a `keyword` search. For example, let's get all genes that are in
 ```{r}
 gene("unfolded protein response", format = "keyword")
 ```
+
 
 ## `select` options
 
@@ -165,7 +168,7 @@ cherrypick("unfolded protein response",
 
 
 
-# Current annotation build
+# Annotation data build information
 
 ```{r}
 get("build", envir = asNamespace("worminfo"))

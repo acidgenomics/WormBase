@@ -18,4 +18,3 @@ microplate(plate = 1, well = 96, control = 0, prefix = NULL)
 \description{
 Generate well identifiers for a microplate
 }
-

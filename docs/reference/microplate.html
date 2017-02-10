@@ -57,7 +57,12 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/steinbaugh/worminfo">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -76,7 +81,7 @@
     <p>Generate well identifiers for a microplate</p>
     
 
-    <pre><span class='fu'>microplate</span>(<span class='kw'>plate</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>well</span> <span class='kw'>=</span> <span class='fl'>96</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre><span class='fu'>microplate</span>(<span class='kw'>plate</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>well</span> <span class='kw'>=</span> <span class='fl'>96</span>, <span class='kw'>control</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -84,6 +89,8 @@
       <dd>Number of plates</dd>
       <dt>well</dt>
       <dd>Number of wells (<code>96</code>, <code>384</code>)</dd>
+      <dt>control</dt>
+      <dd>Number of control wells</dd>
       <dt>prefix</dt>
       <dd>Plate name prefix</dd>
     </dl>

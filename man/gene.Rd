@@ -28,4 +28,3 @@ gene("WBGene00004804", select = "descriptionConcise")
 gene("daf", format = "class")
 gene("bzip", format = "keyword")
 }
-
