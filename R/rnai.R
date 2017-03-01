@@ -43,7 +43,7 @@ rnai <- function(identifier,
         grep <- removeIsoform(grep)
     }
     # Now create the grep string:
-    grep <- grep %>% grepString
+    grep <- grep %>% grepToString
     return <- parallel::mclapply(seq_along(grep), function(a) {
         return <- annotation %>% .[grepl(grep[a], .[[format]]), ]
         if (nrow(return)) {
