@@ -4,13 +4,14 @@ Description: C. elegans genome annotations assembled from WormBase, Ensembl, and
 Version: 2017.2.10
 Authors@R: person("Michael", "Steinbaugh", , "mike@steinbaugh.com", role = c("aut", "cre"))
 License: MIT + file LICENSE
-URL: https://github.com/steinbaugh/worminfo
+URL: http://steinbaugh.com/worminfo, https://github.com/steinbaugh/worminfo
 BugReports: https://github.com/steinbaugh/worminfo/issues
 Encoding: UTF-8
 LazyData: no
 Depends:
     R (>= 3.3.0)
 Imports:
+    basejump,
     dplyr,
     httr,
     magrittr,
@@ -27,6 +28,8 @@ Suggests:
     pander,
     rmarkdown,
     roxygen2
+Remotes:
+    steinbaugh/basejump
 biocViews:
     Caenorhabditis_elegans
 RoxygenNote: 6.0.1
