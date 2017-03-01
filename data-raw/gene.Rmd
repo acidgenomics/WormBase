@@ -1,11 +1,18 @@
-dataRaw(c("wormbaseGene",  # must go first
-           "wormbaseBlastp",
-           "wormbaseDescription",
-           "wormbaseOligo",
-           "wormbaseOrtholog",
-           "wormbaseRnaiPhenotype",
-           "ensembl",
-           "panther"))
+---
+title: "Gene annotations"
+date: "`r BiocStyle::doc_date()`"
+author: "Michael J. Steinbaugh"
+---
+
+```{r}
+dataRaw(c("wormbaseGene",  # first
+          "wormbaseBlastp",
+          "wormbaseDescription",
+          "wormbaseOligo",
+          "wormbaseOrtholog",
+          "wormbaseRnaiPhenotype",
+          "ensembl",
+          "panther"))
 
 # Add `blastp` prefix:
 names(wormbaseBlastp)[2:length(wormbaseBlastp)] <-
@@ -41,4 +48,4 @@ gene <-
     select(noquote(order(names(.)))) %>%
     arrange(gene)
 use_data(gene, overwrite = TRUE)
-
+```

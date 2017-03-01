@@ -1,3 +1,10 @@
+---
+title: "RNAi annotations"
+date: "`r BiocStyle::doc_date()`"
+author: "Michael J. Steinbaugh"
+---
+
+```{r}
 dataRaw(c("cherrypick", "sourcebioscience", "worfdb"))
 cherrypick <- cherrypick %>%
     dplyr::select(gene, sequence, clone) %>%
@@ -20,3 +27,4 @@ rnai <- bind_rows(cherrypick,
     select(noquote(order(names(.))))
 use_data(rnai, overwrite = TRUE)
 rm(cherrypick, sourcebioscience, worfdb)
+```
