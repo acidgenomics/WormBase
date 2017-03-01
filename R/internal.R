@@ -44,69 +44,15 @@ NULL
 
 
 
-camel <- function(string) {
-    string %>%
-        # Convert non-alphanumeric characters to underscores:
-        gsub("[^[:alnum:]]", "_", .) %>%
-        # Multiple underscores to single:
-        gsub("[_]+", "_", .) %>%
-        # Remove leading or trailing underscores:
-        gsub("(^_|_$)", "", .) %>%
-        # Convert acronymes to Mixed Case:
-        gsub("([A-Z]{1})([A-Z]+)", "\\1\\L\\2", ., perl = TRUE) %>%
-        # Lowercase first letter:
-        gsub("(^[A-Z]{1})", "\\L\\1", ., perl = TRUE) %>%
-        # Convert snake_case to camelCase
-        gsub("_(\\w?)", "\\U\\1", ., perl = TRUE)
-}
-
-
-
-dataRaw <- function(data) {
-    for (a in 1:length(data)) {
-        if (!file.exists(paste0("data/", data[a], ".rda"))) {
-            source(paste0("data-raw/", data[a], ".R"))
-        } else {
-            load(paste0("data/", data[a], ".rda"), envir = globalenv())
-        }
-    }
-}
-
-
-
 #' Default columns for \code{select}
 #' @param defaultCol Default columns
 defaultCol <- c("gene", "sequence", "name")
 
 
 
-fixNA <- function(string) {
-    gsub("^$|^NA$", NA, string)
-}
-
-
-
 #' @importFrom dplyr funs
 funs <- function(...) {
     dplyr::funs(...)
-}
-
-
-
-grepString <- function(identifier) {
-    identifier %>%
-        paste0(
-            # Unique:
-            "^", ., "$",
-            "|",
-            # Beginning of list:
-            "^", ., ",",
-            "|",
-            # Middle of list:
-            "\\s", ., ",",
-            "|",
-            # End of list:
-            "\\s", ., "$")
 }
 
 
@@ -129,44 +75,6 @@ rest <- function(url) {
               config = httr::content_type_json(),
               user_agent = httr::user_agent(userAgent)) %>%
         httr::content(.)
-}
-
-
-
-#' @importFrom stats setNames
-setNamesCamel <- function(data) {
-    data %>%
-        stats::setNames(., camel(names(.)))
-}
-
-
-
-#' @importFrom dplyr mutate_each summarise_each
-#' @importFrom tibble as_tibble
-toStringSummarize <- function(tibble) {
-    tibble %>%
-        tibble::as_tibble(.) %>%
-        dplyr::summarise_each(funs(toStringUnique)) %>%
-        dplyr::mutate_each(funs(fixNA))
-}
-
-
-
-toStringSortUnique <- function(vector) {
-    vector %>%
-        unique %>%
-        sort %>%
-        toString %>%
-        gsub("NA,\\s|,\\sNA", "", .)
-}
-
-
-
-toStringUnique <- function(vector) {
-    vector %>%
-        unique %>%
-        toString %>%
-        gsub("NA,\\s|,\\sNA", "", .)
 }
 
 
