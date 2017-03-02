@@ -1,3 +1,29 @@
+---
+title: "Build annotation data"
+date: "`r BiocStyle::doc_date()`"
+author: "Michael J. Steinbaugh"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = rprojroot::find_package_root_file())
+knitr::opts_chunk$set(cache = TRUE)
+```
+
+```{r render}
+rmarkdown::render("data-raw/01_gene.Rmd", output_format = "all")
+rmarkdown::render("data-raw/02_rnai.Rmd", output_format = "all")
+rmarkdown::render("data-raw/03_eggnog.Rmd", output_format = "all")
+```
+
+```{r annotation}
+data(gene, rnai, eggnog)
+annotation <- list(gene = gene,
+                   rnai = rnai,
+                   eggnog = eggnog)
+use_data(annotation, overwrite = TRUE)
+```
+
+```{r build}
 wormbase <- RCurl::getURL("ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/ONTOLOGY/",
                           dirlistonly = TRUE) %>%
     str_extract("WS[0-9]{3}") %>%
@@ -19,3 +45,4 @@ build <- list(date = Sys.Date(),
               rstats = rstats,
               wormbase = wormbase)
 use_data(build, overwrite = TRUE)
+```

@@ -1,0 +1,318 @@
+---
+title: "Gene annotations"
+date: "`r BiocStyle::doc_date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = rprojroot::find_package_root_file())
+knitr::opts_chunk$set(cache = TRUE)
+```
+
+[Ensembl]: http://www.ensembl.org/Caenorhabditis_elegans/Info/Index
+[PANTHER]: http://pantherdb.org
+[WormBase]: http://www.wormbase.org
+
+# [WormBase][]
+
+```{r wormbaseGene}
+gene <- wormbaseAnnotationFile("geneIDs") %>%
+    readr::read_csv(.,
+                    col_names = c("X",
+                                  "gene",
+                                  "name",
+                                  "sequence",
+                                  "status"),
+                    na = "") %>%
+    dplyr::select(-1)
+geneOtherIdentifier <- wormbaseAnnotationFile("geneOtherIDs") %>%
+    readr::read_file(.) %>%
+    # Take out dead or live status, we have this already from `wormbase$gene`
+    gsub("\t(Dead|Live)", "", .) %>%
+    # Take the tabs out for gene list:
+    gsub("\t", ", ", .) %>%
+    # Add tab back in to separate `gene` for row names
+    gsub("WBGene([0-9]+), ", "WBGene\\1\t", .) %>%
+    # Warnings here mean there are no other IDs for that row
+    # (e.g. expected: 2 columns, actual: 1 columns)
+    readr::read_tsv(., col_names = c("gene", "otherIdentifier"))
+wormbaseGene <- dplyr::left_join(gene, geneOtherIdentifier, by = "gene")
+devtools::use_data(wormbaseGene, overwrite = TRUE)
+rm(gene, geneOtherIdentifier)
+```
+
+```{r wormbaseDescription}
+file <- wormbaseAnnotationFile("functional_descriptions")
+names <- readr::read_lines(file, n_max = 1, skip = 3) %>%
+    stringr::str_split(., " ") %>%
+    .[[1]] %>%
+    stringr::str_replace(., "(\\w+)_description$", "description_\\1") %>%
+    basejump::camel(.) %>%
+    stringr::str_replace(., "descriptionGeneClass", "class") %>%
+    stringr::str_replace(., "geneId", "gene") %>%
+    stringr::str_replace(., "molecularName", "sequence") %>%
+    stringr::str_replace(., "publicName", "name")
+wormbaseDescription <-
+    readr::read_delim(file, delim = "\t",
+                      col_names = names,
+                      skip = 4,
+                      na = c("", "none available", "not known")) %>%
+    dplyr::select(-c(descriptionDetailed, name, sequence)) %>%
+    dplyr::filter(grepl("^WBGene[0-9]+$", gene))
+devtools::use_data(wormbaseDescription, overwrite = TRUE)
+rm(file, names)
+```
+
+```{r wormbaseBlastp}
+# Get the highest match for each peptide
+bestBlastHits <- wormbaseAnnotationFile("best_blast_hits") %>%
+    readr::read_csv(., col_names = FALSE) %>%
+    dplyr::select(X1, X4, X5) %>%
+    dplyr::rename(wormpep = X1,
+                  peptide = X4,
+                  eValue = X5) %>%
+    dplyr::filter(grepl("^ENSEMBL", peptide)) %>%
+    dplyr::mutate(peptide = stringr::str_sub(peptide, 9)) %>%
+    dplyr::arrange(wormpep, eValue) %>%
+    dplyr::distinct(.)
+
+# Download and extract the wormpep package
+basejump::downloadFile(remoteDir = "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/species/c_elegans/PRJNA13758/",
+                       string = "wormpep_package",
+                       rename = "wormpep.tsv.gz",
+                       localDir = "data-raw/wormbase") %>%
+    # Extract the wormpep table specifically
+    utils::untar(.,
+                 exdir = "data-raw/wormbase",
+                 files = "wormpep.table*")
+
+# File the extracted file and rename
+# Then gzip and overwrite the wormpep package
+list.files(path = "data-raw/wormbase",
+           pattern = "wormpep.table",
+           full.names = TRUE) %>% .[[1]] %>%
+    file.rename("data-raw/wormbase/wormpep.tsv")
+R.utils::gzip("data-raw/wormbase/wormpep.tsv", overwrite = TRUE)
+
+wormpep <- readr::read_lines("data-raw/wormbase/wormpep.tsv.gz") %>%
+    stringr::str_split(., "\n") %>%
+    parallel::mclapply(., function(a) {
+        gsub("^.*\t(CE[0-9]+\tWBGene[0-9]+).*$", "\\1", a) %>%
+            stringr::str_split(., "\t") %>% .[[1]]
+    }) %>%
+    do.call(rbind, .) %>%
+    tibble::as_tibble(.) %>%
+    stats::setNames(., c("wormpep", "gene"))
+
+# Join the WormBase Gene IDs:
+blastp <- dplyr::left_join(bestBlastHits, wormpep, by = "wormpep", all = TRUE) %>%
+    dplyr::arrange(gene, eValue, wormpep) %>%
+    dplyr::distinct(.keep_all = TRUE) %>%
+    stats::na.omit(.) %>%
+    dplyr::select(-eValue)
+
+# Map Ensembl Peptide IDs:
+mart <- biomaRt::useMart("ensembl", dataset = "hsapiens_gene_ensembl")
+metadataHsapiens <- biomaRt::getBM(mart = mart,
+                                   filters = "ensembl_peptide_id",
+                                   values = blastp$peptide,
+                                   attributes = c("ensembl_peptide_id",
+                                                  "ensembl_gene_id",
+                                                  "external_gene_name",
+                                                  "description")) %>%
+    dplyr::rename(peptide = ensembl_peptide_id,
+                  hsapiensDescription = description,
+                  hsapiensGene = ensembl_gene_id,
+                  hsapiensName = external_gene_name)
+
+# Final join:
+wormbaseBlastp <- dplyr::left_join(blastp, metadataHsapiens, by = "peptide") %>%
+    dplyr::select(gene, dplyr::everything())
+devtools::use_data(wormbaseBlastp, overwrite = TRUE)
+rm(bestBlastHits,
+   blastp,
+   fileLocal,
+   mart,
+   metadataHsapiens,
+   wormpep)
+```
+
+```{r wormbaseOrtholog}
+raw <- wormbaseAnnotationFile("orthologs") %>%
+    readr::read_file(.) %>%
+    gsub("\t", " | ", .) %>%
+    gsub("\n", " // ", .) %>%
+    gsub("= // ", "\n", .) %>%
+    gsub(" //  // ", "\t", .) %>%
+    readr::read_tsv(.,
+                    comment = "#",
+                    col_names = c("gene", "ortholog")) %>%
+    dplyr::mutate(gene = gsub("^(WBGene[0-9]{8}).*", "\\1", gene))
+list <- split(raw, seq(nrow(raw)))
+hsapiens <-
+    parallel::mclapply(seq_along(list), function(a) {
+        stringr::str_split(list[[a]][2], " // ")[[1]] %>%
+            stringr::str_subset(., "Homo sapiens") %>%
+            stringr::str_extract(., "ENSG[0-9]{11} \\| [^ ]+") %>%
+            gsub(" \\| ", "~", .) %>%
+            basejump::toStringUnique(.)
+    }) %>% unlist
+wormbaseOrtholog <- tibble::tibble(gene = raw[[1]],
+                                   hsapiens = hsapiens)
+devtools::use_data(wormbaseOrtholog, overwrite = TRUE)
+rm(hsapiens, list, raw)
+```
+
+```{r wormbaseRnaiPhenotype}
+wormbaseRnaiPhenotype <-
+    basejump::downloadFile(remoteDir = "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/ONTOLOGY/",
+                           string = "rnai_phenotypes_quick",
+                           rename = "rnai_phenotypes.tsv",
+                           compress = TRUE,
+                           localDir = "data-raw/wormbase") %>%
+    readr::read_tsv(.,
+                    col_names = c("gene",
+                                  "sequence",
+                                  "rnaiPhenotype")) %>%
+    dplyr::select(-sequence)
+devtools::use_data(wormbaseRnaiPhenotype, overwrite = TRUE)
+```
+
+
+
+# [Ensembl][]
+
+```{r ensembl}
+# `external_gene_name` = Ensembl public name
+# `wormbase_locus` = WormBase public name
+# `wormbase_gene_seq_name` for clean sequence identifier
+mart <- biomaRt::useMart("ensembl", dataset = "celegans_gene_ensembl")
+basic <- biomaRt::getBM(mart = mart,
+                        attributes = c("ensembl_gene_id",
+                                       "description",
+                                       "gene_biotype",
+                                       "chromosome_name",
+                                       "start_position",
+                                       "end_position",
+                                       "strand")) %>%
+    dplyr::rename(biotype = gene_biotype,
+                  chromosome = chromosome_name)
+geneOntology <- biomaRt::getBM(mart = mart,
+                               attributes = c("ensembl_gene_id",
+                                              "go_id",
+                                              "name_1006")) %>%
+    dplyr::group_by(ensembl_gene_id) %>%
+    dplyr::mutate(gene_ontology = paste(go_id, name_1006, sep = "~")) %>%
+    dplyr::mutate(gene_ontology = gsub("^~$", NA, gene_ontology)) %>%
+    dplyr::summarize(gene_ontology = toString(gene_ontology))
+interpro <- biomaRt::getBM(mart = mart,
+                           attributes = c("ensembl_gene_id",
+                                          "interpro",
+                                          "interpro_description")) %>%
+    dplyr::group_by(ensembl_gene_id) %>%
+    dplyr::mutate(interpro = paste(interpro, interpro_description, sep = "~")) %>%
+    dplyr::mutate(interpro = gsub("^~$", NA, interpro)) %>%
+    dplyr::summarize(interpro = toString(interpro))
+ensembl <- Reduce(function(...) { dplyr::full_join(..., by = "ensembl_gene_id") },
+                  list(basic,
+                       geneOntology,
+                       interpro)) %>%
+    dplyr::rename(gene = ensembl_gene_id) %>%
+    tibble::as_tibble(.) %>%
+    basejump::setNamesCamel(.) %>%
+    basejump::wash(.)
+devtools::use_data(ensembl, overwrite = TRUE)
+rm(basic,
+   geneOntology,
+   interpro,
+   mart)
+```
+
+
+
+# [PANTHER][]
+
+```{r panther}
+gsubPanther <- function(a) {
+    a %>%
+        # Separator spacing
+        gsub("#", "~", .) %>%
+        gsub("(^|;|>)([^~]+)~([A-Z0-9\\:]+)", "\\1\\3~\\2", .) %>%
+        gsub(";", ", ", .) %>%
+        gsub(">", " > ", .)
+}
+panther <- basejump::downloadFile(remoteDir = "ftp://ftp.pantherdb.org/sequence_classifications/current_release/PANTHER_Sequence_Classification_files/",
+                                  string = "nematode_worm",
+                                  rename = "panther.tsv",
+                                  compress = TRUE) %>%
+    readr::read_tsv(., col_names = FALSE) %>%
+    stats::setNames(., c("id",
+                         "protein",
+                         "subfamily",
+                         "familyName",
+                         "subfamilyName",
+                         "geneOntologyMolecularFunction",
+                         "geneOntologyBiologicalProcess",
+                         "geneOntologyCellularComponent",
+                         "class",
+                         "pathway")) %>%
+    dplyr::mutate(id = gsub("CAEEL\\|", "", id),
+                  id = gsub("(EnsemblGenome|Gene|GeneID|UniProtKB|WormBase)=", "", id)) %>%
+    tidyr::separate(id, c("gene", "uniprotKb"), sep = "\\|") %>%
+    # Fix incorrect ID mappings
+    dplyr::mutate(gene = gsub("^B0303.5$", "WBGene00015127", gene),
+                  gene = gsub("^C13B9.1$", "WBGene00015732", gene),
+                  gene = gsub("^F23F12.11/F23F12.5$", "WBGene00005075", gene),
+                  gene = gsub("^F55A11.4$", "WBGene00010077", gene),
+                  gene = gsub("^K02A2.6$", "WBGene00019291", gene),
+                  gene = gsub("^MTCE.11$", "WBGene00010959", gene),
+                  gene = gsub("^T07D3.8$", "WBGene00020310", gene),
+                  gene = gsub("^Y104H12A.1/Y77E11A.5$", "WBGene00022423", gene),
+                  gene = gsub("^Y62E10A.11$", "WBGene00014938", gene),
+                  gene = gsub("^176090$", "WBGene00022794", gene),
+                  gene = gsub("^2565696$", "WBGene00010966", gene),
+                  gene = gsub("^2565700$", "WBGene00010964", gene),
+                  gene = gsub("^2565701$", "WBGene00010962", gene),
+                  gene = gsub("^2565702$", "WBGene00000829", gene),
+                  gene = gsub("^2565703$", "WBGene00010967", gene),
+                  gene = gsub("^2565704$", "WBGene00010960", gene),
+                  gene = gsub("^2565705$", "WBGene00010963", gene)) %>%
+    dplyr::mutate_each(funs(gsubPanther)) %>%
+    dplyr::select(-c(protein, uniprotKb))
+devtools::use_data(panther, overwrite = TRUE)
+rm(gsubPanther)
+```
+
+```{r gene}
+# Add `blastp` prefix
+names(wormbaseBlastp)[2:length(wormbaseBlastp)] <-
+    paste("blastp", names(wormbaseBlastp)[2:length(wormbaseBlastp)], sep = "_") %>%
+    basejump::camel(.)
+
+# Add `ensembl` prefix
+ensembl <- dplyr::rename(ensembl,
+                         ensemblDescription = description,
+                         ensemblGeneOntology = geneOntology)
+
+# Add `ortholog` prefix
+wormbaseOrtholog <- dplyr::rename(wormbaseOrtholog,
+                                  orthologHsapiens = hsapiens)
+
+# Add `panther` prefix
+names(panther)[2:length(panther)] <-
+    paste("panther", names(panther)[2:length(panther)], sep = "_") %>%
+    basejump::camel(.)
+
+gene <- Reduce(function(...) { dplyr::left_join(..., by = "gene") },
+               list(wormbaseGene,  # first
+                    wormbaseBlastp,
+                    wormbaseDescription,
+                    wormbaseOrtholog,
+                    wormbaseRnaiPhenotype,
+                    ensembl,
+                    panther)) %>%
+    tibble::as_tibble(.) %>%
+    basejump::setNamesCamel(.) %>%
+    dplyr::select(noquote(order(names(.)))) %>%
+    dplyr::select(gene, dplyr::everything()) %>%
+    dplyr::arrange(gene)
+```
