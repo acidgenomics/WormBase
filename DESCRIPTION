@@ -27,7 +27,8 @@ Suggests:
     knitr,
     pander,
     rmarkdown,
-    roxygen2
+    roxygen2,
+    rprojroot
 Remotes:
     steinbaugh/basejump
 biocViews:
