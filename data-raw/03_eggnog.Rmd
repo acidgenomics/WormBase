@@ -8,12 +8,17 @@ knitr::opts_knit$set(root.dir = rprojroot::find_package_root_file())
 knitr::opts_chunk$set(cache = TRUE)
 ```
 
-```{r eggnog}
+```{r dir}
 if (!file.exists("data-raw/eggnog")) {
     dir.create("data-raw/eggnog", recursive = TRUE)
 }
+```
+
+
 
 # README
+
+```{r readme}
 download.file("http://eggnogdb.embl.de/download/latest/README.txt",
               "data-raw/eggnog/README.txt")
 colNames <- c("taxonomicLevel",
@@ -22,8 +27,13 @@ colNames <- c("taxonomicLevel",
               "speciesCount",
               "cogFunctionalCategory",
               "consensusFunctionalDescription")
+```
 
-# Category ====
+
+
+# Category
+
+```{r category}
 download.file("http://eggnogdb.embl.de/download/latest/COG_functional_categories.txt",
               "data-raw/eggnog/category.txt")
 category <- readLines("data-raw/eggnog/category.txt") %>%
@@ -36,28 +46,42 @@ category <- readLines("data-raw/eggnog/category.txt") %>%
     stats::setNames(., c("cogFunctionalCategory",
                          "cogFunctionalDescription")) %>%
     dplyr::arrange(cogFunctionalCategory)
+```
 
-# Annotation ====
-# EUNOG: Eukaryota
+
+
+# Annotation
+
+## EUNOG: Eukaryota
+
+```{r eunog}
 download.file("http://eggnogdb.embl.de/download/latest/data/euNOG/euNOG.annotations.tsv.gz",
               "data-raw/eggnog/eunog.tsv.gz")
 eunog <- readr::read_tsv("data-raw/eggnog/eunog.tsv.gz", col_names = colNames)
+```
 
-# NOG: LUCA (All organisms)
+
+## NOG: LUCA (All organisms)
+
+```{r nog}
 download.file("http://eggnogdb.embl.de/download/latest/data/NOG/NOG.annotations.tsv.gz",
               "data-raw/eggnog/nog.tsv.gz")
 nog <- readr::read_tsv("data-raw/eggnog/nog.tsv.gz", col_names = colNames)
+```
 
+
+
+# Final assembly
+
+```{r final_assembly}
 annotation <- dplyr::bind_rows(eunog, nog) %>%
     dplyr::select(groupName,
                   consensusFunctionalDescription,
                   cogFunctionalCategory) %>%
     dplyr::rename(eggnog = groupName)
-
-# Final list ====
 eggnog <- list(annotation = annotation,
                category = category)
-use_data(eggnog, overwrite = TRUE)
+devtools::use_data(eggnog, overwrite = TRUE)
 rm(annotation,
    category,
    eunog,
