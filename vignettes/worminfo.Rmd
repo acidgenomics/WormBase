@@ -3,7 +3,7 @@ title: "worminfo"
 date: "`r Sys.Date()`"
 output:
     rmarkdown::html_vignette:
-        css: http://steinbaugh.com/css/vignette.css
+        css: http://steinbaugh.com/css/rmarkdown.css
         self_contained: false
 vignette: >
     %\VignetteIndexEntry{worminfo}
