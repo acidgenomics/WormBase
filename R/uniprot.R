@@ -27,7 +27,8 @@ uniprot <- function(identifier) {
             dplyr::select_(.dots = c("wormbase",
                                      setdiff(sort(names(.)), "wormbase")))
         eggnog <- eggnog(uniprot$eggnog)
-        x <- dplyr::left_join(uniprot, eggnog, by = "eggnog") %>%
+        # Check and make sure this output is correct
+        uniprot <- dplyr::left_join(uniprot, eggnog, by = "eggnog") %>%
             # Sort priority to put higher quality UniProtKB identifiers first:
             .[order(.$wormbase,
                     .$cogFunctionalDescription,
