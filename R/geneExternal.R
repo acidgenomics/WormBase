@@ -1,4 +1,6 @@
 #' WormBase RESTful gene external query
+#' 
+#' @author Michael Steinbaugh
 #' @export
 #' @importFrom dplyr bind_rows mutate_
 #' @importFrom magrittr set_names

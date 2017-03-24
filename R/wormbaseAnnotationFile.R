@@ -3,6 +3,7 @@
 #' Download an annotation file from the WormBase FTP server
 #' @export
 #' @importFrom utils download.file
+#' @keywords internal
 #' @param file Annotation file (without extension)
 wormbaseAnnotationFile <- function(file) {
     # Create the WormBase data directory, if necessary

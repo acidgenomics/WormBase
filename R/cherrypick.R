@@ -1,4 +1,6 @@
 #' Cherrypick RNAi clones by keyword
+#' 
+#' @author Michael Steinbaugh
 #' @export
 #' @importFrom dplyr arrange_ right_join
 #' @importFrom stats setNames

@@ -1,4 +1,6 @@
 #' WormBase RESTful RNAi gene ontology query
+#' 
+#' @author Michael Steinbaugh
 #' @export
 #' @importFrom dplyr bind_rows mutate_ rename_
 #' @importFrom magrittr set_names

@@ -1,6 +1,9 @@
 #' EggNOG annotations
+#' 
+#' @author Michael Steinbaugh
 #' @export
 #' @importFrom dplyr distinct left_join rename_ select_
+#' @keywords internal
 #' @param identifier EggNOG identifier
 #' @return tibble
 eggnog <- function(identifier) {

@@ -1,4 +1,5 @@
 #' @importFrom stats na.omit
+#' @keywords internal
 uniqueIdentifier <- function(identifier) {
     if (missing(identifier)) {
         stop("An identifier is required.")

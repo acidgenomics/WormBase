@@ -1,4 +1,6 @@
 #' Gene mapping
+#' 
+#' @author Michael Steinbaugh
 #' @export
 #' @importFrom dplyr arrange_ bind_rows
 #' @importFrom parallel mclapply

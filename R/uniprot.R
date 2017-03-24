@@ -4,6 +4,7 @@
 #' @importFrom dplyr bind_rows group_by_ rename_ select_
 #' @importFrom tidyr nest
 #' @importFrom UniProt.ws select UniProt.ws
+#' @keywords internal
 #' @param identifier WormBase gene identifier
 #' @return tibble
 uniprot <- function(identifier) {

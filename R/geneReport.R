@@ -1,5 +1,6 @@
 #' Gene list report
-#'
+#' 
+#' @author Michael Steinbaugh
 #' @export
 #' @importFrom dplyr arrange_ bind_rows left_join select_
 #' @param identifier Gene identifier
