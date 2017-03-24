@@ -14,4 +14,4 @@ userAgent
 \description{
 User agent for REST API queries
 }
-\keyword{datasets}
+\keyword{internal}

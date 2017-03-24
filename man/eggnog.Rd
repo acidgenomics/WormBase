@@ -15,3 +15,7 @@ tibble
 \description{
 EggNOG annotations
 }
+\author{
+Michael Steinbaugh
+}
+\keyword{internal}

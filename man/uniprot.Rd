@@ -15,3 +15,4 @@ tibble
 \description{
 UniProt web service query
 }
+\keyword{internal}

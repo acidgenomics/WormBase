@@ -14,4 +14,4 @@ defaultCol
 \description{
 Default columns for \code{select}
 }
-\keyword{datasets}
+\keyword{internal}
