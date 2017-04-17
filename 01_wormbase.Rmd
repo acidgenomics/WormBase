@@ -69,7 +69,7 @@ blastp <- wormbaseAnnotationFile("best_blast_hits") %>%
 fileLocal <- "data-raw/wormbase/wormpep.tsv.gz"
 if (!file.exists(fileLocal)) {
     dir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/species/c_elegans/PRJNA13758/"
-    fileRemote <- RCurl::getURL(dir, dirlistonly = TRUE) %>%
+    fileRemote <- getURL(dir, dirlistonly = TRUE) %>%
         str_split("\n") %>%
         .[[1]] %>%
         str_subset("wormpep_package") %>%
@@ -113,13 +113,13 @@ ensembl <- biomaRt::useEnsembl(
     biomart = "ensembl",
     dataset = "hsapiens_gene_ensembl")
 blastpHsapiens <- biomaRt::getBM(
-        mart = ensembl,
-        filters = "ensembl_peptide_id",
-        values = blastp$peptide,
-        attributes = c("ensembl_peptide_id",
-                       "ensembl_gene_id",
-                       "external_gene_name",
-                       "description")) %>%
+    mart = ensembl,
+    filters = "ensembl_peptide_id",
+    values = blastp$peptide,
+    attributes = c("ensembl_peptide_id",
+                   "ensembl_gene_id",
+                   "external_gene_name",
+                   "description")) %>%
     rename(peptide = ensembl_peptide_id,
            hsapiensDescription = description,
            hsapiensGene = ensembl_gene_id,
@@ -141,4 +141,52 @@ wormbaseOligo <- wormbaseAnnotationFile("pcr_product2gene") %>%
     read_tsv(col_names = c("oligo", "gene")) %>%
     mutate(gene = str_extract(gene, "WBGene\\d{8}"))
 use_data(wormbaseOligo, overwrite = TRUE)
+```
+
+```{r otholog}
+raw <- wormbaseAnnotationFile("orthologs") %>%
+    read_file %>%
+    gsub("\t", " | ", .) %>%
+    gsub("\n", " // ", .) %>%
+    gsub("= // ", "\n", .) %>%
+    gsub(" //  // ", "\t", .) %>%
+    read_tsv(comment = "#", col_names = c("gene", "ortholog")) %>%
+    mutate(gene = gsub("^(WBGene[0-9]{8}).*", "\\1", gene))
+list <- split(raw, seq(nrow(raw)))
+hsapiens <-
+    mclapply(seq_along(list), function(a) {
+        str_split(list[[a]][2], " // ")[[1]] %>%
+            str_subset("Homo sapiens") %>%
+            str_extract("ENSG[0-9]{11} \\| [^ ]+") %>%
+            gsub(" \\| ", "~", .) %>%
+            toStringUnique
+    }) %>% unlist
+wormbaseOrtholog <- tibble(gene = raw[[1]], hsapiens = hsapiens)
+rm(hsapiens, list, raw)
+use_data(wormbaseOrtholog, overwrite = TRUE)
+```
+
+```{r rnaiPhenotype}
+fileLocal <- "data-raw/wormbase/rnai_phenotypes.tsv.gz"
+if (!file.exists(fileLocal)) {
+    dir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/ONTOLOGY/"
+    fileRemote <- getURL(dir, dirlistonly = TRUE) %>%
+        str_split("\n") %>%
+        .[[1]] %>%
+        str_subset("rnai_phenotypes_quick") %>%
+        paste0(dir, .)
+    fileLocal <- "data-raw/wormbase/rnai_phenotypes.tsv"
+    download.file(fileRemote, fileLocal)
+    rm(dir, fileRemote)
+    gzip(fileLocal, overwrite = TRUE)
+    fileLocal <- paste0(fileLocal, ".gz")
+}
+wormbaseRnaiPhenotype <- read_tsv(
+    fileLocal,
+    col_names = c("gene",
+                  "sequence",
+                  "rnaiPhenotype")) %>%
+    select(-sequence)
+rm(fileLocal)
+use_data(wormbaseRnaiPhenotype, overwrite = TRUE)
 ```
