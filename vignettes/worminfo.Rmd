@@ -84,16 +84,14 @@ The `gene()` function contains annotation data that can be queried using the `se
 
 ```{r, echo = FALSE, results = "asis"}
 get("annotation", envir = asNamespace("worminfo"))$gene %>%
-    names %>%
-    markdownList
+    names %>% mdList
 ```
 
 When `select` is `NULL`, a simple result is returned:
 
 ```{r, echo = FALSE, results = "asis"}
 gene("WBGene00004804") %>%
-    names %>%
-    markdownList
+    names %>% mdList
 ```
 
 Let's `select` the biotype and [Ensembl][] description for [*sbp-1*][] (bHLH transcription factor):
