@@ -1,0 +1,144 @@
+---
+title: "WormBase annotations"
+date: "`r BiocStyle::doc_date()`"
+author: "Michael J. Steinbaugh"
+---
+
+```{r setup}
+source("setup.R")
+```
+
+```{r gene}
+gene <- wormbaseAnnotationFile("geneIDs") %>%
+    read_csv(col_names = c("X", "gene", "name", "sequence", "status"),
+             na = "") %>% select(-1)
+geneOtherIdentifier <- wormbaseAnnotationFile("geneOtherIDs") %>%
+    read_file %>%
+    # Take out dead or live status, we have this already from
+    # \code{wormbase$gene}:
+    gsub("\t(Dead|Live)", "", .) %>%
+    # Take the tabs out for gene list:
+    gsub("\t", ", ", .) %>%
+    # Add tab back in to separate \code{gene} for row names:
+    gsub("WBGene([0-9]+), ", "WBGene\\1\t", .) %>%
+    # Warnings here mean there are no other IDs for that row:
+    # (e.g. expected: 2 columns, actual: 1 columns)
+    read_tsv(col_names = c("gene", "otherIdentifier"))
+wormbaseGene <- left_join(gene, geneOtherIdentifier, by = "gene")
+rm(gene, geneOtherIdentifier)
+use_data(wormbaseGene, overwrite = TRUE)
+```
+
+```{r description}
+file <- wormbaseAnnotationFile("functional_descriptions")
+names <- read_lines(file, n_max = 1, skip = 3) %>%
+    str_split(" ") %>%
+    .[[1]] %>%
+    str_replace("(\\w+)_description$", "description_\\1") %>%
+    camel %>%
+    str_replace("descriptionGeneClass", "class") %>%
+    str_replace("geneId", "gene") %>%
+    str_replace("molecularName", "sequence") %>%
+    str_replace("publicName", "name")
+print(names)
+wormbaseDescription <-
+    read_delim(file, delim = "\t",
+               col_names = names,
+               skip = 4,
+               na = c("", "none available", "not known")) %>%
+    select(-c(name, sequence)) %>%
+    filter(grepl("^WBGene[0-9]+$", gene))
+rm(file, names)
+use_data(wormbaseDescription, overwrite = TRUE)
+```
+
+```{r blastp}
+# Get the highest match for each peptide:
+blastp <- wormbaseAnnotationFile("best_blast_hits") %>%
+    read_csv(col_names = FALSE) %>%
+    select(X1, X4, X5) %>%
+    rename(wormpep = X1,
+           peptide = X4,
+           eValue = X5) %>%
+    filter(grepl("^ENSEMBL", peptide)) %>%
+    mutate(peptide = str_sub(peptide, 9)) %>%
+    arrange(wormpep, eValue) %>%
+    distinct
+
+# Wormpep IDs are used for BLASTP matching:
+fileLocal <- "data-raw/wormbase/wormpep.tsv.gz"
+if (!file.exists(fileLocal)) {
+    dir <- "ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/species/c_elegans/PRJNA13758/"
+    fileRemote <- RCurl::getURL(dir, dirlistonly = TRUE) %>%
+        str_split("\n") %>%
+        .[[1]] %>%
+        str_subset("wormpep_package") %>%
+        as.character %>%
+        paste0(dir, .)
+    download.file(fileRemote, fileLocal)
+    untar(fileLocal,
+          exdir = "data-raw/wormbase",
+          files = "wormpep.table*")
+    # Safe to delete the large source file:
+    unlink(fileLocal)
+    fileLocal <- list.files(path = "data-raw/wormbase",
+                            pattern = "wormpep.table",
+                            full.names = TRUE)
+    fileRename <- "data-raw/wormbase/wormpep.tsv"
+    file.rename(fileLocal, fileRename)
+    fileLocal <- fileRename
+    rm(fileRename)
+    gzip(fileLocal, overwrite = TRUE)
+    fileLocal <- paste0(fileLocal, ".gz")
+}
+wormpep <- read_lines(fileLocal) %>%
+    str_split("\n") %>%
+    mclapply(function(x) {
+        gsub("^.*\t(CE[0-9]+\tWBGene[0-9]+).*$", "\\1", x) %>%
+            str_split("\t") %>% .[[1]]
+    }) %>%
+    do.call(rbind, .) %>%
+    as_tibble %>%
+    setNames(c("wormpep", "gene"))
+
+# Join WormBase gene identifiers
+blastp <- left_join(blastp, wormpep, by = "wormpep", all = TRUE) %>%
+    arrange(gene, eValue, wormpep) %>%
+    distinct(gene, .keep_all = TRUE) %>%
+    na.omit %>%
+    select(-eValue)
+
+# Map Ensembl peptide identifiers
+ensembl <- biomaRt::useEnsembl(
+    biomart = "ensembl",
+    dataset = "hsapiens_gene_ensembl")
+blastpHsapiens <- biomaRt::getBM(
+        mart = ensembl,
+        filters = "ensembl_peptide_id",
+        values = blastp$peptide,
+        attributes = c("ensembl_peptide_id",
+                       "ensembl_gene_id",
+                       "external_gene_name",
+                       "description")) %>%
+    rename(peptide = ensembl_peptide_id,
+           hsapiensDescription = description,
+           hsapiensGene = ensembl_gene_id,
+           hsapiensName = external_gene_name)
+
+# Final join:
+wormbaseBlastp <- left_join(blastp, blastpHsapiens, by = "peptide") %>%
+    select(gene, everything())
+rm(blastp,
+   blastpHsapiens,
+   ensembl,
+   fileLocal,
+   wormpep)
+use_data(wormbaseBlastp, overwrite = TRUE)
+```
+
+```{r oligo}
+wormbaseOligo <- wormbaseAnnotationFile("pcr_product2gene") %>%
+    read_tsv(col_names = c("oligo", "gene")) %>%
+    mutate(gene = str_extract(gene, "WBGene\\d{8}"))
+use_data(wormbaseOligo, overwrite = TRUE)
+```
