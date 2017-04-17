@@ -18,7 +18,7 @@ NULL
 #' @import dplyr
 #' @import httr
 #' @import stringr
-#' @importFrom magrittr `%>%`
+#' @importFrom magrittr %>%
 #' @importFrom tibble as_tibble tibble
 #' @importFrom tidyr nest separate_ unnest
 NULL
