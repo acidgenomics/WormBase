@@ -1,5 +1,7 @@
 #' UniProt web service query
 #'
+#' @author Michael Steinbaugh
+#'
 #' @param identifier WormBase gene identifier
 #'
 #' @return tibble
@@ -26,8 +28,9 @@ uniprot <- function(identifier) {
             select_(.dots = c("wormbase",
                               setdiff(sort(names(.)), "wormbase")))
         eggnog <- eggnog(uniprot$eggnog)
-        x <- left_join(uniprot, eggnog, by = "eggnog") %>%
-            # Sort priority to put higher quality UniProtKB identifiers first:
+        # Check and make sure this output is correct
+        left_join(uniprot, eggnog, by = "eggnog") %>%
+            # Sort priority to put higher quality UniProtKB identifiers first
             .[order(.$wormbase,
                     .$cogFunctionalDescription,
                     -xtfrm(.$score)), ] %>%
