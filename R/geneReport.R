@@ -1,10 +1,10 @@
 #' Gene list report
 #'
-#' @export
-#' @importFrom dplyr arrange_ bind_rows left_join select_
 #' @param identifier Gene identifier
 #' @param format Identifier format
+#'
 #' @return tibble
+#' @export
 geneReport <- function(identifier, format = "gene") {
     identifier <- uniqueIdentifier(identifier)
     gene <- gene(identifier,
@@ -38,15 +38,15 @@ geneReport <- function(identifier, format = "gene") {
         return <- gene
         geneOntology <- geneOntology(identifier)
         if (nrow(geneOntology)) {
-            return <- dplyr::left_join(return, geneOntology, by = "gene")
+            return <- left_join(return, geneOntology, by = "gene")
         }
         uniprot <- uniprot(identifier)
         if (nrow(uniprot)) {
-            return <- dplyr::left_join(return, uniprot, by = "gene")
+            return <- left_join(return, uniprot, by = "gene")
         }
         return %>%
-            dplyr::select_(.dots = c(defaultCol,
-                                     setdiff(sort(names(.)), defaultCol))) %>%
-            dplyr::arrange_(.dots = defaultCol)
+            select_(.dots = c(defaultCol,
+                              setdiff(sort(names(.)), defaultCol))) %>%
+            arrange_(.dots = defaultCol)
     }
 }
