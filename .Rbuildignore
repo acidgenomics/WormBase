@@ -1,3 +1,5 @@
+^.*\.R$
+^.*\.Rmd$
 ^.*\.yml$
 ^data-raw/
 ^docs/
