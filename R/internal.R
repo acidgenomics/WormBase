@@ -1,66 +1,11 @@
-#' @importFrom utils download.file
-.onLoad <- function(libname, pkgname) {
-    remoteDir <- "http://worminfo.steinbaugh.com/data"
-    current <- readLines(file.path(remoteDir, "current.txt"))
-    if (is.null(current)) {
-        stop("Failed to obtain current build.")
-    }
-    cacheDir <- file.path(Sys.getenv("HOME"), "cache", "worminfo")
-    if (!file.exists(cacheDir)) {
-        dir.create(cacheDir, recursive = TRUE)
-    }
-    # Check build date of cache
-    if (file.exists(file.path(cacheDir, "build.rda"))) {
-        load(file.path(cacheDir, "build.rda"))
-        if (build$date == current) {
-            download <- FALSE
-        } else {
-            download <- TRUE
-        }
-    } else {
-        download <- TRUE
-    }
-    data <- c("annotation", "build")
-    for (a in 1:length(data)) {
-        localFile <- file.path(cacheDir, paste0(data[a], ".rda"))
-        if (isTRUE(download) | !file.exists(localFile)) {
-            remoteFile <- file.path(remoteDir, current, paste0(data[a], ".rda"))
-            utils::download.file(remoteFile, localFile, quiet = TRUE)
-        }
-        load(localFile, envir = asNamespace("worminfo"))
-    }
-}
-
-
-
-#' Pipe operator
-#' @export
-#' @importFrom magrittr %>%
-#' @keywords internal
-#' @name %>%
-#' @rdname pipe
-#' @usage lhs \%>\% rhs
-NULL
-
-
-
-#' Default columns for \code{select}
-#' @param defaultCol Default columns
 defaultCol <- c("gene", "sequence", "name")
-
-
-
-#' @importFrom dplyr funs
-funs <- function(...) {
-    dplyr::funs(...)
-}
 
 
 
 removeIsoform <- function(sequence) {
     grep <- "^([A-Z0-9]+)\\.([0-9]+)[a-z]$"
     if (any(grepl(grep, sequence))) {
-        message("Sequence identifiers should not end with an isoform letter.")
+        message("sequence identifiers should not end with an isoform")
         gsub(grep, "\\1.\\2", sequence)
     } else {
         sequence
@@ -69,33 +14,28 @@ removeIsoform <- function(sequence) {
 
 
 
-#' @importFrom httr content content_type_json GET user_agent
 rest <- function(url) {
-    httr::GET(paste0("http://api.wormbase.org/rest/", url),
-              config = httr::content_type_json(),
-              user_agent = httr::user_agent(userAgent)) %>%
-        httr::content(.)
+    GET(paste0("http://api.wormbase.org/rest/", url),
+        config = content_type_json(),
+        user_agent = user_agent(userAgent)) %>%
+        content
 }
 
 
 
-#' @importFrom stats na.omit
 uniqueIdentifier <- function(identifier) {
     if (missing(identifier)) {
-        stop("An identifier is required.")
+        stop("identifier is required")
     } else if (!is.character(identifier)) {
-        stop("Identifier must be a character vector.")
+        stop("identifier must be a character vector")
     }
     # Fix WBGene capitalization and alert user if necessary:
     grep <- "^(WBGENE|WBgene|Wbgene|wbgene)(\\d{8})$"
     if (any(grepl(grep, identifier))) {
-        message("WormBase gene identifiers should begin with `WBGene`.")
+        message("WormBase gene identifiers should begin with `WBGene`")
         identifier <- gsub(grep, "WBGene\\2", identifier)
     }
-    identifier %>%
-        stats::na.omit(.) %>%
-        unique %>%
-        sort
+    identifier %>% sortUnique
 }
 
 
@@ -106,12 +46,6 @@ userAgent <- "https://github.com/steinbaugh/worminfo"
 
 
 
-# Dot global needed for piping:
-utils::globalVariables(c("."))
-
-
-
-#' @importFrom utils download.file
 wormbaseAnnotationFile <- function(file) {
     if (!file.exists("data-raw/wormbase")) {
         dir.create("data-raw/wormbase", recursive = TRUE)
@@ -126,7 +60,7 @@ wormbaseAnnotationFile <- function(file) {
     fileUrl <- paste0(root, file, "/c_elegans.", version, ".", fileName)
     filePath <- file.path("data-raw", "wormbase", fileName)
     if (!file.exists(filePath)) {
-        utils::download.file(fileUrl, filePath)
+        download.file(fileUrl, filePath)
     }
     return(filePath)
 }
