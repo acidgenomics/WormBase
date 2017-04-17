@@ -1,5 +1,7 @@
 #' EggNOG annotations
 #'
+#' @author Michael Steinbaugh
+#'
 #' @param identifier EggNOG identifier
 #'
 #' @return tibble

@@ -1,5 +1,7 @@
 #' Gene mapping
 #'
+#' @author Michael Steinbaugh
+#'
 #' @param identifier Identifier
 #' @param format Identifier type (\code{gene}, \code{name}, \code{sequence},
 #'   \code{class} or \code{keyword})

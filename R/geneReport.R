@@ -1,5 +1,7 @@
 #' Gene list report
 #'
+#' @author Michael Steinbaugh
+#'
 #' @param identifier Gene identifier
 #' @param format Identifier format
 #'

@@ -1,5 +1,7 @@
 #' WormBase RESTful RNAi gene ontology query
 #'
+#' @author Michael Steinbaugh
+#'
 #' @param identifier Gene identifier
 #'
 #' @return JSON content tibble

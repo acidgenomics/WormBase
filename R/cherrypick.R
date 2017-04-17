@@ -1,5 +1,7 @@
 #' Cherrypick RNAi clones by keyword
 #'
+#' @author Michael Steinbaugh
+#'
 #' @param identifier Keyword identifier
 #' @param format Identifier format
 #' @param ahringer384 Include Ahringer 384 well library

@@ -1,5 +1,7 @@
 #' WormBase RESTful gene external query
 #'
+#' @author Michael Steinbaugh
+#'
 #' @param identifier Gene identifier
 #'
 #' @return JSON content tibble
