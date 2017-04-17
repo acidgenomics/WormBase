@@ -15,3 +15,6 @@ tibble
 \description{
 UniProt web service query
 }
+\author{
+Michael Steinbaugh
+}

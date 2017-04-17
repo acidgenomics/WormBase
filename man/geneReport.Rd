@@ -17,3 +17,6 @@ tibble
 \description{
 Gene list report
 }
+\author{
+Michael Steinbaugh
+}

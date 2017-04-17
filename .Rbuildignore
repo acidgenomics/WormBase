@@ -1,8 +1,8 @@
-^.*\.R$
 ^.*\.Rmd$
 ^.*\.yml$
 ^data-raw/
 ^docs/
 ^NEWS\.md$
+^setup\.R$
 ^.*\.Rproj$
 ^\.Rproj\.user$

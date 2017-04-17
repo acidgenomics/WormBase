@@ -15,6 +15,9 @@ microplate(plate = 1, well = 96, control = 0, prefix = NULL)
 
 \item{prefix}{Plate name prefix}
 }
+\value{
+Data frame
+}
 \description{
 Generate well identifiers for a microplate
 }
