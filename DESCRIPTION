@@ -2,12 +2,17 @@ Package: worminfo
 Title: Worm Genes and RNAi Clones
 Description: C. elegans genome annotations assembled from WormBase, Ensembl, and PANTHER. RNAi clone mapping support for ORFeome and Ahringer libraries.
 Version: 0.99.0
-Authors@R: person("Michael", "Steinbaugh", , "mike@steinbaugh.com", role = c("aut", "cre"))
+Date: 2017-04-17
+Authors@R: person("Michael", "Steinbaugh",
+                  email = "mike@steinbaugh.com",
+                  role = c("aut", "cre"))
 License: MIT + file LICENSE
-URL: http://steinbaugh.com/worminfo, https://github.com/steinbaugh/worminfo
+URL:
+    http://steinbaugh.com/worminfo,
+    https://github.com/steinbaugh/worminfo
 BugReports: https://github.com/steinbaugh/worminfo/issues
 Encoding: UTF-8
-LazyData: no
+LazyData: true
 Depends:
     R (>= 3.3.0)
 Imports:
@@ -16,6 +21,7 @@ Imports:
     httr,
     magrittr,
     parallel,
+    pbmcapply,
     stats,
     stringr,
     tibble,
@@ -26,7 +32,6 @@ Suggests:
     BiocStyle,
     knitr,
     pander,
-    pbmclapply,
     rmarkdown,
     roxygen2
 Remotes:
