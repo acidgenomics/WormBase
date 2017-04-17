@@ -1,18 +1,22 @@
 #' EggNOG annotations
-#' @export
-#' @importFrom dplyr distinct left_join rename_ select_
+#'
 #' @param identifier EggNOG identifier
+#'
 #' @return tibble
+#' @export
 eggnog <- function(identifier) {
     identifier <- uniqueIdentifier(identifier)
-    annotation <- get("annotation", envir = asNamespace("worminfo"))$eggnog$annotation
+    annotation <- get("annotation",
+                      envir = asNamespace("worminfo"))$eggnog$annotation
     annotationMatch <- annotation %>%
         .[.$eggnog %in% identifier, ] %>%
-        # Hide "S = Function unknown" matches:
+        # Hide "S = Function unknown" matches
         .[.$cogFunctionalCategory != "S", ]
     if (nrow(annotationMatch)) {
-        category <- get("annotation", envir = asNamespace("worminfo"))$eggnog$category
-        categoryMatch <- lapply(seq_along(annotationMatch$cogFunctionalCategory), function(a) {
+        category <- get("annotation",
+                        envir = asNamespace("worminfo"))$eggnog$category
+        categoryMatch <- lapply(seq_along(
+            annotationMatch$cogFunctionalCategory), function(a) {
             letter <- annotationMatch$cogFunctionalCategory[a] %>%
                 strsplit("") %>%
                 unlist %>%
@@ -20,9 +24,9 @@ eggnog <- function(identifier) {
                 unique
             category %>% .[.$cogFunctionalCategory %in% letter, ] %>%
                 toStringSummarize
-        }) %>% dplyr::bind_rows(.) %>%
-            dplyr::distinct(.)
-        categoryMatch$cogFunctionalCategory <- gsub(", ", "", categoryMatch$cogFunctionalCategory)
-        dplyr::left_join(annotationMatch, categoryMatch, by = "cogFunctionalCategory")
+        }) %>% bind_rows %>% distinct
+        categoryMatch$cogFunctionalCategory <-
+            gsub(", ", "", categoryMatch$cogFunctionalCategory)
+        left_join(annotationMatch, categoryMatch, by = "cogFunctionalCategory")
     }
 }
