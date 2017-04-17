@@ -40,8 +40,6 @@ uniqueIdentifier <- function(identifier) {
 
 
 
-#' User agent for REST API queries
-#' @param userAgent User agent
 userAgent <- "https://github.com/steinbaugh/worminfo"
 
 
