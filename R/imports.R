@@ -17,6 +17,7 @@ NULL
 # tidyverse ====
 #' @import dplyr
 #' @import httr
+#' @import rlang
 #' @import stringr
 #' @importFrom magrittr %>%
 #' @importFrom tibble as_tibble tibble
