@@ -1,0 +1,70 @@
+---
+title: "WormBase annotations"
+date: "`r BiocStyle::doc_date()`"
+author: "Michael J. Steinbaugh"
+---
+
+```{r setup, include=FALSE}
+source("setup.R")
+```
+
+```{r functions}
+gsubs <- function(a) {
+    a %>%
+        # Separator spacing
+        str_replace("#", "~") %>%
+        str_replace("(^|;|>)([^~]+)~([A-Z0-9\\:]+)", "\\1\\3~\\2") %>%
+        str_replace(";", ", ") %>%
+        str_replace(">", " > ")
+}
+```
+
+```{r}
+fileLocal <- file.path("data-raw", "panther.tsv.gz")
+if (!file.exists(fileLocal)) {
+    fileLocal <- transmit(
+        file.path("ftp://ftp.pantherdb.org",
+                  "sequence_classifications",
+                  "current_release",
+                  "PANTHER_Sequence_Classification_files"),
+        pattern = "nematode",
+        rename = "panther.tsv",
+        compress = TRUE)
+}
+panther <- read_tsv(as.character(fileLocal), col_names = FALSE) %>%
+    setNames(c("id",
+                "protein",
+                "subfamily",
+                "familyName",
+                "subfamilyName",
+                "geneOntologyMolecularFunction",
+                "geneOntologyBiologicalProcess",
+                "geneOntologyCellularComponent",
+                "class",
+                "pathway")) %>%
+    mutate(id = str_replace(id, "CAEEL\\|", ""),
+           id = str_replace(id, "(EnsemblGenome|Gene|GeneID|UniProtKB|WormBase)=", "")) %>%
+    separate(id, c("gene", "uniprotKb"), sep = "\\|") %>%
+    # Fix incorrect ID mappings:
+    mutate(gene = str_replace(gene, "^B0303.5$", "WBGene00015127"),
+           gene = str_replace(gene, "^C13B9.1$", "WBGene00015732"),
+           gene = str_replace(gene, "^F23F12.11/F23F12.5$", "WBGene00005075"),
+           gene = str_replace(gene, "^F55A11.4$", "WBGene00010077"),
+           gene = str_replace(gene, "^K02A2.6$", "WBGene00019291"),
+           gene = str_replace(gene, "^MTCE.11$", "WBGene00010959"),
+           gene = str_replace(gene, "^T07D3.8$", "WBGene00020310"),
+           gene = str_replace(gene, "^Y104H12A.1/Y77E11A.5$", "WBGene00022423"),
+           gene = str_replace(gene, "^Y62E10A.11$", "WBGene00014938"),
+           gene = str_replace(gene, "^176090$", "WBGene00022794"),
+           gene = str_replace(gene, "^2565696$", "WBGene00010966"),
+           gene = str_replace(gene, "^2565700$", "WBGene00010964"),
+           gene = str_replace(gene, "^2565701$", "WBGene00010962"),
+           gene = str_replace(gene, "^2565702$", "WBGene00000829"),
+           gene = str_replace(gene, "^2565703$", "WBGene00010967"),
+           gene = str_replace(gene, "^2565704$", "WBGene00010960"),
+           gene = str_replace(gene, "^2565705$", "WBGene00010963")) %>%
+    mutate_all(funs(gsubs)) %>%
+    select(-c(protein, uniprotKb))
+use_data(panther, overwrite = TRUE)
+glimpse(panther)
+```
