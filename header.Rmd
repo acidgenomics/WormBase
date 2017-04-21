@@ -1,0 +1,2 @@
+[WORFDB]: http://worfdb.dfci.harvard.edu
+[WormBase]: http://www.wormbase.org
