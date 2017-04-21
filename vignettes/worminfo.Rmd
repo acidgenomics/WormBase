@@ -9,14 +9,14 @@ author:
 abstract: >
   Abstract placeholder text.
 bibliography: bibliography.bib
-output: BiocStyle::html_document
+output: BiocStyle::pdf_document
 vignette: >
   %\VignetteIndexEntry{worminfo}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include = FALSE}
+```{r setup, include=FALSE}
 library(worminfo)
 ```
 
