@@ -10,11 +10,14 @@ source("setup.R")
 
 # Gene
 
-```{r gene}
+```{r geneIDs}
 geneIDs <- wormbaseAnnotationFile("geneIDs") %>%
     read_csv(col_names = c("X", "gene", "name", "sequence", "status"),
              na = "") %>%
     select(-X)
+```
+
+```{r geneOtherIDs}
 geneOtherIDs <- wormbaseAnnotationFile("geneOtherIDs") %>%
     read_file %>%
     # Strip out live/dead status, already have in gene
@@ -26,8 +29,6 @@ geneOtherIDs <- wormbaseAnnotationFile("geneOtherIDs") %>%
     # Warnings here mean there are no other IDs for that row
     # (e.g. expected: 2 columns, actual: 1 columns)
     read_tsv(col_names = c("gene", "otherIdentifier"))
-gene <- left_join(geneIDs, geneOtherIDs, by = "gene")
-rm(geneIDs, geneOtherIDs)
 ```
 
 
@@ -45,7 +46,6 @@ names <- read_lines(file, n_max = 1, skip = 3) %>%
     str_replace("geneId", "gene") %>%
     str_replace("molecularName", "sequence") %>%
     str_replace("publicName", "name")
-print(names)
 description <- read_delim(file, delim = "\t",
                col_names = names,
                skip = 4,
@@ -59,28 +59,41 @@ rm(file, names)
 
 # Ortholog
 
-```{r otholog}
-raw <- wormbaseAnnotationFile("orthologs") %>%
+```{r ortholog}
+raw_df <- wormbaseAnnotationFile("orthologs") %>%
     read_file %>%
-    gsub("\t", " | ", .) %>%
-    gsub("\n", " // ", .) %>%
+    str_replace_all("\t", " | ") %>%
+    str_replace_all("\n", " // ") %>%
     gsub("= // ", "\n", .) %>%
     gsub(" //  // ", "\t", .) %>%
     read_tsv(comment = "#", col_names = c("gene", "ortholog")) %>%
-    mutate(gene = gsub("^(WBGene[0-9]{8}).*", "\\1", gene))
-list <- split(raw, seq(nrow(raw)))
-hsapiens <-
-    mclapply(seq_along(list), function(a) {
-        str_split(list[[a]][2], " // ")[[1]] %>%
-            str_subset("Homo sapiens") %>%
-            str_extract("ENSG[0-9]{11} \\| [^ ]+") %>%
-            gsub(" \\| ", "~", .) %>%
-            toStringUnique
-    }) %>% unlist
-ortholog <- tibble(gene = raw[[1]], hsapiens = hsapiens)
-rm(hsapiens,
-   list,
-   raw)
+    mutate(gene = gsub("^(WBGene\\d{8}).*", "\\1", gene))
+list <- mclapply(1:nrow(raw_df), function(a) {
+    # Human
+    hsapiens <- str_extract_all(
+        raw_df[a, 2],
+        pattern = "\\bENSG\\d{11}\\b") %>% unlist
+    # Mouse
+    mmusculus <- str_extract_all(
+        raw_df[a, 2],
+        pattern = "\\bENSMUSG\\d{11}\\b") %>% unlist
+    # Fruit fly
+    dmelanogaster <- str_extract_all(
+        raw_df[a, 2],
+        pattern = "\\bFBgn\\d{7}\\b") %>% unlist
+    # Zebrafish
+    drerio <- str_extract_all(
+        raw_df[a, 2],
+        pattern = "\\bENSDARG\\d{11}\\b") %>% unlist
+    return(list(
+        hsapiens = hsapiens,
+        mmusculus = mmusculus,
+        dmelanogaster = dmelanogaster,
+        drerio = drerio
+    ))
+}) %>% setNames(raw_df$gene)
+ortholog <- tibble(gene = names(list), ortholog = list)
+rm(list, raw_df)
 ```
 
 
@@ -124,10 +137,7 @@ rm(fileLocal)
 
 # BLASTP
 
-```{r blastp}
-import::from(biomaRt, getBM, useEnsembl)
-
-# Wormpep IDs are used for BLASTP matching
+```{r wormpep}
 fileLocal <- file.path("data-raw",
                        "wormbase",
                        "wormpep.tsv.gz")
@@ -174,8 +184,9 @@ wormpep <- read_lines(fileLocal) %>%
     do.call(rbind, .) %>%
     as_tibble %>%
     setNames(c("wormpep", "gene"))
+```
 
-# Best BLASTP hits
+```{r bestBlastHits}
 bestBlastHits <- wormbaseAnnotationFile("best_blast_hits") %>%
     read_csv(col_names = FALSE) %>%
     select(X1, X4, X5) %>%
@@ -183,41 +194,15 @@ bestBlastHits <- wormbaseAnnotationFile("best_blast_hits") %>%
            peptide = X4,
            eValue = X5) %>%
     filter(grepl("^ENSEMBL", peptide)) %>%
-    mutate(peptide = str_sub(peptide, 9)) %>%
-    left_join(wormpep, by = "wormpep")
+    mutate(peptide = str_sub(peptide, 9))
+```
 
-# Map Ensembl peptide identifiers
-hsapiens <- useEnsembl(
-    biomart = "ensembl",
-    dataset = "hsapiens_gene_ensembl")
-hsapiensAnnotations <- getBM(
-    mart = hsapiens,
-    filters = "ensembl_peptide_id",
-    values = bestBlastHits$peptide,
-    attributes = c("ensembl_peptide_id",
-                   "ensembl_gene_id",
-                   "external_gene_name",
-                   "description")) %>%
-    rename(peptide = ensembl_peptide_id,
-           hsapiensDescription = description,
-           hsapiensGene = ensembl_gene_id,
-           hsapiensName = external_gene_name)
-
-# Final join
-priorityCol <- c("gene", "eValue", "peptide", "wormpep")
+```{r blastp}
 blastp <- left_join(
-    bestBlastHits, hsapiensAnnotations, by = "peptide") %>%
-    # Place the priority columns first
-    # one_of(priorityCol) also works with dplyr 0.6.0
-    select(!!!syms(priorityCol), everything()) %>%
+    wormpep, bestBlastHits, by = "wormpep") %>%
     group_by(gene) %>%
-    arrange(!!!syms(priorityCol))
-rm(bestBlastHits,
-   fileLocal,
-   hsapiens,
-   hsapiensAnnotations,
-   priorityCol,
-   wormpep)
+    nest(.key = blastp)
+rm(bestBlastHits, fileLocal, wormpep)
 ```
 
 
@@ -228,7 +213,8 @@ rm(bestBlastHits,
 oligo <- wormbaseAnnotationFile("pcr_product2gene") %>%
     read_tsv(col_names = c("oligo", "gene")) %>%
     mutate(gene = str_extract(gene, "WBGene\\d{8}")) %>%
-    group_by(gene)
+    group_by(gene) %>%
+    nest(.key = oligo)
 ```
 
 
@@ -236,15 +222,23 @@ oligo <- wormbaseAnnotationFile("pcr_product2gene") %>%
 # WormBase list
 
 ```{r wormbase}
-wormbase <- list(
-    gene = gene,
+list <- list(
+    geneIDs = geneIDs,
+    geneOtherIDs = geneOtherIDs,
     description = description,
     blastp = blastp,
     ortholog = ortholog,
     rnaiPhenotype = rnaiPhenotype,
     oligo = oligo)
-summary(wormbase)
-lapply(wormbase, glimpse) %>% invisible
-format(object.size(wormbase), units = "Mb")
-use_data(wormbase, overwrite = TRUE)
+summary(list)
+lapply(list, glimpse) %>% invisible
+print(object.size(list), units = "auto")
+
+# wormbase <- Reduce(function(...) merge(..., by = "gene", all.x = TRUE), list)
+wormbase <- Reduce(function(...) full_join(..., by = "gene"), list)
+glimpse(wormbase)
+print(object.size(wormbase), units = "auto")
+rm(list)
+
+save(wormbase, file = file.path("data-raw", "wormbase.rda"))
 ```
