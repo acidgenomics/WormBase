@@ -34,8 +34,8 @@ NULL
 #' @import rlang
 #' @import stringr
 #' @importFrom magrittr %>%
-#' @importFrom tibble as_tibble tibble
-#' @importFrom tidyr nest separate_ unnest
+#' @importFrom tibble as_tibble glimpse tibble
+#' @importFrom tidyr nest_ separate_ unnest
 NULL
 
 
@@ -44,3 +44,11 @@ NULL
 #' @usage NULL
 #' @export
 magrittr::`%>%`
+
+#' @usage NULL
+#' @export
+basejump::saveDataRaw
+
+#' @usage NULL
+#' @export
+tibble::glimpse
