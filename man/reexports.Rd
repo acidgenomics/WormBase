@@ -4,6 +4,10 @@
 \name{reexports}
 \alias{reexports}
 \alias{\%>\%}
+\alias{reexports}
+\alias{saveDataRaw}
+\alias{reexports}
+\alias{glimpse}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -11,6 +15,10 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
+  \item{basejump}{\code{\link[basejump]{saveDataRaw}}}
+
   \item{magrittr}{\code{\link[magrittr]{\%>\%}}}
+
+  \item{tibble}{\code{\link[tibble]{glimpse}}}
 }}
 
