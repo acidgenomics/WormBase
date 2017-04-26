@@ -1,8 +1,11 @@
+^.*_cache/
+^.*\.html$
 ^.*\.Rmd$
+^.*\.Rproj$
+^.*\.yaml$
 ^.*\.yml$
+^\.Rproj\.user$
 ^data-raw/
 ^docs/
 ^NEWS\.md$
 ^setup\.R$
-^.*\.Rproj$
-^\.Rproj\.user$
