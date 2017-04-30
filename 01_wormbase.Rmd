@@ -8,11 +8,13 @@ author: "Michael J. Steinbaugh"
 source("setup.R")
 ```
 
+```{r header, child="header.Rmd"}
+```
+
 ```{r geneIDs}
 geneIDs <- wormbaseAnnotationFile("geneIDs") %>%
     read_csv(col_names = c("X", "gene", "name", "sequence", "status"),
-             na = "") %>%
-    select(-X)
+             na = "") %>% select(-X)
 ```
 
 ```{r geneOtherIDs}
@@ -218,4 +220,7 @@ saveDataRaw(geneIDs,
             blastp,
             peptide,
             oligo)
+```
+
+```{r footer, child="footer.Rmd"}
 ```
