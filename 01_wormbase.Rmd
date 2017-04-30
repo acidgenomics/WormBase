@@ -11,6 +11,8 @@ source("setup.R")
 ```{r header, child="header.Rmd"}
 ```
 
+
+
 ```{r geneIDs}
 geneIDs <- wormbaseAnnotationFile("geneIDs") %>%
     read_csv(col_names = c("X", "gene", "name", "sequence", "status"),
@@ -221,6 +223,8 @@ saveDataRaw(geneIDs,
             peptide,
             oligo)
 ```
+
+
 
 ```{r footer, child="footer.Rmd"}
 ```

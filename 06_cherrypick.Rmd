@@ -1,0 +1,34 @@
+---
+title: "Cherrypick RNAi libraries"
+date: "`r BiocStyle::doc_date()`"
+---
+
+```{r setup, include=FALSE}
+source("setup.R")
+load(file.path("data-raw", "geneIDs.rda"))
+```
+
+```{r header, child="header.Rmd"}
+```
+
+
+
+```{r cherrypick}
+cherrypick <- file.path("data-raw", "cherrypick.xlsx") %>%
+    read_excel %>%
+    mutate(clone = paste0(library,
+                          plateNum,
+                          plateRow,
+                          str_pad(plateCol, 2, pad = "0"))) %>%
+    filter(!is.na(sequence)) %>%
+    select(clone, sequence) %>%
+    arrange(clone) %>%
+    left_join(geneIDs[, c("gene", "sequence")], by = "sequence")
+glimpse(cherrypick)
+saveDataRaw(cherrypick)
+```
+
+
+
+```{r footer, child="footer.Rmd"}
+```

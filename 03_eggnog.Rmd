@@ -11,9 +11,10 @@ dir.create(file.path("data-raw", "eggnog"),
            showWarnings = FALSE)
 ```
 
+```{r header, child="header.Rmd"}
+```
 
 
-# README
 
 ```{r readme}
 "http://eggnogdb.embl.de/download/latest/README.txt" %>%
@@ -99,7 +100,7 @@ annotation <- bind_rows(eunog, nog) %>%
 eggnog <- list(annotation = annotation,
                category = category)
 str(eggnog)
-save(eggnog, file = file.path("data-raw", "eggnog.rda"))
+saveDataRaw(eggnog)
 rm(annotation,
    category,
    colNames,
@@ -107,4 +108,9 @@ rm(annotation,
    fileLocal,
    nog,
    pattern)
+```
+
+
+
+```{r footer, child="footer.Rmd"}
 ```
