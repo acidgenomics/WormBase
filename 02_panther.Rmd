@@ -1,5 +1,5 @@
 ---
-title: "WormBase annotations"
+title: "PANTHER"
 date: "`r BiocStyle::doc_date()`"
 author: "Michael J. Steinbaugh"
 ---
@@ -45,16 +45,16 @@ panther <- read_tsv(as.character(fileLocal), col_names = FALSE) %>%
     mutate(id = str_replace(id, "CAEEL\\|", ""),
            id = str_replace(id, "(EnsemblGenome|Gene|GeneID|UniProtKB|WormBase)=", "")) %>%
     separate(id, c("gene", "uniprotKb"), sep = "\\|") %>%
-    # Fix incorrect ID mappings:
-    mutate(gene = str_replace(gene, "^B0303.5$", "WBGene00015127"),
-           gene = str_replace(gene, "^C13B9.1$", "WBGene00015732"),
-           gene = str_replace(gene, "^F23F12.11/F23F12.5$", "WBGene00005075"),
-           gene = str_replace(gene, "^F55A11.4$", "WBGene00010077"),
-           gene = str_replace(gene, "^K02A2.6$", "WBGene00019291"),
-           gene = str_replace(gene, "^MTCE.11$", "WBGene00010959"),
-           gene = str_replace(gene, "^T07D3.8$", "WBGene00020310"),
-           gene = str_replace(gene, "^Y104H12A.1/Y77E11A.5$", "WBGene00022423"),
-           gene = str_replace(gene, "^Y62E10A.11$", "WBGene00014938"),
+    # Fix sequence to gene mappings
+    mutate(gene = str_replace(gene, "^B0303\\.5$", "WBGene00015127"),
+           gene = str_replace(gene, "^C13B9\\.1$", "WBGene00015732"),
+           gene = str_replace(gene, "^F23F12\\.11/F23F12\\.5$", "WBGene00005075"),
+           gene = str_replace(gene, "^F55A11\\.4$", "WBGene00010077"),
+           gene = str_replace(gene, "^K02A2\\.6$", "WBGene00019291"),
+           gene = str_replace(gene, "^MTCE\\.11$", "WBGene00010959"),
+           gene = str_replace(gene, "^T07D3\\.8$", "WBGene00020310"),
+           gene = str_replace(gene, "^Y104H12A\\.1/Y77E11A\\.5$", "WBGene00022423"),
+           gene = str_replace(gene, "^Y62E10A\\.11$", "WBGene00014938"),
            gene = str_replace(gene, "^176090$", "WBGene00022794"),
            gene = str_replace(gene, "^2565696$", "WBGene00010966"),
            gene = str_replace(gene, "^2565700$", "WBGene00010964"),
