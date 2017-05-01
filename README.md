@@ -15,7 +15,7 @@
 
 *C. elegans* gene annotations and RNAi clone mappings.
 
-Gene annotation sources: [WormBase][] [Ensembl][], [PANTHER][], and [EggNOG][].
+Gene annotation sources: [WormBase][], [Ensembl][], [PANTHER][], and [EggNOG][].
 
 RNAi clones: [Worm ORFeome](http://worfdb.dfci.harvard.edu) and [Ahringer](http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/) libraries.
 
