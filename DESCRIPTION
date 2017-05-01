@@ -1,6 +1,6 @@
 Package: worminfo
 Title: Worm Genes and RNAi Clones
-Description: C. elegans genome annotations assembled from WormBase, Ensembl, and PANTHER. RNAi clone mapping support for ORFeome and Ahringer libraries.
+Description: C. elegans gene annotations and RNAi clone mappings.
 Version: 0.99.0
 Authors@R: person("Michael", "Steinbaugh", , "mike@steinbaugh.com", role = c("aut", "cre"))
 License: MIT + file LICENSE
