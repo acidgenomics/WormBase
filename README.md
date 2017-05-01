@@ -4,6 +4,7 @@
 [Ensembl]: http://www.ensembl.org/Caenorhabditis_elegans
 [PANTHER]: http://pantherdb.org
 [R]: https://www.r-project.org
+[Ruvkun Lab]: https://molbio.mgh.harvard.edu/laboratories/ruvkun
 [WormBase]: http://www.wormbase.org
 
 
@@ -15,9 +16,9 @@
 
 *C. elegans* gene annotations and RNAi clone mappings.
 
-Gene annotation sources: [WormBase][], [Ensembl][], [PANTHER][], and [EggNOG][].
+Gene annotation databases: [WormBase][], [Ensembl][], [PANTHER][], and [EggNOG][].
 
-RNAi clones: [Worm ORFeome](http://worfdb.dfci.harvard.edu) and [Ahringer](http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/) libraries.
+RNAi clones: [Worm ORFeome](http://worfdb.dfci.harvard.edu), [Ahringer](http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/), and [Ruvkun Lab][] cherrypick libraries.
 
 
 ## Installation
