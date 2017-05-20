@@ -4,7 +4,7 @@ date: "`r BiocStyle::doc_date()`"
 author: "Michael J. Steinbaugh"
 ---
 
-```{r setup, include=FALSE}
+```{r setup}
 source("setup.R")
 dir.create("data-raw/eggnog", recursive = TRUE, showWarnings = FALSE)
 ```

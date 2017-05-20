@@ -1,9 +1,9 @@
 ---
-title: "WORFDB"
+title: "WORFDB annotations"
 date: "`r BiocStyle::doc_date()`"
 ---
 
-```{r setup, include=FALSE}
+```{r setup}
 source("setup.R")
 ```
 

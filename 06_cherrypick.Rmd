@@ -1,11 +1,11 @@
 ---
-title: "Cherrypick RNAi libraries"
+title: "Cherrypick RNAi library annotations"
 date: "`r BiocStyle::doc_date()`"
 ---
 
-```{r setup, include=FALSE}
+```{r setup}
 source("setup.R")
-load(file.path("data-raw", "geneIDs.rda"))
+loadData(geneIDs)
 ```
 
 ```{r header, child="header.Rmd"}
@@ -14,7 +14,7 @@ load(file.path("data-raw", "geneIDs.rda"))
 
 
 ```{r cherrypick}
-cherrypick <- file.path("data-raw", "cherrypick.xlsx") %>%
+cherrypick <- "data-raw/cherrypick.xlsx" %>%
     read_excel %>%
     mutate(clone = paste0(library,
                           plateNum,
