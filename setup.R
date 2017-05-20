@@ -1,14 +1,4 @@
 library(basejump)
-library(devtools)
-library(httr)
-library(knitr)
-library(parallel)
-library(pbmcapply)
-library(R.utils)
-library(RCurl)
-library(readxl)
-library(stringr)
-library(rlang)
 library(tidyverse)
 
 opts_chunk$set(
@@ -16,10 +6,11 @@ opts_chunk$set(
     cache = TRUE,
     error = TRUE,
     fig.align = "center",
-    fig.height = 7,
+    fig.height = 8,
     fig.keep = "all",
     fig.path = "figures/",
-    fig.width = 7,
+    fig.retina = 2,
+    fig.width = 8,
     message = TRUE,
     tidy = FALSE,
     warning = TRUE)
