@@ -4,7 +4,7 @@ date: "`r BiocStyle::doc_date()`"
 author: "Michael J. Steinbaugh"
 ---
 
-```{r setup, include=FALSE}
+```{r setup, message=FALSE}
 source("setup.R")
 ```
 
@@ -40,18 +40,20 @@ geneOtherIDs <- wormbaseAnnotationFile("geneOtherIDs") %>%
 ```{r description}
 file <- wormbaseAnnotationFile("functional_descriptions")
 names <- read_lines(file, n_max = 1, skip = 3) %>%
-    str_split(" ") %>%
-    .[[1]] %>%
+    str_split(" ") %>% .[[1]] %>%
     str_replace_all("(\\w+)_description$", "description_\\1") %>%
     camel %>%
     str_replace("descriptionGeneClass", "class") %>%
     str_replace("geneId", "gene") %>%
     str_replace("molecularName", "sequence") %>%
     str_replace("publicName", "name")
-description <- read_delim(file, delim = "\t",
-               col_names = names,
-               skip = 4,
-               na = c("", "none available", "not known")) %>%
+# [fix] Chain method for suppressWarnings?
+description <- suppressWarnings(read_delim(
+    file,
+    delim = "\t",
+    col_names = names,
+    skip = 4,
+    na = c("", "none available", "not known"))) %>%
     select(-c(name, sequence)) %>%
     filter(grepl("^WBGene\\d+$", gene))
 rm(file, names)
@@ -214,14 +216,15 @@ oligo <- wormbaseAnnotationFile("pcr_product2gene") %>%
 ```
 
 ```{r save}
-saveDataRaw(geneIDs,
-            geneOtherIDs,
-            description,
-            ortholog,
-            rnaiPhenotype,
-            blastp,
-            peptide,
-            oligo)
+saveDataRaw(
+    geneIDs,
+    geneOtherIDs,
+    description,
+    ortholog,
+    rnaiPhenotype,
+    blastp,
+    peptide,
+    oligo)
 ```
 
 
