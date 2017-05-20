@@ -1,5 +1,5 @@
 ---
-title: "PANTHER"
+title: "PANTHER annotations"
 date: "`r BiocStyle::doc_date()`"
 author: "Michael J. Steinbaugh"
 ---
@@ -25,7 +25,7 @@ gsubs <- function(a) {
 
 
 ```{r panther}
-fileLocal <- file.path("data-raw", "panther.tsv.gz")
+fileLocal <- "data-raw/panther.tsv.gz"
 if (!file.exists(fileLocal)) {
     fileLocal <- transmit(
         file.path("ftp://ftp.pantherdb.org",

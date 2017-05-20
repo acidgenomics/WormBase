@@ -6,9 +6,7 @@ author: "Michael J. Steinbaugh"
 
 ```{r setup, include=FALSE}
 source("setup.R")
-dir.create(file.path("data-raw", "eggnog"),
-           recursive = TRUE,
-           showWarnings = FALSE)
+dir.create("data-raw/eggnog", recursive = TRUE, showWarnings = FALSE)
 ```
 
 ```{r header, child="header.Rmd"}
@@ -18,7 +16,7 @@ dir.create(file.path("data-raw", "eggnog"),
 
 ```{r readme}
 "http://eggnogdb.embl.de/download/latest/README.txt" %>%
-    readLines %>% writeLines
+    read_lines %>% writeLines
 ```
 
 
@@ -49,41 +47,35 @@ category <- fileLocal %>%
 # Annotation
 
 ```{r}
-colNames <- c("taxonomicLevel",
-              "groupName",
-              "proteinCount",
-              "speciesCount",
-              "cogFunctionalCategory",
-              "consensusFunctionalDescription")
+colNames <- c(
+    "taxonomicLevel",
+    "groupName",
+    "proteinCount",
+    "speciesCount",
+    "cogFunctionalCategory",
+    "consensusFunctionalDescription")
 ```
 
 ## EUNOG: Eukaryota
 
 ```{r eunog}
-fileLocal <- file.path("data-raw", "eggnog", "eunog.tsv.gz")
+fileLocal <- "data-raw/eggnog/eunog.tsv.gz"
 download.file(
-    file.path("http://eggnogdb.embl.de",
-              "download",
-              "latest",
-              "data",
-              "euNOG",
-              "euNOG.annotations.tsv.gz"),
+    file.path("http://eggnogdb.embl.de", "download", "latest", "data",
+              "euNOG", "euNOG.annotations.tsv.gz"),
     fileLocal)
 eunog <- read_tsv(fileLocal, col_names = colNames)
 ```
 
 
-## NOG: LUCA (All organisms)
+## NOG: LUCA
 
 ```{r nog}
-fileLocal <- file.path("data-raw", "eggnog", "nog.tsv.gz")
-download.file(file.path("http://eggnogdb.embl.de",
-                        "download",
-                        "latest",
-                        "data",
-                        "NOG",
-                        "NOG.annotations.tsv.gz"),
-              fileLocal)
+fileLocal <- "data-raw/eggnog/nog.tsv.gz"
+download.file(
+    file.path("http://eggnogdb.embl.de", "download", "latest", "data",
+              "NOG", "NOG.annotations.tsv.gz"),
+    fileLocal)
 nog <- read_tsv(fileLocal, col_names = colNames)
 ```
 

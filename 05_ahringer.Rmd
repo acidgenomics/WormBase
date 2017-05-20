@@ -1,12 +1,11 @@
 ---
-title: "Ahringer clones"
+title: "Ahringer clone annotations"
 date: "`r BiocStyle::doc_date()`"
 ---
 
 ```{r setup, include=FALSE}
 source("setup.R")
-load(file.path("data-raw", "geneIDs.rda"))
-load(file.path("data-raw", "oligo.rda"))
+loadData(geneIDs, oligo)
 ```
 
 ```{r header, child="header.Rmd"}
@@ -17,7 +16,7 @@ load(file.path("data-raw", "oligo.rda"))
 # Import the raw data
 
 ```{r list}
-fileLocal <- file.path("data-raw", "ahringer.xlsx")
+fileLocal <- "data-raw/ahringer.xlsx"
 if (!file.exists(fileLocal)) {
     download.file(file.path(
     "http://www.us.lifesciences.sourcebioscience.com",
@@ -31,13 +30,13 @@ list <- mclapply(seq_along(chromosomes), function(a) {
     read_excel(fileLocal,
                sheet = a + 1,
                col_types = rep("text", 8))
-}) %>% setNames(chromosomes)
+}) %>% set_names(chromosomes)
 lapply(list, glimpse) %>% invisible
 ```
 
 ```{r input}
 input <- bind_rows(list) %>%
-    setNamesCamel %>%
+    camel %>%
     filter(!grepl("mismatch", extraInfo)) %>%
     rename(genePair = genePairsName,
            clone384 = sourceBioscienceLocation) %>%
