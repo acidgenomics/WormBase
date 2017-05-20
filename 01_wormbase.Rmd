@@ -48,12 +48,12 @@ names <- read_lines(file, n_max = 1, skip = 3) %>%
     str_replace("molecularName", "sequence") %>%
     str_replace("publicName", "name")
 # [fix] Chain method for suppressWarnings?
-description <- suppressWarnings(read_delim(
+description <- read_delim(
     file,
     delim = "\t",
     col_names = names,
     skip = 4,
-    na = c("", "none available", "not known"))) %>%
+    na = c("", "none available", "not known")) %>%
     select(-c(name, sequence)) %>%
     filter(grepl("^WBGene\\d+$", gene))
 rm(file, names)
@@ -97,11 +97,9 @@ rm(list, raw_df)
 ```
 
 ```{r rnaiPhenotype}
-fileLocal <- file.path("data-raw",
-                       "wormbase",
-                       "rnai_phenotypes.tsv.gz")
+fileLocal <- "data-raw/wormbase/rnai_phenotypes.tsv.gz"
 if (!file.exists(fileLocal)) {
-    # Improve this code using the `transmit()` function
+    # Improve this code using the [transmit()] function
     dir <- file.path("ftp://ftp.wormbase.org",
                      "pub",
                      "wormbase",
@@ -109,13 +107,10 @@ if (!file.exists(fileLocal)) {
                      "current-production-release",
                      "ONTOLOGY")
     fileRemote <- getURL(paste0(dir, "/"), dirlistonly = TRUE) %>%
-        str_split("\n") %>%
-        .[[1]] %>%
+        str_split("\n") %>% .[[1]] %>%
         str_subset("rnai_phenotypes_quick") %>%
         file.path(dir, .)
-    fileLocal <- file.path("data-raw",
-                           "wormbase",
-                           "rnai_phenotypes.tsv")
+    fileLocal <- "data-raw/wormbase/rnai_phenotypes.tsv"
     download.file(fileRemote, fileLocal)
     fileLocal <- gzip(fileLocal, overwrite = TRUE)
     rm(dir, fileRemote)
@@ -141,9 +136,7 @@ blastp <- wormbaseAnnotationFile("best_blast_hits") %>%
 ```
 
 ```{r peptide}
-fileLocal <- file.path("data-raw",
-                       "wormbase",
-                       "wormpep.tsv.gz")
+fileLocal <- "data-raw/wormbase/wormpep.tsv.gz"
 if (!file.exists(fileLocal)) {
     dir <- file.path("ftp://ftp.wormbase.org",
                      "pub",
@@ -153,26 +146,22 @@ if (!file.exists(fileLocal)) {
                      "species",
                      "c_elegans",
                      "PRJNA13758")
-    fileRemote <- getURL(paste0(dir, "/"),
-                         dirlistonly = TRUE) %>%
-        str_split("\n") %>%
-        .[[1]] %>%
+    fileRemote <- getURL(paste0(dir, "/"), dirlistonly = TRUE) %>%
+        str_split("\n") %>% .[[1]] %>%
         str_subset("wormpep_package") %>%
         as.character %>%
         file.path(dir, .)
     download.file(fileRemote, fileLocal)
     untar(fileLocal,
-          exdir = file.path("data-raw", "wormbase"),
+          exdir = "data-raw/wormbase",
           files = "wormpep.table*")
     # Safe to delete the large source file
     unlink(fileLocal)
     fileLocal <- list.files(
-        path = file.path("data-raw", "wormbase"),
+        path = "data-raw/wormbase",
         pattern = "wormpep.table",
         full.names = TRUE)
-    fileRename <- file.path("data-raw",
-                            "wormbase",
-                            "wormpep.tsv")
+    fileRename <- "data-raw/wormbase/wormpep.tsv"
     file.rename(fileLocal, fileRename)
     fileLocal <- fileRename
     fileLocal <- gzip(fileLocal, overwrite = TRUE)
@@ -188,14 +177,12 @@ list <- mclapply(seq_along(raw), function(a) {
         str_replace("_", " ")
     uniprot <- str_match(raw[[a]], "UniProt:([^\t]+)") %>% .[[2]]
     protein <- str_match(raw[[a]], "protein_id:([^\t]+)") %>% .[[2]]
-    return(c(
-        sequence = sequence,
-        wormpep = wormpep,
-        gene = gene,
-        status = status,
-        uniprot = uniprot,
-        protein = protein
-    ))
+    c(sequence = sequence,
+      wormpep = wormpep,
+      gene = gene,
+      status = status,
+      uniprot = uniprot,
+      protein = protein)
 })
 peptide <- list %>%
     do.call(rbind, .) %>%
@@ -207,6 +194,7 @@ rm(fileLocal, list, raw)
 ```
 
 ```{r oligo}
+# [fix] Chain method for suppressWarnings?
 oligo <- wormbaseAnnotationFile("pcr_product2gene") %>%
     read_tsv(col_names = c("oligo", "gene")) %>%
     mutate(gene = str_extract(gene, "WBGene\\d{8}")) %>%
