@@ -9,3 +9,4 @@
 ^docs/
 ^NEWS\.md$
 ^setup\.R$
+^API$

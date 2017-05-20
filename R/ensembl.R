@@ -1,19 +1,21 @@
-#' Ensembl utility functions
+#' [Ensembl](http://www.ensembl.org) utility functions
 #'
-#' @param gene Ensembl gene identifier
-#' @param peptide Ensembl peptide identifier
-#' @param nest Return as nested tibble
-#'
-#' @return Ensembl metadata
-
-
-
 #' @rdname ensembl
-#' @description Basic metadata
+#'
+#' @param gene Ensembl gene identifier.
+#' @param peptide Ensembl peptide identifier.
+#' @param nest Return as nested tibble.
+#'
+#' @return Ensembl metadata tibble.
 #' @export
 #'
 #' @examples
-#' ensemblBasic("WBGene00000001") %>% glimpse
+#' gene <- "WBGene00000001"
+#' peptide <- "ENSP00000380252"
+#' ensemblBasic(gene) %>% glimpse
+#' ensemblGeneOntology(gene, nest = FALSE) %>% glimpse
+#' ensemblInterpro(gene, nest = FALSE) %>% glimpse
+#' ensemblPeptide(peptide) %>% glimpse
 ensemblBasic <- function(gene = NULL) {
     if (is.null(gene)) {
         filters <- ""
@@ -35,23 +37,19 @@ ensemblBasic <- function(gene = NULL) {
                        "end_position",
                        "strand"))
     if (nrow(meta)) {
-        meta <- as_tibble(meta) %>%
+        meta %>%
+            as_tibble %>%
             rename(biotype = !!sym("gene_biotype"),
                    chromosome = !!sym("chromosome_name"),
                    gene = !!sym("ensembl_gene_id")) %>%
-            setNamesCamel
-        return(meta)
+            camel
     }
 }
 
 
 
 #' @rdname ensembl
-#' @description Gene Ontology terms
 #' @export
-#'
-#' @examples
-#' ensemblGeneOntology("WBGene00000001", nest = FALSE) %>% glimpse
 ensemblGeneOntology <- function(gene = NULL, nest = TRUE) {
     if (is.null(gene)) {
         filters <- ""
@@ -69,7 +67,8 @@ ensemblGeneOntology <- function(gene = NULL, nest = TRUE) {
                        "go_id",
                        "name_1006"))
     if (nrow(meta)) {
-        meta <- as_tibble(meta) %>%
+        meta <- meta %>%
+            as_tibble %>%
             rename(gene = !!sym("ensembl_gene_id"),
                    geneOntology = !!sym("go_id"),
                    geneOntologyDescription = !!sym("name_1006")) %>%
@@ -77,18 +76,14 @@ ensemblGeneOntology <- function(gene = NULL, nest = TRUE) {
         if (isTRUE(nest)) {
             meta <- nest_(meta, "geneOntology")
         }
-        return(meta)
+        meta
     }
 }
 
 
 
 #' @rdname ensembl
-#' @description InterPro metadata
 #' @export
-#'
-#' @examples
-#' ensemblInterpro("WBGene00000001", nest = FALSE) %>% glimpse
 ensemblInterpro <- function(gene = NULL, nest = TRUE) {
     if (is.null(gene)) {
         filters <- ""
@@ -107,26 +102,22 @@ ensemblInterpro <- function(gene = NULL, nest = TRUE) {
                        "interpro_description",
                        "interpro_short_description"))
     if (nrow(meta)) {
-        meta <- as_tibble(meta) %>%
+        meta <- meta %>%
+            as_tibble %>%
             rename(gene = !!sym("ensembl_gene_id")) %>%
-            setNamesCamel %>%
+            camel %>%
             group_by(!!sym("gene"))
         if (isTRUE(nest)) {
             meta <- nest_(meta, "interpro")
         }
-        return(meta)
+        meta
     }
 }
 
 
 
-
 #' @rdname ensembl
-#' @description \emph{H. sapiens} annotations for WormBase BLASTP peptide hits
 #' @export
-#'
-#' @examples
-#' ensemblPeptide("ENSP00000380252") %>% glimpse
 ensemblPeptide <- function(peptide = NULL) {
     if (is.null(peptide)) {
         filters <- ""
@@ -144,11 +135,11 @@ ensemblPeptide <- function(peptide = NULL) {
                        "external_gene_name",
                        "description"))
     if (nrow(meta)) {
-        meta <- as_tibble(meta) %>%
+        meta %>%
+            as_tibble %>%
             rename(peptide = !!sym("ensembl_peptide_id"),
                    hsapiensDescription = !!sym("description"),
                    hsapiensGene = !!sym("ensembl_gene_id"),
                    hsapiensName = !!sym("external_gene_name"))
-        return(meta)
     }
 }
