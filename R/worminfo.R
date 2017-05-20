@@ -1,54 +1,12 @@
-#' \code{worminfo} package
+#' worminfo
 #'
 #' C. elegans genome annotations and RNAi clone mappings.
 #'
-#' See the README on \href{https://github.com/steinbaugh.com/worminfo}{GitHub}.
-#'
-#' @docType package
-#' @name bcbioRnaseq
-NULL
-
-
-
-# Globals ====
-globalVariables(".")
-
-
-
-# Imports ====
-# General ----
 #' @import basejump
-#' @importFrom parallel mclapply
-#' @importFrom pbmcapply pbmclapply
-#' @importFrom stats na.omit setNames
-#' @importFrom utils download.file globalVariables
-NULL
-
-# Databases ----
-#' @importFrom biomaRt getBM useEnsembl
+#' @importFrom stats na.omit
 #' @importFrom UniProt.ws UniProt.ws
+"_PACKAGE"
 
-# tidyverse ----
-#' @import dplyr
-#' @import httr
-#' @import rlang
-#' @import stringr
-#' @importFrom magrittr %>%
-#' @importFrom tibble as_tibble glimpse tibble
-#' @importFrom tidyr nest_ separate_ unnest
-NULL
-
-
-
-# Re-exports ====
-#' @usage NULL
-#' @export
-magrittr::`%>%`
-
-#' @usage NULL
-#' @export
-basejump::saveDataRaw
-
-#' @usage NULL
-#' @export
-tibble::glimpse
+globalVariables(basejump::globals,
+                asNamespace("worminfo"),
+                add = TRUE)
