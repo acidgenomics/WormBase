@@ -1,4 +1,6 @@
-# Session information
+* * *
+
+
 
 ```{r sessionInfo}
 sessionInfo()
