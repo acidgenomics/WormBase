@@ -2,10 +2,13 @@
 #'
 #' @author Michael Steinbaugh
 #'
-#' @param identifier Gene identifier
+#' @param identifier Gene identifier.
 #'
-#' @return JSON content tibble
+#' @return JSON content tibble.
 #' @export
+#'
+#' @examples
+#' geneExternal("WBGene00000001") %>% t
 geneExternal <- function(identifier) {
     identifier <- uniqueIdentifier(identifier)
     lapply(seq_along(identifier), function(a) {
@@ -19,10 +22,10 @@ geneExternal <- function(identifier) {
         mclapply(seq_along(rest), function(b) {
             rest[[b]] %>% .[[1]] %>% .[[1]] %>%
                 unlist %>% toStringUnique
-        }) %>% setNames(names(rest)) %>%
+        }) %>% set_names(names(rest)) %>%
             as_tibble %>%
-            mutate_(.dots = setNames(list(
-                ~identifier[[a]]), "gene"))
+            # [fix] check that this works
+            mutate(gene = identifier[[a]])
     }) %>% bind_rows %>%
-        setNames(tolower(names(.)))
+        set_names(tolower(names(.)))
 }
