@@ -15,8 +15,9 @@ source("setup.R")
 
 ```{r geneIDs}
 geneIDs <- wormbaseAnnotationFile("geneIDs") %>%
-    read_csv(col_names = c("X", "gene", "name", "sequence", "status"),
-             na = "") %>% select(-X)
+    read_csv(col_names = c("X1", "gene", "name", "sequence", "status"),
+             na = "") %>% select(-X1)
+saveDataRaw(geneIDs)
 ```
 
 ```{r geneOtherIDs}
@@ -35,6 +36,7 @@ geneOtherIDs <- wormbaseAnnotationFile("geneOtherIDs") %>%
     do.call(rbind, .) %>%
     as_tibble %>%
     set_names(c("gene", "otherIDs"))
+saveDataRaw(geneOtherIDs)
 ```
 
 ```{r description}
@@ -57,6 +59,7 @@ description <- read_delim(
     select(-c(name, sequence)) %>%
     filter(grepl("^WBGene\\d+$", gene))
 rm(file, names)
+saveDataRaw(description)
 ```
 
 ```{r ortholog}
@@ -94,6 +97,7 @@ list <- mclapply(1:nrow(raw_df), function(a) {
 }) %>% set_names(raw_df$gene)
 ortholog <- tibble(gene = names(list), ortholog = list)
 rm(list, raw_df)
+saveDataRaw(ortholog)
 ```
 
 ```{r rnaiPhenotype}
@@ -117,11 +121,15 @@ if (!file.exists(fileLocal)) {
 }
 rnaiPhenotype <- read_tsv(
     fileLocal,
-    col_names = c("gene",
-                  "sequence",
-                  "rnaiPhenotype")) %>%
-    select(-sequence)
+    col_names = c("gene", "sequence", "rnaiPhenotype")) %>%
+    select(-sequence) %>%
+    mutate(rnaiPhenotype = str_split(rnaiPhenotype, ", ")) %>%
+    unnest %>%
+    group_by(gene) %>%
+    arrange(rnaiPhenotype, .by_group = TRUE) %>%
+    nest(.key = rnaiPhenotype)
 rm(fileLocal)
+saveDataRaw(rnaiPhenotype)
 ```
 
 ```{r blastp}
@@ -133,6 +141,7 @@ blastp <- wormbaseAnnotationFile("best_blast_hits") %>%
            eValue = X5) %>%
     filter(str_detect(peptide, "^ENSEMBL")) %>%
     mutate(peptide = str_sub(peptide, 9))
+saveDataRaw(blastp)
 ```
 
 ```{r peptide}
@@ -191,28 +200,17 @@ peptide <- list %>%
     group_by(gene) %>%
     arrange(sequence, wormpep, .by_group = TRUE)
 rm(fileLocal, list, raw)
+saveDataRaw(peptide)
 ```
 
 ```{r oligo}
-# [fix] Chain method for suppressWarnings?
 oligo <- wormbaseAnnotationFile("pcr_product2gene") %>%
     read_tsv(col_names = c("oligo", "gene")) %>%
     mutate(gene = str_extract(gene, "WBGene\\d{8}")) %>%
     select(gene, oligo) %>%
     group_by(gene) %>%
     arrange(oligo, .by_group = TRUE)
-```
-
-```{r save}
-saveDataRaw(
-    geneIDs,
-    geneOtherIDs,
-    description,
-    ortholog,
-    rnaiPhenotype,
-    blastp,
-    peptide,
-    oligo)
+saveDataRaw(oligo)
 ```
 
 
