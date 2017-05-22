@@ -1,7 +1,3 @@
-defaultCol <- c("gene", "sequence", "name")
-
-
-
 removeIsoform <- function(sequence) {
     grep <- "^([A-Z0-9]+)\\.([0-9]+)[a-z]$"
     if (any(grepl(grep, sequence))) {
@@ -37,10 +33,6 @@ uniqueIdentifier <- function(identifier) {
     }
     identifier %>% sortUnique
 }
-
-
-
-userAgent <- "https://github.com/steinbaugh/worminfo"
 
 
 
