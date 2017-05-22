@@ -7,15 +7,15 @@
 rnai(identifier, format = "clone", proteinCoding = TRUE)
 }
 \arguments{
-\item{identifier}{Identifier}
+\item{identifier}{Identifier.}
 
-\item{format}{Identifier format (\code{clone}, \code{gene}, \code{genePair},
-\code{name}, or \code{sequence})}
+\item{format}{Identifier format (\code{clone}, \code{gene}, \code{genePair}, \code{name}, or
+\code{sequence}).}
 
-\item{proteinCoding}{Return protein coding matches (\code{TRUE/FALSE})}
+\item{proteinCoding}{Return protein coding matches (\code{TRUE}/\code{FALSE}).}
 }
 \value{
-tibble
+Tibble.
 }
 \description{
 RNAi clone mapping

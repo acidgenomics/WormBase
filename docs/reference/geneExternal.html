@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -81,19 +83,36 @@
     <p>WormBase RESTful gene external query</p>
     
 
-    <pre><span class='fu'>geneExternal</span>(<span class='no'>identifier</span>)</pre>
+    <pre class="usage"><span class='fu'>geneExternal</span>(<span class='no'>identifier</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>identifier</dt>
-      <dd>Gene identifier</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>identifier</th>
+      <td><p>Gene identifier.</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>JSON content tibble</p>
+    <p>JSON content tibble.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>geneExternal</span>(<span class='st'>"WBGene00000001"</span>) <span class='kw'>%&gt;%</span> <span class='no'>glimpse</span></div><div class='output co'>#&gt; Observations: 1
+#&gt; Variables: 11
+#&gt; $ aceview   &lt;chr&gt; "1F677"
+#&gt; $ ncbi      &lt;chr&gt; "172141"
+#&gt; $ ndb       &lt;chr&gt; "CELE_Y110A7A.10"
+#&gt; $ trembl    &lt;chr&gt; "G5EDP9"
+#&gt; $ wormqtl   &lt;chr&gt; "WBGene00000001"
+#&gt; $ refseq    &lt;chr&gt; "NP_491522.1"
+#&gt; $ signalink &lt;chr&gt; "WBGene00000001"
+#&gt; $ treefam   &lt;chr&gt; "TF102033"
+#&gt; $ omim      &lt;chr&gt; "171833, 606076, 603157"
+#&gt; $ wormflux  &lt;chr&gt; "WBGene00000001"
+#&gt; $ gene      &lt;chr&gt; "WBGene00000001"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -101,7 +120,13 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
+    <h2>Author</h2>
+    
+Michael Steinbaugh
 
   </div>
 </div>

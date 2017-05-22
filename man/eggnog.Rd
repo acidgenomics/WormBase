@@ -7,14 +7,11 @@
 eggnog(identifier)
 }
 \arguments{
-\item{identifier}{EggNOG identifier}
+\item{identifier}{EggNOG identifier.}
 }
 \value{
-tibble
+Tibble.
 }
 \description{
 EggNOG annotations
-}
-\author{
-Michael Steinbaugh
 }

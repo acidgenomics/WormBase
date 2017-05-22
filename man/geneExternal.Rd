@@ -7,13 +7,16 @@
 geneExternal(identifier)
 }
 \arguments{
-\item{identifier}{Gene identifier}
+\item{identifier}{Gene identifier.}
 }
 \value{
-JSON content tibble
+JSON content tibble.
 }
 \description{
 WormBase RESTful gene external query
+}
+\examples{
+geneExternal("WBGene00000001") \%>\% glimpse
 }
 \author{
 Michael Steinbaugh

@@ -9,14 +9,14 @@ gene(identifier, format = "gene", select = NULL)
 \arguments{
 \item{identifier}{Identifier}
 
-\item{format}{Identifier type (\code{gene}, \code{name}, \code{sequence},
-\code{class} or \code{keyword})}
+\item{format}{Identifier type (\code{gene}, \code{name}, \code{sequence}, \code{class} or
+\code{keyword}).}
 
-\item{select}{Columns to select. Consult the \code{gene} vignette for
+\item{select}{Columns to select. Consult \code{vignette("gene")} for the list of
 available parameters.}
 }
 \value{
-tibble
+Tibble.
 }
 \description{
 Gene mapping
@@ -27,7 +27,4 @@ gene("T19E7.2", format = "sequence")
 gene("WBGene00004804", select = "descriptionConcise")
 gene("daf", format = "class")
 gene("bzip", format = "keyword")
-}
-\author{
-Michael Steinbaugh
 }

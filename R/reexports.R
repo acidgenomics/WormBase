@@ -8,6 +8,9 @@ basejump::glimpse
 basejump::loadData
 
 #' @export
+basejump::mdList
+
+#' @export
 basejump::saveData
 
 #' @export

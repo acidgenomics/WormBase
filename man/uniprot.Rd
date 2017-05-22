@@ -7,14 +7,11 @@
 uniprot(identifier)
 }
 \arguments{
-\item{identifier}{WormBase gene identifier}
+\item{identifier}{WormBase gene identifier.}
 }
 \value{
-tibble
+Tibble.
 }
 \description{
 UniProt web service query
-}
-\author{
-Michael Steinbaugh
 }

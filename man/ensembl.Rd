@@ -5,7 +5,7 @@
 \alias{ensemblGeneOntology}
 \alias{ensemblInterpro}
 \alias{ensemblPeptide}
-\title{Ensembl utility functions}
+\title{\href{http://www.ensembl.org}{Ensembl} utility functions}
 \usage{
 ensemblBasic(gene = NULL)
 
@@ -16,27 +16,23 @@ ensemblInterpro(gene = NULL, nest = TRUE)
 ensemblPeptide(peptide = NULL)
 }
 \arguments{
-\item{gene}{Ensembl gene identifier}
+\item{gene}{Ensembl gene identifier.}
 
-\item{nest}{Return as nested tibble}
+\item{nest}{Return as nested tibble.}
 
-\item{peptide}{Ensembl peptide identifier}
+\item{peptide}{Ensembl peptide identifier.}
 }
 \value{
-Ensembl metadata
+Ensembl metadata tibble.
 }
 \description{
-Basic metadata
-
-Gene Ontology terms
-
-InterPro metadata
-
-\emph{H. sapiens} annotations for WormBase BLASTP peptide hits
+\href{http://www.ensembl.org}{Ensembl} utility functions
 }
 \examples{
-ensemblBasic("WBGene00000001") \%>\% glimpse
-ensemblGeneOntology("WBGene00000001", nest = FALSE) \%>\% glimpse
-ensemblInterpro("WBGene00000001", nest = FALSE) \%>\% glimpse
-ensemblPeptide("ENSP00000380252") \%>\% glimpse
+gene <- "WBGene00000001"
+peptide <- "ENSP00000380252"
+ensemblBasic(gene) \%>\% glimpse
+ensemblGeneOntology(gene, nest = FALSE) \%>\% glimpse
+ensemblInterpro(gene, nest = FALSE) \%>\% glimpse
+ensemblPeptide(peptide) \%>\% glimpse
 }

@@ -8,24 +8,21 @@ cherrypick(identifier, format = "keyword", ahringer384 = TRUE,
   ahringer96 = FALSE, orfeome96 = TRUE, plates = NULL)
 }
 \arguments{
-\item{identifier}{Keyword identifier}
+\item{identifier}{Keyword identifier.}
 
-\item{format}{Identifier format}
+\item{format}{Identifier format.}
 
-\item{ahringer384}{Include Ahringer 384 well library}
+\item{ahringer384}{Include Ahringer 384 well library.}
 
-\item{ahringer96}{Include Ahringer 96 well library}
+\item{ahringer96}{Include Ahringer 96 well library.}
 
-\item{orfeome96}{Include ORFeome 96 well library}
+\item{orfeome96}{Include ORFeome 96 well library.}
 
-\item{plates}{Reference character of plates to pick from}
+\item{plates}{Character vector of reference plates (for subsetting).}
 }
 \value{
-RNAi clone list by gene
+RNAi clone list by gene.
 }
 \description{
 Cherrypick RNAi clones by keyword
-}
-\author{
-Michael Steinbaugh
 }

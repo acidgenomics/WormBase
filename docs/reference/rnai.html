@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -81,55 +83,38 @@
     <p>RNAi clone mapping</p>
     
 
-    <pre><span class='fu'>rnai</span>(<span class='no'>identifier</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"clone"</span>, <span class='kw'>proteinCoding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>rnai</span>(<span class='no'>identifier</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"clone"</span>, <span class='kw'>proteinCoding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>identifier</dt>
-      <dd>Identifier</dd>
-      <dt>format</dt>
-      <dd>Identifier format (<code>clone</code>, <code>gene</code>, <code>genePair</code>,
-<code>name</code>, or <code>sequence</code>)</dd>
-      <dt>proteinCoding</dt>
-      <dd>Whether to only return protein coding matches
-(<code>TRUE</code>, <code>FALSE</code>)</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>identifier</th>
+      <td><p>Identifier.</p></td>
+    </tr>
+    <tr>
+      <th>format</th>
+      <td><p>Identifier format (<code>clone</code>, <code>gene</code>, <code>genePair</code>, <code>name</code>, or
+<code>sequence</code>).</p></td>
+    </tr>
+    <tr>
+      <th>proteinCoding</th>
+      <td><p>Return protein coding matches (<code>TRUE</code>/<code>FALSE</code>).</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>tibble</p>
+    <p>Tibble.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>rnai</span>(<span class='st'>"ahringer384-III-6-C01"</span>)</div><div class='output co'>#&gt; # A tibble: 1 × 4
-#&gt;                   clone           gene sequence  name
-#&gt;                   &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;
-#&gt; 1 ahringer384-III-6-C01 WBGene00004735 Y47D3B.7 sbp-1</div><div class='input'><span class='fu'>rnai</span>(<span class='st'>"ahringer96-86-B01"</span>)</div><div class='output co'>#&gt; # A tibble: 1 × 4
-#&gt;               clone           gene sequence  name
-#&gt;               &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;
-#&gt; 1 ahringer96-86-B01 WBGene00004735 Y47D3B.7 sbp-1</div><div class='input'><span class='fu'>rnai</span>(<span class='st'>"GHR-11010@G06"</span>)</div><div class='output co'>#&gt; # A tibble: 1 × 4
-#&gt;           clone           gene sequence  name
-#&gt;           &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;
-#&gt; 1 GHR-11010@G06 WBGene00004735 Y47D3B.7 sbp-1</div><div class='input'><span class='fu'>rnai</span>(<span class='st'>"orfeome96-11010-G06"</span>)</div><div class='output co'>#&gt; # A tibble: 1 × 4
-#&gt;                 clone           gene sequence  name
-#&gt;                 &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;
-#&gt; 1 orfeome96-11010-G06 WBGene00004735 Y47D3B.7 sbp-1</div><div class='input'><span class='fu'>rnai</span>(<span class='st'>"sbp-1"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"name"</span>)</div><div class='output co'>#&gt; # A tibble: 1 × 4
-#&gt;    name           gene sequence
-#&gt;   &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt;
-#&gt; 1 sbp-1 WBGene00004735 Y47D3B.7
-#&gt; # ... with 1 more variables: clone &lt;chr&gt;</div><div class='input'><span class='fu'>rnai</span>(<span class='st'>"WBGene00004735"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"gene"</span>)</div><div class='output co'>#&gt; # A tibble: 1 × 4
-#&gt;             gene sequence  name
-#&gt;            &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;
-#&gt; 1 WBGene00004735 Y47D3B.7 sbp-1
-#&gt; # ... with 1 more variables: clone &lt;chr&gt;</div><div class='input'><span class='fu'>rnai</span>(<span class='st'>"Y47D3B.7"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"sequence"</span>)</div><div class='output co'>#&gt; # A tibble: 1 × 4
-#&gt;   sequence           gene  name
-#&gt;      &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt;
-#&gt; 1 Y47D3B.7 WBGene00004735 sbp-1
-#&gt; # ... with 1 more variables: clone &lt;chr&gt;</div><div class='input'><span class='fu'>rnai</span>(<span class='st'>"Y53H1C.b"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"genePair"</span>)</div><div class='output co'>#&gt; # A tibble: 1 × 5
-#&gt;   genePair           gene sequence  name
-#&gt;      &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;
-#&gt; 1 Y53H1C.b WBGene00000010 Y53H1C.1 aat-9
-#&gt; # ... with 1 more variables: clone &lt;chr&gt;</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>rnai</span>(<span class='st'>"ahringer384-III-6-C01"</span>)
+<span class='fu'>rnai</span>(<span class='st'>"ahringer96-86-B01"</span>)
+<span class='fu'>rnai</span>(<span class='st'>"GHR-11010@G06"</span>)
+<span class='fu'>rnai</span>(<span class='st'>"orfeome96-11010-G06"</span>)
+<span class='fu'>rnai</span>(<span class='st'>"sbp-1"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"name"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in rnai("sbp-1", format = "name"): Invalid format</span></div><div class='input'><span class='fu'>rnai</span>(<span class='st'>"WBGene00004735"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"gene"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in filter_impl(.data, quo): Column `biotype`: not found in data</span></div><div class='input'><span class='fu'>rnai</span>(<span class='st'>"Y47D3B.7"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"sequence"</span>)
+<span class='fu'>rnai</span>(<span class='st'>"Y53H1C.b"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"genePair"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in filter_impl(.data, quo): Column `biotype`: not found in data</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

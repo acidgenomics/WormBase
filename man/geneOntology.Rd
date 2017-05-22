@@ -7,14 +7,14 @@
 geneOntology(identifier)
 }
 \arguments{
-\item{identifier}{Gene identifier}
+\item{identifier}{Gene identifier.}
 }
 \value{
-JSON content tibble
+JSON content tibble.
 }
 \description{
 WormBase RESTful RNAi gene ontology query
 }
-\author{
-Michael Steinbaugh
+\examples{
+geneOntology("WBGene00000001") \%>\% glimpse
 }
