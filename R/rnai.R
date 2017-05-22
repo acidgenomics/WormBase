@@ -1,11 +1,11 @@
 #' RNAi clone mapping
 #'
-#' @param identifier Identifier
-#' @param format Identifier format (\code{clone}, \code{gene}, \code{genePair},
-#'   \code{name}, or \code{sequence})
-#' @param proteinCoding Return protein coding matches (\code{TRUE/FALSE})
+#' @param identifier Identifier.
+#' @param format Identifier format (`clone`, `gene`, `genePair`, `name`, or
+#'   `sequence`).
+#' @param proteinCoding Return protein coding matches (`TRUE`/`FALSE`).
 #'
-#' @return tibble
+#' @return Tibble.
 #' @export
 #'
 #' @examples
@@ -18,14 +18,16 @@
 #' rnai("Y47D3B.7", format = "sequence")
 #' rnai("Y53H1C.b", format = "genePair")
 rnai <- function(
+    # [fix] Not matching, returning empty
     identifier,
     format = "clone",
     proteinCoding = TRUE) {
+    import_tidy_verbs()
     identifier <- uniqueIdentifier(identifier)
     grep <- identifier
-    annotation <- get("annotation", envir = asNamespace("worminfo"))$rnai
+    annotation <- get("annotations", envir = asNamespace("worminfo"))$rnai
     if (!any(grepl(format, names(annotation)))) {
-        stop("invalid format")
+        stop("Invalid format")
     }
     if (format == "clone") {
         grep <- grep %>%
@@ -41,7 +43,7 @@ rnai <- function(
         grep <- removeIsoform(grep)
     }
     # Now create the grep string
-    grep <- grep %>% grepToString
+    grep <- grepString(grep)
     return <- mclapply(seq_along(grep), function(a) {
         return <- annotation %>% .[grepl(grep[a], .[[format]]), ]
         if (nrow(return)) {
@@ -71,9 +73,8 @@ rnai <- function(
     }) %>% bind_rows
     if (nrow(return)) {
         if (isTRUE(proteinCoding)) {
-            return <- filter_(return, .dots = quote(
-                biotype == "protein_coding"))
+            return <- filter(return, .data$biotype == "protein_coding")
         }
-        select_(return, .dots = unique(c(format, defaultCol, "clone")))
+        select(return, !!!syms(unique(c(format, defaultCol, "clone"))))
     }
 }

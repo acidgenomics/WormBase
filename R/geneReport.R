@@ -8,33 +8,35 @@
 #' @return tibble
 #' @export
 geneReport <- function(identifier, format = "gene") {
+    # [fix] column mismatch
     identifier <- uniqueIdentifier(identifier)
-    gene <- gene(identifier,
-                 format = format,
-                 select = c(defaultCol,
-                            "class",
-                            "biotype",
-                            # Ortholog:
-                            "blastpHsapiensGene",
-                            "blastpHsapiensName",
-                            "blastpHsapiensDescription",
-                            "orthologHsapiens",
-                            # Description:
-                            "descriptionConcise",
-                            "descriptionProvisional",
-                            "descriptionAutomated",
-                            "ensemblDescription",
-                            # WormBase Additional:
-                            "rnaiPhenotype",
-                            # Gene Ontology:
-                            "ensemblGeneOntology",
-                            "interpro",
-                            "pantherFamilyName",
-                            "pantherSubfamilyName",
-                            "pantherGeneOntologyMolecularFunction",
-                            "pantherGeneOntologyBiologicalProcess",
-                            "pantherGeneOntologyCellularComponent",
-                            "pantherClass"))
+    gene <- gene(
+        identifier,
+        format = format,
+        select = c(defaultCol,
+                   "class",
+                   "biotype",
+                   # Ortholog
+                   "blastpHsapiensGene",
+                   "blastpHsapiensName",
+                   "blastpHsapiensDescription",
+                   "orthologHsapiens",
+                   # Description
+                   "descriptionConcise",
+                   "descriptionProvisional",
+                   "descriptionAutomated",
+                   "ensemblDescription",
+                   # WormBase Additional
+                   "rnaiPhenotype",
+                   # Gene Ontology
+                   "ensemblGeneOntology",
+                   "interpro",
+                   "pantherFamilyName",
+                   "pantherSubfamilyName",
+                   "pantherGeneOntologyMolecularFunction",
+                   "pantherGeneOntologyBiologicalProcess",
+                   "pantherGeneOntologyCellularComponent",
+                   "pantherClass"))
     if (nrow(gene)) {
         identifier <- gene$gene
         return <- gene
@@ -47,8 +49,8 @@ geneReport <- function(identifier, format = "gene") {
             return <- left_join(return, uniprot, by = "gene")
         }
         return %>%
-            select_(.dots = c(defaultCol,
-                              setdiff(sort(names(.)), defaultCol))) %>%
-            arrange_(.dots = defaultCol)
+            # [fix] update dplyr method
+            select(defaultCol, everything()) %>%
+            arrange(!!!syms(defaultCol))
     }
 }

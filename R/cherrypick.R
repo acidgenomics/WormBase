@@ -1,15 +1,13 @@
 #' Cherrypick RNAi clones by keyword
 #'
-#' @author Michael Steinbaugh
+#' @param identifier Keyword identifier.
+#' @param format Identifier format.
+#' @param ahringer384 Include Ahringer 384 well library.
+#' @param ahringer96 Include Ahringer 96 well library.
+#' @param orfeome96 Include ORFeome 96 well library.
+#' @param plates Character vector of reference plates (for subsetting).
 #'
-#' @param identifier Keyword identifier
-#' @param format Identifier format
-#' @param ahringer384 Include Ahringer 384 well library
-#' @param ahringer96 Include Ahringer 96 well library
-#' @param orfeome96 Include ORFeome 96 well library
-#' @param plates Reference character of plates to pick from
-#'
-#' @return RNAi clone list by gene
+#' @return RNAi clone list by gene.
 #' @export
 cherrypick <- function(
     identifier,
@@ -22,10 +20,10 @@ cherrypick <- function(
         uniqueIdentifier %>%
         gene(format = format) %>%
         right_join(rnai(.$gene, format = "gene"), by = defaultCol) %>%
-        mutate_(.dots = setNames(list(
-            quote(strsplit(clone, ", "))), "clone")) %>%
+        # [fix] check that this works
+        mutate(clone = strsplit(.data$clone, ", ")) %>%
         unnest %>%
-        arrange_(.dots = "clone")
+        arrange(!!sym("clone"))
     if (!isTRUE(ahringer384)) {
         df <- df[!grepl("^ahringer384", df$clone), ]
     }

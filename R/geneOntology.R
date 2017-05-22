@@ -1,18 +1,20 @@
 #' WormBase RESTful RNAi gene ontology query
 #'
-#' @author Michael Steinbaugh
+#' @param identifier Gene identifier.
 #'
-#' @param identifier Gene identifier
-#'
-#' @return JSON content tibble
+#' @return JSON content tibble.
 #' @export
+#'
+#' @examples
+#' geneOntology("WBGene00000001") %>% glimpse
 geneOntology <- function(identifier) {
     identifier <- uniqueIdentifier(identifier)
     lapply(seq_along(identifier), function(a) {
         if (!grepl("^WBGene[0-9]{8}$", identifier[[a]])) {
             stop("Invalid gene identifier")
         }
-        rest <- file.path("widget/gene",
+        rest <- file.path("widget",
+                          "gene",
                           identifier[[a]],
                           "gene_ontology") %>%
             rest %>% .$fields %>% .$gene_ontology %>% .$data
@@ -23,10 +25,12 @@ geneOntology <- function(identifier) {
                           name = rest[[b]][[c]]$term_description$label,
                           sep = "~")
                 }) %>% unique %>% toString
-            }) %>% setNames(camel(paste0("wormbaseGeneOntology_",
-                                         names(rest)))) %>%
+            }) %>%
+                set_names(camel(paste0(
+                    "wormbaseGeneOntology_", names(rest)))) %>%
                 as_tibble %>%
-                mutate_(.dots = setNames(list(~identifier[[a]]), "gene"))
+                # [fix] check that this works
+                mutate(gene = identifier[[a]])
         } else {
             tibble()
         }
