@@ -5,7 +5,6 @@ date: "`r BiocStyle::doc_date()`"
 
 ```{r setup}
 source("setup.R")
-loadData(geneIDs)
 ```
 
 ```{r header, child="header.Rmd"}
@@ -25,15 +24,20 @@ saveDataRaw(worfdb2)
 ```
 
 ```{r worfdb}
+loadData(geneIDs)
 # [fix] all NA row?
 # [fix] 30037G9, 30040G2
 worfdb <- bind_rows(worfdb1, worfdb2) %>%
     filter(is.na(remap)) %>%
     select(-c(query, remap)) %>%
     distinct %>%
-    arrange(clone)
-    # left_join(geneIDs[, c("gene", "sequence")], by = "sequence")
+    arrange(clone) %>%
+    left_join(geneIDs[, c("gene", "sequence")], by = "sequence")
 saveDataRaw(worfdb)
+```
+
+```{r unmatched}
+worfdb %>% filter(is.na(gene)) %>% glimpse
 ```
 
 Check for duplicate sequences:
