@@ -1,14 +1,12 @@
 #' Gene mapping
 #'
-#' @author Michael Steinbaugh
-#'
 #' @param identifier Identifier
-#' @param format Identifier type (\code{gene}, \code{name}, \code{sequence},
-#'   \code{class} or \code{keyword})
-#' @param select Columns to select. Consult the \code{gene} vignette for
+#' @param format Identifier type (`gene`, `name`, `sequence`, `class` or
+#'   `keyword`).
+#' @param select Columns to select. Consult `vignette("gene")` for the list of
 #'   available parameters.
 #'
-#' @return tibble
+#' @return Tibble.
 #' @export
 #'
 #' @examples
@@ -22,7 +20,7 @@ gene <- function(
     format = "gene",
     select = NULL) {
     identifier <- uniqueIdentifier(identifier)
-    annotation <- get("annotation", envir = asNamespace("worminfo"))$gene
+    annotation <- get("annotations", envir = asNamespace("worminfo"))$gene
     return <- mclapply(seq_along(identifier), function(a) {
         if (any(grepl(format, c("gene", "name")))) {
             return <- annotation %>%
@@ -36,7 +34,7 @@ gene <- function(
             name <- name[[1]]
             return <- annotation %>% .[.$name %in% name, ]
         } else if (format == "keyword") {
-            # \code{apply(..., 1)} processes by row
+            # `apply(..., 1)` processes by row
             grepl <- apply(annotation, 1, function(b) {
                 any(grepl(identifier[a], b, ignore.case = TRUE))
             })
@@ -49,24 +47,22 @@ gene <- function(
         if (nrow(return)) {
             return[[format]] <- identifier[a]
         }
-        return(return)
+        return
     }) %>% bind_rows
-    # Select columns
-    # Always return the WormBase gene identifier
+    # Select columns. Always return the WormBase gene identifier.
     if (is.null(select)) {
         return <- return[, unique(c(format, defaultCol))]
     } else {
         return <- return[, unique(c(format, defaultCol, select))]
     }
     # Put \code{format} column first
-    return <- return %>%
-        select_(.dots = c(format, setdiff(names(.), format)))
+    return <- select(return, .data[[format]], everything())
     if (nrow(return)) {
         # Summarize multiple keyword matches
         if (format == "keyword") {
             return <- return %>%
-                group_by_(.dots = "gene") %>%
-                toStringSummarize
+                group_by(!!sym("gene")) %>%
+                summarizeRows
         }
         # Arrange rows
         # \code{format} is used to arrange, unless specified
@@ -76,13 +72,13 @@ gene <- function(
             arrange$V3 <- as.numeric(arrange$V3)
             return <- left_join(return, arrange, by = c("name" = "V1"))
             # Arrange by class then number:
-            return <- arrange_(return, .dots = c("V2", "V3"))
+            return <- arrange(return, !!!syms(c("V2", "V3")))
             # Drop the unnecessary temporary columns:
             return$V2 <- NULL
             return$V3 <- NULL
         } else {
-            return <- arrange_(return, .dots = unique(format, defaultCol))
+            return <- arrange(return, !!!syms(unique(format, defaultCol)))
         }
     }
-    return(return)
+    return
 }
