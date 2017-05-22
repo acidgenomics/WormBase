@@ -15,6 +15,7 @@ loadData(
     ortholog,
     rnaiPhenotype,
     panther)
+# [fix] need to prefix panther columns
 gene <- Reduce(function(...) {
     left_join(..., by = "gene") },
     list(geneIDs,
