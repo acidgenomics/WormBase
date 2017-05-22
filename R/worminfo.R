@@ -10,3 +10,6 @@
 globalVariables(basejump::globals,
                 asNamespace("worminfo"),
                 add = TRUE)
+
+defaultCol <- c("gene", "sequence", "name")
+userAgent <- "http://steinbaugh.com/worminfo/"
