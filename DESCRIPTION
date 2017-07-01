@@ -1,16 +1,24 @@
 Package: worminfo
 Title: Worm Genes and RNAi Clones
+<<<<<<< HEAD
 Description: C. elegans genome annotations assembled from WormBase, Ensembl,
     and PANTHER. RNAi clone mapping support for ORFeome and Ahringer libraries.
+=======
+Description: C. elegans gene annotations and RNAi clone mappings.
+>>>>>>> master
 Version: 0.99.0
 Date: 2017-05-20
 Authors@R: person("Michael", "Steinbaugh",
                   email = "mike@steinbaugh.com",
                   role = c("aut", "cre"))
 License: MIT + file LICENSE
+<<<<<<< HEAD
 URL:
     http://steinbaugh.com/worminfo/,
     https://github.com/steinbaugh/worminfo
+=======
+URL: https://github.com/steinbaugh/worminfo
+>>>>>>> master
 BugReports: https://github.com/steinbaugh/worminfo/issues
 biocViews:
     Caenorhabditis_elegans

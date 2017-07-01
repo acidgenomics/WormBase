@@ -1,15 +1,16 @@
 ---
 title: "worminfo"
-date: "`r BiocStyle::doc_date()`"
-package: "`r BiocStyle::pkg_ver('worminfo')`"
+date: "`r Sys.Date()`"
 author:
-- name: Michael J. Steinbaugh
-  affiliation: Department of Biostatistics, Harvard T.H. Chan School of Public Health
-  email: mike@steinbaugh.com
+- name: "`r getOption('author') `"
+  affiliation: "`r getOption('affiliation') `"
+  email: "`r getOption('email') `"
 abstract: >
   Abstract placeholder text.
 bibliography: worminfo.bib
 output: BiocStyle::pdf_document
+date: "`r Sys.Date()`"
+output: html_vignette
 vignette: >
   %\VignetteIndexEntry{worminfo}
   %\VignetteEngine{knitr::rmarkdown}
