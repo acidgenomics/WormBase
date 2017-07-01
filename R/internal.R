@@ -11,7 +11,6 @@ removeIsoform <- function(sequence) {
 
 
 rest <- function(url) {
-    importTidyVerbs()
     GET(paste0("http://api.wormbase.org/rest/", url),
         config = content_type_json(),
         user_agent = user_agent(userAgent)) %>%

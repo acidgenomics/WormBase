@@ -56,7 +56,7 @@ gene <- function(
         return <- return[, unique(c(format, defaultCol, select))]
     }
     # Put \code{format} column first
-    return <- select(return, .data[[format]], everything())
+    return <- tidy_select(return, .data[[format]], everything())
     if (nrow(return)) {
         # Summarize multiple keyword matches
         if (format == "keyword") {

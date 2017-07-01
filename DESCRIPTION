@@ -20,7 +20,10 @@ Depends:
     R (>= 3.4.0)
 Imports:
     basejump (>= 0.0.11),
+    Biobase,
+    BiocGenerics,
     stats,
+    S4Vectors,
     UniProt.ws (>= 2.14.0),
 Suggests:
     BiocStyle,

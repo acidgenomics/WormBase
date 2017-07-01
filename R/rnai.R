@@ -22,7 +22,6 @@ rnai <- function(
     identifier,
     format = "clone",
     proteinCoding = TRUE) {
-    import_tidy_verbs()
     identifier <- uniqueIdentifier(identifier)
     grep <- identifier
     annotation <- get("annotations", envir = asNamespace("worminfo"))$rnai
@@ -75,6 +74,6 @@ rnai <- function(
         if (isTRUE(proteinCoding)) {
             return <- filter(return, .data$biotype == "protein_coding")
         }
-        select(return, !!!syms(unique(c(format, defaultCol, "clone"))))
+        tidy_select(return, !!!syms(unique(c(format, defaultCol, "clone"))))
     }
 }

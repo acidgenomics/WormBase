@@ -9,7 +9,7 @@ uniprot <- function(identifier) {
     identifier <- uniqueIdentifier(identifier)
     # NCBI C. elegans identifier = 6239
     database <- UniProt.ws(taxId = 6239)
-    uniprot <-  UniProt.ws::select(
+    uniprot <- select(
         database,
         keytype = "WORMBASE",
         keys = identifier,
@@ -25,7 +25,7 @@ uniprot <- function(identifier) {
     if (nrow(uniprot)) {
         uniprot <- uniprot %>%
             camel %>%
-            select(!!!syms(c(
+            tidy_select(!!!syms(c(
                 "wormbase", setdiff(sort(names(.)), "wormbase"))))
         eggnog <- eggnog(uniprot$eggnog)
         # Check and make sure this output is correct
@@ -44,7 +44,7 @@ uniprot <- function(identifier) {
                    uniprotReviewed = !!sym("reviewed"),
                    uniprotScore = !!sym("score")) %>%
             # [fix] this may error out
-            select(sort(names(.))) %>%
+            tidy_select(sort(names(.))) %>%
             group_by(!!sym("gene")) %>%
             summarizeRows
     }
