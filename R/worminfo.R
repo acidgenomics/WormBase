@@ -9,7 +9,7 @@
 #' @importFrom UniProt.ws UniProt.ws
 "_PACKAGE"
 
-globalVariables(basejump::globals, asNamespace("worminfo"), add = TRUE)
+globalVariables(".")
 
 defaultCol <- c("gene", "sequence", "name")
 userAgent <- "http://steinbaugh.com/worminfo/"

@@ -1,24 +1,14 @@
 Package: worminfo
 Title: Worm Genes and RNAi Clones
-<<<<<<< HEAD
-Description: C. elegans genome annotations assembled from WormBase, Ensembl,
-    and PANTHER. RNAi clone mapping support for ORFeome and Ahringer libraries.
-=======
 Description: C. elegans gene annotations and RNAi clone mappings.
->>>>>>> master
 Version: 0.99.0
-Date: 2017-05-20
 Authors@R: person("Michael", "Steinbaugh",
                   email = "mike@steinbaugh.com",
                   role = c("aut", "cre"))
 License: MIT + file LICENSE
-<<<<<<< HEAD
 URL:
     http://steinbaugh.com/worminfo/,
     https://github.com/steinbaugh/worminfo
-=======
-URL: https://github.com/steinbaugh/worminfo
->>>>>>> master
 BugReports: https://github.com/steinbaugh/worminfo/issues
 biocViews:
     Caenorhabditis_elegans
@@ -27,7 +17,7 @@ LazyData: true
 Depends:
     R (>= 3.4.0)
 Imports:
-    basejump (>= 0.0.11),
+    basejump (>= 0.0.17),
     Biobase,
     BiocGenerics,
     stats,
@@ -40,10 +30,6 @@ Suggests:
     roxygen2
 Remotes:
     steinbaugh/basejump
-Roxygen: list(markdown = TRUE,
-              roclets = c("collate",
-                          "namespace",
-                          "rd",
-                          "pkgapi::api_roclet"))
-RoxygenNote: 6.0.1.9000
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.0.1
 VignetteBuilder: knitr
