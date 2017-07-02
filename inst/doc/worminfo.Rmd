@@ -1,0 +1,175 @@
+---
+title: "worminfo"
+date: "`r BiocStyle::doc_date()`"
+package: "`r BiocStyle::pkg_ver('worminfo')`"
+author:
+- name: Michael J. Steinbaugh
+  affiliation: Department of Biostatistics, Harvard T.H. Chan School of Public Health
+  email: mike@steinbaugh.com
+abstract: >
+    Abstract placeholder text.
+output:
+    BiocStyle::html_document
+vignette: >
+    %\VignetteIndexEntry{worminfo}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(worminfo)
+```
+
+[Ahringer]: http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/
+[dplyr]: https://cran.r-project.org/package=dplyr
+[Ensembl]: http://www.ensembl.org/Caenorhabditis_elegans
+[ORFeome]: http://worfdb.dfci.harvard.edu
+[ORFeome Dharmacon]: http://dharmacon.gelifesciences.com/non-mammalian-cdna-and-orf/c.-elegans-rnai/
+[ORFeome SBS]: http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-orfeome-version-11/
+[PANTHER]: http://www.pantherdb.org
+[tibble]: https://cran.r-project.org/package=tibble
+[tidyverse]: http://tidyverse.org
+[worminfo]: https://github.com/steinbaugh/worminfo
+[WormBase]: http://www.wormbase.org
+
+[*daf-2*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00000898
+[*daf-16*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00000912
+[*sbp-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004735
+[*skn-1*]: http://www.wormbase.org/species/c_elegans/gene/WBGene00004804
+
+The goal of the [worminfo][] package is to quickly and simply provide correct, up-to-date annotation data for the entire *C. elegans* genome. The underlying gene annotations are periodically sourced from [WormBase][], [Ensembl][], and [PANTHER][]. RNAi clone annotations are sourced from the official [ORFeome][] and [Ahringer][] repositories. [WormBase][] is updated on a bi-monthly [release schedule](http://www.wormbase.org/about/release_schedule). If the source data appears outdated, file an [update request](https://github.com/steinbaugh/worminfo/issues) on our [GitHub repository](https://github.com/steinbaugh/worminfo), and we'll promptly issue a rebuild. When the package is loaded, the most recent annotation data is downloaded from our server then cached locally for quick access.
+
+
+
+# Gene queries
+
+`gene()` accepts multiple `identifier` formats:
+
+- gene
+- sequence
+- name
+- class
+- keyword
+
+Output from the function is controlled using the `select` parameter. The function returns a `tibble`. We advise that subsequent data manipulations be performed with the [tidyverse][] collection of packages, [dplyr][] in particular.
+
+```{r, eval = FALSE}
+gene("WBGene00004804", format = "gene")
+gene("T19E7.2", format = "sequence")
+gene("skn-1", format = "name")
+```
+
+These queries all return the same result:
+
+```{r, echo = FALSE}
+gene("WBGene00004804") %>% t
+```
+
+You can obtain all genes in a named `class`. For example, let's get the current list of *daf* (**D**auer **A**rrest **F**orming) genes:
+
+```{r}
+gene("daf", format = "class")
+```
+
+You can perform a `keyword` search. For example, let's get all genes that are involved in the unfolded protein response:
+
+```{r}
+gene("unfolded protein response", format = "keyword")
+```
+
+
+## `select` options
+
+The `gene()` function contains annotation data that can be queried using the `select` parameter:
+
+```{r, echo = FALSE, results = "asis"}
+get("annotation", envir = asNamespace("worminfo"))$gene %>%
+    names %>%
+    markdownList
+```
+
+When `select` is `NULL`, a simple result is returned:
+
+```{r, echo = FALSE, results = "asis"}
+gene("WBGene00004804") %>%
+    names %>%
+    markdownList
+```
+
+Let's `select` the biotype and [Ensembl][] description for [*sbp-1*][] (bHLH transcription factor):
+
+```{r}
+gene("sbp-1",
+     format = "name",
+     select = c("biotype", "ensemblDescription")) %>% t
+```
+
+
+
+# RNAi clone queries
+
+RNA interference libraries are commonly used in *C. elegans* research. RNAi clones are typically referenced by a gene pair or open reading frame (ORF) sequence, which are often difficult to map to an up-to-date gene identifier. We have written the `rnai()` function to solve this problem. The function enables a researcher to search for RNAi clones by a gene identifier, or map an RNAi clone by plate location and return the up-to-date [WormBase][] gene identifier. The `rnai()` function has built-in support for the commonly used [ORFeome][] and [Ahringer][] RNAi libraries.
+
+
+## Find clones by gene identifier
+
+Let's find the locations of [*sbp-1*][] in the [Ahringer][] and [ORFeome][]
+libraries. This can be done easily with the `rnai()` function, just search by
+`name`:
+
+```{r}
+rnai("sbp-1", format = "name") %>% t
+```
+
+Alternatively, you can map by `gene`, `sequence` (ORF), or legacy `genePair`. These queries return the same result:
+
+```{r, eval = FALSE}
+rnai("WBGene00004735", format = "gene")
+rnai("Y47D3B.7", format = "sequence")
+rnai("Y47D3B.7", format = "genePair")
+```
+
+
+## Map clones by plate location
+
+The `rnai()` function was written to simplify the task of identifying wells of
+interest in an RNAi screen. You can simply input the well identifiers by plate
+location, and `rnai()` will return up-to-date gene identifiers from [WormBase][].
+
+### [Ahringer][] library format
+
+Well identifiers for the [Ahringer][] 384 well library must include a chromosome prefix in roman numeral format. The 96 well [Ahringer][] library has unique plate numbers and does not require a chromosome prefix.
+
+```{r}
+c("ahringer384-III-6C01",
+  "ahringer96-86-B01") %>% rnai %>% t
+```
+
+### [ORFeome][] library format
+
+We advise formatting identifiers for the 96 well [ORFeome][] library as `orfeome96-10001-A01`. However, the function is flexible, and also supports the historical format (e.g. `GHR-11010@G06`):
+
+```{r}
+c("GHR-11010@G06",
+  "orfeome96-11010-G06") %>% rnai %>% t
+```
+
+
+## Construct a cherrypick library
+
+Here's a how to generate a list of [ORFeome][] clones that target the unfolded protein response:
+
+```{r}
+cherrypick("unfolded protein response",
+           ahringer96 = FALSE,
+           ahringer384 = FALSE,
+           orfeome96 = TRUE)
+```
+
+
+
+# Annotation data build information
+
+```{r}
+get("build", envir = asNamespace("worminfo"))
+```
