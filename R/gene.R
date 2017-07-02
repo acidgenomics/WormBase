@@ -57,9 +57,7 @@ gene <- function(
     } else {
         return <- return[, unique(c(format, defaultCol, select))]
     }
-    # Put `format` column first
-    # [fix] Use [quo()] here instead?
-    return <- dplyr::select(return, .data[[format]], everything())
+    return <- tidy_select(return, .data[[format]], everything())
     if (nrow(return)) {
         # Summarize multiple keyword matches
         if (format == "keyword") {
@@ -68,7 +66,7 @@ gene <- function(
                 summarizeRows
         }
         # Arrange rows
-        # \code{format} is used to arrange, unless specified
+        # `format` is used to arrange, unless specified
         if (any(grepl(format, c("class", "name")))) {
             arrange <- str_match(return$name, "^(.+)([0-9\\.]+)$") %>%
                 as_tibble

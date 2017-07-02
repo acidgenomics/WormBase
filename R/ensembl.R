@@ -17,7 +17,6 @@
 #' ensemblInterpro(gene, nest = FALSE) %>% glimpse
 #' ensemblPeptide(peptide) %>% glimpse
 ensemblBasic <- function(gene = NULL) {
-    importTidyVerbs()
     if (is.null(gene)) {
         filters <- ""
         gene <- ""
@@ -52,7 +51,6 @@ ensemblBasic <- function(gene = NULL) {
 #' @rdname ensembl
 #' @export
 ensemblGeneOntology <- function(gene = NULL, nest = TRUE) {
-    importTidyVerbs()
     if (is.null(gene)) {
         filters <- ""
         gene <- ""
@@ -87,7 +85,6 @@ ensemblGeneOntology <- function(gene = NULL, nest = TRUE) {
 #' @rdname ensembl
 #' @export
 ensemblInterpro <- function(gene = NULL, nest = TRUE) {
-    importTidyVerbs()
     if (is.null(gene)) {
         filters <- ""
         values <- ""

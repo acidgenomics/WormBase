@@ -49,8 +49,7 @@ geneReport <- function(identifier, format = "gene") {
             return <- left_join(return, uniprot, by = "gene")
         }
         return %>%
-            # [fix] update dplyr method
-            select(defaultCol, everything()) %>%
+            tidy_select(defaultCol, everything()) %>%
             arrange(!!!syms(defaultCol))
     }
 }
