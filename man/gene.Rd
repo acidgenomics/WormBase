@@ -7,7 +7,7 @@
 gene(identifier, format = "gene", select = NULL)
 }
 \arguments{
-\item{identifier}{Identifier}
+\item{identifier}{Identifier.}
 
 \item{format}{Identifier type (\code{gene}, \code{name}, \code{sequence}, \code{class} or
 \code{keyword}).}
@@ -16,7 +16,7 @@ gene(identifier, format = "gene", select = NULL)
 available parameters.}
 }
 \value{
-Tibble.
+Data frame.
 }
 \description{
 Gene mapping

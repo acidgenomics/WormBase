@@ -1,6 +1,6 @@
 ---
 title: "worminfo"
-date: "`r Sys.Date()`"
+date: "`r BiocStyle::doc_date()`"
 author:
 - name: "`r getOption('author') `"
   affiliation: "`r getOption('affiliation') `"
@@ -9,8 +9,6 @@ abstract: >
   Abstract placeholder text.
 bibliography: worminfo.bib
 output: BiocStyle::pdf_document
-date: "`r Sys.Date()`"
-output: html_vignette
 vignette: >
   %\VignetteIndexEntry{worminfo}
   %\VignetteEngine{knitr::rmarkdown}
