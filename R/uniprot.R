@@ -5,10 +5,10 @@
 #' @return Tibble.
 #' @export
 uniprot <- function(identifier) {
-    # [fix] Unknown or uninitialised column: 'cogFunctionalCategory'.
+    # FIXME Unknown or uninitialised column: 'cogFunctionalCategory'.
     identifier <- uniqueIdentifier(identifier)
     # NCBI C. elegans identifier = 6239
-    database <- UniProt.ws(taxId = 6239)
+    database <- UniProt.ws(taxId = 6239L)
     uniprot <- select(
         database,
         keytype = "WORMBASE",
@@ -27,15 +27,15 @@ uniprot <- function(identifier) {
             camel %>%
             tidy_select(!!!syms(c(
                 "wormbase", setdiff(sort(names(.)), "wormbase"))))
-        eggnog <- eggnog(uniprot$eggnog)
+        eggnog <- eggnog(uniprot[["eggnog"]])
         # Check and make sure this output is correct
         left_join(uniprot, eggnog, by = "eggnog") %>%
             # Sort priority to put higher quality UniProtKB identifiers first
-            # [fix] rework using dplyr method -- top_n?
-            .[order(.$wormbase,
-                    .$cogFunctionalDescription,
-                    -xtfrm(.$score)), ] %>%
-            # [fix] check that this works
+            # FIXME rework using dplyr method -- top_n?
+            .[order(.[["wormbase"]],
+                    .[["cogFunctionalDescription"]],
+                    -xtfrm(.[["score"]])), ] %>%
+            # FIXME check that this works
             rename(gene = !!sym("wormbase"),
                    uniprotExistence = !!sym("existence"),
                    uniprotFamilies = !!sym("families"),
@@ -43,7 +43,7 @@ uniprot <- function(identifier) {
                    uniprotKeywords = !!sym("keywords"),
                    uniprotReviewed = !!sym("reviewed"),
                    uniprotScore = !!sym("score")) %>%
-            # [fix] this may error out
+            # FIXME this may error out
             tidy_select(sort(names(.))) %>%
             group_by(!!sym("gene")) %>%
             summarizeRows

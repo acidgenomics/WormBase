@@ -18,13 +18,13 @@
 #' rnai("Y47D3B.7", format = "sequence")
 #' rnai("Y53H1C.b", format = "genePair")
 rnai <- function(
-    # [fix] Not matching, returning empty
+    # FIXME Not matching, returning empty
     identifier,
     format = "clone",
     proteinCoding = TRUE) {
     identifier <- uniqueIdentifier(identifier)
     grep <- identifier
-    annotation <- get("annotations", envir = asNamespace("worminfo"))$rnai
+    annotation <- get("annotations", envir = asNamespace("worminfo"))[["rnai"]]
     if (!any(grepl(format, names(annotation)))) {
         stop("Invalid format")
     }
@@ -48,8 +48,9 @@ rnai <- function(
         if (nrow(return)) {
             if (format != "clone") {
                 # Sort the clones and make human readable
-                return$clone <- return$clone %>%
-                    strsplit(", ") %>% .[[1]] %>%
+                return[["clone"]] <- return[["clone"]] %>%
+                    strsplit(", ") %>%
+                    .[[1L]] %>%
                     # Pad well numbers
                     gsub("(\\D)(\\d)$", "\\10\\2", .) %>%
                     # Plate separator
@@ -72,7 +73,7 @@ rnai <- function(
     }) %>% bind_rows
     if (nrow(return)) {
         if (isTRUE(proteinCoding)) {
-            return <- filter(return, .data$biotype == "protein_coding")
+            return <- filter(return, .data[["biotype"]] == "protein_coding")
         }
         tidy_select(return, !!!syms(unique(c(format, defaultCol, "clone"))))
     }

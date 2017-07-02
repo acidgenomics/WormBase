@@ -17,19 +17,24 @@ geneOntology <- function(identifier) {
                           "gene",
                           identifier[[a]],
                           "gene_ontology") %>%
-            rest %>% .$fields %>% .$gene_ontology %>% .$data
+            rest %>%
+            .[["fields"]] %>%
+            .[["gene_ontology"]] %>%
+            .[["data"]]
         if (!is.null(rest)) {
             mclapply(seq_along(rest), function(b) {
                 lapply(seq_along(rest[[b]]), function(c) {
-                    paste(identifier = rest[[b]][[c]]$term_description$id,
-                          name = rest[[b]][[c]]$term_description$label,
-                          sep = "~")
-                }) %>% unique %>% toString
+                    identifier <- rest[[b]][[c]][["term_description"]][["id"]]
+                    name <- rest[[b]][[c]][["term_description"]][["label"]]
+                    paste(identifier, name, sep = "~")
+                }) %>%
+                    unique %>%
+                    toString
             }) %>%
                 set_names(camel(paste0(
                     "wormbaseGeneOntology_", names(rest)))) %>%
                 as_tibble %>%
-                # [fix] check that this works
+                # FIXME check that this works
                 mutate(gene = identifier[[a]])
         } else {
             tibble()

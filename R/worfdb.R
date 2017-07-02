@@ -8,13 +8,18 @@
 #'
 #' @export
 worfdbHTML <- function(sequence) {
-    sequence <- sequence %>% na.omit %>% unique
+    sequence <- sequence %>%
+        na.omit %>%
+        unique
     pbmclapply(seq_along(sequence), function(a) {
-        GET(paste0("http://worfdb.dfci.harvard.edu/searchallwormorfs.pl?by=name&sid=",
-                   sequence[a]),
+        GET(file.path("http://worfdb.dfci.harvard.edu",
+                      "searchallwormorfs.pl?by=name&sid=",
+                      sequence[a]),
             user_agent = user_agent(userAgent)) %>%
             content("text")
-    }) %>% set_names(sequence)
+    }
+    ) %>%
+        set_names(sequence)
 }
 
 
@@ -39,9 +44,10 @@ worfdbData <- function(worfdbHTML) {
             gsub("N$", FALSE, .) %>%
             toStringUnique
         sequence <- html %>%
-            # [fix] E_BE45912.2
-            str_match_all("<A HREF=http://www.wormbase.org/db/seq/sequence\\?name=([A-Za-z0-9_\\.]+)>") %>%
-            .[[1]] %>% .[, 2] %>%
+            # FIXME E_BE45912.2
+            str_match_all("<A HREF=.+/sequence\\?name=([A-Za-z0-9_\\.]+)>") %>%
+            .[[1L]] %>%
+            .[, 2L] %>%
             # Strip isoform
             gsub("[a-z]$", "", .) %>%
             toStringUnique
@@ -51,16 +57,19 @@ worfdbData <- function(worfdbHTML) {
             toStringUnique
         primer <- html %>%
             str_match_all("<font color=red><B>([acgt]+)[\n]?</B></font>") %>%
-            .[[1]] %>% .[, 2] %>%
+            .[[1L]] %>%
+            .[, 2L] %>%
             toupper %>%
             toString
         size <- html %>%
             str_match_all("size: &nbsp;([0-9]+)") %>%
-            .[[1]] %>% .[, 2] %>%
+            .[[1L]] %>%
+            .[, 2L] %>%
             toString
         remap <- html %>%
-            str_match_all("<TR><TD><A HREF=searchallwormorfs.pl\\?sid=([A-Z0-9]+\\.[0-9]+[a-z]?)>[A-Z0-9]+\\.[0-9]+[a-z]?</A></TD><TD>([0-9]{5}@[A-H][0-9]+)</TD><TD>([0-9]{5}@[A-H][0-9]+)?</TD><TD>(N|Y)</TD><TD>([0-9]+)</TD></TR>") %>%
-            .[[1]] %>% .[, 2] %>%
+            str_match_all("<TR><TD><A HREF=searchallwormorfs.pl\\?sid=([A-Z0-9]+\\.[0-9]+[a-z]?)>[A-Z0-9]+\\.[0-9]+[a-z]?</A></TD><TD>([0-9]{5}@[A-H][0-9]+)</TD><TD>([0-9]{5}@[A-H][0-9]+)?</TD><TD>(N|Y)</TD><TD>([0-9]+)</TD></TR>") %>%  # nolint
+            .[[1L]] %>%
+            .[, 2L] %>%
             toStringUnique
         list <- list(query = names(worfdbHTML)[a],
                      sequence = sequence,
@@ -76,9 +85,9 @@ worfdbData <- function(worfdbHTML) {
     }) %>%
         bind_rows %>%
         arrange(!!sym("sequence")) %>%
-        filter(!is.na(.data$clone)) %>%
-        mutate(clone = str_replace(.data$clone, "@", ""),
-               clone = str_replace(.data$clone, "([A-Z]{1})0", "\\1")) %>%
-        # Set `""` columns to `NA`. Improve upstream code to avoid this?
+        filter(!is.na(.data[["clone"]])) %>%
+        mutate(clone = str_replace(.data[["clone"]], "@", ""),
+               clone = str_replace(.data[["clone"]], "([A-Z]{1})0", "\\1")) %>%
+        # FIXME Set `""` columns to `NA`. Possible to avoid this?
         wash
 }

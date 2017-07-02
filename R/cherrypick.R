@@ -19,23 +19,23 @@ cherrypick <- function(
     df <- identifier %>%
         uniqueIdentifier %>%
         gene(format = format) %>%
-        right_join(rnai(.$gene, format = "gene"), by = defaultCol) %>%
-        # [fix] check that this works
-        mutate(clone = strsplit(.data$clone, ", ")) %>%
+        right_join(rnai(.[["gene"]], format = "gene"), by = defaultCol) %>%
+        # FIXME check that this works
+        mutate(clone = strsplit(.data[["clone"]], ", ")) %>%
         unnest %>%
         arrange(!!sym("clone"))
     if (!isTRUE(ahringer384)) {
-        df <- df[!grepl("^ahringer384", df$clone), ]
+        df <- df[!grepl("^ahringer384", df[["clone"]]), ]
     }
     if (!isTRUE(ahringer96)) {
-        df <- df[!grepl("^ahringer96", df$clone), ]
+        df <- df[!grepl("^ahringer96", df[["clone"]]), ]
     }
     if (!isTRUE(orfeome96)) {
-        df <- df[!grepl("^orfeome96", df$clone), ]
+        df <- df[!grepl("^orfeome96", df[["clone"]]), ]
     }
     if (!is.null(plates)) {
         grep <- paste0("^(", paste(plates, collapse = "|"), ")-\\D\\d{2}$")
-        df <- df[grepl(grep, df$clone), ]
+        df <- df[grepl(grep, df[["clone"]]), ]
     }
     return(df)
 }

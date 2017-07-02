@@ -18,14 +18,24 @@ geneExternal <- function(identifier) {
         rest <- file.path("widget/gene",
                           identifier[[a]],
                           "external_links") %>%
-            rest %>% .$fields %>% .$xrefs %>% .$data
+            rest %>%
+            .[["fields"]] %>%
+            .[["xrefs"]] %>%
+            .[["data"]]
         mclapply(seq_along(rest), function(b) {
-            rest[[b]] %>% .[[1]] %>% .[[1]] %>%
-                unlist %>% toStringUnique
-        }) %>% set_names(names(rest)) %>%
+            rest[[b]] %>%
+                .[[1L]] %>%
+                .[[1L]] %>%
+                unlist %>%
+                toStringUnique
+        }
+        ) %>%
+            set_names(names(rest)) %>%
             as_tibble %>%
-            # [fix] check that this works
+            # FIXME check that this works
             mutate(gene = identifier[[a]])
-    }) %>% bind_rows %>%
+    }
+    ) %>%
+        bind_rows %>%
         set_names(tolower(names(.)))
 }

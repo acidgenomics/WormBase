@@ -19,10 +19,10 @@ gene <- function(
     identifier,
     format = "gene",
     select = NULL) {
-    # [fix] Don't use [importTidyVerbs()] here or it will mask select. Better
+    # FIXME Don't use [importTidyVerbs()] here or it will mask select. Better
     # way to call dplyr functions?
     identifier <- uniqueIdentifier(identifier)
-    annotation <- get("annotations", envir = asNamespace("worminfo"))$gene
+    annotation <- get("annotations", envir = asNamespace("worminfo"))[["gene"]]
     return <- mclapply(seq_along(identifier), function(a) {
         if (any(grepl(format, c("gene", "name")))) {
             return <- annotation %>%
@@ -33,16 +33,16 @@ gene <- function(
         } else if (format == "class") {
             name <- annotation %>%
                 .[grepl(paste0("^", identifier[a], "-"), .[["name"]]), "name"]
-            name <- name[[1]]
-            return <- annotation %>% .[.$name %in% name, ]
+            name <- name[[1L]]
+            return <- annotation %>% .[.[["name"]] %in% name, ]
         } else if (format == "keyword") {
             # `apply(..., 1)` processes by row
-            grepl <- apply(annotation, 1, function(b) {
+            grepl <- apply(annotation, 1L, function(b) {
                 any(grepl(identifier[a], b, ignore.case = TRUE))
             })
             gene <- annotation[grepl, "gene"]
-            gene <- gene[[1]]
-            return <- annotation %>% .[.$gene %in% gene, ]
+            gene <- gene[[1L]]
+            return <- annotation %>% .[.[["gene"]] %in% gene, ]
         } else {
             stop("invalid format")
         }
@@ -68,15 +68,15 @@ gene <- function(
         # Arrange rows
         # `format` is used to arrange, unless specified
         if (any(grepl(format, c("class", "name")))) {
-            arrange <- str_match(return$name, "^(.+)([0-9\\.]+)$") %>%
+            arrange <- str_match(return[["name"]], "^(.+)([0-9\\.]+)$") %>%
                 as_tibble
-            arrange$V3 <- as.numeric(arrange$V3)
+            arrange[["V3"]] <- as.numeric(arrange[["V3"]])
             return <- left_join(return, arrange, by = c("name" = "V1"))
             # Arrange by class then number:
             return <- arrange(return, !!!syms(c("V2", "V3")))
             # Drop the unnecessary temporary columns:
-            return$V2 <- NULL
-            return$V3 <- NULL
+            return[["V2"]] <- NULL
+            return[["V3"]] <- NULL
         } else {
             return <- arrange(return, !!!syms(unique(format, defaultCol)))
         }

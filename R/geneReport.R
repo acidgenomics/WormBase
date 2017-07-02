@@ -8,7 +8,7 @@
 #' @return tibble
 #' @export
 geneReport <- function(identifier, format = "gene") {
-    # [fix] column mismatch
+    # FIXME column mismatch
     identifier <- uniqueIdentifier(identifier)
     gene <- gene(
         identifier,
@@ -38,7 +38,7 @@ geneReport <- function(identifier, format = "gene") {
                    "pantherGeneOntologyCellularComponent",
                    "pantherClass"))
     if (nrow(gene)) {
-        identifier <- gene$gene
+        identifier <- gene[["gene"]]
         return <- gene
         geneOntology <- geneOntology(identifier)
         if (nrow(geneOntology)) {
