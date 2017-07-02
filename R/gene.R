@@ -1,12 +1,12 @@
 #' Gene mapping
 #'
-#' @param identifier Identifier
+#' @param identifier Identifier.
 #' @param format Identifier type (`gene`, `name`, `sequence`, `class` or
 #'   `keyword`).
 #' @param select Columns to select. Consult `vignette("gene")` for the list of
 #'   available parameters.
 #'
-#' @return Tibble.
+#' @return Data frame.
 #' @export
 #'
 #' @examples
@@ -19,6 +19,8 @@ gene <- function(
     identifier,
     format = "gene",
     select = NULL) {
+    # [fix] Don't use [importTidyVerbs()] here or it will mask select. Better
+    # way to call dplyr functions?
     identifier <- uniqueIdentifier(identifier)
     annotation <- get("annotations", envir = asNamespace("worminfo"))$gene
     return <- mclapply(seq_along(identifier), function(a) {
@@ -55,8 +57,9 @@ gene <- function(
     } else {
         return <- return[, unique(c(format, defaultCol, select))]
     }
-    # Put \code{format} column first
-    return <- select(return, .data[[format]], everything())
+    # Put `format` column first
+    # [fix] Use [quo()] here instead?
+    return <- dplyr::select(return, .data[[format]], everything())
     if (nrow(return)) {
         # Summarize multiple keyword matches
         if (format == "keyword") {
@@ -80,5 +83,5 @@ gene <- function(
             return <- arrange(return, !!!syms(unique(format, defaultCol)))
         }
     }
-    return
+    return %>% as.data.frame
 }
