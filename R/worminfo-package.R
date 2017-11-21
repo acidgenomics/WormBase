@@ -1,5 +1,8 @@
 #' worminfo
 #'
+#' @importFrom magrittr %>%
+#' @importFrom rlang .data
+#'
 #' C. elegans genome annotations and RNAi clone mappings.
 "_PACKAGE"
 
