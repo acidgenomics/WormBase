@@ -4,7 +4,6 @@
 ^.*\.Rproj$
 ^.*\.yaml$
 ^.*\.yml$
-^*_cache/
 ^\.lintr$
 ^\.Rproj\.user$
 ^API$
