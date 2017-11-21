@@ -1,7 +1,7 @@
 #' EggNOG Annotations
 #'
-#' @importFrom basejump summarizeRows
-#' @importFrom dplyr bind_rows left_join distinct
+#' @importFrom basejump collapseToString
+#' @importFrom dplyr bind_rows distinct left_join
 #'
 #' @param identifier EggNOG identifier.
 #'
@@ -29,10 +29,8 @@ eggnog <- function(identifier) {
                 unique()
             category %>%
                 .[.[["cogFunctionalCategory"]] %in% letter, ] %>%
-                # FIXME summarizeRows isn't exported anymore
-                summarizeRows()
-        }
-        ) %>%
+                collapseToString()
+        }) %>%
             bind_rows() %>%
             distinct()
         categoryMatch[["cogFunctionalCategory"]] <-
