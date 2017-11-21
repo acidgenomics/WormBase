@@ -1,4 +1,10 @@
-#' Gene mapping
+#' Gene Mapping
+#'
+#' @importFrom basejump collapseToString
+#' @importFrom dplyr arrange everything group_by left_join select
+#' @importFrom parallel mclapply
+#' @importFrom rlang !!! syms
+#' @importFrom tibble as_tibble
 #'
 #' @param identifier Identifier.
 #' @param format Identifier type (`gene`, `name`, `sequence`, `class` or
@@ -6,7 +12,7 @@
 #' @param select Columns to select. Consult `vignette("gene")` for the list of
 #'   available parameters.
 #'
-#' @return Data frame.
+#' @return [data.frame].
 #' @export
 #'
 #' @examples
@@ -19,8 +25,6 @@ gene <- function(
     identifier,
     format = "gene",
     select = NULL) {
-    # FIXME Don't use [importTidyVerbs()] here or it will mask select. Better
-    # way to call dplyr functions?
     identifier <- uniqueIdentifier(identifier)
     annotation <- get("annotations", envir = asNamespace("worminfo"))[["gene"]]
     return <- mclapply(seq_along(identifier), function(a) {
@@ -29,12 +33,14 @@ gene <- function(
                 .[.[[format]] %in% identifier[a], ]
         } else if (format == "sequence") {
             sequence <- removeIsoform(identifier)
-            return <- annotation %>% .[.[[format]] %in% sequence[a], ]
+            return <- annotation %>%
+                .[.[[format]] %in% sequence[a], ]
         } else if (format == "class") {
             name <- annotation %>%
                 .[grepl(paste0("^", identifier[a], "-"), .[["name"]]), "name"]
             name <- name[[1L]]
-            return <- annotation %>% .[.[["name"]] %in% name, ]
+            return <- annotation %>%
+                .[.[["name"]] %in% name, ]
         } else if (format == "keyword") {
             # `apply(..., 1)` processes by row
             grepl <- apply(annotation, 1L, function(b) {
@@ -42,34 +48,36 @@ gene <- function(
             })
             gene <- annotation[grepl, "gene"]
             gene <- gene[[1L]]
-            return <- annotation %>% .[.[["gene"]] %in% gene, ]
+            return <- annotation %>%
+                .[.[["gene"]] %in% gene, ]
         } else {
-            stop("invalid format")
+            stop("Invalid format")
         }
         if (nrow(return)) {
             return[[format]] <- identifier[a]
         }
         return
-    }) %>% bind_rows
+    })
+    return <- bind_rows(return)
     # Select columns. Always return the WormBase gene identifier.
     if (is.null(select)) {
         return <- return[, unique(c(format, defaultCol))]
     } else {
         return <- return[, unique(c(format, defaultCol, select))]
     }
-    return <- tidy_select(return, .data[[format]], everything())
+    return <- select(return, .data[[format]], everything())
     if (nrow(return)) {
         # Summarize multiple keyword matches
         if (format == "keyword") {
             return <- return %>%
                 group_by(!!sym("gene")) %>%
-                summarizeRows
+                collapseToString()
         }
         # Arrange rows
         # `format` is used to arrange, unless specified
         if (any(grepl(format, c("class", "name")))) {
             arrange <- str_match(return[["name"]], "^(.+)([0-9\\.]+)$") %>%
-                as_tibble
+                as_tibble()
             arrange[["V3"]] <- as.numeric(arrange[["V3"]])
             return <- left_join(return, arrange, by = c("name" = "V1"))
             # Arrange by class then number:
@@ -81,5 +89,5 @@ gene <- function(
             return <- arrange(return, !!!syms(unique(format, defaultCol)))
         }
     }
-    return %>% as.data.frame
+    as.data.frame(return)
 }
