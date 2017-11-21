@@ -14,7 +14,10 @@ loadData(geneIDs, dir = dataDir)
 
 
 ```{r cherrypick}
-cherrypick <- read_excel("data-raw/cherrypick.xlsx") %>%
+cherrypick <- file.path(
+    "http://worminfo.steinbaugh.com",
+    "cherrypick.xlsx") %>%
+    readFileByExtension() %>%
     mutate(clone = paste0(
         library,
         plateNum,
