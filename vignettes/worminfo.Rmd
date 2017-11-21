@@ -19,7 +19,17 @@ vignette: >
 
 The goal of the [worminfo][] package is to quickly and simply provide correct, up-to-date annotation data for the entire *C. elegans* genome. The underlying gene annotations are periodically sourced from [WormBase][], [Ensembl][], and [PANTHER][]. RNAi clone annotations are sourced from the official [ORFeome][] and [Ahringer][] repositories. [WormBase][] is updated on a bi-monthly [release schedule](http://www.wormbase.org/about/release_schedule). If the source data appears outdated, file an [update request](https://github.com/steinbaugh/worminfo/issues) on our [GitHub repository](https://github.com/steinbaugh/worminfo), and we'll promptly issue a rebuild. When the package is loaded, the most recent annotation data is downloaded from our server then cached locally for quick access.
 
+```{r install, eval=FALSE}
+source("https://bioconductor.org/biocLite.R")
+biocLite(c(
+    "tidyverse",
+    "steinbaugh/basejump",
+    "steinbaugh/worminfo"
+))
+```
+
 ```{r setup, message=FALSE}
+library(basejump)
 library(tidyverse)
 library(worminfo)
 ```
