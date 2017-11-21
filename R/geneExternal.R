@@ -6,7 +6,7 @@
 #'
 #' @param identifier Gene identifier.
 #'
-#' @return JSON content tibble.
+#' @return JSON content [tibble].
 #' @export
 #'
 #' @examples

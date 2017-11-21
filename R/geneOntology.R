@@ -1,11 +1,13 @@
 #' WormBase RESTful RNAi Gene Ontology Query
 #'
 #' @importFrom basejump camel
+#' @importFrom dplyr bind_rows mutate
 #' @importFrom parallel mclapply
+#' @importFrom tibble as_tibble tibble
 #'
 #' @param identifier Gene identifier.
 #'
-#' @return JSON content tibble.
+#' @return JSON content [tibble].
 #' @export
 #'
 #' @examples
