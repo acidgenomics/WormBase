@@ -4,6 +4,7 @@
 #' @importFrom dplyr arrange everything group_by left_join select
 #' @importFrom parallel mclapply
 #' @importFrom rlang !!! syms
+#' @importFrom stringr str_match
 #' @importFrom tibble as_tibble
 #'
 #' @param identifier Identifier.
