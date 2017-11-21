@@ -1,5 +1,9 @@
 #' Cherrypick RNAi clones by keyword
 #'
+#' @importFrom dplyr arrange mutate right_join
+#' @importFrom rlang !! sym
+#' @importFrom tidyr unnest
+#'
 #' @param identifier Keyword identifier.
 #' @param format Identifier format.
 #' @param ahringer384 Include Ahringer 384 well library.
@@ -7,7 +11,7 @@
 #' @param orfeome96 Include ORFeome 96 well library.
 #' @param plates Character vector of reference plates (for subsetting).
 #'
-#' @return RNAi clone list by gene.
+#' @return RNAi clone [list] by gene.
 #' @export
 cherrypick <- function(
     identifier,
@@ -17,12 +21,13 @@ cherrypick <- function(
     orfeome96 = TRUE,
     plates = NULL) {
     df <- identifier %>%
-        uniqueIdentifier %>%
+        uniqueIdentifier() %>%
         gene(format = format) %>%
-        right_join(rnai(.[["gene"]], format = "gene"), by = defaultCol) %>%
-        # FIXME check that this works
+        right_join(
+            rnai(.[["gene"]], format = "gene"),
+            by = defaultCol) %>%
         mutate(clone = strsplit(.data[["clone"]], ", ")) %>%
-        unnest %>%
+        unnest() %>%
         arrange(!!sym("clone"))
     if (!isTRUE(ahringer384)) {
         df <- df[!grepl("^ahringer384", df[["clone"]]), ]
