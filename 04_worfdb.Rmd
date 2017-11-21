@@ -3,24 +3,26 @@ title: "WORFDB annotations"
 date: "`r BiocStyle::doc_date()`"
 ---
 
-```{r setup}
+```{r setup, message=FALSE}
 source("setup.R")
 ```
 
 ```{r header, child="header.Rmd"}
 ```
 
+
+
 ```{r worfdb1}
 loadData(worfdbHTML)
 worfdb1 <- worfdbData(worfdbHTML)
-saveDataRaw(worfdb1)
+saveData(worfdb1, dir = dataDir, compress = compress)
 ```
 
 ```{r worfdb2}
 # [fix] R153.1f
 loadData(worfdbHTMLRemap)
 worfdb2 <- worfdbData(worfdbHTMLRemap)
-saveDataRaw(worfdb2)
+saveData(worfdb2, dir = dataDir, compress = compress)
 ```
 
 ```{r worfdb}
@@ -33,11 +35,13 @@ worfdb <- bind_rows(worfdb1, worfdb2) %>%
     distinct %>%
     arrange(clone) %>%
     left_join(geneIDs[, c("gene", "sequence")], by = "sequence")
-saveDataRaw(worfdb)
+saveData(worfdb, dir = dataDir, compress = compress)
 ```
 
 ```{r unmatched}
-worfdb %>% filter(is.na(gene)) %>% glimpse
+worfdb %>%
+    filter(is.na(gene)) %>%
+    glimpse()
 ```
 
 Check for duplicate sequences:

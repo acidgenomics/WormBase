@@ -5,7 +5,7 @@ date: "`r BiocStyle::doc_date()`"
 
 ```{r setup}
 source("setup.R")
-loadData(geneIDs)
+loadData(geneIDs, dir = dataDir)
 ```
 
 ```{r header, child="header.Rmd"}
@@ -14,18 +14,19 @@ loadData(geneIDs)
 
 
 ```{r cherrypick}
-cherrypick <- "data-raw/cherrypick.xlsx" %>%
-    read_excel %>%
-    mutate(clone = paste0(library,
-                          plateNum,
-                          plateRow,
-                          str_pad(plateCol, 2, pad = "0"))) %>%
+cherrypick <- read_excel("data-raw/cherrypick.xlsx") %>%
+    mutate(clone = paste0(
+        library,
+        plateNum,
+        plateRow,
+        str_pad(plateCol, 2, pad = "0"))
+    ) %>%
     filter(!is.na(sequence)) %>%
     select(clone, sequence) %>%
     arrange(clone) %>%
     left_join(geneIDs[, c("gene", "sequence")], by = "sequence")
 glimpse(cherrypick)
-saveDataRaw(cherrypick)
+saveData(cherrypick, dir = dataDir, compress = compress)
 ```
 
 

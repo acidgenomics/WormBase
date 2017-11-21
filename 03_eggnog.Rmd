@@ -4,7 +4,7 @@ date: "`r BiocStyle::doc_date()`"
 author: "Michael J. Steinbaugh"
 ---
 
-```{r setup}
+```{r setup, message=FALSE}
 source("setup.R")
 dir.create("data-raw/eggnog", recursive = TRUE, showWarnings = FALSE)
 ```
@@ -16,7 +16,8 @@ dir.create("data-raw/eggnog", recursive = TRUE, showWarnings = FALSE)
 
 ```{r readme}
 "http://eggnogdb.embl.de/download/latest/README.txt" %>%
-    read_lines %>% writeLines
+    read_lines() %>%
+    writeLines()
 ```
 
 
@@ -33,10 +34,10 @@ download.file(
               "COG_functional_categories.txt"),
     fileLocal)
 category <- fileLocal %>%
-    readLines %>%
+    readLines() %>%
     str_subset(pattern) %>%
     str_match(pattern) %>%
-    as_tibble %>%
+    as_tibble() %>%
     select(-1) %>%
     set_names(c("letter", "description")) %>%
     arrange(letter)
@@ -89,10 +90,12 @@ annotation <- bind_rows(eunog, nog) %>%
            consensusFunctionalDescription,
            cogFunctionalCategory) %>%
     rename(eggnog = groupName)
+
 eggnog <- list(annotation = annotation,
                category = category)
 str(eggnog)
-saveDataRaw(eggnog)
+saveData(eggnog, dir = dataDir, compress = compress)
+
 rm(annotation,
    category,
    colNames,

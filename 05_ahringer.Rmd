@@ -3,7 +3,7 @@ title: "Ahringer clone annotations"
 date: "`r BiocStyle::doc_date()`"
 ---
 
-```{r setup}
+```{r setup, message=FALSE}
 source("setup.R")
 loadData(geneIDs, oligo)
 ```
@@ -31,7 +31,7 @@ list <- mclapply(seq_along(chromosomes), function(a) {
                sheet = a + 1,
                col_types = rep("text", 8))
 }) %>% set_names(chromosomes)
-lapply(list, glimpse) %>% invisible
+lapply(list, glimpse)
 ```
 
 ```{r input}
@@ -87,7 +87,8 @@ nrow(matched$oligo2)
 nrow(unmatched)
 
 ahringer <- bind_rows(matched, unmatched)
-saveDataRaw(ahringer)
+saveData(ahringer, dir = dataDir, compress = compress)
+
 rm(chromosomes,
    fileLocal,
    list,

@@ -4,7 +4,7 @@ date: "`r BiocStyle::doc_date()`"
 author: "Michael J. Steinbaugh"
 ---
 
-```{r setup}
+```{r setup, message=FALSE}
 source("setup.R")
 ```
 
@@ -65,7 +65,7 @@ panther <- read_tsv(as.character(fileLocal), col_names = FALSE) %>%
     mutate(pathway = str_split(pathway, ";")) %>% unnest %>%
     summarizeRows(sep = "; ")
 glimpse(panther)
-saveDataRaw(panther)
+saveData(panther, dir = dataDir, compress = compress)
 ```
 
 
