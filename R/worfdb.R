@@ -13,6 +13,7 @@ NULL
 
 #' @rdname worfdb
 #' @importFrom httr content GET user_agent
+#' @importFrom stats na.omit
 #' @param sequence Sequence identifier.
 #' @export
 worfdbHTML <- function(sequence) {
