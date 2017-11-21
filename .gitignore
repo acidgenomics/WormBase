@@ -3,4 +3,5 @@
 .Rhistory
 .RData
 .Ruserdata
+data-raw/*.rda
 inst/doc/
