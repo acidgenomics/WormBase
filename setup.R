@@ -5,6 +5,7 @@ library(knitr)
 library(parallel)
 library(R.utils)
 library(RCurl)
+library(readxl)
 library(tidyverse)
 
 opts_chunk$set(
