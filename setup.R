@@ -1,4 +1,6 @@
 library(basejump)
+library(devtools)
+library(knitr)
 library(tidyverse)
 
 opts_chunk$set(
