@@ -1,14 +1,16 @@
-#' Gene list report
+# FIXME column mismatch
+
+#' Gene List Report
 #'
-#' @author Michael Steinbaugh
+#' @importFrom dplyr arrange everything left_join select
+#' @importFrom rlang !!! syms
 #'
-#' @param identifier Gene identifier
-#' @param format Identifier format
+#' @param identifier Gene identifier.
+#' @param format Identifier format.
 #'
-#' @return tibble
+#' @return [tibble].
 #' @export
 geneReport <- function(identifier, format = "gene") {
-    # FIXME column mismatch
     identifier <- uniqueIdentifier(identifier)
     gene <- gene(
         identifier,
@@ -49,7 +51,7 @@ geneReport <- function(identifier, format = "gene") {
             return <- left_join(return, uniprot, by = "gene")
         }
         return %>%
-            tidy_select(defaultCol, everything()) %>%
+            select(defaultCol, everything()) %>%
             arrange(!!!syms(defaultCol))
     }
 }
