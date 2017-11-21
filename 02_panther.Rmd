@@ -14,56 +14,63 @@ source("setup.R")
 
 
 ```{r panther}
-fileLocal <- "data-raw/panther.tsv.gz"
-if (!file.exists(fileLocal)) {
-    fileLocal <- transmit(
+fileLocal <- transmit(
         file.path("ftp://ftp.pantherdb.org",
                   "sequence_classifications",
                   "current_release",
                   "PANTHER_Sequence_Classification_files"),
         pattern = "nematode",
         rename = "panther.tsv",
-        compress = TRUE)
-}
-panther <- read_tsv(as.character(fileLocal), col_names = FALSE) %>%
+        compress = TRUE) %>%
+    as.character()
+panther <- read_tsv(fileLocal, col_names = FALSE) %>%
     mutate(X2 = NULL) %>%
-    set_names(c("id",
-                "subfamily",
-                "familyName",
-                "subfamilyName",
-                "goMF",
-                "goBP",
-                "goCC",
-                "class",
-                "pathway")) %>%
+    set_names(c(
+        "id",
+        "subfamily",
+        "familyName",
+        "subfamilyName",
+        "goMF",
+        "goBP",
+        "goCC",
+        "class",
+        "pathway"
+    )) %>%
     separate(id, c("organism", "gene", "uniprotKB"), sep = "\\|") %>%
-    mutate(organism = NULL,
-           uniprotKB = str_replace(uniprotKB, "^UniProtKB=", ""),
-           gene = str_replace(gene, "^(EnsemblGenome|WormBase)=", ""),
-           gene = str_replace(gene, "^Gene=B0303\\.5$", "WBGene00015127"),
-           gene = str_replace(gene, "^Gene=C13B9\\.1$", "WBGene00015732"),
-           gene = str_replace(gene, "^Gene=F23F12\\.11/F23F12\\.5$", "WBGene00005075"),
-           gene = str_replace(gene, "^Gene=F55A11\\.4$", "WBGene00010077"),
-           gene = str_replace(gene, "^Gene=K02A2\\.6$", "WBGene00019291"),
-           gene = str_replace(gene, "^Gene=MTCE\\.11$", "WBGene00010959"),
-           gene = str_replace(gene, "^Gene=T07D3\\.8$", "WBGene00020310"),
-           gene = str_replace(gene, "^Gene=Y104H12A\\.1/Y77E11A\\.5$", "WBGene00022423"),
-           gene = str_replace(gene, "^Gene=Y62E10A\\.11$", "WBGene00014938"),
-           gene = str_replace(gene, "^GeneID=176090$", "WBGene00022794"),
-           gene = str_replace(gene, "^GeneID=2565696$", "WBGene00010966"),
-           gene = str_replace(gene, "^GeneID=2565700$", "WBGene00010964"),
-           gene = str_replace(gene, "^GeneID=2565701$", "WBGene00010962"),
-           gene = str_replace(gene, "^GeneID=2565702$", "WBGene00000829"),
-           gene = str_replace(gene, "^GeneID=2565703$", "WBGene00010967"),
-           gene = str_replace(gene, "^GeneID=2565704$", "WBGene00010960"),
-           gene = str_replace(gene, "^GeneID=2565705$", "WBGene00010963")) %>%
+    mutate(
+        organism = NULL,
+        uniprotKB = str_replace(uniprotKB, "^UniProtKB=", ""),
+        gene = str_replace(gene, "^(EnsemblGenome|WormBase)=", ""),
+        gene = str_replace(gene, "^Gene=B0303\\.5$", "WBGene00015127"),
+        gene = str_replace(gene, "^Gene=C13B9\\.1$", "WBGene00015732"),
+        gene = str_replace(gene, "^Gene=F23F12\\.11/F23F12\\.5$", "WBGene00005075"),
+        gene = str_replace(gene, "^Gene=F55A11\\.4$", "WBGene00010077"),
+        gene = str_replace(gene, "^Gene=K02A2\\.6$", "WBGene00019291"),
+        gene = str_replace(gene, "^Gene=MTCE\\.11$", "WBGene00010959"),
+        gene = str_replace(gene, "^Gene=T07D3\\.8$", "WBGene00020310"),
+        gene = str_replace(gene, "^Gene=Y104H12A\\.1/Y77E11A\\.5$", "WBGene00022423"),
+        gene = str_replace(gene, "^Gene=Y62E10A\\.11$", "WBGene00014938"),
+        gene = str_replace(gene, "^GeneID=176090$", "WBGene00022794"),
+        gene = str_replace(gene, "^GeneID=2565696$", "WBGene00010966"),
+        gene = str_replace(gene, "^GeneID=2565700$", "WBGene00010964"),
+        gene = str_replace(gene, "^GeneID=2565701$", "WBGene00010962"),
+        gene = str_replace(gene, "^GeneID=2565702$", "WBGene00000829"),
+        gene = str_replace(gene, "^GeneID=2565703$", "WBGene00010967"),
+        gene = str_replace(gene, "^GeneID=2565704$", "WBGene00010960"),
+        gene = str_replace(gene, "^GeneID=2565705$", "WBGene00010963")
+    ) %>%
     group_by(gene) %>%
-    mutate(goMF = str_split(goMF, ";")) %>% unnest %>%
-    mutate(goBP = str_split(goBP, ";")) %>% unnest %>%
-    mutate(goCC = str_split(goCC, ";")) %>% unnest %>%
-    mutate(class = str_split(class, ";")) %>% unnest %>%
-    mutate(pathway = str_split(pathway, ";")) %>% unnest %>%
-    summarizeRows(sep = "; ")
+    mutate(goMF = str_split(goMF, ";")) %>%
+    unnest() %>%
+    mutate(goBP = str_split(goBP, ";")) %>%
+    unnest() %>%
+    mutate(goCC = str_split(goCC, ";")) %>%
+    unnest() %>%
+    mutate(class = str_split(class, ";")) %>%
+    unnest() %>%
+    mutate(pathway = str_split(pathway, ";")) %>%
+    unnest() %>%
+    collapseToString(sep = "; ")
 glimpse(panther)
 saveData(panther, dir = dataDir, compress = compress)
 ```
