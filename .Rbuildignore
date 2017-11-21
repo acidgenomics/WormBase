@@ -4,9 +4,11 @@
 ^.*\.Rproj$
 ^.*\.yaml$
 ^.*\.yml$
+^*_cache/
+^\.lintr$
 ^\.Rproj\.user$
+^API$
 ^data-raw/
 ^docs/
 ^NEWS\.md$
 ^setup\.R$
-^API$
