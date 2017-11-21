@@ -1,15 +1,23 @@
-#' UniProt web service query
+# FIXME Unknown or uninitialised column: 'cogFunctionalCategory'.
+
+#' UniProt Web Service Query
+#'
+#' @importFrom basejump camel collapseToString
+#' @importFrom dplyr left_join rename select
+#' @importFrom rlang !! sym
+#' @importFrom UniProt.ws UniProt.ws
 #'
 #' @param identifier WormBase gene identifier.
 #'
-#' @return Tibble.
+#' @return [tibble].
 #' @export
 uniprot <- function(identifier) {
-    # FIXME Unknown or uninitialised column: 'cogFunctionalCategory'.
     identifier <- uniqueIdentifier(identifier)
     # NCBI C. elegans identifier = 6239
     database <- UniProt.ws(taxId = 6239L)
-    uniprot <- select(
+    # Explicitly call the `AnnotationDbi::select()`` generic here, avoiding
+    # collision with `dplyr::select()`.
+    uniprot <- UniProt.ws::select(
         database,
         keytype = "WORMBASE",
         keys = identifier,
@@ -24,18 +32,15 @@ uniprot <- function(identifier) {
                     "WORMBASE"))
     if (nrow(uniprot)) {
         uniprot <- uniprot %>%
-            camel %>%
-            tidy_select(!!!syms(c(
-                "wormbase", setdiff(sort(names(.)), "wormbase"))))
+            camel() %>%
+            select(c("wormbase", setdiff(sort(names(.)), "wormbase")))
         eggnog <- eggnog(uniprot[["eggnog"]])
         # Check and make sure this output is correct
         left_join(uniprot, eggnog, by = "eggnog") %>%
             # Sort priority to put higher quality UniProtKB identifiers first
-            # FIXME rework using dplyr method -- top_n?
             .[order(.[["wormbase"]],
                     .[["cogFunctionalDescription"]],
                     -xtfrm(.[["score"]])), ] %>%
-            # FIXME check that this works
             rename(gene = !!sym("wormbase"),
                    uniprotExistence = !!sym("existence"),
                    uniprotFamilies = !!sym("families"),
@@ -43,9 +48,8 @@ uniprot <- function(identifier) {
                    uniprotKeywords = !!sym("keywords"),
                    uniprotReviewed = !!sym("reviewed"),
                    uniprotScore = !!sym("score")) %>%
-            # FIXME this may error out
-            tidy_select(sort(names(.))) %>%
+            select(sort(names(.))) %>%
             group_by(!!sym("gene")) %>%
-            summarizeRows
+            collapseToString()
     }
 }
