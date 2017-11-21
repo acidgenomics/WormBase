@@ -1,3 +1,4 @@
+#' @importFrom utils download.file
 wormbaseAnnotationFile <- function(file) {
     dir.create("data-raw/wormbase", recursive = TRUE, showWarnings = FALSE)
     root <- file.path(
