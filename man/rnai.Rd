@@ -2,7 +2,7 @@
 % Please edit documentation in R/rnai.R
 \name{rnai}
 \alias{rnai}
-\title{RNAi clone mapping}
+\title{RNAi Clone Mapping}
 \usage{
 rnai(identifier, format = "clone", proteinCoding = TRUE)
 }
@@ -15,10 +15,10 @@ rnai(identifier, format = "clone", proteinCoding = TRUE)
 \item{proteinCoding}{Return protein coding matches (\code{TRUE}/\code{FALSE}).}
 }
 \value{
-Tibble.
+\link{tibble}.
 }
 \description{
-RNAi clone mapping
+RNAi Clone Mapping
 }
 \examples{
 rnai("ahringer384-III-6-C01")

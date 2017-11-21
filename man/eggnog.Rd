@@ -2,7 +2,7 @@
 % Please edit documentation in R/eggnog.R
 \name{eggnog}
 \alias{eggnog}
-\title{EggNOG annotations}
+\title{EggNOG Annotations}
 \usage{
 eggnog(identifier)
 }
@@ -10,8 +10,8 @@ eggnog(identifier)
 \item{identifier}{EggNOG identifier.}
 }
 \value{
-Tibble.
+\link{tibble}.
 }
 \description{
-EggNOG annotations
+EggNOG Annotations
 }

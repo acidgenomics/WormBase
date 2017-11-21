@@ -2,22 +2,22 @@
 % Please edit documentation in R/microplate.R
 \name{microplate}
 \alias{microplate}
-\title{Generate well identifiers for a microplate}
+\title{Generate Well Identifiers for a Microtiter Plate}
 \usage{
-microplate(plate = 1, well = 96, control = 0, prefix = NULL)
+microplate(plate = 1L, well = 96L, control = 0L, prefix)
 }
 \arguments{
-\item{plate}{Number of plates}
+\item{plate}{Number of plates.}
 
-\item{well}{Number of wells (\code{96}, \code{384})}
+\item{well}{Number of wells (\code{96}, \code{384}).}
 
-\item{control}{Number of control wells}
+\item{control}{Number of control wells.}
 
-\item{prefix}{Plate name prefix}
+\item{prefix}{\emph{Optional}. Plate name prefix.}
 }
 \value{
-Data frame
+\link{data.frame}.
 }
 \description{
-Generate well identifiers for a microplate
+Generate Well Identifiers for a Microtiter Plate
 }

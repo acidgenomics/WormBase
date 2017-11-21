@@ -2,7 +2,7 @@
 % Please edit documentation in R/geneOntology.R
 \name{geneOntology}
 \alias{geneOntology}
-\title{WormBase RESTful RNAi gene ontology query}
+\title{WormBase RESTful RNAi Gene Ontology Query}
 \usage{
 geneOntology(identifier)
 }
@@ -13,8 +13,8 @@ geneOntology(identifier)
 JSON content tibble.
 }
 \description{
-WormBase RESTful RNAi gene ontology query
+WormBase RESTful RNAi Gene Ontology Query
 }
 \examples{
-geneOntology("WBGene00000001") \%>\% glimpse
+geneOntology("WBGene00000001") \%>\% glimpse()
 }

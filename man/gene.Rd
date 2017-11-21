@@ -2,7 +2,7 @@
 % Please edit documentation in R/gene.R
 \name{gene}
 \alias{gene}
-\title{Gene mapping}
+\title{Gene Mapping}
 \usage{
 gene(identifier, format = "gene", select = NULL)
 }
@@ -16,10 +16,10 @@ gene(identifier, format = "gene", select = NULL)
 available parameters.}
 }
 \value{
-Data frame.
+\link{data.frame}.
 }
 \description{
-Gene mapping
+Gene Mapping
 }
 \examples{
 gene("skn-1", format = "name")

@@ -3,7 +3,7 @@
 \docType{data}
 \name{annotations}
 \alias{annotations}
-\title{Gene annotations}
+\title{Gene Annotations}
 \format{An object of class \code{list} of length 6.}
 \usage{
 annotations

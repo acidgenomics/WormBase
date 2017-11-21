@@ -2,7 +2,7 @@
 % Please edit documentation in R/geneExternal.R
 \name{geneExternal}
 \alias{geneExternal}
-\title{WormBase RESTful gene external query}
+\title{WormBase RESTful Gene External Query}
 \usage{
 geneExternal(identifier)
 }
@@ -13,11 +13,8 @@ geneExternal(identifier)
 JSON content tibble.
 }
 \description{
-WormBase RESTful gene external query
+WormBase RESTful Gene External Query
 }
 \examples{
-geneExternal("WBGene00000001") \%>\% glimpse
-}
-\author{
-Michael Steinbaugh
+geneExternal("WBGene00000001") \%>\% glimpse()
 }
