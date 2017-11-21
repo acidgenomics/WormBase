@@ -2,10 +2,10 @@
 % Please edit documentation in R/cherrypick.R
 \name{cherrypick}
 \alias{cherrypick}
-\title{Cherrypick RNAi clones by keyword}
+\title{Cherrypick RNAi Clones by Keyword}
 \usage{
 cherrypick(identifier, format = "keyword", ahringer384 = TRUE,
-  ahringer96 = FALSE, orfeome96 = TRUE, plates = NULL)
+  ahringer96 = FALSE, orfeome96 = TRUE, plates)
 }
 \arguments{
 \item{identifier}{Keyword identifier.}
@@ -18,11 +18,12 @@ cherrypick(identifier, format = "keyword", ahringer384 = TRUE,
 
 \item{orfeome96}{Include ORFeome 96 well library.}
 
-\item{plates}{Character vector of reference plates (for subsetting).}
+\item{plates}{\emph{Optional}. Character vector of reference plates (for
+subsetting).}
 }
 \value{
-RNAi clone list by gene.
+RNAi clone \link{list} by gene.
 }
 \description{
-Cherrypick RNAi clones by keyword
+Cherrypick RNAi Clones by Keyword
 }
