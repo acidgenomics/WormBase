@@ -3,6 +3,5 @@
 .Rhistory
 .RData
 .Ruserdata
-data-raw/*.gz
-data-raw/*.rda
+data-raw/
 inst/doc/
