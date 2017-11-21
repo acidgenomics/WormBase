@@ -1,11 +1,18 @@
-#' RNAi clone mapping
+# FIXME Not matching, returning empty
+
+#' RNAi Clone Mapping
+#'
+#' @importFrom basejump grepString toStringUnique
+#' @importFrom dplyr bind_rows filter select
+#' @importFrom parallel mclapply
+#' @importFrom rlang !!! syms
 #'
 #' @param identifier Identifier.
 #' @param format Identifier format (`clone`, `gene`, `genePair`, `name`, or
 #'   `sequence`).
 #' @param proteinCoding Return protein coding matches (`TRUE`/`FALSE`).
 #'
-#' @return Tibble.
+#' @return [tibble].
 #' @export
 #'
 #' @examples
@@ -18,7 +25,6 @@
 #' rnai("Y47D3B.7", format = "sequence")
 #' rnai("Y53H1C.b", format = "genePair")
 rnai <- function(
-    # FIXME Not matching, returning empty
     identifier,
     format = "clone",
     proteinCoding = TRUE) {
@@ -43,12 +49,13 @@ rnai <- function(
     }
     # Now create the grep string
     grep <- grepString(grep)
-    return <- mclapply(seq_along(grep), function(a) {
-        return <- annotation %>% .[grepl(grep[a], .[[format]]), ]
-        if (nrow(return)) {
+    list <- mclapply(seq_along(grep), function(a) {
+        df <- annotation %>%
+            .[grepl(grep[a], .[[format]]), ]
+        if (nrow(df)) {
             if (format != "clone") {
                 # Sort the clones and make human readable
-                return[["clone"]] <- return[["clone"]] %>%
+                df[["clone"]] <- df[["clone"]] %>%
                     strsplit(", ") %>%
                     .[[1L]] %>%
                     # Pad well numbers
@@ -65,16 +72,17 @@ rnai <- function(
                     # Other identifiers (`ahringer96`, `cherrypick`) are for
                     # internal match functions only.
                     .[grepl("^(ahringer|orfeome)", .)] %>%
-                    toStringSortUnique
+                    toStringUnique()
             }
-            return[[format]] <- identifier[a]
+            df[[format]] <- identifier[a]
         }
-        return
-    }) %>% bind_rows
+        df
+    })
+    return <- bind_rows(list)
     if (nrow(return)) {
         if (isTRUE(proteinCoding)) {
             return <- filter(return, .data[["biotype"]] == "protein_coding")
         }
-        tidy_select(return, !!!syms(unique(c(format, defaultCol, "clone"))))
+        select(return, !!!syms(unique(c(format, defaultCol, "clone"))))
     }
 }
