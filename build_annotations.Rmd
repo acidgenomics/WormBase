@@ -14,17 +14,19 @@ loadData(
     description,
     ortholog,
     rnaiPhenotype,
-    panther)
-# [fix] need to prefix panther columns
-gene <- Reduce(function(...) {
-    left_join(..., by = "gene") },
-    list(geneIDs,
-         geneOtherIDs,
-         description,
-         ortholog,
-         rnaiPhenotype,
-         panther)) %>%
-    as_tibble %>%
+    panther,
+    dir = "data")
+# FIXME Need to prefix panther columns
+gene <- Reduce(
+    f = function(...) left_join(..., by = "gene"),
+    x = list(geneIDs,
+             geneOtherIDs,
+             description,
+             ortholog,
+             rnaiPhenotype,
+             panther)
+) %>%
+    as_tibble() %>%
     mutate(descriptionDetailed = NULL,
            uniprotKB = NULL) %>%
     # select(noquote(order(names(.)))) %>%
