@@ -1,4 +1,4 @@
-#' [Ensembl](http://www.ensembl.org) utility functions
+#' Ensembl Utility Functions
 #'
 #' @rdname ensembl
 #' @name ensembl
