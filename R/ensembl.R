@@ -1,21 +1,34 @@
 #' [Ensembl](http://www.ensembl.org) utility functions
 #'
 #' @rdname ensembl
+#' @name ensembl
+#'
+#' @importFrom basejump camel
+#' @importFrom biomaRt getBM useEnsembl
+#' @importFrom dplyr group_by rename
+#' @importFrom rlang !! sym
+#' @importFrom tibble as_tibble
+#' @importFrom tidyr nest
 #'
 #' @param gene Ensembl gene identifier.
 #' @param peptide Ensembl peptide identifier.
 #' @param nest Return as nested tibble.
 #'
 #' @return Ensembl metadata tibble.
-#' @export
 #'
 #' @examples
 #' gene <- "WBGene00000001"
 #' peptide <- "ENSP00000380252"
-#' ensemblBasic(gene) %>% glimpse
-#' ensemblGeneOntology(gene, nest = FALSE) %>% glimpse
-#' ensemblInterpro(gene, nest = FALSE) %>% glimpse
-#' ensemblPeptide(peptide) %>% glimpse
+#' ensemblBasic(gene) %>% glimpse()
+#' ensemblGeneOntology(gene, nest = FALSE) %>% glimpse()
+#' ensemblInterpro(gene, nest = FALSE) %>% glimpse()
+#' ensemblPeptide(peptide) %>% glimpse()
+NULL
+
+
+
+#' @rdname ensembl
+#' @export
 ensemblBasic <- function(gene = NULL) {
     if (is.null(gene)) {
         filters <- ""
@@ -38,17 +51,18 @@ ensemblBasic <- function(gene = NULL) {
                        "strand"))
     if (nrow(meta)) {
         meta %>%
-            as_tibble %>%
+            as_tibble() %>%
             rename(biotype = !!sym("gene_biotype"),
                    chromosome = !!sym("chromosome_name"),
                    gene = !!sym("ensembl_gene_id")) %>%
-            camel
+            camel()
     }
 }
 
 
 
 #' @rdname ensembl
+#' @importFrom dplyr group_by
 #' @export
 ensemblGeneOntology <- function(gene = NULL, nest = TRUE) {
     if (is.null(gene)) {
@@ -68,13 +82,13 @@ ensemblGeneOntology <- function(gene = NULL, nest = TRUE) {
                        "name_1006"))
     if (nrow(meta)) {
         meta <- meta %>%
-            as_tibble %>%
+            as_tibble() %>%
             rename(gene = !!sym("ensembl_gene_id"),
                    geneOntology = !!sym("go_id"),
                    geneOntologyDescription = !!sym("name_1006")) %>%
             group_by(!!sym("gene"))
         if (isTRUE(nest)) {
-            meta <- nest_(meta, "geneOntology")
+            meta <- nest(meta, .key = "geneOntology")
         }
         meta
     }
@@ -103,12 +117,12 @@ ensemblInterpro <- function(gene = NULL, nest = TRUE) {
                        "interpro_short_description"))
     if (nrow(meta)) {
         meta <- meta %>%
-            as_tibble %>%
+            as_tibble() %>%
             rename(gene = !!sym("ensembl_gene_id")) %>%
-            camel %>%
+            camel() %>%
             group_by(!!sym("gene"))
         if (isTRUE(nest)) {
-            meta <- nest_(meta, "interpro")
+            meta <- nest(meta, .key = "interpro")
         }
         meta
     }
@@ -136,7 +150,7 @@ ensemblPeptide <- function(peptide = NULL) {
                        "description"))
     if (nrow(meta)) {
         meta %>%
-            as_tibble %>%
+            as_tibble() %>%
             rename(peptide = !!sym("ensembl_peptide_id"),
                    hsapiensDescription = !!sym("description"),
                    hsapiensGene = !!sym("ensembl_gene_id"),
