@@ -1,6 +1,10 @@
 library(basejump)
 library(devtools)
+library(magrittr)
 library(knitr)
+library(parallel)
+library(R.utils)
+library(RCurl)
 library(tidyverse)
 
 opts_chunk$set(
@@ -18,3 +22,6 @@ opts_chunk$set(
     warning = TRUE)
 
 load_all()
+
+dataDir <- "data-raw"
+compress <- "xz"
