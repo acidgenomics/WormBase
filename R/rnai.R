@@ -28,9 +28,10 @@ rnai <- function(
     identifier,
     format = "clone",
     proteinCoding = TRUE) {
-    identifier <- uniqueIdentifier(identifier)
+    identifier <- .uniqueIdentifier(identifier)
     grep <- identifier
-    annotation <- get("annotations", envir = asNamespace("worminfo"))[["rnai"]]
+    annotation <- get("worminfo", envir = asNamespace("worminfo")) %>%
+        .[["rnai"]]
     if (!any(grepl(format, names(annotation)))) {
         stop("Invalid format")
     }
@@ -45,7 +46,7 @@ rnai <- function(
             gsub("(^|-)[0]+", "", .) %>%
             gsub("([A-Z]{1})[0]+(\\d)$", "\\1\\2", .)
     } else if (format == "sequence") {
-        grep <- removeIsoform(grep)
+        grep <- .removeIsoform(grep)
     }
     # Now create the grep string
     grep <- grepString(grep)

@@ -12,7 +12,7 @@
 #' @return [tibble].
 #' @export
 uniprot <- function(identifier) {
-    identifier <- uniqueIdentifier(identifier)
+    identifier <- .uniqueIdentifier(identifier)
     # NCBI C. elegans identifier = 6239
     database <- UniProt.ws(taxId = 6239L)
     # Explicitly call the `AnnotationDbi::select()`` generic here, avoiding

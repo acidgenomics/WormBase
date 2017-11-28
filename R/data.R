@@ -1,4 +1,4 @@
-#' Gene Annotations
+#' `worminfo` Package Data
 #'
-#' WormBase, Ensembl, PANTHER, and R version information.
-"annotations"
+#' Gene and RNAi clone annotations.
+"worminfo"
