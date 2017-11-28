@@ -3,7 +3,7 @@ title: "Cherrypick RNAi library annotations"
 date: "`r BiocStyle::doc_date()`"
 ---
 
-```{r setup}
+```{r setup, message=FALSE}
 source("setup.R")
 loadData(geneIDs, dir = dataDir)
 ```
