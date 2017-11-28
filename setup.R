@@ -6,6 +6,7 @@ library(parallel)
 library(R.utils)
 library(RCurl)
 library(readxl)
+library(rmarkdown)
 library(tidyverse)
 
 opts_chunk$set(
