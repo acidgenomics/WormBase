@@ -8,7 +8,7 @@ source("setup.R")
 loadData(geneIDs, dir = dataDir)
 ```
 
-```{r header, child="header.Rmd"}
+```{r header, child="_header.Rmd"}
 ```
 
 
@@ -34,5 +34,5 @@ saveData(cherrypick, dir = dataDir, compress = compress)
 
 
 
-```{r footer, child="footer.Rmd"}
+```{r footer, child="_footer.Rmd"}
 ```

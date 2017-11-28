@@ -7,7 +7,7 @@ date: "`r BiocStyle::doc_date()`"
 source("setup.R")
 ```
 
-```{r header, child="header.Rmd"}
+```{r header, child="_header.Rmd"}
 ```
 
 
@@ -55,5 +55,5 @@ glimpse(dupes)
 
 
 
-```{r footer, child="footer.Rmd"}
+```{r footer, child="_footer.Rmd"}
 ```

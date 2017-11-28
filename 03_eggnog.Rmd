@@ -9,7 +9,7 @@ source("setup.R")
 dir.create("data-raw/eggnog", recursive = TRUE, showWarnings = FALSE)
 ```
 
-```{r header, child="header.Rmd"}
+```{r header, child="_header.Rmd"}
 ```
 
 
@@ -120,5 +120,5 @@ rm(annotation,
 
 
 
-```{r footer, child="footer.Rmd"}
+```{r footer, child="_footer.Rmd"}
 ```

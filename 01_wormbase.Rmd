@@ -8,7 +8,7 @@ author: "Michael J. Steinbaugh"
 source("setup.R")
 ```
 
-```{r header, child="header.Rmd"}
+```{r header, child="_header.Rmd"}
 ```
 
 
@@ -263,5 +263,5 @@ saveData(
 
 
 
-```{r footer, child="footer.Rmd"}
+```{r footer, child="_footer.Rmd"}
 ```

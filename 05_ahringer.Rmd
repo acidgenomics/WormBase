@@ -8,7 +8,7 @@ source("setup.R")
 loadData(geneIDs, oligo, dir = dataDir)
 ```
 
-```{r header, child="header.Rmd"}
+```{r header, child="_header.Rmd"}
 ```
 
 
@@ -101,5 +101,5 @@ rm(chromosomes,
 
 
 
-```{r footer, child="footer.Rmd"}
+```{r footer, child="_footer.Rmd"}
 ```
