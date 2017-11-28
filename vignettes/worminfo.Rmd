@@ -78,7 +78,7 @@ gene("unfolded protein response", format = "keyword")
 The `gene()` function contains annotation data that can be queried using the `select` parameter:
 
 ```{r, echo = FALSE, results = "asis"}
-get("annotations", envir = asNamespace("worminfo"))$gene %>%
+worminfo::worminfo$gene %>%
     names() %>%
     mdList()
 ```
