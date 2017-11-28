@@ -1,4 +1,5 @@
 # FIXME Not matching, returning empty
+# The clones aren't getting sanitized properly. Will need to update.
 
 #' RNAi Clone Mapping
 #'
@@ -49,10 +50,10 @@ rnai <- function(
         grep <- .removeIsoform(grep)
     }
     # Now create the grep string
-    grep <- grepString(grep)
-    list <- mclapply(seq_along(grep), function(a) {
+    grepString <- grepString(grep)
+    list <- mclapply(seq_along(grepString), function(a) {
         df <- annotation %>%
-            .[grepl(grep[a], .[[format]]), ]
+            .[grepl(grepString[a], .[[format]]), ]
         if (nrow(df)) {
             if (format != "clone") {
                 # Sort the clones and make human readable
