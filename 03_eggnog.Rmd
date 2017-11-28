@@ -15,9 +15,13 @@ dir.create("data-raw/eggnog", recursive = TRUE, showWarnings = FALSE)
 
 
 ```{r readme}
-"http://eggnogdb.embl.de/download/latest/README.txt" %>%
-    read_lines() %>%
-    writeLines()
+readme <- read_lines(
+    file.path(
+        "http://eggnogdb.embl.de",
+        "download",
+        "latest",
+        "README.txt"))
+writeLines(readme)
 ```
 
 
@@ -28,10 +32,11 @@ dir.create("data-raw/eggnog", recursive = TRUE, showWarnings = FALSE)
 fileLocal <- file.path("data-raw", "eggnog", "category.txt")
 pattern <- "^\\s\\[([A-Z])\\]\\s([A-Za-z\\s]+)\\s$"
 download.file(
-    file.path("http://eggnogdb.embl.de",
-              "download",
-              "latest",
-              "COG_functional_categories.txt"),
+    file.path(
+        "http://eggnogdb.embl.de",
+        "download",
+        "latest",
+        "COG_functional_categories.txt"),
     fileLocal)
 category <- fileLocal %>%
     readLines() %>%
@@ -48,7 +53,7 @@ category <- fileLocal %>%
 # Annotation
 
 ```{r}
-colNames <- c(
+colnames <- c(
     "taxonomicLevel",
     "groupName",
     "proteinCount",
@@ -60,24 +65,34 @@ colNames <- c(
 ## EUNOG: Eukaryota
 
 ```{r eunog}
-fileLocal <- "data-raw/eggnog/eunog.tsv.gz"
+fileLocal <- file.path("data-raw", "eggnog", "eunog.tsv.gz")
 download.file(
-    file.path("http://eggnogdb.embl.de", "download", "latest", "data",
-              "euNOG", "euNOG.annotations.tsv.gz"),
+    file.path(
+        "http://eggnogdb.embl.de",
+        "download",
+        "latest",
+        "data",
+        "euNOG",
+        "euNOG.annotations.tsv.gz"),
     fileLocal)
-eunog <- read_tsv(fileLocal, col_names = colNames)
+eunog <- read_tsv(fileLocal, col_names = colnames)
 ```
 
 
 ## NOG: LUCA
 
 ```{r nog}
-fileLocal <- "data-raw/eggnog/nog.tsv.gz"
+fileLocal <- file.path("data-raw", "eggnog", "nog.tsv.gz")
 download.file(
-    file.path("http://eggnogdb.embl.de", "download", "latest", "data",
-              "NOG", "NOG.annotations.tsv.gz"),
+    file.path(
+        "http://eggnogdb.embl.de",
+        "download",
+        "latest",
+        "data",
+        "NOG",
+        "NOG.annotations.tsv.gz"),
     fileLocal)
-nog <- read_tsv(fileLocal, col_names = colNames)
+nog <- read_tsv(fileLocal, col_names = colnames)
 ```
 
 
@@ -90,15 +105,13 @@ annotation <- bind_rows(eunog, nog) %>%
            consensusFunctionalDescription,
            cogFunctionalCategory) %>%
     rename(eggnog = groupName)
-
 eggnog <- list(annotation = annotation,
                category = category)
 str(eggnog)
 saveData(eggnog, dir = dataDir, compress = compress)
-
 rm(annotation,
    category,
-   colNames,
+   colnames,
    eunog,
    fileLocal,
    nog,

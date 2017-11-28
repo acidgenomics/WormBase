@@ -19,7 +19,7 @@ saveData(worfdb1, dir = dataDir, compress = compress)
 ```
 
 ```{r worfdb2}
-# [fix] R153.1f
+# FIXME R153.1f
 loadData(worfdbHTMLRemap)
 worfdb2 <- worfdbData(worfdbHTMLRemap)
 saveData(worfdb2, dir = dataDir, compress = compress)
