@@ -1,4 +1,13 @@
+#' WormBase Annotation File
+#'
+#' @keywords internal
+#'
 #' @importFrom utils download.file
+#'
+#' @param file Annotation file name.
+#'
+#' @return File path.
+#' @export
 wormbaseAnnotationFile <- function(file) {
     dir.create("data-raw/wormbase", recursive = TRUE, showWarnings = FALSE)
     root <- file.path(
