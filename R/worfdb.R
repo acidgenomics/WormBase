@@ -120,15 +120,10 @@ worfdbList <- function(worfdbHTML) {
 #' @export
 worfdbData <- function(worfdbList) {
     lapply(worfdbList, function(x) {
-        as.character(Filter(Negate(is.null), x))
+        x %>%
+            t() %>%
+            as_tibble()
     }) %>%
-    bind_rows() %>%
-        arrange(!!sym("sequence")) %>%
-        filter(!is.na(.data[["clone"]])) %>%
-        mutate(clone = gsub(x = .data[["clone"]],
-                            pattern = "@",
-                            replacement = ""),
-               clone = gsub(x = .data[["clone"]],
-                            pattern = "([A-Z]{1})0",
-                            replacement = "\\1"))
+        bind_rows() %>%
+        mutate(query = unlist(.data[["query"]]))
 }
