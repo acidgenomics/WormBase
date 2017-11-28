@@ -40,7 +40,7 @@ geneOtherIDs <- wormbaseAnnotationFile("geneOtherIDs") %>%
     str_split("\t") %>%
     do.call(rbind, .) %>%
     as_tibble() %>%
-    set_names(c("gene", "otherIDs"))
+    set_colnames(c("gene", "otherIDs"))
 ```
 
 
