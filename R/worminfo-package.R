@@ -1,8 +1,8 @@
 #' worminfo
 #'
-#' @importFrom rlang .data
-#'
 #' C. elegans genome annotations and RNAi clone mappings.
+#'
+#' @importFrom rlang .data
 "_PACKAGE"
 
 globalVariables(".")

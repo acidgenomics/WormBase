@@ -10,7 +10,7 @@ geneExternal(identifier)
 \item{identifier}{Gene identifier.}
 }
 \value{
-JSON content tibble.
+JSON content \link{tibble}.
 }
 \description{
 WormBase RESTful Gene External Query
