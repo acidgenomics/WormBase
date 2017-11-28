@@ -33,8 +33,15 @@ loadData(
     dir = dataDir)
 ```
 
+```{r prefix_panther}
+panther <- panther %>%
+    set_colnames(
+        camel(paste("panther", colnames(.), sep = "_"), strict = FALSE)
+    ) %>%
+    rename(gene = pantherGene)
+```
+
 ```{r gene}
-# FIXME Need to prefix panther columns
 gene <- Reduce(
     f = function(...) left_join(..., by = "gene"),
     x = list(geneIDs,
@@ -47,25 +54,28 @@ gene <- Reduce(
     as_tibble() %>%
     mutate(descriptionDetailed = NULL,
            uniprotKB = NULL) %>%
-    # select(noquote(order(names(.)))) %>%
-    # select(gene, everything()) %>%
+    select(noquote(order(names(.)))) %>%
+    select(gene, everything()) %>%
     arrange(gene)
 ```
 
 ```{r rnai}
-ahringer <- ahringer %>%
-    # rowwise %>%
-    # [fix] mutate is crashing R?
-    # Simply use toString?
-    # mutate(clone = str_c(clone384, clone96, collapse = ", ")) %>%
-    select(gene, genePair, clone384, clone96)
-worfdb <- worfdb %>%
+ahringer_bind <- ahringer %>%
+    select(gene, genePair, clone384, clone96) %>%
+    rename(ahringer384 = clone384,
+           ahringer96 = clone96)
+worfdb_bind <- worfdb %>%
     select(gene, sequence, clone) %>%
-    rename(genePair = sequence)
-rnai <- bind_rows(ahringer, cherrypick, worfdb) %>%
+    rename(genePair = sequence,
+           worfdb96 = clone)
+cherrypick_bind <- cherrypick %>%
+    select(gene, sequence, clone) %>%
+    rename(genePair = sequence,
+           cherrypick96 = clone)
+rnai <- bind_rows(ahringer_bind, cherrypick_bind, worfdb_bind) %>%
     filter(!is.na(gene)) %>%
     group_by(gene) %>%
-    summarizeRows %>%
+    collapseToString(sort = TRUE, unique = TRUE) %>%
     select(gene, noquote(order(names(.))))
 ```
 
@@ -77,9 +87,7 @@ wormbase <- file.path(
     "releases",
     "current-production-release",
     "ONTOLOGY") %>%
-    # getURL requires a trailing slash
-    paste0(., "/") %>%
-    getURL(dirlistonly = TRUE) %>%
+    getURL(paste0(., "/"), dirlistonly = TRUE) %>%
     str_extract("WS\\d{3}") %>%
     paste0("WormBase ", .)
 ensembl <- listMarts(host = "useast.ensembl.org") %>%
@@ -108,13 +116,13 @@ build <- list(
     sessionInfo = sessionInfo)
 ```
 
-```{r annotations}
-annotations <- list(
+```{r save}
+worminfo <- list(
     gene = gene,
     rnai = rnai,
     eggnog = eggnog,
     blastp = blastp,
     peptide = peptide,
     build = build)
-saveData(annotations, dir = "data", compress = "xz")
+saveData(worminfo, dir = "data", compress = "xz")
 ```
