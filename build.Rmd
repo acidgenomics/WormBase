@@ -3,19 +3,37 @@ title: "Cherrypick RNAi library annotations"
 date: "`r BiocStyle::doc_date()`"
 ---
 
-```{r setup}
+```{r setup, message=FALSE}
 source("setup.R")
 ```
 
-```{r gene}
+```{r render}
+render("01_wormbase.Rmd")
+render("02_panther.Rmd")
+render("03_eggnog.Rmd")
+render("04_worfdb.Rmd")
+render("05_ahringer.Rmd")
+render("06_cherrypick.Rmd")
+```
+
+```{r load}
 loadData(
+    ahringer,
+    blastp,
+    cherrypick,
+    eggnog,
     geneIDs,
     geneOtherIDs,
     description,
     ortholog,
-    rnaiPhenotype,
     panther,
-    dir = "data")
+    peptide,
+    rnaiPhenotype,
+    worfdb,
+    dir = dataDir)
+```
+
+```{r gene}
 # FIXME Need to prefix panther columns
 gene <- Reduce(
     f = function(...) left_join(..., by = "gene"),
@@ -35,7 +53,6 @@ gene <- Reduce(
 ```
 
 ```{r rnai}
-loadData(ahringer, cherrypick, worfdb)
 ahringer <- ahringer %>%
     # rowwise %>%
     # [fix] mutate is crashing R?
@@ -52,35 +69,43 @@ rnai <- bind_rows(ahringer, cherrypick, worfdb) %>%
     select(gene, noquote(order(names(.))))
 ```
 
-```{r eggnog}
-loadData(eggnog)
-```
-
-```{r peptide}
-loadData(blastp, peptide)
-```
-
 ```{r build}
-wormbase <- getURL("ftp://ftp.wormbase.org/pub/wormbase/releases/current-production-release/ONTOLOGY/",
-                   dirlistonly = TRUE) %>%
-    str_extract("WS[0-9]{3}") %>%
+wormbase <- file.path(
+    "ftp://ftp.wormbase.org",
+    "pub",
+    "wormbase",
+    "releases",
+    "current-production-release",
+    "ONTOLOGY") %>%
+    # getURL requires a trailing slash
+    paste0(., "/") %>%
+    getURL(dirlistonly = TRUE) %>%
+    str_extract("WS\\d{3}") %>%
     paste0("WormBase ", .)
 ensembl <- listMarts(host = "useast.ensembl.org") %>%
     filter(biomart == "ENSEMBL_MART_ENSEMBL") %>%
-    select(version) %>% .[[1]]
-panther <- getURL("ftp://ftp.pantherdb.org/sequence_classifications/current_release/PANTHER_Sequence_Classification_files/",
-                  dirlistonly = TRUE) %>%
+    select(version) %>%
+    .[[1]]
+panther <- file.path(
+    "ftp://ftp.pantherdb.org",
+    "sequence_classifications",
+    "current_release",
+    "PANTHER_Sequence_Classification_files") %>%
+    paste0(., "/") %>%
+    getURL(dirlistonly = TRUE) %>%
     str_extract("(\\d{2}\\.\\d)") %>%
     paste0("PANTHER ", .)
-rstats <- paste0(R.Version()$version.string,
-                 " running on ",
-                 R.Version()$platform)
-build <- list(date = Sys.Date(),
-              ensembl = ensembl,
-              panther = panther,
-              rstats = rstats,
-              wormbase = wormbase,
-              sessionInfo = sessionInfo)
+rstats <- paste0(
+    R.Version()$version.string,
+    " running on ",
+    R.Version()$platform)
+build <- list(
+    date = Sys.Date(),
+    ensembl = ensembl,
+    panther = panther,
+    wormbase = wormbase,
+    rstats = rstats,
+    sessionInfo = sessionInfo)
 ```
 
 ```{r annotations}
@@ -90,7 +115,6 @@ annotations <- list(
     eggnog = eggnog,
     blastp = blastp,
     peptide = peptide,
-    build = build
-)
-saveData(annotations)
+    build = build)
+saveData(annotations, dir = "data", compress = "xz")
 ```
