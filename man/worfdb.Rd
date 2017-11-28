@@ -3,17 +3,22 @@
 \name{worfdb}
 \alias{worfdb}
 \alias{worfdbHTML}
+\alias{worfdbList}
 \alias{worfdbData}
 \title{Query WORFDB Website for RNAi Clone Annotations}
 \usage{
 worfdbHTML(sequence)
 
-worfdbData(worfdbHTML)
+worfdbList(worfdbHTML)
+
+worfdbData(worfdbList)
 }
 \arguments{
 \item{sequence}{Sequence identifier.}
 
 \item{worfdbHTML}{List of WORFDB HTML pages.}
+
+\item{worfdbList}{WORFDB list returned by \code{\link[=worfdbList]{worfdbList()}}.}
 }
 \description{
 Query WORFDB Website for RNAi Clone Annotations
