@@ -34,7 +34,7 @@ worfdbHTML <- function(sequence) {
 
 
 #' @rdname worfdb
-#' @importFrom stringr str_extract_all str_match_all str_replace
+#' @importFrom stringr str_extract_all str_match_all
 #' @param worfdbHTML List of WORFDB HTML pages.
 #' @export
 worfdbList <- function(worfdbHTML) {
@@ -42,7 +42,7 @@ worfdbList <- function(worfdbHTML) {
         html <- worfdbHTML[[a]] %>%
             # Remove `<map>` that has other clone information
             # This messes up well identifier matching otherwise
-            str_replace("<map.+</map>", "")
+            gsub(x = ., pattern = "<map.+</map>", replacement = "")
         clone <- html %>%
             str_extract_all("[0-9]{5}@[A-H][0-9]+") %>%
             unlist() %>%
@@ -116,7 +116,6 @@ worfdbList <- function(worfdbHTML) {
 #' @rdname worfdb
 #' @importFrom dplyr arrange bind_rows filter mutate
 #' @importFrom rlang !! sym
-#' @importFrom stringr str_replace_all
 #' @param worfdbList WORFDB list returned by [worfdbList()].
 #' @export
 worfdbData <- function(worfdbList) {
@@ -126,6 +125,10 @@ worfdbData <- function(worfdbList) {
     bind_rows() %>%
         arrange(!!sym("sequence")) %>%
         filter(!is.na(.data[["clone"]])) %>%
-        mutate(clone = str_replace_all(.data[["clone"]], "@", ""),
-               clone = str_replace_all(.data[["clone"]], "([A-Z]{1})0", "\\1"))
+        mutate(clone = gsub(x = .data[["clone"]],
+                            pattern = "@",
+                            replacement = ""),
+               clone = gsub(x = .data[["clone"]],
+                            pattern = "([A-Z]{1})0",
+                            replacement = "\\1"))
 }
