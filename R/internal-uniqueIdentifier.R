@@ -1,4 +1,4 @@
-uniqueIdentifier <- function(identifier) {
+.uniqueIdentifier <- function(identifier) {
     if (missing(identifier)) {
         stop("Identifier is required")
     } else if (!is.character(identifier)) {

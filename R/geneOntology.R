@@ -13,7 +13,7 @@
 #' @examples
 #' geneOntology("WBGene00000001") %>% glimpse()
 geneOntology <- function(identifier) {
-    identifier <- uniqueIdentifier(identifier)
+    identifier <- .uniqueIdentifier(identifier)
     list <- lapply(seq_along(identifier), function(a) {
         if (!grepl("^WBGene[0-9]{8}$", identifier[[a]])) {
             stop("Invalid gene identifier")
@@ -23,7 +23,7 @@ geneOntology <- function(identifier) {
             "gene",
             identifier[[a]],
             "gene_ontology") %>%
-            rest() %>%
+            .rest() %>%
             .[["fields"]] %>%
             .[["gene_ontology"]] %>%
             .[["data"]]

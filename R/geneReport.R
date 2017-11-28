@@ -11,7 +11,7 @@
 #' @return [tibble].
 #' @export
 geneReport <- function(identifier, format = "gene") {
-    identifier <- uniqueIdentifier(identifier)
+    identifier <- .uniqueIdentifier(identifier)
     gene <- gene(
         identifier,
         format = format,

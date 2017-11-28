@@ -21,7 +21,7 @@ cherrypick <- function(
     ahringer96 = FALSE,
     orfeome96 = TRUE,
     plates) {
-    df <- uniqueIdentifier(identifier) %>%
+    df <- .uniqueIdentifier(identifier) %>%
         gene(format = format) %>%
         right_join(
             rnai(.[["gene"]], format = "gene"),

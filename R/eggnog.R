@@ -8,10 +8,10 @@
 #' @return [tibble].
 #' @export
 eggnog <- function(identifier) {
-    identifier <- uniqueIdentifier(identifier)
-    annotation <-
-        get("annotations",
-            envir = asNamespace("worminfo"))[["eggnog"]][["annotation"]]
+    identifier <- .uniqueIdentifier(identifier)
+    annotation <- get("worminfo", envir = asNamespace("worminfo")) %>%
+        .[["eggnog"]] %>%
+        .[["annotation"]]
     annotationMatch <- annotation %>%
         .[.[["eggnog"]] %in% identifier, ] %>%
         # Hide "S = Function unknown" matches

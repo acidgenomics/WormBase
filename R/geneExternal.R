@@ -12,7 +12,7 @@
 #' @examples
 #' geneExternal("WBGene00000001") %>% glimpse()
 geneExternal <- function(identifier) {
-    identifier <- uniqueIdentifier(identifier)
+    identifier <- .uniqueIdentifier(identifier)
     list <- lapply(seq_along(identifier), function(a) {
         if (!grepl(pattern = "^WBGene[0-9]{8}$", x = identifier[[a]])) {
             stop("Invalid gene identifier")
@@ -22,7 +22,7 @@ geneExternal <- function(identifier) {
             "gene",
             identifier[[a]],
             "external_links") %>%
-            rest() %>%
+            .rest() %>%
             .[["fields"]] %>%
             .[["xrefs"]] %>%
             .[["data"]]

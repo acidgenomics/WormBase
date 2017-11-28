@@ -26,14 +26,15 @@ gene <- function(
     identifier,
     format = "gene",
     select = NULL) {
-    identifier <- uniqueIdentifier(identifier)
-    annotation <- get("annotations", envir = asNamespace("worminfo"))[["gene"]]
+    identifier <- .uniqueIdentifier(identifier)
+    annotation <- get("worminfo", envir = asNamespace("worminfo")) %>%
+        .[["gene"]]
     return <- mclapply(seq_along(identifier), function(a) {
         if (any(grepl(format, c("gene", "name")))) {
             return <- annotation %>%
                 .[.[[format]] %in% identifier[a], ]
         } else if (format == "sequence") {
-            sequence <- removeIsoform(identifier)
+            sequence <- .removeIsoform(identifier)
             return <- annotation %>%
                 .[.[[format]] %in% sequence[a], ]
         } else if (format == "class") {
