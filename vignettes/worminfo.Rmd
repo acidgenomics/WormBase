@@ -91,12 +91,13 @@ gene("WBGene00004804") %>%
     mdList()
 ```
 
-Let's `select` the biotype and [Ensembl][] description for [*sbp-1*][] (bHLH transcription factor):
+Let's `select()` the `status` and `otherIDs` for [*sbp-1*][] (bHLH transcription factor):
 
 ```{r}
 gene("sbp-1",
      format = "name",
-     select = c("biotype", "ensemblDescription")) %>% glimpse()
+     select = c("status", "otherIDs")) %>%
+    glimpse()
 ```
 
 
