@@ -32,7 +32,12 @@ worfdb <- bind_rows(worfdb1, worfdb2) %>%
     distinct() %>%
     arrange(clone) %>%
     left_join(geneIDs[, c("gene", "sequence")], by = "sequence")
-saveData(worfdb, dir = dataDir, compress = compress)
+saveData(
+    worfdb1,
+    worfdb2,
+    worfdb,
+    dir = dataDir,
+    compress = compress)
 ```
 
 Check for unmatched clones:
