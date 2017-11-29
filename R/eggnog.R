@@ -7,38 +7,47 @@
 #'
 #' @return [tibble].
 #' @export
+#'
+#' @examples
+#' # daf-2
+#' eggnog(c("KOG4258", "COG0515"))
+#'
+#' # Multiple EGGNOG letters
+#' eggnog("ENOG410IU5G") %>%
+#'     glimpse()
 eggnog <- function(identifier) {
     identifier <- .uniqueIdentifier(identifier)
     annotation <- worminfo::worminfo %>%
         .[["eggnog"]] %>%
         .[["annotation"]]
-    annotationMatch <- annotation %>%
+    match <- annotation %>%
         .[.[["eggnog"]] %in% identifier, ] %>%
         # Hide "S = Function unknown" matches
         .[.[["cogFunctionalCategory"]] != "S", ]
-    if (nrow(annotationMatch)) {
-        category <- worminfo::worminfo[["eggnog"]][["category"]]
-        categoryMatch <- lapply(seq_along(
-            annotationMatch[["cogFunctionalCategory"]]), function(a) {
-            letter <- annotationMatch[["cogFunctionalCategory"]][a] %>%
+    if (!nrow(match)) {
+        return(NULL)
+    }
+
+    # This step is needed to handle multiple EGGNOG category letters (e.g. AK)
+    category <- worminfo::worminfo[["eggnog"]][["category"]]
+    categoryMatch <- lapply(seq_along(
+        annotationMatch[["cogFunctionalCategory"]]), function(a) {
+            letter <- annotationMatch[["cogFunctionalCategory"]][[a]] %>%
                 strsplit("") %>%
                 unlist() %>%
                 sort() %>%
                 unique()
             category %>%
-                .[.[["cogFunctionalCategory"]] %in% letter, ] %>%
-                collapseToString()
+                .[.[["letter"]] %in% letter, ] %>%
+                collapseToString(sort = TRUE, unique = TRUE) %>%
+                mutate(letter = gsub(x = .data[["letter"]], ", ", ""))
         }) %>%
-            bind_rows() %>%
-            distinct()
-        categoryMatch[["cogFunctionalCategory"]] <-
-            gsub(pattern = ", ",
-                 replacement = "",
-                 x = categoryMatch[["cogFunctionalCategory"]])
-        annotationMatch <- left_join(
-            annotationMatch,
-            categoryMatch,
-            by = "cogFunctionalCategory")
-    }
-    annotationMatch
+        bind_rows() %>%
+        distinct() %>%
+        rename(cogFunctionalCategory = .data[["letter"]],
+               cogFunctionalDescription = .data[["description"]])
+    left_join(
+        match,
+        categoryMatch,
+        by = "cogFunctionalCategory")
 }
