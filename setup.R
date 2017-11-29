@@ -1,13 +1,22 @@
-library(basejump)
-library(devtools)
-library(magrittr)
-library(knitr)
-library(parallel)
-library(R.utils)
-library(RCurl)
-library(readxl)
-library(rmarkdown)
-library(tidyverse)
+# Load the required packages
+packages <- c(
+    "steinbaugh/basejump",
+    "devtools",
+    "knitr",
+    "magrittr",
+    "parallel",
+    "R.utils",
+    "RCurl",
+    "readxl",
+    "rmarkdown",
+    "tidyverse"
+)
+if (!all(basename(packages) %in% rownames(installed.packages()))) {
+    source("https://bioconductor.org/biocLite.R")
+    notInstalled <- setdiff(basename(packages), rownames(installed.packages()))
+    biocLite(pkgs = notInstalled)
+}
+invisible(lapply(basename(packages), library, character.only = TRUE))
 
 opts_chunk$set(
     audodep = TRUE,
