@@ -27,30 +27,30 @@ gene <- function(
     format = "gene",
     select = NULL) {
     identifier <- .uniqueIdentifier(identifier)
-    annotation <- get("worminfo", envir = asNamespace("worminfo")) %>%
+    worminfo <- get("worminfo", envir = asNamespace("worminfo")) %>%
         .[["gene"]]
     return <- mclapply(seq_along(identifier), function(a) {
         if (any(grepl(format, c("gene", "name")))) {
-            return <- annotation %>%
+            return <- worminfo %>%
                 .[.[[format]] %in% identifier[a], ]
         } else if (format == "sequence") {
             sequence <- .removeIsoform(identifier)
-            return <- annotation %>%
+            return <- worminfo %>%
                 .[.[[format]] %in% sequence[a], ]
         } else if (format == "class") {
-            name <- annotation %>%
+            name <- worminfo %>%
                 .[grepl(paste0("^", identifier[a], "-"), .[["name"]]), "name"]
             name <- name[[1L]]
-            return <- annotation %>%
+            return <- worminfo %>%
                 .[.[["name"]] %in% name, ]
         } else if (format == "keyword") {
             # `apply(..., 1)` processes by row
-            grepl <- apply(annotation, 1L, function(b) {
+            grepl <- apply(worminfo, 1L, function(b) {
                 any(grepl(identifier[a], b, ignore.case = TRUE))
             })
-            gene <- annotation[grepl, "gene"]
+            gene <- worminfo[grepl, "gene"]
             gene <- gene[[1L]]
-            return <- annotation %>%
+            return <- worminfo %>%
                 .[.[["gene"]] %in% gene, ]
         } else {
             stop("Invalid format")

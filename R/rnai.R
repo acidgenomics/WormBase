@@ -48,13 +48,13 @@ rnai <- function(
     }
 
     worminfo <- get("worminfo", envir = asNamespace("worminfo"))
-    rnai <- worminfo[["rnai"]]
-    gene <- worminfo[["gene"]][, defaultCol]
-    annotation <- left_join(rnai, gene, by = "gene") %>%
+    worminfo <- left_join(
+        worminfo[["rnai"]],
+        worminfo[["gene"]][, defaultCol],
+        by = "gene") %>%
         select(c(defaultCol), everything())
-    rm(worminfo, rnai, gene)
 
-    cloneCols <- setdiff(colnames(annotation), formatCols)
+    cloneCols <- setdiff(colnames(worminfo), formatCols)
 
     if (format == "clone") {
         match <- list()
@@ -68,7 +68,7 @@ rnai <- function(
         match[["orfeome"]] <- .matchClones(
             clones = orfeomeClones,
             cloneCol = "orfeome96",
-            annotation = annotation)
+            worminfo = worminfo)
 
         # Ahringer 384 well library
         ahringer384Grep <- "^ahringer384-"
@@ -79,7 +79,7 @@ rnai <- function(
         match[["ahringer384"]] <- .matchClones(
             clones = ahringer384Clones,
             cloneCol = "ahringer384",
-            annotation = annotation)
+            worminfo = worminfo)
 
         # Ahringer 96 well library
         ahringer96Grep <- "^ahringer96-"
@@ -90,7 +90,7 @@ rnai <- function(
         match[["ahringer96"]] <- .matchClones(
             clones = ahringer96Clones,
             cloneCol = "ahringer96",
-            annotation = annotation)
+            worminfo = worminfo)
 
         # Cherrypick 96 well library
         cherrypickLibs <- c("bzip", "kinase", "tf")
@@ -105,7 +105,7 @@ rnai <- function(
         match[["cherrypick"]] <- .matchClones(
             clones = cherrypickClones,
             cloneCol = "cherrypick96",
-            annotation = annotation)
+            worminfo = worminfo)
 
         match <- bind_rows(match)
         if (nrow(match) == 0) {
@@ -113,7 +113,7 @@ rnai <- function(
         }
         match[, c(format, defaultCol)]
     } else {
-        match <- annotation %>%
+        match <- worminfo %>%
             .[.[[format]] %in% query, ]
         if (nrow(match) == 0) {
             return(NULL)
@@ -131,7 +131,7 @@ rnai <- function(
 #' @importFrom basejump grepString
 #' @importFrom dplyr bind_rows
 #' @importFrom parallel mclapply
-.matchClones <- function(clones, cloneCol, annotation) {
+.matchClones <- function(clones, cloneCol, worminfo) {
     if (length(clones) == 0) {
         return(NULL)
     }
@@ -139,7 +139,7 @@ rnai <- function(
         grepString <- clones[[a]] %>%
             minimalClone() %>%
             grepString()
-        df <- annotation %>%
+        df <- worminfo %>%
             .[grepl(grepString, .[[cloneCol]]), , drop = FALSE]
         df[["clone"]] <- names(clones)[[a]]
         df
