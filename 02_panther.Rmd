@@ -13,6 +13,16 @@ source("setup.R")
 
 
 
+```{r functions}
+splitGOTerms <- function(x) {
+    x %>%
+        str_split(string = ., pattern = ";") %>%
+        unlist() %>%
+        unique() %>%
+        paste(collapse = " / ")
+}
+```
+
 ```{r panther}
 fileLocal <- transmit(
         file.path("ftp://ftp.pantherdb.org",
@@ -47,10 +57,7 @@ panther <- read_tsv(fileLocal, col_names = FALSE) %>%
         organism = NULL
     ) %>%
     group_by(gene) %>%
-    mutate_at(
-        c("goMF", "goBP", "goCC", "class", "pathway"),
-        funs(str_split(string = ., pattern = ";"))
-    )
+    mutate_at(c("goMF", "goBP", "goCC", "class", "pathway"), splitGOTerms)
 saveData(panther, dir = dataDir, compress = compress)
 glimpse(panther)
 ```
