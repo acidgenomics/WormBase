@@ -1,6 +1,6 @@
 #' worminfo
 #'
-#' C. elegans genome annotations and RNAi clone mappings.
+#' *C. elegans* genome annotations and RNAi clone mappings.
 #'
 #' @importFrom rlang .data
 "_PACKAGE"
