@@ -3,6 +3,7 @@
 #' @importFrom dplyr bind_rows filter mutate mutate_at select
 #' @importFrom magrittr set_names
 #' @importFrom rlang !!! syms
+#' @importFrom tibble as_tibble
 #'
 #' @param identifier Identifier.
 #' @param format Identifier format (`clone`, `gene`, `genePair`, `name`, or
@@ -13,23 +14,34 @@
 #'
 #' @examples
 #' # WORFDB ORFeome clones
-#' rnai("orfeome96-11010-G06")
-#' rnai("GHR-11010@G06")
+#' rnai("orfeome96-11010-G06") %>%
+#'     glimpse()
+#' rnai("GHR-11010@G06") %>%
+#'     glimpse()
 #'
 #' # Ahringer clones
-#' rnai("ahringer384-III-6-C01")
-#' rnai("ahringer96-86-B01")
+#' rnai("ahringer384-III-6-C01") %>%
+#'     glimpse()
+#' rnai("ahringer96-86-B01") %>%
+#'     glimpse()
 #'
 #' # Mixed clone types (e.g. sbp-1 clones)
 #' rnai(c("orfeome96-11010-G06",
 #'        "ahringer384-III-6-C01",
-#'        "ahringer96-86-B01"))
+#'        "ahringer96-86-B01")) %>%
+#'     glimpse()
 #'
 #' # Clone retrieval by gene
-#' rnai("sbp-1", format = "name")
-#' rnai("WBGene00004735", format = "gene")
-#' rnai("Y47D3B.7", format = "sequence")
-#' rnai("Y53H1C.b", format = "genePair")
+#' rnai("sbp-1", format = "name") %>%
+#'     glimpse()
+#' rnai("WBGene00004735", format = "gene") %>%
+#'     glimpse()
+#' rnai("Y47D3B.7", format = "sequence") %>%
+#'     glimpse()
+#'
+#' # aat-9 by genePair
+#' rnai("Y53H1C.b", format = "genePair") %>%
+#'     glimpse()
 rnai <- function(
     identifier,
     format = "clone") {
@@ -112,6 +124,12 @@ rnai <- function(
             return(NULL)
         }
         match[, c(format, defaultCol)]
+    } else if (format == "genePair") {
+        # Need to use grep string method
+        .matchClones(
+            query,
+            cloneCol = "genePair",
+            worminfo = worminfo)
     } else {
         match <- worminfo %>%
             .[.[[format]] %in% query, ]
@@ -122,6 +140,7 @@ rnai <- function(
             select(unique(c(format, defaultCol)), everything()) %>%
             distinct() %>%
             mutate_at(c(cloneCols), prettyClone) %>%
-            mutate(cherrypick96 = NULL)
+            mutate(cherrypick96 = NULL) %>%
+            as_tibble()
     }
 }

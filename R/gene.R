@@ -13,7 +13,7 @@
 #' @param select Columns to select. Consult `vignette("gene")` for the list of
 #'   available parameters.
 #'
-#' @return [data.frame].
+#' @return [tibble].
 #' @export
 #'
 #' @examples
@@ -24,7 +24,8 @@
 #' gene("T19E7.2", format = "sequence")
 #'
 #' # description
-#' gene("WBGene00004804", select = "descriptionConcise")
+#' gene("WBGene00004804", select = "descriptionConcise") %>%
+#'     glimpse()
 #'
 #' # class
 #' gene("daf", format = "class")
@@ -99,5 +100,5 @@ gene <- function(
             return <- arrange(return, !!!syms(unique(format, defaultCol)))
         }
     }
-    as.data.frame(return)
+    as_tibble(return)
 }

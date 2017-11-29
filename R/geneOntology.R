@@ -13,7 +13,8 @@
 #' @export
 #'
 #' @examples
-#' geneOntology("WBGene00000001") %>% glimpse()
+#' geneOntology("WBGene00000001") %>%
+#'     glimpse()
 geneOntology <- function(identifier) {
     identifier <- .uniqueIdentifier(identifier)
     list <- lapply(seq_along(identifier), function(a) {

@@ -10,6 +10,10 @@
 #'
 #' @return [data.frame].
 #' @export
+#'
+#' @examples
+#' microplate() %>%
+#'     head()
 microplate <- function(
     plate = 1L,
     well = 96L,

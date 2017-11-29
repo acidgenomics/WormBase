@@ -10,7 +10,8 @@
 #' @export
 #'
 #' @examples
-#' geneExternal("WBGene00000001") %>% glimpse()
+#' geneExternal("WBGene00000001") %>%
+#'     glimpse()
 geneExternal <- function(identifier) {
     identifier <- .uniqueIdentifier(identifier)
     list <- lapply(seq_along(identifier), function(a) {

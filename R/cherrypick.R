@@ -9,6 +9,10 @@
 #'
 #' @return RNAi clone [list] by gene.
 #' @export
+#'
+#' @examples
+#' cherrypick("unfolded protein response", format = "keyword") %>%
+#'     glimpse()
 cherrypick <- function(
     identifier,
     format = "keyword") {
