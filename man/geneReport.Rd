@@ -17,3 +17,7 @@ geneReport(identifier, format = "gene")
 \description{
 Gene List Report
 }
+\examples{
+geneReport("daf-2", format = "name") \%>\%
+    glimpse()
+}

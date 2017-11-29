@@ -16,5 +16,6 @@ JSON content \link{tibble}.
 WormBase RESTful RNAi Gene Ontology Query
 }
 \examples{
-geneOntology("WBGene00000001") \%>\% glimpse()
+geneOntology("WBGene00000001") \%>\%
+    glimpse()
 }

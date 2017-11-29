@@ -21,3 +21,7 @@ microplate(plate = 1L, well = 96L, control = 0L, prefix)
 \description{
 Generate Well Identifiers for a Microtiter Plate
 }
+\examples{
+microplate() \%>\%
+    head()
+}

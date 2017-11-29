@@ -4,26 +4,20 @@
 \alias{cherrypick}
 \title{Cherrypick RNAi Clones by Keyword}
 \usage{
-cherrypick(identifier, format = "keyword", ahringer384 = TRUE,
-  ahringer96 = FALSE, orfeome96 = TRUE, plates)
+cherrypick(identifier, format = "keyword")
 }
 \arguments{
 \item{identifier}{Keyword identifier.}
 
 \item{format}{Identifier format.}
-
-\item{ahringer384}{Include Ahringer 384 well library.}
-
-\item{ahringer96}{Include Ahringer 96 well library.}
-
-\item{orfeome96}{Include ORFeome 96 well library.}
-
-\item{plates}{\emph{Optional}. Character vector of reference plates (for
-subsetting).}
 }
 \value{
 RNAi clone \link{list} by gene.
 }
 \description{
 Cherrypick RNAi Clones by Keyword
+}
+\examples{
+cherrypick("unfolded protein response", format = "keyword") \%>\%
+    glimpse()
 }

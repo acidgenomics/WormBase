@@ -16,15 +16,25 @@ gene(identifier, format = "gene", select = NULL)
 available parameters.}
 }
 \value{
-\link{data.frame}.
+\link{tibble}.
 }
 \description{
 Gene Mapping
 }
 \examples{
+# name
 gene("skn-1", format = "name")
+
+# sequence
 gene("T19E7.2", format = "sequence")
-gene("WBGene00004804", select = "descriptionConcise")
+
+# description
+gene("WBGene00004804", select = "descriptionConcise") \%>\%
+    glimpse()
+
+# class
 gene("daf", format = "class")
+
+# keyword
 gene("bzip", format = "keyword")
 }

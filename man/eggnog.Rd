@@ -15,3 +15,12 @@ eggnog(identifier)
 \description{
 EggNOG Annotations
 }
+\examples{
+# daf-2
+eggnog(c("KOG4258", "COG0515")) \%>\%
+    glimpse()
+
+# Multiple EGGNOG letters
+eggnog("ENOG410IU5G") \%>\%
+    glimpse()
+}

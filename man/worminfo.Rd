@@ -11,4 +11,4 @@ worminfo
 \description{
 Gene and RNAi clone annotations.
 }
-\keyword{datasets}
+\keyword{internal}

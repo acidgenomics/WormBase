@@ -6,7 +6,7 @@
 \alias{worminfo-package}
 \title{worminfo}
 \description{
-C. elegans genome annotations and RNAi clone mappings.
+\emph{C. elegans} genome annotations and RNAi clone mappings.
 }
 \seealso{
 Useful links:
