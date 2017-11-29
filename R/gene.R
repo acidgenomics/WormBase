@@ -17,29 +17,37 @@
 #' @export
 #'
 #' @examples
+#' # name
 #' gene("skn-1", format = "name")
+#'
+#' # sequence
 #' gene("T19E7.2", format = "sequence")
+#'
+#' # description
 #' gene("WBGene00004804", select = "descriptionConcise")
+#'
+#' # class
 #' gene("daf", format = "class")
+#'
+#' # keyword
 #' gene("bzip", format = "keyword")
 gene <- function(
     identifier,
     format = "gene",
     select = NULL) {
     identifier <- .uniqueIdentifier(identifier)
-    worminfo <- get("worminfo", envir = asNamespace("worminfo")) %>%
-        .[["gene"]]
+    worminfo <- worminfo::worminfo[["gene"]]
     return <- mclapply(seq_along(identifier), function(a) {
         if (any(grepl(format, c("gene", "name")))) {
             return <- worminfo %>%
-                .[.[[format]] %in% identifier[a], ]
+                .[.[[format]] %in% identifier[[a]], ]
         } else if (format == "sequence") {
             sequence <- .removeIsoform(identifier)
             return <- worminfo %>%
-                .[.[[format]] %in% sequence[a], ]
+                .[.[[format]] %in% sequence[[a]], ]
         } else if (format == "class") {
             name <- worminfo %>%
-                .[grepl(paste0("^", identifier[a], "-"), .[["name"]]), "name"]
+                .[grepl(paste0("^", identifier[[a]], "-"), .[["name"]]), "name"]
             name <- name[[1L]]
             return <- worminfo %>%
                 .[.[["name"]] %in% name, ]

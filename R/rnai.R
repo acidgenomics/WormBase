@@ -47,7 +47,7 @@ rnai <- function(
         query <- identifier
     }
 
-    worminfo <- get("worminfo", envir = asNamespace("worminfo"))
+    worminfo <- worminfo::worminfo
     worminfo <- left_join(
         worminfo[["rnai"]],
         worminfo[["gene"]][, defaultCol],
