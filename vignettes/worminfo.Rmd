@@ -12,7 +12,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# Overview
+## Overview
 
 The goal of the [worminfo][] package is to quickly and simply provide correct, up-to-date annotation data for the entire *C. elegans* genome. The underlying gene annotations are periodically sourced from [WormBase][], [Ensembl][], and [PANTHER][]. RNAi clone annotations are sourced from the official [ORFeome][] and [Ahringer][] repositories. [WormBase][] is updated on a bi-monthly [release schedule](http://www.wormbase.org/about/release_schedule). If the source data appears outdated, file an [update request](https://github.com/steinbaugh/worminfo/issues) on our [GitHub repository](https://github.com/steinbaugh/worminfo), and we'll promptly issue a rebuild. When the package is loaded, the most recent annotation data is downloaded from our server then cached locally for quick access.
 
@@ -33,7 +33,7 @@ library(tidyverse)
 
 
 
-# Gene queries
+## Gene queries
 
 `gene()` accepts multiple `identifier` formats:
 
@@ -70,7 +70,7 @@ gene("unfolded protein response", format = "keyword")
 ```
 
 
-## `select` arguments
+### `select` arguments
 
 The `gene()` function contains annotation data that can be queried using the `select` parameter:
 
@@ -99,12 +99,12 @@ gene("sbp-1",
 
 
 
-# RNAi clone queries
+## RNAi clone queries
 
 RNA interference libraries are commonly used in *C. elegans* research. RNAi clones are typically referenced by a gene pair or open reading frame (ORF) sequence, which are often difficult to map to an up-to-date gene identifier. We have written the `rnai()` function to solve this problem. The function enables a researcher to search for RNAi clones by a gene identifier, or map an RNAi clone by plate location and return the up-to-date [WormBase][] gene identifier. The `rnai()` function has built-in support for the commonly used [ORFeome][] and [Ahringer][] RNAi libraries.
 
 
-## Find clones by gene identifier
+### Find clones by gene identifier
 
 Let's find the locations of [*sbp-1*][] in the [Ahringer][] and [ORFeome][]
 libraries. This can be done easily with the `rnai()` function, just search by
@@ -124,13 +124,13 @@ rnai("Y47D3B.7", format = "genePair")
 ```
 
 
-## Map clones by plate location
+### Map clones by plate location
 
 The `rnai()` function was written to simplify the task of identifying wells of
 interest in an RNAi screen. You can simply input the well identifiers by plate
 location, and `rnai()` will return up-to-date gene identifiers from [WormBase][].
 
-### [Ahringer][] library format
+#### [Ahringer][] library format
 
 Well identifiers for the [Ahringer][] 384 well library must include a chromosome prefix in roman numeral format. The 96 well [Ahringer][] library has unique plate numbers and does not require a chromosome prefix.
 
@@ -141,7 +141,7 @@ c("ahringer384-III-6C01",
     glimpse()
 ```
 
-### [ORFeome][] library format
+#### [ORFeome][] library format
 
 We advise formatting identifiers for the 96 well [ORFeome][] library as `orfeome96-10001-A01`. However, the function is flexible, and also supports the historical format (e.g. `GHR-11010@G06`):
 
@@ -153,7 +153,7 @@ c("GHR-11010@G06",
 ```
 
 
-## Construct a cherrypick library
+### Construct a cherrypick library
 
 Here's a how to generate a list of [ORFeome][] clones that target the unfolded protein response:
 
