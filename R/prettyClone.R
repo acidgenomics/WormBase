@@ -11,20 +11,23 @@
 #'
 #' @export
 prettyClone <- function(identifier) {
-    identifier %>%
-        strsplit(split = ", ") %>%
-        .[[1L]] %>%
-        # Pad well numbers
-        gsub(x = .,
-             pattern = "(\\D)(\\d)$",
-             replacement = "\\10\\2") %>%
-        # Well separator
-        gsub(x = .,
-             pattern = "(\\d+)(\\D\\d{2})$",
-             replacement = "\\1-\\2") %>%
-        # Plate separator
-        gsub(x = .,
-             pattern = "^([a-z]+|[IVX]+)(\\d+)-",
-             replacement = "\\1-\\2-") %>%
-        toString()
+    vapply(identifier, FUN = function(x) {
+        x %>%
+            strsplit(split = ", ") %>%
+            .[[1L]] %>%
+            # Pad well numbers
+            gsub(x = .,
+                 pattern = "(\\D)(\\d)$",
+                 replacement = "\\10\\2") %>%
+            # Well separator
+            gsub(x = .,
+                 pattern = "(\\d+)(\\D\\d{2})$",
+                 replacement = "\\1-\\2") %>%
+            # Plate separator
+            gsub(x = .,
+                 pattern = "^([a-z]+|[IVX]+)(\\d+)-",
+                 replacement = "\\1-\\2-") %>%
+            toString()
+    },
+    FUN.VALUE = character(1))
 }
