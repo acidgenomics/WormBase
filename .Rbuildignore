@@ -11,3 +11,5 @@
 ^docs/
 ^NEWS\.md$
 ^setup\.R$
+^_pkgdown\.yml$
+^pkgdown$
