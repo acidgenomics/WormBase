@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  <link href="../extra.css" rel="stylesheet">
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,16 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../articles/worminfo.html">Get Started</a>
+</li>
+<li>
+  <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
       
@@ -78,7 +85,7 @@
     <div class="page-header">
       <h1>
         Reference
-        <small>version&nbsp;0.99.0</small>
+        <small>version&nbsp;0.1.0</small>
       </h1>
     </div>
 
@@ -100,69 +107,51 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="annotations.html">annotations</a></code> </p>
-          </td>
-          <td><p>Gene annotations</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
             <p><code><a href="cherrypick.html">cherrypick</a></code> </p>
           </td>
-          <td><p>Cherrypick RNAi clones by keyword</p></td>
+          <td><p>Cherrypick RNAi Clones by Keyword</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="eggnog.html">eggnog</a></code> </p>
           </td>
-          <td><p>EggNOG annotations</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="ensembl.html">ensemblBasic</a></code> <code><a href="ensembl.html">ensemblGeneOntology</a></code> <code><a href="ensembl.html">ensemblInterpro</a></code> <code><a href="ensembl.html">ensemblPeptide</a></code> </p>
-          </td>
-          <td><p><a href = 'http://www.ensembl.org'>Ensembl</a> utility functions</p></td>
+          <td><p>EggNOG Annotations</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="gene.html">gene</a></code> </p>
           </td>
-          <td><p>Gene mapping</p></td>
+          <td><p>Gene Mapping</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="geneExternal.html">geneExternal</a></code> </p>
           </td>
-          <td><p>WormBase RESTful gene external query</p></td>
+          <td><p>WormBase RESTful Gene External Query</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="geneOntology.html">geneOntology</a></code> </p>
           </td>
-          <td><p>WormBase RESTful RNAi gene ontology query</p></td>
+          <td><p>WormBase RESTful RNAi Gene Ontology Query</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="geneReport.html">geneReport</a></code> </p>
           </td>
-          <td><p>Gene list report</p></td>
+          <td><p>Gene List Report</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="microplate.html">microplate</a></code> </p>
           </td>
-          <td><p>Generate well identifiers for a microplate</p></td>
+          <td><p>Generate Well Identifiers for a Microtiter Plate</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="rnai.html">rnai</a></code> </p>
           </td>
-          <td><p>RNAi clone mapping</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="uniprot.html">uniprot</a></code> </p>
-          </td>
-          <td><p>UniProt web service query</p></td>
+          <td><p>RNAi Clone Mapping</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -185,7 +174,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Michael Steinbaugh.</p>
+  <p>Developed by <a href='http://steinbaugh.com'>Michael Steinbaugh</a>.</p>
 </div>
 
 <div class="pkgdown">

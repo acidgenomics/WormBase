@@ -6,13 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Gene mapping — gene • worminfo</title>
+<title>Gene Mapping — gene • worminfo</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  <link href="../extra.css" rel="stylesheet">
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,16 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../articles/worminfo.html">Get Started</a>
+</li>
+<li>
+  <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
       
@@ -76,11 +83,11 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Gene mapping</h1>
+    <h1>Gene Mapping</h1>
     </div>
 
     
-    <p>Gene mapping</p>
+    <p>Gene Mapping</p>
     
 
     <pre class="usage"><span class='fu'>gene</span>(<span class='no'>identifier</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"gene"</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
@@ -90,7 +97,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>identifier</th>
-      <td><p>Identifier</p></td>
+      <td><p>Identifier.</p></td>
     </tr>
     <tr>
       <th>format</th>
@@ -99,28 +106,37 @@
     </tr>
     <tr>
       <th>select</th>
-      <td><p>Columns to select. Consult <code><a href='../articles/gene.html'>vignette("gene")</a></code> for the list of
+      <td><p>Columns to select. Consult <code>vignette("gene")</code> for the list of
 available parameters.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Tibble.</p>
+    <p><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>gene</span>(<span class='st'>"skn-1"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"name"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 3
+    <pre class="examples"><div class='input'><span class='co'># name</span>
+<span class='fu'>gene</span>(<span class='st'>"skn-1"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"name"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 3
 #&gt;    name           gene sequence
 #&gt;   &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt;
-#&gt; 1 skn-1 WBGene00004804  T19E7.2</div><div class='input'><span class='fu'>gene</span>(<span class='st'>"T19E7.2"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"sequence"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 3
+#&gt; 1 skn-1 WBGene00004804  T19E7.2</div><div class='input'>
+<span class='co'># sequence</span>
+<span class='fu'>gene</span>(<span class='st'>"T19E7.2"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"sequence"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 3
 #&gt;   sequence           gene  name
 #&gt;      &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt;
-#&gt; 1  T19E7.2 WBGene00004804 skn-1</div><div class='input'><span class='fu'>gene</span>(<span class='st'>"WBGene00004804"</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='st'>"descriptionConcise"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
-#&gt;             gene sequence  name
-#&gt;            &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;
-#&gt; 1 WBGene00004804  T19E7.2 skn-1
-#&gt; # ... with 1 more variables: descriptionConcise &lt;chr&gt;</div><div class='input'><span class='fu'>gene</span>(<span class='st'>"daf"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"class"</span>)</div><div class='output co'>#&gt; # A tibble: 34 x 4
+#&gt; 1  T19E7.2 WBGene00004804 skn-1</div><div class='input'>
+<span class='co'># description</span>
+<span class='fu'>gene</span>(<span class='st'>"WBGene00004804"</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='st'>"descriptionConcise"</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/glimpse'>glimpse</a></span>()</div><div class='output co'>#&gt; Observations: 1
+#&gt; Variables: 4
+#&gt; $ gene               &lt;chr&gt; "WBGene00004804"
+#&gt; $ sequence           &lt;chr&gt; "T19E7.2"
+#&gt; $ name               &lt;chr&gt; "skn-1"
+#&gt; $ descriptionConcise &lt;chr&gt; "skn-1 encodes a bZip transcription factor ortho...</div><div class='input'>
+<span class='co'># class</span>
+<span class='fu'>gene</span>(<span class='st'>"daf"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"class"</span>)</div><div class='output co'>#&gt; # A tibble: 34 x 4
 #&gt;    class           gene sequence   name
 #&gt;    &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;
 #&gt;  1   daf WBGene00000897  F29C4.1  daf-1
@@ -133,7 +149,9 @@ available parameters.</p></td>
 #&gt;  8   daf WBGene00000904 R05D11.1  daf-8
 #&gt;  9   daf WBGene00000905  T13C5.1  daf-9
 #&gt; 10   daf WBGene00000906  F23B2.4 daf-10
-#&gt; # ... with 24 more rows</div><div class='input'><span class='fu'>gene</span>(<span class='st'>"bzip"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"keyword"</span>)</div><div class='output co'>#&gt; # A tibble: 78 x 4
+#&gt; # ... with 24 more rows</div><div class='input'>
+<span class='co'># keyword</span>
+<span class='fu'>gene</span>(<span class='st'>"bzip"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"keyword"</span>)</div><div class='output co'>#&gt; # A tibble: 75 x 4
 #&gt;              gene keyword sequence  name
 #&gt;             &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;
 #&gt;  1 WBGene00000026    bzip  F31A3.1 abu-3
@@ -142,11 +160,11 @@ available parameters.</p></td>
 #&gt;  4 WBGene00000221    bzip T04C10.4 atf-5
 #&gt;  5 WBGene00000222    bzip  F45E6.2 atf-6
 #&gt;  6 WBGene00000223    bzip  C07G2.2 atf-7
-#&gt;  7 WBGene00000271    bzip F45E12.2 brf-1
-#&gt;  8 WBGene00000366    bzip R10E11.1 cbp-1
-#&gt;  9 WBGene00000468    bzip F43G9.11 ces-1
-#&gt; 10 WBGene00000469    bzip  ZK909.4 ces-2
-#&gt; # ... with 68 more rows</div></pre>
+#&gt;  7 WBGene00000366    bzip R10E11.1 cbp-1
+#&gt;  8 WBGene00000468    bzip F43G9.11 ces-1
+#&gt;  9 WBGene00000469    bzip  ZK909.4 ces-2
+#&gt; 10 WBGene00000793    bzip Y41C4A.4 crh-1
+#&gt; # ... with 65 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -163,7 +181,7 @@ available parameters.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Michael Steinbaugh.</p>
+  <p>Developed by <a href='http://steinbaugh.com'>Michael Steinbaugh</a>.</p>
 </div>
 
 <div class="pkgdown">

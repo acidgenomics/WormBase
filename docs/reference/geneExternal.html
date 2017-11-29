@@ -6,13 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>WormBase RESTful gene external query — geneExternal • worminfo</title>
+<title>WormBase RESTful Gene External Query — geneExternal • worminfo</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  <link href="../extra.css" rel="stylesheet">
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,16 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../articles/worminfo.html">Get Started</a>
+</li>
+<li>
+  <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
       
@@ -76,11 +83,11 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>WormBase RESTful gene external query</h1>
+    <h1>WormBase RESTful Gene External Query</h1>
     </div>
 
     
-    <p>WormBase RESTful gene external query</p>
+    <p>WormBase RESTful Gene External Query</p>
     
 
     <pre class="usage"><span class='fu'>geneExternal</span>(<span class='no'>identifier</span>)</pre>
@@ -96,21 +103,23 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>JSON content tibble.</p>
+    <p>JSON content <a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>geneExternal</span>(<span class='st'>"WBGene00000001"</span>) <span class='kw'>%&gt;%</span> <span class='no'>glimpse</span></div><div class='output co'>#&gt; Observations: 1
-#&gt; Variables: 11
-#&gt; $ aceview   &lt;chr&gt; "1F677"
+    <pre class="examples"><div class='input'><span class='fu'>geneExternal</span>(<span class='st'>"WBGene00000001"</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/glimpse'>glimpse</a></span>()</div><div class='output co'>#&gt; Observations: 1
+#&gt; Variables: 12
 #&gt; $ ncbi      &lt;chr&gt; "172141"
+#&gt; $ aceview   &lt;chr&gt; "1F677"
 #&gt; $ ndb       &lt;chr&gt; "CELE_Y110A7A.10"
-#&gt; $ trembl    &lt;chr&gt; "G5EDP9"
 #&gt; $ wormqtl   &lt;chr&gt; "WBGene00000001"
+#&gt; $ trembl    &lt;chr&gt; "G5EDP9"
 #&gt; $ refseq    &lt;chr&gt; "NP_491522.1"
+#&gt; $ panther   &lt;chr&gt; "CAEEL|WormBase=WBGene00000001|UniProtKB=G5EDP9"
 #&gt; $ signalink &lt;chr&gt; "WBGene00000001"
 #&gt; $ treefam   &lt;chr&gt; "TF102033"
-#&gt; $ omim      &lt;chr&gt; "171833, 606076, 603157"
+#&gt; $ omim      &lt;chr&gt; "603157, 606076, 171833"
 #&gt; $ wormflux  &lt;chr&gt; "WBGene00000001"
 #&gt; $ gene      &lt;chr&gt; "WBGene00000001"</div></pre>
   </div>
@@ -124,16 +133,12 @@
       <li><a href="#examples">Examples</a></li>
     </ul>
 
-    <h2>Author</h2>
-    
-Michael Steinbaugh
-
   </div>
 </div>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Michael Steinbaugh.</p>
+  <p>Developed by <a href='http://steinbaugh.com'>Michael Steinbaugh</a>.</p>
 </div>
 
 <div class="pkgdown">
