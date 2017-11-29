@@ -1,5 +1,5 @@
 ---
-title: "Cherrypick RNAi library annotations"
+title: "Build Annotations"
 date: "`r BiocStyle::doc_date()`"
 ---
 
@@ -7,13 +7,13 @@ date: "`r BiocStyle::doc_date()`"
 source("setup.R")
 ```
 
-```{r render}
+```{r render, results="hide"}
 render("01_wormbase.Rmd")
 render("02_panther.Rmd")
 render("03_eggnog.Rmd")
-render("04_worfdb.Rmd")
-render("05_ahringer.Rmd")
-render("06_cherrypick.Rmd")
+render("04_rnai_ahringer.Rmd")
+render("05_rnai_cherrypick.Rmd")
+render("06_rnai_worfdb.Rmd")
 ```
 
 ```{r load}
