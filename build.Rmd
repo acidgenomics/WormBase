@@ -59,25 +59,13 @@ cherrypick_bind <- cherrypick %>%
 worfdb_bind <- worfdb %>%
     select(gene, sequence, clone) %>%
     rename(genePair = sequence,
-           worfdb96 = clone)
-
-standardizeClones <- function(x) {
-    x %>%
-        # Remove `@` and `-` from clones
-        gsub(x = .,
-             pattern = "[@-]",
-             replacement = "") %>%
-        # Strip padded zero from well number
-        gsub(x = .,
-             pattern = "([A-Z])0([1-9])",
-             replacement = "\\1\\2")
-}
+           orfeome96 = clone)
 
 rnai <- bind_rows(ahringer_bind, cherrypick_bind, worfdb_bind) %>%
     filter(!is.na(gene)) %>%
     select(gene,
            genePair,
-           worfdb96,
+           orfeome96,
            ahringer384,
            ahringer96,
            cherrypick96) %>%
@@ -85,11 +73,11 @@ rnai <- bind_rows(ahringer_bind, cherrypick_bind, worfdb_bind) %>%
     collapseToString(sort = TRUE, unique = TRUE) %>%
     fixNA() %>%
     mutate_at(
-        c("worfdb96",
+        c("orfeome96",
           "ahringer384",
           "ahringer96",
           "cherrypick96"),
-        standardizeClones)
+        minimalClone)
 ```
 
 ```{r build}
