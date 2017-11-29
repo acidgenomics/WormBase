@@ -1,4 +1,4 @@
-# FIXME Unknown or uninitialised column: 'cogFunctionalCategory'.
+# FIXME Need to improve the appearance of GO terms
 
 #' UniProt Web Service Query
 #'
