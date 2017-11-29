@@ -14,6 +14,7 @@
             x = identifier)
     }
     identifier %>%
+        na.omit() %>%
         unique() %>%
         sort()
 }
