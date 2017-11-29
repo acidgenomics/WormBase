@@ -1,15 +1,19 @@
-# FIXME column mismatch
-
 #' Gene List Report
 #'
-#' @importFrom dplyr arrange everything left_join select
+#' @importFrom basejump annotable
+#' @importFrom dplyr arrange everything left_join mutate rename select
 #' @importFrom rlang !!! syms
+#' @importFrom tibble as_tibble remove_rownames
 #'
 #' @param identifier Gene identifier.
 #' @param format Identifier format.
 #'
 #' @return [tibble].
 #' @export
+#'
+#' @examples
+#' geneReport("daf-2", format = "name") %>%
+#'     glimpse()
 geneReport <- function(identifier, format = "gene") {
     identifier <- .uniqueIdentifier(identifier)
     gene <- gene(
@@ -17,41 +21,46 @@ geneReport <- function(identifier, format = "gene") {
         format = format,
         select = c(defaultCol,
                    "class",
-                   "biotype",
-                   # Ortholog
-                   "blastpHsapiensGene",
-                   "blastpHsapiensName",
-                   "blastpHsapiensDescription",
-                   "orthologHsapiens",
-                   # Description
+                   # Ortholog ====
+                   "ortholog",
+                   # FIXME Need to add the blastp matching back with biomaRt
+                   # Description ====
                    "descriptionConcise",
-                   "descriptionProvisional",
-                   "descriptionAutomated",
-                   "ensemblDescription",
-                   # WormBase Additional
+                   # WormBase Additional ====
                    "rnaiPhenotype",
-                   # Gene Ontology
-                   "ensemblGeneOntology",
-                   "interpro",
-                   "pantherFamilyName",
+                   # Gene Ontology ====
                    "pantherSubfamilyName",
-                   "pantherGeneOntologyMolecularFunction",
-                   "pantherGeneOntologyBiologicalProcess",
-                   "pantherGeneOntologyCellularComponent",
-                   "pantherClass"))
-    if (nrow(gene)) {
-        identifier <- gene[["gene"]]
-        return <- gene
-        geneOntology <- geneOntology(identifier)
-        if (nrow(geneOntology)) {
-            return <- left_join(return, geneOntology, by = "gene")
-        }
-        uniprot <- uniprot(identifier)
-        if (nrow(uniprot)) {
-            return <- left_join(return, uniprot, by = "gene")
-        }
-        return %>%
-            select(defaultCol, everything()) %>%
-            arrange(!!!syms(defaultCol))
+                   "pantherGoMF",
+                   "pantherGoBP",
+                   "pantherGoCC",
+                   "pantherClass",
+                   "pantherPathway"))
+    if (!nrow(gene)) {
+        return(NULL)
     }
+
+    annotable <- annotable("Caenorhabditis elegans") %>%
+        remove_rownames() %>%
+        as_tibble() %>%
+        mutate(symbol = NULL) %>%
+        rename(ensemblDescription = .data[["description"]])
+    report <- left_join(gene, annotable, by = c("gene" = "ensgene"))
+
+    genes <- pull(report, "gene")
+
+    # Gene Ontology
+    geneOntology <- geneOntology(genes)
+    if (nrow(geneOntology)) {
+        report <- left_join(report, geneOntology, by = "gene")
+    }
+
+    # Uniprot
+    uniprot <- uniprot(genes)
+    if (nrow(uniprot)) {
+        report <- left_join(report, uniprot, by = "gene")
+    }
+
+    report %>%
+        select(defaultCol, everything()) %>%
+        arrange(!!!syms(defaultCol))
 }
