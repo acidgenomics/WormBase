@@ -1,10 +1,7 @@
 ---
 title: "worminfo"
 date: "`r BiocStyle::doc_date()`"
-author:
-- name: "`r getOption('author') `"
-  affiliation: "`r getOption('affiliation') `"
-  email: "`r getOption('email') `"
+author: "`r getOption('author') `"
 abstract: >
   Abstract placeholder text.
 bibliography: worminfo.bib
@@ -22,16 +19,16 @@ The goal of the [worminfo][] package is to quickly and simply provide correct, u
 ```{r install, eval=FALSE}
 source("https://bioconductor.org/biocLite.R")
 biocLite(c(
-    "tidyverse",
     "steinbaugh/basejump",
     "steinbaugh/worminfo"
 ))
+biocLite("tidyverse")
 ```
 
 ```{r setup, message=FALSE}
 library(basejump)
-library(tidyverse)
 library(worminfo)
+library(tidyverse)
 ```
 
 
@@ -73,7 +70,7 @@ gene("unfolded protein response", format = "keyword")
 ```
 
 
-## `select` options
+## `select` arguments
 
 The `gene()` function contains annotation data that can be queried using the `select` parameter:
 
@@ -114,7 +111,8 @@ libraries. This can be done easily with the `rnai()` function, just search by
 `name`:
 
 ```{r}
-rnai("sbp-1", format = "name") %>% glimpse()
+rnai("sbp-1", format = "name") %>%
+    glimpse()
 ```
 
 Alternatively, you can map by `gene`, `sequence` (ORF), or legacy `genePair`. These queries return the same result:
@@ -160,11 +158,7 @@ c("GHR-11010@G06",
 Here's a how to generate a list of [ORFeome][] clones that target the unfolded protein response:
 
 ```{r}
-cherrypick(
-    "unfolded protein response",
-    ahringer96 = FALSE,
-    ahringer384 = FALSE,
-    orfeome96 = TRUE)
+cherrypick("unfolded protein response", format = "keyword")
 ```
 
 
