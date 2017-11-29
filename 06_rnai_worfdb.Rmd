@@ -5,14 +5,6 @@ date: "`r BiocStyle::doc_date()`"
 
 ```{r setup, message=FALSE}
 source("setup.R")
-```
-
-```{r header, child="_header.Rmd"}
-```
-
-
-
-```{r load}
 loadData(
     geneIDs,
     worfdbHTML,
@@ -20,32 +12,47 @@ loadData(
     dir = dataDir)
 ```
 
+```{r header, child="_header.Rmd"}
+```
+
+
+
 ```{r worfdb}
-worfdb1 <- worfdbData(worfdbHTML)
 # FIXME R153.1f
-worfdb2 <- worfdbData(worfdbHTMLRemap)
-# FIXME all NA row?
-# FIXME 30037G9, 30040G2
-worfdb <- bind_rows(worfdb1, worfdb2) %>%
+# FIXME 30037@G9, 30040@G2
+
+worfdbList1 <- worfdbList(worfdbHTML)
+worfdbData1 <- worfdbData(worfdbList1)
+
+worfdbList2 <- worfdbList(worfdbHTMLRemap)
+worfdbData2 <- worfdbData(worfdbList2)
+
+# Add step for filtering bad sequence?
+worfdb <- bind_rows(worfdbData1, worfdbData2) %>%
+    fixNA() %>%
     filter(is.na(remap)) %>%
     select(-c(query, remap)) %>%
     distinct() %>%
+    mutate(
+        # Remove `@`
+        clone = gsub(x = .data[["clone"]],
+                     pattern = "@",
+                     replacement = ""),
+        # Remove leading zero in well
+        clone = gsub(x = .data[["clone"]],
+                     pattern = "([A-Z]{1})0",
+                     replacement = "\\1")
+    ) %>%
     arrange(clone) %>%
     left_join(geneIDs[, c("gene", "sequence")], by = "sequence")
-saveData(
-    worfdb1,
-    worfdb2,
-    worfdb,
-    dir = dataDir,
-    compress = compress)
+saveData(worfdb, dir = dataDir, compress = compress)
 ```
 
 Check for unmatched clones:
 
 ```{r unmatched}
-worfdb %>%
-    filter(is.na(gene)) %>%
-    glimpse()
+unmatched <- filter(worfdb, is.na(gene))
+unmatched
 ```
 
 Check for duplicate sequences:
@@ -55,7 +62,7 @@ dupes <- worfdb %>%
     group_by(clone) %>%
     filter(n() > 1) %>%
     select(clone, everything())
-glimpse(dupes)
+dupes
 ```
 
 

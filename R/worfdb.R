@@ -45,8 +45,7 @@ worfdbList <- function(worfdbHTML) {
             gsub(x = ., pattern = "<map.+</map>", replacement = "")
         clone <- html %>%
             str_extract_all("[0-9]{5}@[A-H][0-9]+") %>%
-            unlist() %>%
-            unique()
+            unlist()
         inFrame <- html %>%
             str_extract_all("In Frame.+<font color=black>([NY])</font>") %>%
             unlist() %>%
@@ -114,16 +113,17 @@ worfdbList <- function(worfdbHTML) {
 
 
 #' @rdname worfdb
-#' @importFrom dplyr arrange bind_rows filter mutate
-#' @importFrom rlang !! sym
+#' @importFrom basejump toStringUnique
+#' @importFrom dplyr bind_rows funs mutate_all
+#' @importFrom tibble as_tibble
 #' @param worfdbList WORFDB list returned by [worfdbList()].
 #' @export
 worfdbData <- function(worfdbList) {
     lapply(worfdbList, function(x) {
         x %>%
             t() %>%
-            as_tibble()
+            as_tibble() %>%
+            mutate_all(funs(toStringUnique(unlist(.))))
     }) %>%
-        bind_rows() %>%
-        mutate(query = unlist(.data[["query"]]))
+        bind_rows()
 }
