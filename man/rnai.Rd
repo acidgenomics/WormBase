@@ -4,15 +4,13 @@
 \alias{rnai}
 \title{RNAi Clone Mapping}
 \usage{
-rnai(identifier, format = "clone", proteinCoding = TRUE)
+rnai(identifier, format = "clone")
 }
 \arguments{
 \item{identifier}{Identifier.}
 
 \item{format}{Identifier format (\code{clone}, \code{gene}, \code{genePair}, \code{name}, or
 \code{sequence}).}
-
-\item{proteinCoding}{Return protein coding matches (\code{TRUE}/\code{FALSE}).}
 }
 \value{
 \link{tibble}.
@@ -21,10 +19,20 @@ rnai(identifier, format = "clone", proteinCoding = TRUE)
 RNAi Clone Mapping
 }
 \examples{
+# WORFDB ORFeome clones
+rnai("orfeome96-11010-G06")
+rnai("GHR-11010@G06")
+
+# Ahringer clones
 rnai("ahringer384-III-6-C01")
 rnai("ahringer96-86-B01")
-rnai("GHR-11010@G06")
-rnai("orfeome96-11010-G06")
+
+# Mixed clone types (e.g. sbp-1 clones)
+rnai(c("orfeome96-11010-G06",
+       "ahringer384-III-6-C01",
+       "ahringer96-86-B01"))
+
+# Clone retrieval by gene
 rnai("sbp-1", format = "name")
 rnai("WBGene00004735", format = "gene")
 rnai("Y47D3B.7", format = "sequence")
