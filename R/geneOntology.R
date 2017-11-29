@@ -1,3 +1,5 @@
+# FIXME Need to improve the separators here
+
 #' WormBase RESTful RNAi Gene Ontology Query
 #'
 #' @importFrom basejump camel
