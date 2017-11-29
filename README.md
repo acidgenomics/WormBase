@@ -29,14 +29,10 @@ This is an [R][] package.
 
 ```r
 source("https://bioconductor.org/biocLite.R")
-biocLite("steinbaugh/worminfo")
-```
-
-### [devtools][] method
-
-```r
-install.packages("devtools")
-devtools::install_github("steinbaugh/worminfo", build_vignettes = TRUE)
+biocLite(
+    "steinbaugh/worminfo",
+    dependencies = c("Depends", "Imports", "Suggests")
+)
 ```
 
 
