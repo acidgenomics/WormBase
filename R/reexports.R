@@ -1,3 +1,7 @@
+#' @importFrom basejump microplate
+#' @export
+basejump::microplate
+
 #' @importFrom magrittr %>%
 #' @export
 magrittr::`%>%`
