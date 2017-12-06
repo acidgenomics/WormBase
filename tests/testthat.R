@@ -1,4 +1,4 @@
 library(testthat)
-library(basejump)
+library(worminfo)
 
-test_check("basejump")
+test_check("worminfo")
