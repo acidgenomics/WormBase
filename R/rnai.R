@@ -116,13 +116,13 @@ rnai <- function(
 
         match <- bind_rows(match)
         if (!nrow(match)) return(NULL)
-        match[, c(format, defaultCol)]
+        match <- match[, c(format, defaultCol)]
+        return(match)
     } else if (format == "genePair") {
         match <- .matchClones(
             query,
             cloneCol = "genePair",
             data = data)
-
     } else {
         match <- data %>%
             .[.[[format]] %in% query, , drop = FALSE]
