@@ -16,8 +16,7 @@
 #'
 #' @examples
 #' # daf-2
-#' uniprot("WBGene00000898") %>%
-#'     glimpse()
+#' uniprot("WBGene00000898") %>% glimpse()
 uniprot <- function(identifier) {
     identifier <- .uniqueIdentifier(identifier)
 
