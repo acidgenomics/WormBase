@@ -18,7 +18,7 @@ cherrypick <- function(
     format = "keyword") {
     identifier <- .uniqueIdentifier(identifier)
     gene <- gene(identifier, format = format)
-    if (nrow(gene) == 0) {
+    if (!nrow(gene)) {
         return(NULL)
     }
     rnai <- pull(gene, "gene") %>%
