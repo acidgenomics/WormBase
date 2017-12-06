@@ -4,7 +4,9 @@
 \name{reexports}
 \alias{reexports}
 \alias{\%>\%}
+\alias{reexports}
 \alias{glimpse}
+\alias{reexports}
 \alias{tibble}
 \title{Objects exported from other packages}
 \keyword{internal}
