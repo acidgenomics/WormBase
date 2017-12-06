@@ -3,6 +3,8 @@
 \docType{import}
 \name{reexports}
 \alias{reexports}
+\alias{microplate}
+\alias{reexports}
 \alias{\%>\%}
 \alias{reexports}
 \alias{glimpse}
@@ -15,6 +17,8 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
+  \item{basejump}{\code{\link[basejump]{microplate}}}
+
   \item{magrittr}{\code{\link[magrittr]{\%>\%}}}
 
   \item{tibble}{\code{\link[tibble]{glimpse}}, \code{\link[tibble]{tibble}}}
