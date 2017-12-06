@@ -114,44 +114,28 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># WORFDB ORFeome clones</span>
 <span class='fu'>rnai</span>(<span class='st'>"orfeome96-11010-G06"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"clone"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/glimpse'>glimpse</a></span>()</div><div class='output co'>#&gt; Observations: 1
-#&gt; Variables: 8
-#&gt; $ clone       &lt;chr&gt; "orfeome96-11010-G06"
-#&gt; $ gene        &lt;chr&gt; "WBGene00004735"
-#&gt; $ sequence    &lt;chr&gt; "Y47D3B.7"
-#&gt; $ name        &lt;chr&gt; "sbp-1"
-#&gt; $ genePair    &lt;chr&gt; "Y47D3B.7"
-#&gt; $ orfeome96   &lt;chr&gt; "10059-H06, 11010-G06"
-#&gt; $ ahringer384 &lt;chr&gt; "III-6-C01"
-#&gt; $ ahringer96  &lt;chr&gt; "86-B01"</div><div class='input'><span class='fu'>rnai</span>(<span class='st'>"GHR-11010@G06"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"clone"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/glimpse'>glimpse</a></span>()</div><div class='output co'>#&gt; Observations: 1
-#&gt; Variables: 8
-#&gt; $ clone       &lt;chr&gt; "GHR-11010@G06"
-#&gt; $ gene        &lt;chr&gt; "WBGene00004735"
-#&gt; $ sequence    &lt;chr&gt; "Y47D3B.7"
-#&gt; $ name        &lt;chr&gt; "sbp-1"
-#&gt; $ genePair    &lt;chr&gt; "Y47D3B.7"
-#&gt; $ orfeome96   &lt;chr&gt; "10059-H06, 11010-G06"
-#&gt; $ ahringer384 &lt;chr&gt; "III-6-C01"
-#&gt; $ ahringer96  &lt;chr&gt; "86-B01"</div><div class='input'>
+#&gt; Variables: 4
+#&gt; $ clone    &lt;chr&gt; "orfeome96-11010-G06"
+#&gt; $ gene     &lt;chr&gt; "WBGene00004735"
+#&gt; $ sequence &lt;chr&gt; "Y47D3B.7"
+#&gt; $ name     &lt;chr&gt; "sbp-1"</div><div class='input'><span class='fu'>rnai</span>(<span class='st'>"GHR-11010@G06"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"clone"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/glimpse'>glimpse</a></span>()</div><div class='output co'>#&gt; Observations: 1
+#&gt; Variables: 4
+#&gt; $ clone    &lt;chr&gt; "GHR-11010@G06"
+#&gt; $ gene     &lt;chr&gt; "WBGene00004735"
+#&gt; $ sequence &lt;chr&gt; "Y47D3B.7"
+#&gt; $ name     &lt;chr&gt; "sbp-1"</div><div class='input'>
 <span class='co'># Ahringer clones</span>
 <span class='fu'>rnai</span>(<span class='st'>"ahringer384-III-6-C01"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"clone"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/glimpse'>glimpse</a></span>()</div><div class='output co'>#&gt; Observations: 1
-#&gt; Variables: 8
-#&gt; $ clone       &lt;chr&gt; "ahringer384-III-6-C01"
-#&gt; $ gene        &lt;chr&gt; "WBGene00004735"
-#&gt; $ sequence    &lt;chr&gt; "Y47D3B.7"
-#&gt; $ name        &lt;chr&gt; "sbp-1"
-#&gt; $ genePair    &lt;chr&gt; "Y47D3B.7"
-#&gt; $ orfeome96   &lt;chr&gt; "10059-H06, 11010-G06"
-#&gt; $ ahringer384 &lt;chr&gt; "III-6-C01"
-#&gt; $ ahringer96  &lt;chr&gt; "86-B01"</div><div class='input'><span class='fu'>rnai</span>(<span class='st'>"ahringer96-86-B01"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"clone"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/glimpse'>glimpse</a></span>()</div><div class='output co'>#&gt; Observations: 1
-#&gt; Variables: 8
-#&gt; $ clone       &lt;chr&gt; "ahringer96-86-B01"
-#&gt; $ gene        &lt;chr&gt; "WBGene00004735"
-#&gt; $ sequence    &lt;chr&gt; "Y47D3B.7"
-#&gt; $ name        &lt;chr&gt; "sbp-1"
-#&gt; $ genePair    &lt;chr&gt; "Y47D3B.7"
-#&gt; $ orfeome96   &lt;chr&gt; "10059-H06, 11010-G06"
-#&gt; $ ahringer384 &lt;chr&gt; "III-6-C01"
-#&gt; $ ahringer96  &lt;chr&gt; "86-B01"</div><div class='input'>
+#&gt; Variables: 4
+#&gt; $ clone    &lt;chr&gt; "ahringer384-III-6-C01"
+#&gt; $ gene     &lt;chr&gt; "WBGene00004735"
+#&gt; $ sequence &lt;chr&gt; "Y47D3B.7"
+#&gt; $ name     &lt;chr&gt; "sbp-1"</div><div class='input'><span class='fu'>rnai</span>(<span class='st'>"ahringer96-86-B01"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"clone"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/glimpse'>glimpse</a></span>()</div><div class='output co'>#&gt; Observations: 1
+#&gt; Variables: 4
+#&gt; $ clone    &lt;chr&gt; "ahringer96-86-B01"
+#&gt; $ gene     &lt;chr&gt; "WBGene00004735"
+#&gt; $ sequence &lt;chr&gt; "Y47D3B.7"
+#&gt; $ name     &lt;chr&gt; "sbp-1"</div><div class='input'>
 <span class='co'># Mixed clone types (e.g. sbp-1 clones)</span>
 <span class='fu'>rnai</span>(
     <span class='fu'>c</span>(<span class='st'>"orfeome96-11010-G06"</span>,
@@ -159,15 +143,11 @@
       <span class='st'>"ahringer96-86-B01"</span>),
     <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"clone"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/glimpse'>glimpse</a></span>()</div><div class='output co'>#&gt; Observations: 3
-#&gt; Variables: 8
-#&gt; $ clone       &lt;chr&gt; "orfeome96-11010-G06", "ahringer384-III-6-C01", "ahring...
-#&gt; $ gene        &lt;chr&gt; "WBGene00004735", "WBGene00004735", "WBGene00004735"
-#&gt; $ sequence    &lt;chr&gt; "Y47D3B.7", "Y47D3B.7", "Y47D3B.7"
-#&gt; $ name        &lt;chr&gt; "sbp-1", "sbp-1", "sbp-1"
-#&gt; $ genePair    &lt;chr&gt; "Y47D3B.7", "Y47D3B.7", "Y47D3B.7"
-#&gt; $ orfeome96   &lt;chr&gt; "10059-H06, 11010-G06", "10059-H06, 11010-G06", "10059-...
-#&gt; $ ahringer384 &lt;chr&gt; "III-6-C01", "III-6-C01", "III-6-C01"
-#&gt; $ ahringer96  &lt;chr&gt; "86-B01", "86-B01", "86-B01"</div><div class='input'>
+#&gt; Variables: 4
+#&gt; $ clone    &lt;chr&gt; "orfeome96-11010-G06", "ahringer384-III-6-C01", "ahringer9...
+#&gt; $ gene     &lt;chr&gt; "WBGene00004735", "WBGene00004735", "WBGene00004735"
+#&gt; $ sequence &lt;chr&gt; "Y47D3B.7", "Y47D3B.7", "Y47D3B.7"
+#&gt; $ name     &lt;chr&gt; "sbp-1", "sbp-1", "sbp-1"</div><div class='input'>
 <span class='co'># Clone retrieval by gene</span>
 <span class='fu'>rnai</span>(<span class='st'>"WBGene00004735"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"gene"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/glimpse'>glimpse</a></span>()</div><div class='output co'>#&gt; Observations: 1
 #&gt; Variables: 7

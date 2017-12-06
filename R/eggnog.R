@@ -1,5 +1,7 @@
 #' EggNOG Annotations
 #'
+#' @keywords internal
+#'
 #' @importFrom basejump collapseToString
 #' @importFrom dplyr bind_rows distinct left_join
 #'
