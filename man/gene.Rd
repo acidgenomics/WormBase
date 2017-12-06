@@ -9,7 +9,7 @@ gene(identifier, format = "gene", select = NULL)
 \arguments{
 \item{identifier}{Identifier.}
 
-\item{format}{Identifier type (\code{gene}, \code{name}, \code{sequence}, \code{class} or
+\item{format}{Identifier type (\code{gene}, \code{sequence}, \code{name}, \code{class} or
 \code{keyword}).}
 
 \item{select}{Columns to select. Consult \code{vignette("gene")} for the list of
@@ -22,19 +22,25 @@ available parameters.}
 Gene Mapping
 }
 \examples{
-# name
-gene("skn-1", format = "name")
+# Match by WormBase/Ensembl gene identifier (preferred)
+gene("WBGene00004804", format = "gene") \%>\% glimpse()
 
-# sequence
-gene("T19E7.2", format = "sequence")
+# Match by gene sequence (aka ORF)
+gene("T19E7.2", format = "sequence") \%>\% glimpse()
 
-# description
-gene("WBGene00004804", select = "descriptionConcise") \%>\%
+# Match by gene name (aka symbol)
+gene("skn-1", format = "name") \%>\% glimpse()
+
+# Match by gene class
+gene("daf", format = "class") \%>\% glimpse()
+
+# Match by keyword
+gene("bzip", format = "keyword") \%>\% glimpse()
+
+# Match by gene ID and select class
+gene(
+    "WBGene00004804",
+    format = "gene",
+    select = c("class", "status")) \%>\%
     glimpse()
-
-# class
-gene("daf", format = "class")
-
-# keyword
-gene("bzip", format = "keyword")
 }

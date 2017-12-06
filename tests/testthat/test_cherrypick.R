@@ -40,7 +40,7 @@ test_that("name", {
 
 test_that("bad identifier", {
     expect_equal(
-        cherrypick("XXX"),
+        cherrypick("XXXXXXX"),
         NULL
     )
 })
