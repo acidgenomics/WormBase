@@ -10,12 +10,15 @@
 #' @export
 #'
 #' @examples
-#' geneExternal("WBGene00000001") %>% glimpse()
+#' geneExternal("WBGene00004804") %>% glimpse()
 geneExternal <- function(identifier) {
     identifier <- .uniqueIdentifier(identifier)
     list <- lapply(seq_along(identifier), function(a) {
         if (!grepl(pattern = "^WBGene[0-9]{8}$", x = identifier[[a]])) {
-            stop("Invalid gene identifier")
+            warning(paste(
+                "Invalid identifier:", identifier[[a]]
+            ), call. = FALSE)
+            return(NULL)
         }
         rest <- file.path(
             "widget",
@@ -39,6 +42,7 @@ geneExternal <- function(identifier) {
             mutate(gene = identifier[[a]])
     })
     df <- bind_rows(list)
+    if (!nrow(df)) return(NULL)
     names(df) <- tolower(names(df))
     df[, unique(c("gene", sort(colnames(df))))]
 }
