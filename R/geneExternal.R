@@ -29,6 +29,7 @@ geneExternal <- function(identifier) {
             .[["fields"]] %>%
             .[["xrefs"]] %>%
             .[["data"]]
+        if (is.null(rest)) return(NULL)
         xrefs <- mclapply(seq_along(rest), function(b) {
             rest[[b]] %>%
                 .[[1L]] %>%
