@@ -21,11 +21,11 @@ eggnog <- function(identifier) {
     annotation <- worminfo::worminfo %>%
         .[["eggnog"]] %>%
         .[["annotation"]]
-    match <- annotation %>%
+    annotationMatch <- annotation %>%
         .[.[["eggnog"]] %in% identifier, ] %>%
         # Hide "S = Function unknown" matches
         .[.[["cogFunctionalCategory"]] != "S", ]
-    if (!nrow(match)) {
+    if (!nrow(annotationMatch)) {
         return(NULL)
     }
 
@@ -48,7 +48,7 @@ eggnog <- function(identifier) {
         rename(cogFunctionalCategory = .data[["letter"]],
                cogFunctionalDescription = .data[["description"]])
     left_join(
-        match,
+        annotationMatch,
         categoryMatch,
         by = "cogFunctionalCategory")
 }

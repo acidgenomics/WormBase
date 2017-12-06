@@ -1,4 +1,4 @@
-context("Data")
+context("data")
 
 data <- worminfo::worminfo
 tibble <- c("tbl_df", "tbl", "data.frame")
