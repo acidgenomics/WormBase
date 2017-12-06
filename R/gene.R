@@ -8,7 +8,7 @@
 #' @importFrom tibble as_tibble
 #'
 #' @param identifier Identifier.
-#' @param format Identifier type (`gene`, `name`, `sequence`, `class` or
+#' @param format Identifier type (`gene`, `sequence`, `name`, `class` or
 #'   `keyword`).
 #' @param select Columns to select. Consult `vignette("gene")` for the list of
 #'   available parameters.
@@ -17,21 +17,27 @@
 #' @export
 #'
 #' @examples
-#' # name
-#' gene("skn-1", format = "name")
+#' # Match by WormBase/Ensembl gene identifier (preferred)
+#' gene("WBGene00004804", format = "gene") %>% glimpse()
 #'
-#' # sequence
-#' gene("T19E7.2", format = "sequence")
+#' # Match by gene sequence (aka ORF)
+#' gene("T19E7.2", format = "sequence") %>% glimpse()
 #'
-#' # description
-#' gene("WBGene00004804", select = "descriptionConcise") %>%
+#' # Match by gene name (aka symbol)
+#' gene("skn-1", format = "name") %>% glimpse()
+#'
+#' # Match by gene class
+#' gene("daf", format = "class") %>% glimpse()
+#'
+#' # Match by keyword
+#' gene("bzip", format = "keyword") %>% glimpse()
+#'
+#' # Match by gene ID and select class
+#' gene(
+#'     "WBGene00004804",
+#'     format = "gene",
+#'     select = c("class", "status")) %>%
 #'     glimpse()
-#'
-#' # class
-#' gene("daf", format = "class")
-#'
-#' # keyword
-#' gene("bzip", format = "keyword")
 gene <- function(
     identifier,
     format = "gene",
@@ -80,29 +86,27 @@ gene <- function(
     } else {
         return <- return[, unique(c(format, defaultCol, select))]
     }
-    return <- select(return, .data[[format]], everything())
-    if (nrow(return)) {
-        # Summarize multiple keyword matches
-        if (format == "keyword") {
-            return <- return %>%
-                group_by(!!sym("gene")) %>%
-                collapseToString()
-        }
-        # Arrange rows
-        # `format` is used to arrange, unless specified
-        if (any(grepl(format, c("class", "name")))) {
-            arrange <- str_match(return[["name"]], "^(.+)([0-9\\.]+)$") %>%
-                as_tibble()
-            arrange[["V3"]] <- as.numeric(arrange[["V3"]])
-            return <- left_join(return, arrange, by = c("name" = "V1"))
-            # Arrange by class then number:
-            return <- arrange(return, !!!syms(c("V2", "V3")))
-            # Drop the unnecessary temporary columns:
-            return[["V2"]] <- NULL
-            return[["V3"]] <- NULL
-        } else {
-            return <- arrange(return, !!!syms(unique(format, defaultCol)))
-        }
+    # Summarize multiple keyword matches
+    if (format == "keyword") {
+        return <- return %>%
+            group_by(!!sym("gene")) %>%
+            collapseToString()
     }
+    # Arrange rows. `format` is used to arrange, unless specified.
+    if (any(grepl(format, c("class", "name")))) {
+        arrange <- str_match(return[["name"]], "^(.+)([0-9\\.]+)$") %>%
+            as_tibble()
+        arrange[["V3"]] <- as.numeric(arrange[["V3"]])
+        return <- left_join(return, arrange, by = c("name" = "V1"))
+        # Arrange by class then number:
+        return <- arrange(return, !!!syms(c("V2", "V3")))
+        # Drop the unnecessary temporary columns:
+        return[["V2"]] <- NULL
+        return[["V3"]] <- NULL
+    } else {
+        return <- arrange(return, !!!syms(unique(format, defaultCol)))
+    }
+    # Put the query format column first
+    return <- select(return, .data[[format]], everything())
     as_tibble(return)
 }
