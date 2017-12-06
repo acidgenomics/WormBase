@@ -2,19 +2,21 @@
 % Please edit documentation in R/geneReport.R
 \name{geneReport}
 \alias{geneReport}
-\title{Gene list report}
+\title{Gene List Report}
 \usage{
 geneReport(identifier, format = "gene")
 }
 \arguments{
-\item{identifier}{Gene identifier}
+\item{identifier}{Gene identifier.}
 
-\item{format}{Identifier format}
+\item{format}{Identifier format.}
 }
 \value{
-tibble
+\link{tibble}.
 }
 \description{
-Gene list report
+Gene List Report
 }
-
+\examples{
+geneReport("daf-2", format = "name") \%>\% glimpse()
+}

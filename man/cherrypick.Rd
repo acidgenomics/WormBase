@@ -2,28 +2,22 @@
 % Please edit documentation in R/cherrypick.R
 \name{cherrypick}
 \alias{cherrypick}
-\title{Cherrypick RNAi clones by keyword}
+\title{Cherrypick RNAi Clones by Keyword}
 \usage{
-cherrypick(identifier, format = "keyword", ahringer384 = TRUE,
-  ahringer96 = FALSE, orfeome96 = TRUE, plates = NULL)
+cherrypick(identifier, format = "keyword")
 }
 \arguments{
-\item{identifier}{Keyword identifier}
+\item{identifier}{Keyword identifier.}
 
-\item{format}{Identifier format}
-
-\item{ahringer384}{Include Ahringer 384 well library}
-
-\item{ahringer96}{Include Ahringer 96 well library}
-
-\item{orfeome96}{Include ORFeome 96 well library}
-
-\item{plates}{Reference character of plates to pick from}
+\item{format}{Identifier format.}
 }
 \value{
-RNAi clone list by gene
+RNAi clone \link{list} by gene.
 }
 \description{
-Cherrypick RNAi clones by keyword
+Cherrypick RNAi Clones by Keyword
 }
-
+\examples{
+cherrypick("unfolded protein response", format = "keyword") \%>\%
+    glimpse()
+}

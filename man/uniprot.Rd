@@ -2,17 +2,21 @@
 % Please edit documentation in R/uniprot.R
 \name{uniprot}
 \alias{uniprot}
-\title{UniProt web service query}
+\title{UniProt Web Service Query}
 \usage{
 uniprot(identifier)
 }
 \arguments{
-\item{identifier}{WormBase gene identifier}
+\item{identifier}{WormBase gene identifier.}
 }
 \value{
-tibble
+\link{tibble}.
 }
 \description{
-UniProt web service query
+UniProt Web Service Query
 }
-
+\examples{
+# daf-2
+uniprot("WBGene00000898") \%>\% glimpse()
+}
+\keyword{internal}

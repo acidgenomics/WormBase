@@ -1,0 +1,267 @@
+---
+title: "WormBase annotations"
+date: "`r BiocStyle::doc_date()`"
+author: "Michael J. Steinbaugh"
+---
+
+```{r setup, message=FALSE}
+source("setup.R")
+```
+
+```{r header, child="_header.Rmd"}
+```
+
+
+
+# Gene IDs
+
+```{r geneIDs}
+geneIDs <- wormbaseAnnotationFile("geneIDs") %>%
+    read_csv(col_names = c("X1", "gene", "name", "sequence", "status"),
+             na = "") %>%
+    select(-X1)
+```
+
+
+## Other gene IDs
+
+```{r geneOtherIDs}
+geneOtherIDs <- wormbaseAnnotationFile("geneOtherIDs") %>%
+    read_lines() %>%
+    # Remove status, already present in geneIDs file
+    str_replace("\t(Dead|Live)", "") %>%
+    # Remove `CELE_*` identifiers
+    str_replace("\t(CELE_[A-Z0-9\\.]+)", "") %>%
+    # Convert tabs to commas for identifiers
+    str_replace_all("\t", ", ") %>%
+    # Add tab back in to separate \code{gene} for row names
+    str_replace("^(WBGene\\d+), ", "\\1\t") %>%
+    str_replace("^(WBGene\\d+)$", "\\1\t") %>%
+    str_split("\t") %>%
+    do.call(rbind, .) %>%
+    as_tibble() %>%
+    set_colnames(c("gene", "otherIDs"))
+```
+
+
+
+# Description
+
+```{r description}
+file <- wormbaseAnnotationFile("functional_descriptions")
+names <- read_lines(file, n_max = 1, skip = 3) %>%
+    str_split(" ") %>% .[[1]] %>%
+    str_replace_all("(\\w+)_description$", "description_\\1") %>%
+    camel() %>%
+    str_replace("descriptionGeneClass", "class") %>%
+    str_replace("geneID", "gene") %>%
+    str_replace("molecularName", "sequence") %>%
+    str_replace("publicName", "name")
+description <- suppressWarnings(read_delim(
+    file,
+    delim = "\t",
+    col_names = names,
+    skip = 4,
+    na = c("", "none available", "not known")
+))
+description <- description %>%
+    select(-c(name, sequence)) %>%
+    filter(grepl("^WBGene\\d+$", gene))
+rm(file, names)
+```
+
+
+
+# Organism orthologs
+
+```{r ortholog}
+raw_df <- wormbaseAnnotationFile("orthologs") %>%
+    read_file() %>%
+    str_replace_all("\t", " | ") %>%
+    str_replace_all("\n", " // ") %>%
+    str_replace_all("= // ", "\n") %>%
+    str_replace_all(" //  // ", "\t") %>%
+    read_tsv(comment = "#", col_names = c("gene", "ortholog")) %>%
+    mutate(gene = str_replace(gene, "^(WBGene\\d{8}).*", "\\1"))
+list <- mclapply(1:nrow(raw_df), function(a) {
+    # Human
+    hsapiens <- str_extract_all(
+        raw_df[a, 2],
+        pattern = "\\bENSG\\d{11}\\b") %>%
+        unlist()
+    # Mouse
+    mmusculus <- str_extract_all(
+        raw_df[a, 2],
+        pattern = "\\bENSMUSG\\d{11}\\b") %>%
+        unlist()
+    # Fruit fly
+    dmelanogaster <- str_extract_all(
+        raw_df[a, 2],
+        pattern = "\\bFBgn\\d{7}\\b") %>%
+        unlist()
+    # Zebrafish
+    drerio <- str_extract_all(
+        raw_df[a, 2],
+        pattern = "\\bENSDARG\\d{11}\\b") %>%
+        unlist()
+    return(list(
+        hsapiens = hsapiens,
+        mmusculus = mmusculus,
+        dmelanogaster = dmelanogaster,
+        drerio = drerio
+    ))
+})
+names(list) <- raw_df$gene
+ortholog <- tibble(gene = names(list), ortholog = list)
+rm(list, raw_df)
+```
+
+
+
+# RNAi phenotypes
+
+```{r rnaiPhenotype}
+fileLocal <- file.path("data-raw", "wormbase", "rnai_phenotypes.tsv.gz")
+if (!file.exists(fileLocal)) {
+    # Improve this code using the [transmit()] function
+    dir <- file.path("ftp://ftp.wormbase.org",
+                     "pub",
+                     "wormbase",
+                     "releases",
+                     "current-production-release",
+                     "ONTOLOGY")
+    fileRemote <- getURL(paste0(dir, "/"), dirlistonly = TRUE) %>%
+        str_split("\n") %>% .[[1]] %>%
+        str_subset("rnai_phenotypes_quick") %>%
+        file.path(dir, .)
+    fileLocal <- "data-raw/wormbase/rnai_phenotypes.tsv"
+    download.file(fileRemote, fileLocal)
+    fileLocal <- gzip(fileLocal, overwrite = TRUE)
+    rm(dir, fileRemote)
+}
+rnaiPhenotype <- read_tsv(
+    fileLocal,
+    col_names = c("gene", "sequence", "rnaiPhenotype")) %>%
+    select(-sequence) %>%
+    mutate(rnaiPhenotype = str_split(rnaiPhenotype, ", ")) %>%
+    unnest %>%
+    group_by(gene) %>%
+    arrange(rnaiPhenotype, .by_group = TRUE) %>%
+    nest(.key = rnaiPhenotype)
+rm(fileLocal)
+```
+
+
+
+# BLASTP top hits
+
+```{r blastp}
+blastp <- wormbaseAnnotationFile("best_blast_hits") %>%
+    read_csv(col_names = FALSE) %>%
+    select(X1, X4, X5) %>%
+    rename(wormpep = X1,
+           peptide = X4,
+           eValue = X5) %>%
+    filter(str_detect(peptide, "^ENSEMBL")) %>%
+    mutate(peptide = str_sub(peptide, 9))
+```
+
+
+
+# Peptides
+
+```{r peptide}
+fileLocal <- file.path("data-raw", "wormbase", "wormpep.tsv.gz")
+dir <- file.path(
+    "ftp://ftp.wormbase.org",
+    "pub",
+    "wormbase",
+    "releases",
+    "current-production-release",
+    "species",
+    "c_elegans",
+    "PRJNA13758")
+# getURL requires a trailing slash to work properly
+fileRemote <- getURL(paste0(dir, "/"), dirlistonly = TRUE) %>%
+    str_split("\n") %>% .[[1]] %>%
+    str_subset("wormpep_package") %>%
+    as.character() %>%
+    file.path(dir, .)
+download.file(fileRemote, fileLocal)
+untar(fileLocal,
+      exdir = file.path("data-raw", "wormbase"),
+      files = "wormpep.table*")
+# Safe to delete the large source file
+unlink(fileLocal)
+fileLocal <- list.files(
+    path = file.path("data-raw", "wormbase"),
+    pattern = "wormpep.table",
+    full.names = TRUE)
+fileRename <- file.path("data-raw", "wormbase", "wormpep.tsv")
+file.rename(fileLocal, fileRename)
+fileLocal <- fileRename
+fileLocal <- gzip(fileLocal, overwrite = TRUE)
+rm(fileRename)
+raw <- fileLocal %>%
+    read_lines() %>%
+    str_split("\n")
+list <- mclapply(seq_along(raw), function(a) {
+    # Attempt to match quoted values first (e.g. product)
+    keyPattern <- "([a-z]+)=(\"[^\"]+\"|[^\\s]+)"
+    keys <- str_match_all(raw[[a]], keyPattern) %>%
+        .[[1]] %>%
+        # Remove any escaped quotes
+        gsub(x = ., pattern = '"', replacement = '')
+    x <- c(keys[, 3])
+    names(x) <- keys[, 2]
+    sequence <- str_match(raw[[a]], "^>([A-Za-z0-9\\.]+)") %>%
+        .[[2]]
+    x <- c(sequence = sequence, x)
+    as.data.frame(t(x))
+})
+peptide <- bind_rows(list) %>%
+    as_tibble() %>%
+    select(gene, everything()) %>%
+    group_by(gene) %>%
+    arrange(sequence, wormpep, .by_group = TRUE)
+rm(fileLocal, list, raw)
+```
+
+
+
+# Oligos
+
+```{r oligo}
+file <- wormbaseAnnotationFile("pcr_product2gene")
+oligo <-  suppressWarnings(read_tsv(
+    file,
+    col_names = c("oligo", "gene")
+))
+oligo <- oligo %>%
+    mutate(gene = str_extract(gene, "WBGene\\d{8}")) %>%
+    select(gene, oligo) %>%
+    group_by(gene) %>%
+    arrange(oligo, .by_group = TRUE)
+```
+
+
+
+# Save R data
+
+```{r save}
+saveData(
+    geneIDs,
+    geneOtherIDs,
+    description,
+    ortholog,
+    rnaiPhenotype,
+    blastp,
+    peptide,
+    oligo,
+    dir = dataDir, compress = compress)
+```
+
+
+
+```{r footer, child="_footer.Rmd"}
+```

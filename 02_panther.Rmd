@@ -1,0 +1,68 @@
+---
+title: "PANTHER annotations"
+date: "`r BiocStyle::doc_date()`"
+author: "Michael J. Steinbaugh"
+---
+
+```{r setup, message=FALSE}
+source("setup.R")
+```
+
+```{r header, child="_header.Rmd"}
+```
+
+
+
+```{r functions}
+splitGOTerms <- function(x) {
+    x %>%
+        str_split(string = ., pattern = ";") %>%
+        unlist() %>%
+        unique() %>%
+        paste(collapse = " / ")
+}
+```
+
+```{r panther}
+fileLocal <- transmit(
+        file.path("ftp://ftp.pantherdb.org",
+                  "sequence_classifications",
+                  "current_release",
+                  "PANTHER_Sequence_Classification_files"),
+        pattern = "nematode",
+        rename = "panther.tsv",
+        compress = TRUE) %>%
+    as.character()
+panther <- read_tsv(fileLocal, col_names = FALSE) %>%
+    mutate(X2 = NULL) %>%
+    set_names(c(
+        "id",
+        "subfamily",
+        "familyName",
+        "subfamilyName",
+        "goMF",
+        "goBP",
+        "goCC",
+        "class",
+        "pathway"
+    )) %>%
+    separate(id, c("organism", "gene", "uniprotKB"), sep = "\\|") %>%
+    # Only keep the annotations that match a WormBase gene identifier. This
+    # will drop annotations for a few genes but it makes the code more
+    # future proof and easier to manage
+    filter(str_detect(gene, "WBGene\\d{8}$")) %>%
+    mutate(
+        gene = str_extract(gene, "WBGene\\d{8}$"),
+        uniprotKB = str_replace(uniprotKB, "^UniProtKB=", ""),
+        organism = NULL
+    ) %>%
+    group_by(gene) %>%
+    mutate_at(c("goMF", "goBP", "goCC", "class", "pathway"), splitGOTerms)
+saveData(panther, dir = dataDir, compress = compress)
+glimpse(panther)
+```
+
+
+
+```{r footer, child="_footer.Rmd"}
+```

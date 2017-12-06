@@ -1,0 +1,121 @@
+---
+title: "Build Annotations"
+date: "`r BiocStyle::doc_date()`"
+---
+
+```{r setup, message=FALSE}
+source("setup.R")
+```
+
+```{r load}
+loadData(
+    ahringer,
+    blastp,
+    cherrypick,
+    eggnog,
+    geneIDs,
+    geneOtherIDs,
+    description,
+    ortholog,
+    panther,
+    peptide,
+    rnaiPhenotype,
+    worfdb,
+    dir = dataDir)
+```
+
+```{r prefix_panther}
+panther <- panther %>%
+    set_colnames(
+        camel(paste("panther", colnames(.), sep = "_"), strict = FALSE)
+    ) %>%
+    rename(gene = pantherGene)
+```
+
+```{r gene}
+gene <- Reduce(
+    f = function(...) left_join(..., by = "gene"),
+    x = list(geneIDs,
+             geneOtherIDs,
+             description,
+             ortholog,
+             rnaiPhenotype,
+             panther)
+) %>%
+    as_tibble() %>%
+    select(gene, everything()) %>%
+    arrange(gene)
+```
+
+```{r rnai}
+ahringer_bind <- ahringer %>%
+    select(gene, genePair, clone384, clone96) %>%
+    rename(ahringer384 = clone384,
+           ahringer96 = clone96)
+cherrypick_bind <- cherrypick %>%
+    select(gene, sequence, clone) %>%
+    rename(genePair = sequence,
+           cherrypick96 = clone)
+worfdb_bind <- worfdb %>%
+    select(gene, sequence, clone) %>%
+    rename(genePair = sequence,
+           orfeome96 = clone)
+
+rnai <- bind_rows(ahringer_bind, cherrypick_bind, worfdb_bind) %>%
+    filter(!is.na(gene)) %>%
+    select(gene,
+           genePair,
+           orfeome96,
+           ahringer384,
+           ahringer96,
+           cherrypick96) %>%
+    group_by(gene) %>%
+    collapseToString(sort = TRUE, unique = TRUE) %>%
+    fixNA() %>%
+    mutate_at(
+        c("orfeome96",
+          "ahringer384",
+          "ahringer96",
+          "cherrypick96"),
+        minimalClone)
+```
+
+```{r build}
+wormbase <- file.path(
+    "ftp://ftp.wormbase.org",
+    "pub",
+    "wormbase",
+    "releases",
+    "current-production-release",
+    "ONTOLOGY") %>%
+    paste0(., "/") %>%
+    getURL(dirlistonly = TRUE) %>%
+    str_extract("WS\\d{3}") %>%
+    paste0("WormBase ", .)
+panther <- file.path(
+    "ftp://ftp.pantherdb.org",
+    "sequence_classifications",
+    "current_release",
+    "PANTHER_Sequence_Classification_files") %>%
+    paste0(., "/") %>%
+    getURL(dirlistonly = TRUE) %>%
+    str_extract("(\\d{2}\\.\\d)") %>%
+    paste0("PANTHER ", .)
+build <- list(
+    date = Sys.Date(),
+    wormbase = wormbase,
+    panther = panther,
+    rVersion = R.Version(),
+    sessionInfo = sessionInfo())
+```
+
+```{r save}
+worminfo <- list(
+    gene = gene,
+    rnai = rnai,
+    eggnog = eggnog,
+    blastp = blastp,
+    peptide = peptide,
+    build = build)
+saveData(worminfo, dir = "data", compress = "xz")
+```

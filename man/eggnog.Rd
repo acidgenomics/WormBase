@@ -2,17 +2,24 @@
 % Please edit documentation in R/eggnog.R
 \name{eggnog}
 \alias{eggnog}
-\title{EggNOG annotations}
+\title{EggNOG Annotations}
 \usage{
 eggnog(identifier)
 }
 \arguments{
-\item{identifier}{EggNOG identifier}
+\item{identifier}{EggNOG identifier.}
 }
 \value{
-tibble
+\link{tibble}.
 }
 \description{
-EggNOG annotations
+EggNOG Annotations
 }
+\examples{
+# daf-2
+eggnog(c("KOG4258", "COG0515")) \%>\% glimpse()
 
+# Multiple EGGNOG letters
+eggnog("ENOG410IU5G") \%>\% glimpse()
+}
+\keyword{internal}

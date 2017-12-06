@@ -1,0 +1,38 @@
+---
+title: "Cherrypick RNAi library annotations"
+date: "`r BiocStyle::doc_date()`"
+---
+
+```{r setup, message=FALSE}
+source("setup.R")
+loadData(geneIDs, dir = dataDir)
+```
+
+```{r header, child="_header.Rmd"}
+```
+
+
+
+```{r cherrypick}
+cherrypick <- file.path(
+    "http://worminfo.steinbaugh.com",
+    "cherrypick.xlsx") %>%
+    readFileByExtension() %>%
+    mutate(clone = paste0(
+        library,
+        plateNum,
+        plateRow,
+        str_pad(plateCol, 2, pad = "0"))
+    ) %>%
+    filter(!is.na(sequence)) %>%
+    select(clone, sequence) %>%
+    arrange(clone) %>%
+    left_join(geneIDs[, c("gene", "sequence")], by = "sequence")
+glimpse(cherrypick)
+saveData(cherrypick, dir = dataDir, compress = compress)
+```
+
+
+
+```{r footer, child="_footer.Rmd"}
+```

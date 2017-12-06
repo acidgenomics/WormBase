@@ -1,80 +1,137 @@
-#' RNAi clone mapping
+#' RNAi Clone Mapping
 #'
+#' @importFrom dplyr bind_rows filter mutate mutate_at select
+#' @importFrom magrittr set_names
+#' @importFrom rlang !!! syms
+#' @importFrom tibble as_tibble
+#'
+#' @param identifier Identifier.
+#' @param format Identifier format (`clone`, `gene`, `genePair`, `name`, or
+#'   `sequence`).
+#'
+#' @return [tibble].
 #' @export
-#' @importFrom dplyr bind_rows left_join
-#' @importFrom parallel mclapply
-#' @importFrom stats na.omit
-#' @param identifier Identifier
-#' @param format Identifier format (\code{clone}, \code{gene}, \code{genePair},
-#'   \code{name}, or \code{sequence})
-#' @param proteinCoding Whether to only return protein coding matches
-#'   (\code{TRUE}, \code{FALSE})
-#' @return tibble
 #'
 #' @examples
-#' rnai("ahringer384-III-6-C01")
-#' rnai("ahringer96-86-B01")
-#' rnai("GHR-11010@G06")
-#' rnai("orfeome96-11010-G06")
-#' rnai("sbp-1", format = "name")
-#' rnai("WBGene00004735", format = "gene")
-#' rnai("Y47D3B.7", format = "sequence")
-#' rnai("Y53H1C.b", format = "genePair")
-rnai <- function(identifier,
-                 format = "clone",
-                 proteinCoding = TRUE) {
-    identifier <- uniqueIdentifier(identifier)
-    grep <- identifier
-    annotation <- get("annotation", envir = asNamespace("worminfo"))$rnai
-    if (!any(grepl(format, names(annotation)))) {
-        stop("Invalid format.")
+#' # WORFDB ORFeome clones
+#' rnai("orfeome96-11010-G06", format = "clone") %>% glimpse()
+#' rnai("GHR-11010@G06", format = "clone") %>% glimpse()
+#'
+#' # Ahringer clones
+#' rnai("ahringer384-III-6-C01", format = "clone") %>% glimpse()
+#' rnai("ahringer96-86-B01", format = "clone") %>% glimpse()
+#'
+#' # Mixed clone types (e.g. sbp-1 clones)
+#' rnai(
+#'     c("orfeome96-11010-G06",
+#'       "ahringer384-III-6-C01",
+#'       "ahringer96-86-B01"),
+#'     format = "clone") %>%
+#'     glimpse()
+#'
+#' # Clone retrieval by gene
+#' rnai("WBGene00004735", format = "gene") %>% glimpse()
+#' rnai("Y47D3B.7", format = "sequence") %>% glimpse()
+#' rnai("sbp-1", format = "name") %>% glimpse()
+#'
+#' # Clone retrieval by genePair
+#' rnai("Y53H1C.b", format = "genePair") %>% glimpse()
+rnai <- function(
+    identifier,
+    format = "clone") {
+    identifier <- .uniqueIdentifier(identifier)
+    formatCols <- c("clone", "gene", "sequence", "genePair", "name")
+    if (!format %in% formatCols) {
+        stop(paste(
+            "'format' must contain:", toString(formatCols)
+        ), call. = FALSE)
     }
+
+    if (format == "sequence") {
+        query <- .removeIsoform(identifier)
+    } else {
+        query <- identifier
+    }
+
+    worminfo <- worminfo::worminfo
+    data <- left_join(
+        worminfo[["rnai"]],
+        worminfo[["gene"]][, defaultCol],
+        by = "gene") %>%
+        select(c(defaultCol), everything())
+    rm(worminfo)
+
+    cloneCols <- setdiff(colnames(data), formatCols)
+
     if (format == "clone") {
-        grep <- grep %>%
-            # Strip prefixes:
-            gsub("^GHR", "", .) %>%
-            gsub("^([a-z]+)(96|384)", "", .) %>%
-            # Strip separators:
-            gsub("-|@", "", .) %>%
-            # Strip padded zeroes:
-            gsub("(^|-)[0]+", "", .) %>%
-            gsub("([A-Z]{1})[0]+(\\d)$", "\\1\\2", .)
-    } else if (format == "sequence") {
-        grep <- removeIsoform(grep)
+        match <- list()
+
+        # WORFDB ORFeome 96 well library
+        orfeomeGrep <- "^(GHR|orfeome96)-"
+        orfeomeQuery <- query[grepl(orfeomeGrep, query)]
+        orfeomeClones <- orfeomeQuery %>%
+            gsub(x = ., pattern = orfeomeGrep, replacement = "") %>%
+            set_names(orfeomeQuery)
+        match[["orfeome"]] <- .matchClones(
+            clones = orfeomeClones,
+            cloneCol = "orfeome96",
+            data = data)
+
+        # Ahringer 384 well library
+        ahringer384Grep <- "^ahringer384-"
+        ahringer384Query <- query[grepl(ahringer384Grep, query)]
+        ahringer384Clones <- ahringer384Query %>%
+            gsub(x = ., pattern = ahringer384Grep, replacement = "") %>%
+            set_names(ahringer384Query)
+        match[["ahringer384"]] <- .matchClones(
+            clones = ahringer384Clones,
+            cloneCol = "ahringer384",
+            data = data)
+
+        # Ahringer 96 well library
+        ahringer96Grep <- "^ahringer96-"
+        ahringer96Query <- query[grepl(ahringer96Grep, query)]
+        ahringer96Clones <- ahringer96Query %>%
+            gsub(x = ., pattern = ahringer96Grep, replacement = "") %>%
+            set_names(ahringer96Query)
+        match[["ahringer96"]] <- .matchClones(
+            clones = ahringer96Clones,
+            cloneCol = "ahringer96",
+            data = data)
+
+        # Cherrypick 96 well library
+        cherrypickLibs <- c("bzip", "kinase", "tf")
+        cherrypickGrep <- paste0(
+            "^(",
+            paste(cherrypickLibs, collapse = "|"),
+            ")-"
+        )
+        cherrypickQuery <- query[grepl(cherrypickGrep, query)]
+        cherrypickClones <- cherrypickQuery %>%
+            set_names(cherrypickQuery)
+        match[["cherrypick"]] <- .matchClones(
+            clones = cherrypickClones,
+            cloneCol = "cherrypick96",
+            data = data)
+
+        match <- bind_rows(match)
+        if (!nrow(match)) return(NULL)
+        match <- match[, c(format, defaultCol)]
+        return(match)
+    } else if (format == "genePair") {
+        match <- .matchClones(
+            query,
+            cloneCol = "genePair",
+            data = data)
+    } else {
+        match <- data %>%
+            .[.[[format]] %in% query, , drop = FALSE]
     }
-    # Now create the grep string:
-    grep <- grep %>% grepString
-    return <- parallel::mclapply(seq_along(grep), function(a) {
-        return <- annotation %>% .[grepl(grep[a], .[[format]]), ]
-        if (nrow(return)) {
-            if (format != "clone") {
-                # Sort the clones and make human readable:
-                return$clone <- return$clone %>%
-                    strsplit(", ") %>% .[[1]] %>%
-                    # Pad well numbers:
-                    gsub("(\\D)(\\d)$", "\\10\\2", .) %>%
-                    # Plate separator:
-                    gsub("(\\d+)(\\D\\d{2})$", "-\\1-\\2", .) %>%
-                    # ORFeome 96 well:
-                    gsub("^-(\\d{5})-", "orfeome96-\\1-", .) %>%
-                    # Ahringer 384 well:
-                    gsub("^([IVX]{1,3})-", "ahringer384-\\1-", .) %>%
-                    # Ahringer 96 well:
-                    gsub("^-(\\d{1,3})-", "ahringer96-\\1-", .) %>%
-                    # Present only `ahringer96` and `orfeome96` clones to user.
-                    # Other identifiers (`ahringer96`, `cherrypick`) are for
-                    # internal match functions only.
-                    .[grepl("^(ahringer|orfeome)", .)] %>%
-                    toStringSortUnique
-            }
-            return[[format]] <- identifier[a]
-        }
-        return
-    }) %>% dplyr::bind_rows(.)
-    if (nrow(return)) {
-        if (isTRUE(proteinCoding)) {
-            return <- dplyr::filter_(return, .dots = quote(biotype == "protein_coding"))
-        }
-        dplyr::select_(return, .dots = unique(c(format, defaultCol, "clone")))
-    }
+    if (!nrow(match)) return(NULL)
+    match %>%
+        select(unique(c(format, defaultCol)), everything()) %>%
+        distinct() %>%
+        mutate_at(c(cloneCols), prettyClone) %>%
+        mutate(cherrypick96 = NULL) %>%
+        as_tibble()
 }

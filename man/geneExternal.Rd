@@ -2,17 +2,19 @@
 % Please edit documentation in R/geneExternal.R
 \name{geneExternal}
 \alias{geneExternal}
-\title{WormBase RESTful gene external query}
+\title{WormBase RESTful Gene External Query}
 \usage{
 geneExternal(identifier)
 }
 \arguments{
-\item{identifier}{Gene identifier}
+\item{identifier}{Gene identifier.}
 }
 \value{
-JSON content tibble
+JSON content \link{tibble}.
 }
 \description{
-WormBase RESTful gene external query
+WormBase RESTful Gene External Query
 }
-
+\examples{
+geneExternal("WBGene00004804") \%>\% glimpse()
+}

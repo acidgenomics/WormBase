@@ -1,6 +1,15 @@
+^.*_cache/
+^.*\.html$
+^.*\.Rmd$
+^.*\.Rproj$
+^.*\.yaml$
 ^.*\.yml$
+^\.lintr$
+^\.Rproj\.user$
+^API$
 ^data-raw/
 ^docs/
 ^NEWS\.md$
-^.*\.Rproj$
-^\.Rproj\.user$
+^setup\.R$
+^_pkgdown\.yml$
+^pkgdown$

@@ -2,17 +2,19 @@
 % Please edit documentation in R/geneOntology.R
 \name{geneOntology}
 \alias{geneOntology}
-\title{WormBase RESTful RNAi gene ontology query}
+\title{WormBase RESTful RNAi Gene Ontology Query}
 \usage{
 geneOntology(identifier)
 }
 \arguments{
-\item{identifier}{Gene identifier}
+\item{identifier}{Gene identifier.}
 }
 \value{
-JSON content tibble
+JSON content \link{tibble}.
 }
 \description{
-WormBase RESTful RNAi gene ontology query
+WormBase RESTful RNAi Gene Ontology Query
 }
-
+\examples{
+geneOntology("WBGene00004804") \%>\% glimpse()
+}

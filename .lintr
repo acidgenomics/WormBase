@@ -1,0 +1,10 @@
+linters: with_defaults(
+    line_length_linter(80),
+    object_length_linter(30),
+    object_name_linter("lowerCamelCase"),
+    todo_comment_linter(),
+    default = default_linters
+    )
+exclude: "# nolint"
+exclude_start: "# nolint start"
+exclude_end: "# nolint end"

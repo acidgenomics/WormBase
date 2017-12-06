@@ -2,30 +2,45 @@
 % Please edit documentation in R/gene.R
 \name{gene}
 \alias{gene}
-\title{Gene mapping}
+\title{Gene Mapping}
 \usage{
 gene(identifier, format = "gene", select = NULL)
 }
 \arguments{
-\item{identifier}{Identifier}
+\item{identifier}{Identifier.}
 
-\item{format}{Identifier type (\code{gene}, \code{name}, \code{sequence},
-\code{class} or \code{keyword})}
+\item{format}{Identifier type (\code{gene}, \code{sequence}, \code{name}, \code{class} or
+\code{keyword}).}
 
-\item{select}{Columns to select. Consult the \code{gene} vignette for
+\item{select}{Columns to select. Consult \code{vignette("gene")} for the list of
 available parameters.}
 }
 \value{
-tibble
+\link{tibble}.
 }
 \description{
-Gene mapping
+Gene Mapping
 }
 \examples{
-gene("skn-1", format = "name")
-gene("T19E7.2", format = "sequence")
-gene("WBGene00004804", select = "descriptionConcise")
-gene("daf", format = "class")
-gene("bzip", format = "keyword")
-}
+# Match by WormBase/Ensembl gene identifier (preferred)
+gene("WBGene00004804", format = "gene") \%>\% glimpse()
 
+# Match by gene sequence (aka ORF)
+gene("T19E7.2", format = "sequence") \%>\% glimpse()
+
+# Match by gene name (aka symbol)
+gene("skn-1", format = "name") \%>\% glimpse()
+
+# Match by gene class
+gene("daf", format = "class") \%>\% glimpse()
+
+# Match by keyword
+gene("bzip", format = "keyword") \%>\% glimpse()
+
+# Match by gene ID and select class
+gene(
+    "WBGene00004804",
+    format = "gene",
+    select = c("class", "status")) \%>\%
+    glimpse()
+}

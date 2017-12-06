@@ -1,0 +1,5 @@
+html_document:
+    df_print: kable
+    highlight: pygments
+    number_sections: false
+    toc: false

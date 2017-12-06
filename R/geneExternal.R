@@ -1,25 +1,49 @@
-#' WormBase RESTful gene external query
-#' @export
-#' @importFrom dplyr bind_rows mutate_
-#' @importFrom magrittr set_names
+#' WormBase RESTful Gene External Query
+#'
+#' @importFrom basejump toStringUnique
+#' @importFrom dplyr bind_rows
 #' @importFrom parallel mclapply
-#' @importFrom tibble as_tibble
-#' @param identifier Gene identifier
-#' @return JSON content tibble
+#'
+#' @param identifier Gene identifier.
+#'
+#' @return JSON content [tibble].
+#' @export
+#'
+#' @examples
+#' geneExternal("WBGene00004804") %>% glimpse()
 geneExternal <- function(identifier) {
-    identifier <- uniqueIdentifier(identifier)
-    lapply(seq_along(identifier), function(a) {
-        if (!grepl("^WBGene[0-9]{8}$", identifier[[a]])) {
-            stop("Invalid gene identifier.")
+    identifier <- .uniqueIdentifier(identifier)
+    list <- lapply(seq_along(identifier), function(a) {
+        if (!grepl(pattern = "^WBGene[0-9]{8}$", x = identifier[[a]])) {
+            warning(paste(
+                "Invalid identifier:", identifier[[a]]
+            ), call. = FALSE)
+            return(NULL)
         }
-        rest <- paste0("widget/gene/", identifier[[a]], "/external_links") %>%
-            rest %>% .$fields %>% .$xrefs %>% .$data
-        parallel::mclapply(seq_along(rest), function(b) {
-            rest[[b]] %>% .[[1]] %>% .[[1]] %>%
-                unlist %>% toStringUnique
-        }) %>% magrittr::set_names(names(rest)) %>%
-            tibble::as_tibble(.) %>%
-            dplyr::mutate_(.dots = magrittr::set_names(list(~identifier[[a]]), "gene"))
-    }) %>% dplyr::bind_rows(.) %>%
-        magrittr::set_names(tolower(names(.)))
+        rest <- file.path(
+            "widget",
+            "gene",
+            identifier[[a]],
+            "external_links") %>%
+            .rest() %>%
+            .[["fields"]] %>%
+            .[["xrefs"]] %>%
+            .[["data"]]
+        if (is.null(rest)) return(NULL)
+        xrefs <- mclapply(seq_along(rest), function(b) {
+            rest[[b]] %>%
+                .[[1L]] %>%
+                .[[1L]] %>%
+                unlist() %>%
+                toStringUnique()
+        })
+        names(xrefs) <- names(rest)
+        xrefs %>%
+            as_tibble() %>%
+            mutate(gene = identifier[[a]])
+    })
+    df <- bind_rows(list)
+    if (!nrow(df)) return(NULL)
+    names(df) <- tolower(names(df))
+    df[, unique(c("gene", sort(colnames(df))))]
 }

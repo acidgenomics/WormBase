@@ -2,33 +2,44 @@
 % Please edit documentation in R/rnai.R
 \name{rnai}
 \alias{rnai}
-\title{RNAi clone mapping}
+\title{RNAi Clone Mapping}
 \usage{
-rnai(identifier, format = "clone", proteinCoding = TRUE)
+rnai(identifier, format = "clone")
 }
 \arguments{
-\item{identifier}{Identifier}
+\item{identifier}{Identifier.}
 
-\item{format}{Identifier format (\code{clone}, \code{gene}, \code{genePair},
-\code{name}, or \code{sequence})}
-
-\item{proteinCoding}{Whether to only return protein coding matches
-(\code{TRUE}, \code{FALSE})}
+\item{format}{Identifier format (\code{clone}, \code{gene}, \code{genePair}, \code{name}, or
+\code{sequence}).}
 }
 \value{
-tibble
+\link{tibble}.
 }
 \description{
-RNAi clone mapping
+RNAi Clone Mapping
 }
 \examples{
-rnai("ahringer384-III-6-C01")
-rnai("ahringer96-86-B01")
-rnai("GHR-11010@G06")
-rnai("orfeome96-11010-G06")
-rnai("sbp-1", format = "name")
-rnai("WBGene00004735", format = "gene")
-rnai("Y47D3B.7", format = "sequence")
-rnai("Y53H1C.b", format = "genePair")
-}
+# WORFDB ORFeome clones
+rnai("orfeome96-11010-G06", format = "clone") \%>\% glimpse()
+rnai("GHR-11010@G06", format = "clone") \%>\% glimpse()
 
+# Ahringer clones
+rnai("ahringer384-III-6-C01", format = "clone") \%>\% glimpse()
+rnai("ahringer96-86-B01", format = "clone") \%>\% glimpse()
+
+# Mixed clone types (e.g. sbp-1 clones)
+rnai(
+    c("orfeome96-11010-G06",
+      "ahringer384-III-6-C01",
+      "ahringer96-86-B01"),
+    format = "clone") \%>\%
+    glimpse()
+
+# Clone retrieval by gene
+rnai("WBGene00004735", format = "gene") \%>\% glimpse()
+rnai("Y47D3B.7", format = "sequence") \%>\% glimpse()
+rnai("sbp-1", format = "name") \%>\% glimpse()
+
+# Clone retrieval by genePair
+rnai("Y53H1C.b", format = "genePair") \%>\% glimpse()
+}

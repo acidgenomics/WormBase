@@ -1,86 +1,112 @@
-#' Gene mapping
-#' @export
-#' @importFrom dplyr arrange_ bind_rows
+#' Gene Mapping
+#'
+#' @importFrom basejump collapseToString
+#' @importFrom dplyr arrange everything group_by left_join pull select
 #' @importFrom parallel mclapply
-#' @importFrom stats na.omit
+#' @importFrom rlang !!! syms
+#' @importFrom stringr str_match
 #' @importFrom tibble as_tibble
-#' @importFrom tidyr separate_
-#' @param identifier Identifier
-#' @param format Identifier type (\code{gene}, \code{name}, \code{sequence},
-#'   \code{class} or \code{keyword})
-#' @param select Columns to select. Consult the \code{gene} vignette for
+#'
+#' @param identifier Identifier.
+#' @param format Identifier type (`gene`, `sequence`, `name`, `class` or
+#'   `keyword`).
+#' @param select Columns to select. Consult `vignette("gene")` for the list of
 #'   available parameters.
-#' @return tibble
+#'
+#' @return [tibble].
+#' @export
 #'
 #' @examples
-#' gene("skn-1", format = "name")
-#' gene("T19E7.2", format = "sequence")
-#' gene("WBGene00004804", select = "descriptionConcise")
-#' gene("daf", format = "class")
-#' gene("bzip", format = "keyword")
-gene <- function(identifier, format = "gene", select = NULL) {
-    identifier <- uniqueIdentifier(identifier)
-    annotation <- get("annotation", envir = asNamespace("worminfo"))$gene
-    return <- parallel::mclapply(seq_along(identifier), function(a) {
+#' # Match by WormBase/Ensembl gene identifier (preferred)
+#' gene("WBGene00004804", format = "gene") %>% glimpse()
+#'
+#' # Match by gene sequence (aka ORF)
+#' gene("T19E7.2", format = "sequence") %>% glimpse()
+#'
+#' # Match by gene name (aka symbol)
+#' gene("skn-1", format = "name") %>% glimpse()
+#'
+#' # Match by gene class
+#' gene("daf", format = "class") %>% glimpse()
+#'
+#' # Match by keyword
+#' gene("bzip", format = "keyword") %>% glimpse()
+#'
+#' # Match by gene ID and select class
+#' gene(
+#'     "WBGene00004804",
+#'     format = "gene",
+#'     select = c("class", "status")) %>%
+#'     glimpse()
+gene <- function(
+    identifier,
+    format = "gene",
+    select = NULL) {
+    identifier <- .uniqueIdentifier(identifier)
+    data <- worminfo::worminfo[["gene"]]
+    return <- mclapply(seq_along(identifier), function(a) {
         if (any(grepl(format, c("gene", "name")))) {
-            return <- annotation %>%
-                .[.[[format]] %in% identifier[a], ]
+            return <- data %>%
+                .[.[[format]] %in% identifier[[a]], ]
         } else if (format == "sequence") {
-            sequence <- removeIsoform(identifier)
-            return <- annotation %>% .[.[[format]] %in% sequence[a], ]
+            sequence <- .removeIsoform(identifier)
+            return <- data %>%
+                .[.[[format]] %in% sequence[[a]], ]
         } else if (format == "class") {
-            name <- annotation %>%
-                .[grepl(paste0("^", identifier[a], "-"), .[["name"]]), "name"]
-            name <- name[[1]]
-            return <- annotation %>% .[.$name %in% name, ]
+            name <- data %>%
+                .[grepl(paste0("^", identifier[[a]], "-"), .[["name"]]), "name"]
+            name <- name[[1L]]
+            return <- data %>%
+                .[.[["name"]] %in% name, ]
         } else if (format == "keyword") {
-            # \code{apply(..., 1)} processes by row:
-            grepl <- apply(annotation, 1, function(b) {
-                any(grepl(identifier[a], b, ignore.case = TRUE))
+            # `apply(..., 1)` processes by row
+            grepl <- apply(data, 1L, function(x) {
+                any(grepl(x = x,
+                          pattern = identifier[[a]],
+                          ignore.case = TRUE))
             })
-            gene <- annotation[grepl, "gene"]
-            gene <- gene[[1]]
-            return <- annotation %>% .[.$gene %in% gene, ]
+            gene <- data[grepl, ] %>%
+                pull("gene")
+            if (!length(gene)) return(NULL)
+            return <- data %>%
+                .[.[["gene"]] %in% gene, ]
         } else {
-            stop("Invalid format.")
+            stop("Invalid format", call. = FALSE)
         }
         if (nrow(return)) {
             return[[format]] <- identifier[a]
         }
-        return(return)
-    }) %>% dplyr::bind_rows(.)
-    # Select columns:
-    # Always return the WormBase gene identifier.
+        return
+    })
+    return <- bind_rows(return)
+    if (!nrow(return)) return(NULL)
+    # Select columns. Always return the WormBase gene identifier.
     if (is.null(select)) {
         return <- return[, unique(c(format, defaultCol))]
     } else {
         return <- return[, unique(c(format, defaultCol, select))]
     }
-    # Put \code{format} column first:
-    return <- return %>%
-        dplyr::select_(.dots = c(format, setdiff(names(.), format)))
-    if (nrow(return)) {
-        # Summarize multiple keyword matches:
-        if (format == "keyword") {
-            return <- return %>%
-                dplyr::group_by_(.dots = "gene") %>%
-                toStringSummarize
-        }
-        # Arrange rows:
-        # \code{format} is used to arrange, unless specified.
-        if (any(grepl(format, c("class", "name")))) {
-            arrange <- stringr::str_match(return$name, "^(.+)([0-9\\.]+)$") %>%
-                tibble::as_tibble(.)
-            arrange$V3 <- as.numeric(arrange$V3)
-            return <- dplyr::left_join(return, arrange, by = c("name" = "V1"))
-            # Arrange by class then number:
-            return <- dplyr::arrange_(return, .dots = c("V2", "V3"))
-            # Drop the unnecessary temporary columns:
-            return$V2 <- NULL
-            return$V3 <- NULL
-        } else {
-            return <- dplyr::arrange_(return, .dots = unique(format, defaultCol))
-        }
+    # Summarize multiple keyword matches
+    if (format == "keyword") {
+        return <- return %>%
+            group_by(!!sym("gene")) %>%
+            collapseToString()
     }
-    return
+    # Arrange rows. `format` is used to arrange, unless specified.
+    if (any(grepl(format, c("class", "name")))) {
+        arrange <- str_match(return[["name"]], "^(.+)([0-9\\.]+)$") %>%
+            as_tibble()
+        arrange[["V3"]] <- as.numeric(arrange[["V3"]])
+        return <- left_join(return, arrange, by = c("name" = "V1"))
+        # Arrange by class then number:
+        return <- arrange(return, !!!syms(c("V2", "V3")))
+        # Drop the unnecessary temporary columns:
+        return[["V2"]] <- NULL
+        return[["V3"]] <- NULL
+    } else {
+        return <- arrange(return, !!!syms(unique(format, defaultCol)))
+    }
+    # Put the query format column first
+    return <- select(return, .data[[format]], everything())
+    as_tibble(return)
 }
