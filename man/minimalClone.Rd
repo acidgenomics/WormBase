@@ -16,4 +16,7 @@ Character vector.
 Strip out unnecessary plate and well separators. Also remove zero padding
 for well numbers, for fast and consistent clone matching.
 }
+\examples{
+minimalClone(c("11010-G06", "11010@G06", "III-6-C01"))
+}
 \keyword{internal}

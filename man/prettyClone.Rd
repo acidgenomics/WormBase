@@ -18,4 +18,7 @@ data. This allows for more flexible matching, such as clones that don't
 contain a padded well number. At the return step, we reformat the clones back
 to a standardized output, separated by dashes.
 }
+\examples{
+prettyClone(c("11010G6", "III6C1"))
+}
 \keyword{internal}

@@ -14,34 +14,28 @@
 #'
 #' @examples
 #' # WORFDB ORFeome clones
-#' rnai("orfeome96-11010-G06") %>%
-#'     glimpse()
-#' rnai("GHR-11010@G06") %>%
-#'     glimpse()
+#' rnai("orfeome96-11010-G06", format = "clone") %>% glimpse()
+#' rnai("GHR-11010@G06", format = "clone") %>% glimpse()
 #'
 #' # Ahringer clones
-#' rnai("ahringer384-III-6-C01") %>%
-#'     glimpse()
-#' rnai("ahringer96-86-B01") %>%
-#'     glimpse()
+#' rnai("ahringer384-III-6-C01", format = "clone") %>% glimpse()
+#' rnai("ahringer96-86-B01", format = "clone") %>% glimpse()
 #'
 #' # Mixed clone types (e.g. sbp-1 clones)
-#' rnai(c("orfeome96-11010-G06",
-#'        "ahringer384-III-6-C01",
-#'        "ahringer96-86-B01")) %>%
+#' rnai(
+#'     c("orfeome96-11010-G06",
+#'       "ahringer384-III-6-C01",
+#'       "ahringer96-86-B01"),
+#'     format = "clone") %>%
 #'     glimpse()
 #'
 #' # Clone retrieval by gene
-#' rnai("sbp-1", format = "name") %>%
-#'     glimpse()
-#' rnai("WBGene00004735", format = "gene") %>%
-#'     glimpse()
-#' rnai("Y47D3B.7", format = "sequence") %>%
-#'     glimpse()
+#' rnai("WBGene00004735", format = "gene") %>% glimpse()
+#' rnai("Y47D3B.7", format = "sequence") %>% glimpse()
+#' rnai("sbp-1", format = "name") %>% glimpse()
 #'
-#' # aat-9 by genePair
-#' rnai("Y53H1C.b", format = "genePair") %>%
-#'     glimpse()
+#' # Clone retrieval by genePair
+#' rnai("Y53H1C.b", format = "genePair") %>% glimpse()
 rnai <- function(
     identifier,
     format = "clone") {
@@ -60,13 +54,14 @@ rnai <- function(
     }
 
     worminfo <- worminfo::worminfo
-    worminfo <- left_join(
+    data <- left_join(
         worminfo[["rnai"]],
         worminfo[["gene"]][, defaultCol],
         by = "gene") %>%
         select(c(defaultCol), everything())
+    rm(worminfo)
 
-    cloneCols <- setdiff(colnames(worminfo), formatCols)
+    cloneCols <- setdiff(colnames(data), formatCols)
 
     if (format == "clone") {
         match <- list()
@@ -80,7 +75,7 @@ rnai <- function(
         match[["orfeome"]] <- .matchClones(
             clones = orfeomeClones,
             cloneCol = "orfeome96",
-            worminfo = worminfo)
+            data = data)
 
         # Ahringer 384 well library
         ahringer384Grep <- "^ahringer384-"
@@ -91,7 +86,7 @@ rnai <- function(
         match[["ahringer384"]] <- .matchClones(
             clones = ahringer384Clones,
             cloneCol = "ahringer384",
-            worminfo = worminfo)
+            data = data)
 
         # Ahringer 96 well library
         ahringer96Grep <- "^ahringer96-"
@@ -102,7 +97,7 @@ rnai <- function(
         match[["ahringer96"]] <- .matchClones(
             clones = ahringer96Clones,
             cloneCol = "ahringer96",
-            worminfo = worminfo)
+            data = data)
 
         # Cherrypick 96 well library
         cherrypickLibs <- c("bzip", "kinase", "tf")
@@ -117,30 +112,26 @@ rnai <- function(
         match[["cherrypick"]] <- .matchClones(
             clones = cherrypickClones,
             cloneCol = "cherrypick96",
-            worminfo = worminfo)
+            data = data)
 
         match <- bind_rows(match)
-        if (nrow(match) == 0) {
-            return(NULL)
-        }
+        if (!nrow(match)) return(NULL)
         match[, c(format, defaultCol)]
     } else if (format == "genePair") {
-        # Need to use grep string method
-        .matchClones(
+        match <- .matchClones(
             query,
             cloneCol = "genePair",
-            worminfo = worminfo)
+            data = data)
+
     } else {
-        match <- worminfo %>%
-            .[.[[format]] %in% query, ]
-        if (nrow(match) == 0) {
-            return(NULL)
-        }
-        match %>%
-            select(unique(c(format, defaultCol)), everything()) %>%
-            distinct() %>%
-            mutate_at(c(cloneCols), prettyClone) %>%
-            mutate(cherrypick96 = NULL) %>%
-            as_tibble()
+        match <- data %>%
+            .[.[[format]] %in% query, , drop = FALSE]
     }
+    if (!nrow(match)) return(NULL)
+    match %>%
+        select(unique(c(format, defaultCol)), everything()) %>%
+        distinct() %>%
+        mutate_at(c(cloneCols), prettyClone) %>%
+        mutate(cherrypick96 = NULL) %>%
+        as_tibble()
 }

@@ -1,7 +1,7 @@
 #' @importFrom basejump grepString
 #' @importFrom dplyr bind_rows
 #' @importFrom parallel mclapply
-.matchClones <- function(clones, cloneCol, worminfo) {
+.matchClones <- function(clones, cloneCol, data) {
     if (length(clones) == 0) {
         return(NULL)
     }
@@ -9,10 +9,15 @@
         grepString <- clones[[a]] %>%
             minimalClone() %>%
             grepString()
-        df <- worminfo %>%
+        data <- data %>%
             .[grepl(grepString, .[[cloneCol]]), , drop = FALSE]
-        df[["clone"]] <- names(clones)[[a]]
-        df
+        if (!nrow(data)) return(NULL)
+        # Replace genePair
+        if (cloneCol == "genePair") {
+            data[["genePair"]] <- clones[[a]]
+        }
+        data[["clone"]] <- names(clones)[[a]]
+        data
     }) %>%
         bind_rows()
 }

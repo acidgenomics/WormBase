@@ -10,8 +10,11 @@
 #' @inherit minimalClone
 #'
 #' @export
+#'
+#' @examples
+#' prettyClone(c("11010G6", "III6C1"))
 prettyClone <- function(identifier) {
-    vapply(identifier, FUN = function(x) {
+    vec <- vapply(identifier, FUN = function(x) {
         x %>%
             strsplit(split = ", ") %>%
             .[[1L]] %>%
@@ -30,4 +33,6 @@ prettyClone <- function(identifier) {
             toString()
     },
     FUN.VALUE = character(1))
+    names(vec) <- NULL
+    vec
 }

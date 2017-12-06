@@ -20,32 +20,26 @@ RNAi Clone Mapping
 }
 \examples{
 # WORFDB ORFeome clones
-rnai("orfeome96-11010-G06") \%>\%
-    glimpse()
-rnai("GHR-11010@G06") \%>\%
-    glimpse()
+rnai("orfeome96-11010-G06", format = "clone") \%>\% glimpse()
+rnai("GHR-11010@G06", format = "clone") \%>\% glimpse()
 
 # Ahringer clones
-rnai("ahringer384-III-6-C01") \%>\%
-    glimpse()
-rnai("ahringer96-86-B01") \%>\%
-    glimpse()
+rnai("ahringer384-III-6-C01", format = "clone") \%>\% glimpse()
+rnai("ahringer96-86-B01", format = "clone") \%>\% glimpse()
 
 # Mixed clone types (e.g. sbp-1 clones)
-rnai(c("orfeome96-11010-G06",
-       "ahringer384-III-6-C01",
-       "ahringer96-86-B01")) \%>\%
+rnai(
+    c("orfeome96-11010-G06",
+      "ahringer384-III-6-C01",
+      "ahringer96-86-B01"),
+    format = "clone") \%>\%
     glimpse()
 
 # Clone retrieval by gene
-rnai("sbp-1", format = "name") \%>\%
-    glimpse()
-rnai("WBGene00004735", format = "gene") \%>\%
-    glimpse()
-rnai("Y47D3B.7", format = "sequence") \%>\%
-    glimpse()
+rnai("WBGene00004735", format = "gene") \%>\% glimpse()
+rnai("Y47D3B.7", format = "sequence") \%>\% glimpse()
+rnai("sbp-1", format = "name") \%>\% glimpse()
 
-# aat-9 by genePair
-rnai("Y53H1C.b", format = "genePair") \%>\%
-    glimpse()
+# Clone retrieval by genePair
+rnai("Y53H1C.b", format = "genePair") \%>\% glimpse()
 }

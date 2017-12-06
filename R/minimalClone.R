@@ -9,6 +9,9 @@
 #'
 #' @return Character vector.
 #' @export
+#'
+#' @examples
+#' minimalClone(c("11010-G06", "11010@G06", "III-6-C01"))
 minimalClone <- function(identifier) {
     identifier %>%
         # Remove `@` and `-` from clones
