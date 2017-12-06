@@ -101,7 +101,7 @@
     </tr>
     <tr>
       <th>format</th>
-      <td><p>Identifier type (<code>gene</code>, <code>name</code>, <code>sequence</code>, <code>class</code> or
+      <td><p>Identifier type (<code>gene</code>, <code>sequence</code>, <code>name</code>, <code>class</code> or
 <code>keyword</code>).</p></td>
     </tr>
     <tr>
@@ -117,54 +117,50 @@ available parameters.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># name</span>
-<span class='fu'>gene</span>(<span class='st'>"skn-1"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"name"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 3
-#&gt;    name           gene sequence
-#&gt;   &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt;
-#&gt; 1 skn-1 WBGene00004804  T19E7.2</div><div class='input'>
-<span class='co'># sequence</span>
-<span class='fu'>gene</span>(<span class='st'>"T19E7.2"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"sequence"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 3
-#&gt;   sequence           gene  name
-#&gt;      &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt;
-#&gt; 1  T19E7.2 WBGene00004804 skn-1</div><div class='input'>
-<span class='co'># description</span>
-<span class='fu'>gene</span>(<span class='st'>"WBGene00004804"</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='st'>"descriptionConcise"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/glimpse'>glimpse</a></span>()</div><div class='output co'>#&gt; Observations: 1
+    <pre class="examples"><div class='input'><span class='co'># Match by WormBase/Ensembl gene identifier (preferred)</span>
+<span class='fu'>gene</span>(<span class='st'>"WBGene00004804"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"gene"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/glimpse'>glimpse</a></span>()</div><div class='output co'>#&gt; Observations: 1
+#&gt; Variables: 3
+#&gt; $ gene     &lt;chr&gt; "WBGene00004804"
+#&gt; $ sequence &lt;chr&gt; "T19E7.2"
+#&gt; $ name     &lt;chr&gt; "skn-1"</div><div class='input'>
+<span class='co'># Match by gene sequence (aka ORF)</span>
+<span class='fu'>gene</span>(<span class='st'>"T19E7.2"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"sequence"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/glimpse'>glimpse</a></span>()</div><div class='output co'>#&gt; Observations: 1
+#&gt; Variables: 3
+#&gt; $ sequence &lt;chr&gt; "T19E7.2"
+#&gt; $ gene     &lt;chr&gt; "WBGene00004804"
+#&gt; $ name     &lt;chr&gt; "skn-1"</div><div class='input'>
+<span class='co'># Match by gene name (aka symbol)</span>
+<span class='fu'>gene</span>(<span class='st'>"skn-1"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"name"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/glimpse'>glimpse</a></span>()</div><div class='output co'>#&gt; Observations: 1
+#&gt; Variables: 3
+#&gt; $ name     &lt;chr&gt; "skn-1"
+#&gt; $ gene     &lt;chr&gt; "WBGene00004804"
+#&gt; $ sequence &lt;chr&gt; "T19E7.2"</div><div class='input'>
+<span class='co'># Match by gene class</span>
+<span class='fu'>gene</span>(<span class='st'>"daf"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"class"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/glimpse'>glimpse</a></span>()</div><div class='output co'>#&gt; Observations: 34
 #&gt; Variables: 4
-#&gt; $ gene               &lt;chr&gt; "WBGene00004804"
-#&gt; $ sequence           &lt;chr&gt; "T19E7.2"
-#&gt; $ name               &lt;chr&gt; "skn-1"
-#&gt; $ descriptionConcise &lt;chr&gt; "skn-1 encodes a bZip transcription factor ortho...</div><div class='input'>
-<span class='co'># class</span>
-<span class='fu'>gene</span>(<span class='st'>"daf"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"class"</span>)</div><div class='output co'>#&gt; # A tibble: 34 x 4
-#&gt;    class           gene sequence   name
-#&gt;    &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;
-#&gt;  1   daf WBGene00000897  F29C4.1  daf-1
-#&gt;  2   daf WBGene00000898 Y55D5A.5  daf-2
-#&gt;  3   daf WBGene00000899  F25E2.5  daf-3
-#&gt;  4   daf WBGene00000900  C05D2.1  daf-4
-#&gt;  5   daf WBGene00000901  W01G7.1  daf-5
-#&gt;  6   daf WBGene00000902  F31F6.5  daf-6
-#&gt;  7   daf WBGene00000903  B0412.2  daf-7
-#&gt;  8   daf WBGene00000904 R05D11.1  daf-8
-#&gt;  9   daf WBGene00000905  T13C5.1  daf-9
-#&gt; 10   daf WBGene00000906  F23B2.4 daf-10
-#&gt; # ... with 24 more rows</div><div class='input'>
-<span class='co'># keyword</span>
-<span class='fu'>gene</span>(<span class='st'>"bzip"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"keyword"</span>)</div><div class='output co'>#&gt; # A tibble: 75 x 4
-#&gt;              gene keyword sequence  name
-#&gt;             &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;
-#&gt;  1 WBGene00000026    bzip  F31A3.1 abu-3
-#&gt;  2 WBGene00000027    bzip  Y5H2A.3 abu-4
-#&gt;  3 WBGene00000220    bzip  K08F8.2 atf-2
-#&gt;  4 WBGene00000221    bzip T04C10.4 atf-5
-#&gt;  5 WBGene00000222    bzip  F45E6.2 atf-6
-#&gt;  6 WBGene00000223    bzip  C07G2.2 atf-7
-#&gt;  7 WBGene00000366    bzip R10E11.1 cbp-1
-#&gt;  8 WBGene00000468    bzip F43G9.11 ces-1
-#&gt;  9 WBGene00000469    bzip  ZK909.4 ces-2
-#&gt; 10 WBGene00000793    bzip Y41C4A.4 crh-1
-#&gt; # ... with 65 more rows</div></pre>
+#&gt; $ class    &lt;chr&gt; "daf", "daf", "daf", "daf", "daf", "daf", "daf", "daf", "d...
+#&gt; $ gene     &lt;chr&gt; "WBGene00000897", "WBGene00000898", "WBGene00000899", "WBG...
+#&gt; $ sequence &lt;chr&gt; "F29C4.1", "Y55D5A.5", "F25E2.5", "C05D2.1", "W01G7.1", "F...
+#&gt; $ name     &lt;chr&gt; "daf-1", "daf-2", "daf-3", "daf-4", "daf-5", "daf-6", "daf...</div><div class='input'>
+<span class='co'># Match by keyword</span>
+<span class='fu'>gene</span>(<span class='st'>"bzip"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"keyword"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/glimpse'>glimpse</a></span>()</div><div class='output co'>#&gt; Observations: 75
+#&gt; Variables: 4
+#&gt; $ keyword  &lt;chr&gt; "bzip", "bzip", "bzip", "bzip", "bzip", "bzip", "bzip", "b...
+#&gt; $ gene     &lt;chr&gt; "WBGene00000026", "WBGene00000027", "WBGene00000220", "WBG...
+#&gt; $ sequence &lt;chr&gt; "F31A3.1", "Y5H2A.3", "K08F8.2", "T04C10.4", "F45E6.2", "C...
+#&gt; $ name     &lt;chr&gt; "abu-3", "abu-4", "atf-2", "atf-5", "atf-6", "atf-7", "cbp...</div><div class='input'>
+<span class='co'># Match by gene ID and select class</span>
+<span class='fu'>gene</span>(
+    <span class='st'>"WBGene00004804"</span>,
+    <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"gene"</span>,
+    <span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"class"</span>, <span class='st'>"status"</span>)) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/glimpse'>glimpse</a></span>()</div><div class='output co'>#&gt; Observations: 1
+#&gt; Variables: 5
+#&gt; $ gene     &lt;chr&gt; "WBGene00004804"
+#&gt; $ sequence &lt;chr&gt; "T19E7.2"
+#&gt; $ name     &lt;chr&gt; "skn-1"
+#&gt; $ class    &lt;chr&gt; "SKiNhead"
+#&gt; $ status   &lt;chr&gt; "Live"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
