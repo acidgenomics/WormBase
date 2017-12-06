@@ -1,7 +1,7 @@
 #' Gene Mapping
 #'
 #' @importFrom basejump collapseToString
-#' @importFrom dplyr arrange everything group_by left_join select
+#' @importFrom dplyr arrange everything group_by left_join pull select
 #' @importFrom parallel mclapply
 #' @importFrom rlang !!! syms
 #' @importFrom stringr str_match
@@ -37,32 +37,35 @@ gene <- function(
     format = "gene",
     select = NULL) {
     identifier <- .uniqueIdentifier(identifier)
-    worminfo <- worminfo::worminfo[["gene"]]
+    data <- worminfo::worminfo[["gene"]]
     return <- mclapply(seq_along(identifier), function(a) {
         if (any(grepl(format, c("gene", "name")))) {
-            return <- worminfo %>%
+            return <- data %>%
                 .[.[[format]] %in% identifier[[a]], ]
         } else if (format == "sequence") {
             sequence <- .removeIsoform(identifier)
-            return <- worminfo %>%
+            return <- data %>%
                 .[.[[format]] %in% sequence[[a]], ]
         } else if (format == "class") {
-            name <- worminfo %>%
+            name <- data %>%
                 .[grepl(paste0("^", identifier[[a]], "-"), .[["name"]]), "name"]
             name <- name[[1L]]
-            return <- worminfo %>%
+            return <- data %>%
                 .[.[["name"]] %in% name, ]
         } else if (format == "keyword") {
             # `apply(..., 1)` processes by row
-            grepl <- apply(worminfo, 1L, function(b) {
-                any(grepl(identifier[a], b, ignore.case = TRUE))
+            grepl <- apply(data, 1L, function(x) {
+                any(grepl(x = x,
+                          pattern = identifier[[a]],
+                          ignore.case = TRUE))
             })
-            gene <- worminfo[grepl, "gene"]
-            gene <- gene[[1L]]
-            return <- worminfo %>%
+            gene <- data[grepl, ] %>%
+                pull("gene")
+            if (!length(gene)) return(NULL)
+            return <- data %>%
                 .[.[["gene"]] %in% gene, ]
         } else {
-            stop("Invalid format")
+            stop("Invalid format", call. = FALSE)
         }
         if (nrow(return)) {
             return[[format]] <- identifier[a]
@@ -70,6 +73,7 @@ gene <- function(
         return
     })
     return <- bind_rows(return)
+    if (!nrow(return)) return(NULL)
     # Select columns. Always return the WormBase gene identifier.
     if (is.null(select)) {
         return <- return[, unique(c(format, defaultCol))]
