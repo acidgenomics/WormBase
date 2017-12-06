@@ -10,8 +10,7 @@
 #' @export
 #'
 #' @examples
-#' geneExternal("WBGene00000001") %>%
-#'     glimpse()
+#' geneExternal("WBGene00000001") %>% glimpse()
 geneExternal <- function(identifier) {
     identifier <- .uniqueIdentifier(identifier)
     list <- lapply(seq_along(identifier), function(a) {
@@ -41,5 +40,5 @@ geneExternal <- function(identifier) {
     })
     df <- bind_rows(list)
     names(df) <- tolower(names(df))
-    df
+    df[, unique(c("gene", sort(colnames(df))))]
 }

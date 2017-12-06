@@ -16,6 +16,5 @@ JSON content \link{tibble}.
 WormBase RESTful Gene External Query
 }
 \examples{
-geneExternal("WBGene00000001") \%>\%
-    glimpse()
+geneExternal("WBGene00000001") \%>\% glimpse()
 }
