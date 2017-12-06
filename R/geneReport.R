@@ -12,8 +12,7 @@
 #' @export
 #'
 #' @examples
-#' geneReport("daf-2", format = "name") %>%
-#'     glimpse()
+#' geneReport("daf-2", format = "name") %>% glimpse()
 geneReport <- function(identifier, format = "gene") {
     identifier <- .uniqueIdentifier(identifier)
     gene <- gene(
@@ -23,7 +22,7 @@ geneReport <- function(identifier, format = "gene") {
                    "class",
                    # Ortholog ====
                    "ortholog",
-                   # FIXME Need to add the blastp matching back with biomaRt
+                   # TODO Need to add the blastp matching back with biomaRt
                    # Description ====
                    "descriptionConcise",
                    # WormBase Additional ====
@@ -35,9 +34,7 @@ geneReport <- function(identifier, format = "gene") {
                    "pantherGoCC",
                    "pantherClass",
                    "pantherPathway"))
-    if (!nrow(gene)) {
-        return(NULL)
-    }
+    if (is.null(gene)) return(NULL)
 
     annotable <- annotable("Caenorhabditis elegans") %>%
         remove_rownames() %>%
