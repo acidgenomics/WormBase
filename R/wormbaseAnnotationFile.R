@@ -7,6 +7,11 @@
 #'
 #' @return Silently return the file path.
 #' @export
+#'
+#' @examples
+#' wormbaseAnnotationFile("geneIDs", dir = getwd())
+#' file.exists("geneIDs.txt.gz")
+#' unlink("geneIDs.txt.gz")
 wormbaseAnnotationFile <- function(
     file,
     dir = file.path("data-raw", "wormbase")) {
