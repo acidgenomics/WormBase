@@ -17,3 +17,8 @@ Silently return the file path.
 \description{
 WormBase Annotation File
 }
+\examples{
+wormbaseAnnotationFile("geneIDs", dir = getwd())
+file.exists("geneIDs.txt.gz")
+unlink("geneIDs.txt.gz")
+}
