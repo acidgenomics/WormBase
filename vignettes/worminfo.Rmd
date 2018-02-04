@@ -1,7 +1,7 @@
 ---
 title: "worminfo"
-date: "`r BiocStyle::doc_date()`"
 author: "`r getOption('author') `"
+date: "`r BiocStyle::doc_date()`"
 abstract: >
   Abstract placeholder text.
 bibliography: worminfo.bib
