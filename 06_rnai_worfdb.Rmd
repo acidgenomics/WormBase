@@ -1,6 +1,7 @@
 ---
 title: "WORFDB annotations"
-date: "`r BiocStyle::doc_date()`"
+author: "`r getOption('author')`"
+date: "`r Sys.Date()`"
 ---
 
 ```{r setup, message=FALSE}

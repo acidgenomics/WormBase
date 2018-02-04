@@ -1,13 +1,14 @@
 ---
 title: "Build Annotations"
-date: "`r BiocStyle::doc_date()`"
+author: "`r getOption('author')`"
+date: "`r Sys.Date()`"
 ---
 
 ```{r setup, message=FALSE}
 source("setup.R")
 ```
 
-```{r load}
+```{r load_data}
 loadData(
     ahringer,
     blastp,
@@ -80,7 +81,7 @@ rnai <- bind_rows(ahringer_bind, cherrypick_bind, worfdb_bind) %>%
         minimalClone)
 ```
 
-```{r build}
+```{r build_version}
 wormbase <- file.path(
     "ftp://ftp.wormbase.org",
     "pub",

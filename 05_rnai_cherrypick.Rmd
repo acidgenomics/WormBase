@@ -1,6 +1,7 @@
 ---
 title: "Cherrypick RNAi library annotations"
-date: "`r BiocStyle::doc_date()`"
+author: "`r getOption('author')`"
+date: "`r Sys.Date()`"
 ---
 
 ```{r setup, message=FALSE}
@@ -14,9 +15,7 @@ loadData(geneIDs, dir = dataDir)
 
 
 ```{r cherrypick}
-cherrypick <- file.path(
-    "http://worminfo.steinbaugh.com",
-    "cherrypick.xlsx") %>%
+cherrypick <- file.path("http://worminfo.steinbaugh.com", "cherrypick.xlsx") %>%
     readFileByExtension() %>%
     mutate(clone = paste0(
         library,

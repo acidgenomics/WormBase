@@ -2,9 +2,12 @@ Package: worminfo
 Title: Worm Genes and RNAi Clones
 Description: C. elegans gene annotations and RNAi clone mappings.
 Version: 0.1.0
-Authors@R: person("Michael", "Steinbaugh",
-                  email = "mike@steinbaugh.com",
-                  role = c("aut", "cre"))
+Authors@R: person(
+    given = "Michael",
+    family = "Steinbaugh",
+    email = "mike@steinbaugh.com",
+    role = c("aut", "cre")
+    )
 License: MIT + file LICENSE
 URL:
     http://steinbaugh.com/worminfo/,
@@ -30,9 +33,13 @@ Imports:
     UniProt.ws (>= 2.18.0),
     utils
 Suggests:
-    BiocStyle,
+    devtools,
     knitr,
     lintr,
+    parallel,
+    R.utils,
+    RCurl,
+    readxl,
     rmarkdown,
     roxygen2,
     testthat,

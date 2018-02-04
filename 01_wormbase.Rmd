@@ -1,7 +1,7 @@
 ---
 title: "WormBase annotations"
-date: "`r BiocStyle::doc_date()`"
-author: "Michael J. Steinbaugh"
+author: "`r getOption('author')`"
+date: "`r Sys.Date()`"
 ---
 
 ```{r setup, message=FALSE}
@@ -15,17 +15,19 @@ source("setup.R")
 
 # Gene IDs
 
-```{r geneIDs}
+```{r gene_ids}
 geneIDs <- wormbaseAnnotationFile("geneIDs") %>%
-    read_csv(col_names = c("X1", "gene", "name", "sequence", "status"),
-             na = "") %>%
+    read_csv(
+        col_names = c("X1", "gene", "name", "sequence", "status"),
+        na = "") %>%
     select(-X1)
+glimpse(geneIDs)
 ```
 
 
 ## Other gene IDs
 
-```{r geneOtherIDs}
+```{r gene_other_ids}
 geneOtherIDs <- wormbaseAnnotationFile("geneOtherIDs") %>%
     read_lines() %>%
     # Remove status, already present in geneIDs file
@@ -41,6 +43,7 @@ geneOtherIDs <- wormbaseAnnotationFile("geneOtherIDs") %>%
     do.call(rbind, .) %>%
     as_tibble() %>%
     set_colnames(c("gene", "otherIDs"))
+glimpse(geneOtherIDs)
 ```
 
 
@@ -67,6 +70,7 @@ description <- suppressWarnings(read_delim(
 description <- description %>%
     select(-c(name, sequence)) %>%
     filter(grepl("^WBGene\\d+$", gene))
+glimpse(description)
 rm(file, names)
 ```
 
@@ -94,7 +98,7 @@ list <- mclapply(1:nrow(raw_df), function(a) {
         raw_df[a, 2],
         pattern = "\\bENSMUSG\\d{11}\\b") %>%
         unlist()
-    # Fruit fly
+    # Fruitfly
     dmelanogaster <- str_extract_all(
         raw_df[a, 2],
         pattern = "\\bFBgn\\d{7}\\b") %>%
@@ -104,15 +108,16 @@ list <- mclapply(1:nrow(raw_df), function(a) {
         raw_df[a, 2],
         pattern = "\\bENSDARG\\d{11}\\b") %>%
         unlist()
-    return(list(
+    list(
         hsapiens = hsapiens,
         mmusculus = mmusculus,
         dmelanogaster = dmelanogaster,
         drerio = drerio
-    ))
+    )
 })
 names(list) <- raw_df$gene
 ortholog <- tibble(gene = names(list), ortholog = list)
+glimpse(ortholog)
 rm(list, raw_df)
 ```
 
@@ -120,16 +125,17 @@ rm(list, raw_df)
 
 # RNAi phenotypes
 
-```{r rnaiPhenotype}
+```{r rnai_phenotype}
 fileLocal <- file.path("data-raw", "wormbase", "rnai_phenotypes.tsv.gz")
 if (!file.exists(fileLocal)) {
     # Improve this code using the [transmit()] function
-    dir <- file.path("ftp://ftp.wormbase.org",
-                     "pub",
-                     "wormbase",
-                     "releases",
-                     "current-production-release",
-                     "ONTOLOGY")
+    dir <- file.path(
+        "ftp://ftp.wormbase.org",
+        "pub",
+        "wormbase",
+        "releases",
+        "current-production-release",
+        "ONTOLOGY")
     fileRemote <- getURL(paste0(dir, "/"), dirlistonly = TRUE) %>%
         str_split("\n") %>% .[[1]] %>%
         str_subset("rnai_phenotypes_quick") %>%
@@ -148,6 +154,7 @@ rnaiPhenotype <- read_tsv(
     group_by(gene) %>%
     arrange(rnaiPhenotype, .by_group = TRUE) %>%
     nest(.key = rnaiPhenotype)
+glimpse(rnaiPhenotype)
 rm(fileLocal)
 ```
 
@@ -159,11 +166,14 @@ rm(fileLocal)
 blastp <- wormbaseAnnotationFile("best_blast_hits") %>%
     read_csv(col_names = FALSE) %>%
     select(X1, X4, X5) %>%
-    rename(wormpep = X1,
-           peptide = X4,
-           eValue = X5) %>%
+    rename(
+        wormpep = X1,
+        peptide = X4,
+        eValue = X5
+    ) %>%
     filter(str_detect(peptide, "^ENSEMBL")) %>%
     mutate(peptide = str_sub(peptide, 9))
+glimpse(blastp)
 ```
 
 
@@ -188,9 +198,10 @@ fileRemote <- getURL(paste0(dir, "/"), dirlistonly = TRUE) %>%
     as.character() %>%
     file.path(dir, .)
 download.file(fileRemote, fileLocal)
-untar(fileLocal,
-      exdir = file.path("data-raw", "wormbase"),
-      files = "wormpep.table*")
+untar(
+    fileLocal,
+    exdir = file.path("data-raw", "wormbase"),
+    files = "wormpep.table*")
 # Safe to delete the large source file
 unlink(fileLocal)
 fileLocal <- list.files(
@@ -202,29 +213,28 @@ file.rename(fileLocal, fileRename)
 fileLocal <- fileRename
 fileLocal <- gzip(fileLocal, overwrite = TRUE)
 rm(fileRename)
-raw <- fileLocal %>%
-    read_lines() %>%
+lines <- read_lines(fileLocal) %>%
     str_split("\n")
-list <- mclapply(seq_along(raw), function(a) {
+list <- mclapply(lines, function(line) {
     # Attempt to match quoted values first (e.g. product)
     keyPattern <- "([a-z]+)=(\"[^\"]+\"|[^\\s]+)"
-    keys <- str_match_all(raw[[a]], keyPattern) %>%
+    keys <- str_match_all(line, keyPattern) %>%
         .[[1]] %>%
         # Remove any escaped quotes
-        gsub(x = ., pattern = '"', replacement = '')
+        gsub('"', '', .)
     x <- c(keys[, 3])
     names(x) <- keys[, 2]
-    sequence <- str_match(raw[[a]], "^>([A-Za-z0-9\\.]+)") %>%
+    sequence <- str_match(line, "^>([A-Za-z0-9\\.]+)") %>%
         .[[2]]
     x <- c(sequence = sequence, x)
-    as.data.frame(t(x))
+    as_tibble(t(x))
 })
 peptide <- bind_rows(list) %>%
-    as_tibble() %>%
     select(gene, everything()) %>%
     group_by(gene) %>%
     arrange(sequence, wormpep, .by_group = TRUE)
-rm(fileLocal, list, raw)
+glimpse(peptide)
+rm(fileLocal, lines, list)
 ```
 
 
@@ -242,13 +252,14 @@ oligo <- oligo %>%
     select(gene, oligo) %>%
     group_by(gene) %>%
     arrange(oligo, .by_group = TRUE)
+glimpse(oligo)
 ```
 
 
 
 # Save R data
 
-```{r save}
+```{r save_data}
 saveData(
     geneIDs,
     geneOtherIDs,

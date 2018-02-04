@@ -1,6 +1,7 @@
 ---
 title: "Ahringer clone annotations"
-date: "`r BiocStyle::doc_date()`"
+author: "`r getOption('author')`"
+date: "`r Sys.Date()`"
 ---
 
 ```{r setup, message=FALSE}
@@ -33,18 +34,22 @@ list <- mclapply(seq_along(chromosomes), function(a) {
         col_types = rep("text", 8))
 })
 names(list) <- chromosomes
-lapply(list, glimpse) %>% invisible()
+lapply(list, glimpse)
 ```
 
 ```{r input}
 input <- bind_rows(list) %>%
-    camel %>%
+    camel() %>%
     filter(!grepl("mismatch", extraInfo)) %>%
-    rename(genePair = genePairsName,
-           clone384 = sourceBioscienceLocation) %>%
-    mutate(clone96 = paste0(plate, well),
-           fwdPrimerSeq = toupper(fwdPrimerSeq),
-           revPrimerSeq = toupper(revPrimerSeq)) %>%
+    rename(
+        genePair = genePairsName,
+        clone384 = sourceBioscienceLocation
+    ) %>%
+    mutate(
+        clone96 = paste0(plate, well),
+        fwdPrimerSeq = toupper(fwdPrimerSeq),
+        revPrimerSeq = toupper(revPrimerSeq)
+    ) %>%
     select(-c(chrom, extraInfo, plate, well)) %>%
     arrange(genePair, clone384) %>%
     select(noquote(order(names(.))))
@@ -89,7 +94,7 @@ nrow(matched$oligo2)
 nrow(unmatched)
 
 ahringer <- bind_rows(matched, unmatched)
-saveData(ahringer, dir = dataDir, compress = compress)
+glimpse(ahringer)
 
 rm(chromosomes,
    fileLocal,
@@ -97,6 +102,13 @@ rm(chromosomes,
    input,
    matched,
    unmatched)
+```
+
+
+# Save R data
+
+```{r save_data}
+saveData(ahringer, dir = dataDir, compress = compress)
 ```
 
 

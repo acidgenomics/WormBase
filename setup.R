@@ -12,11 +12,15 @@ packages <- c(
     "tidyverse"
 )
 if (!all(basename(packages) %in% rownames(installed.packages()))) {
+    install <- setdiff(basename(packages), rownames(installed.packages()))
     source("https://bioconductor.org/biocLite.R")
-    notInstalled <- setdiff(basename(packages), rownames(installed.packages()))
-    biocLite(pkgs = notInstalled)
+    biocLite(pkgs = install)
 }
-invisible(lapply(basename(packages), library, character.only = TRUE))
+invisible(lapply(
+    X = basename(packages),
+    FUN = library,
+    character.only = TRUE
+))
 
 opts_chunk$set(
     audodep = TRUE,
