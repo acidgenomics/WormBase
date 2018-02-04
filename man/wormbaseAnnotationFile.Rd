@@ -4,10 +4,12 @@
 \alias{wormbaseAnnotationFile}
 \title{WormBase Annotation File}
 \usage{
-wormbaseAnnotationFile(file)
+wormbaseAnnotationFile(file, dir = file.path("data-raw", "wormbase"))
 }
 \arguments{
 \item{file}{Annotation file name.}
+
+\item{dir}{Directory where to save the file.}
 }
 \value{
 File path.

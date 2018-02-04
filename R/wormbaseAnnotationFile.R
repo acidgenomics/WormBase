@@ -5,11 +5,14 @@
 #' @importFrom utils download.file
 #'
 #' @param file Annotation file name.
+#' @param dir Directory where to save the file.
 #'
 #' @return File path.
 #' @export
-wormbaseAnnotationFile <- function(file) {
-    dir.create("data-raw/wormbase", recursive = TRUE, showWarnings = FALSE)
+wormbaseAnnotationFile <- function(
+    file,
+    dir = file.path("data-raw", "wormbase")) {
+    dir.create(dir, recursive = TRUE, showWarnings = FALSE)
     root <- file.path(
         "ftp://ftp.wormbase.org",
         "pub",
@@ -28,7 +31,7 @@ wormbaseAnnotationFile <- function(file) {
         file,
         paste0("c_elegans.", version, ".", fileName)
     )
-    filePath <- file.path("data-raw", "wormbase", fileName)
+    filePath <- file.path(dir, fileName)
     download.file(fileUrl, filePath)
-    return(filePath)
+    filePath
 }
