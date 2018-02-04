@@ -1,7 +1,7 @@
 ---
 title: "WormBase annotations"
-date: "`r BiocStyle::doc_date()`"
-author: "Michael J. Steinbaugh"
+author: "`r getOption('author')`"
+date: "`r Sys.Date()`"
 ---
 
 ```{r setup, message=FALSE}
@@ -15,18 +15,19 @@ source("setup.R")
 
 # Gene IDs
 
-```{r geneIDs}
+```{r gene_ids}
 geneIDs <- wormbaseAnnotationFile("geneIDs") %>%
     read_csv(
         col_names = c("X1", "gene", "name", "sequence", "status"),
         na = "") %>%
     select(-X1)
+glimpse(geneIDs)
 ```
 
 
 ## Other gene IDs
 
-```{r geneOtherIDs}
+```{r gene_other_ids}
 geneOtherIDs <- wormbaseAnnotationFile("geneOtherIDs") %>%
     read_lines() %>%
     # Remove status, already present in geneIDs file
@@ -42,6 +43,7 @@ geneOtherIDs <- wormbaseAnnotationFile("geneOtherIDs") %>%
     do.call(rbind, .) %>%
     as_tibble() %>%
     set_colnames(c("gene", "otherIDs"))
+glimpse(geneOtherIDs)
 ```
 
 
@@ -68,6 +70,7 @@ description <- suppressWarnings(read_delim(
 description <- description %>%
     select(-c(name, sequence)) %>%
     filter(grepl("^WBGene\\d+$", gene))
+glimpse(description)
 rm(file, names)
 ```
 
@@ -95,7 +98,7 @@ list <- mclapply(1:nrow(raw_df), function(a) {
         raw_df[a, 2],
         pattern = "\\bENSMUSG\\d{11}\\b") %>%
         unlist()
-    # Fruit fly
+    # Fruitfly
     dmelanogaster <- str_extract_all(
         raw_df[a, 2],
         pattern = "\\bFBgn\\d{7}\\b") %>%
@@ -114,6 +117,7 @@ list <- mclapply(1:nrow(raw_df), function(a) {
 })
 names(list) <- raw_df$gene
 ortholog <- tibble(gene = names(list), ortholog = list)
+glimpse(ortholog)
 rm(list, raw_df)
 ```
 
@@ -121,7 +125,7 @@ rm(list, raw_df)
 
 # RNAi phenotypes
 
-```{r rnaiPhenotype}
+```{r rnai_phenotype}
 fileLocal <- file.path("data-raw", "wormbase", "rnai_phenotypes.tsv.gz")
 if (!file.exists(fileLocal)) {
     # Improve this code using the [transmit()] function
@@ -150,6 +154,7 @@ rnaiPhenotype <- read_tsv(
     group_by(gene) %>%
     arrange(rnaiPhenotype, .by_group = TRUE) %>%
     nest(.key = rnaiPhenotype)
+glimpse(rnaiPhenotype)
 rm(fileLocal)
 ```
 
@@ -168,6 +173,7 @@ blastp <- wormbaseAnnotationFile("best_blast_hits") %>%
     ) %>%
     filter(str_detect(peptide, "^ENSEMBL")) %>%
     mutate(peptide = str_sub(peptide, 9))
+glimpse(blastp)
 ```
 
 
@@ -227,6 +233,7 @@ peptide <- bind_rows(list) %>%
     select(gene, everything()) %>%
     group_by(gene) %>%
     arrange(sequence, wormpep, .by_group = TRUE)
+glimpse(peptide)
 rm(fileLocal, lines, list)
 ```
 
@@ -245,6 +252,7 @@ oligo <- oligo %>%
     select(gene, oligo) %>%
     group_by(gene) %>%
     arrange(oligo, .by_group = TRUE)
+glimpse(oligo)
 ```
 
 

@@ -1,7 +1,7 @@
 ---
 title: "PANTHER annotations"
-date: "`r BiocStyle::doc_date()`"
-author: "Michael J. Steinbaugh"
+author: "`r getOption('author')`"
+date: "`r Sys.Date()`"
 ---
 
 ```{r setup, message=FALSE}
@@ -23,17 +23,23 @@ splitGOTerms <- function(x) {
 }
 ```
 
+
+
 ```{r panther}
 fileLocal <- transmit(
-        file.path("ftp://ftp.pantherdb.org",
-                  "sequence_classifications",
-                  "current_release",
-                  "PANTHER_Sequence_Classification_files"),
-        pattern = "nematode",
-        rename = "panther.tsv",
-        compress = TRUE) %>%
-    as.character()
-panther <- read_tsv(fileLocal, col_names = FALSE) %>%
+    remoteDir = file.path(
+        "ftp://ftp.pantherdb.org",
+        "sequence_classifications",
+        "current_release",
+        "PANTHER_Sequence_Classification_files"
+    ),
+    localDir = dataDir,
+    pattern = "nematode",
+    rename = "panther.tsv",
+    compress = TRUE)
+panther <- read_tsv(
+    file = as.character(fileLocal),
+    col_names = FALSE) %>%
     mutate(X2 = NULL) %>%
     set_names(c(
         "id",

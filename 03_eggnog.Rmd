@@ -1,12 +1,13 @@
 ---
 title: "EggNOG database annotations"
-date: "`r BiocStyle::doc_date()`"
-author: "Michael J. Steinbaugh"
+author: "`r getOption('author')`"
+date: "`r Sys.Date()`"
 ---
 
 ```{r setup, message=FALSE}
 source("setup.R")
-dir.create("data-raw/eggnog", recursive = TRUE, showWarnings = FALSE)
+eggnogDir <- file.path("data-raw", "eggnog")
+dir.create(eggnogDir, recursive = TRUE, showWarnings = FALSE)
 ```
 
 ```{r header, child="_header.Rmd"}
@@ -29,15 +30,15 @@ writeLines(readme)
 # Category
 
 ```{r category}
-fileLocal <- file.path("data-raw", "eggnog", "category.txt")
-pattern <- "^\\s\\[([A-Z])\\]\\s([A-Za-z\\s]+)\\s$"
+fileLocal <- file.path(eggnogDir, "category.txt")
 download.file(
-    file.path(
+    url = file.path(
         "http://eggnogdb.embl.de",
         "download",
         "latest",
         "COG_functional_categories.txt"),
-    fileLocal)
+    destfile = fileLocal)
+pattern <- "^\\s\\[([A-Z])\\]\\s([A-Za-z\\s]+)\\s$"
 category <- fileLocal %>%
     readLines() %>%
     str_subset(pattern) %>%
@@ -46,6 +47,7 @@ category <- fileLocal %>%
     select(-1) %>%
     set_names(c("letter", "description")) %>%
     arrange(letter)
+glimpse(category)
 ```
 
 
@@ -62,10 +64,11 @@ colnames <- c(
     "consensusFunctionalDescription")
 ```
 
+
 ## EUNOG: Eukaryota
 
 ```{r eunog}
-fileLocal <- file.path("data-raw", "eggnog", "eunog.tsv.gz")
+fileLocal <- file.path(eggnogDir, "eunog.tsv.gz")
 download.file(
     file.path(
         "http://eggnogdb.embl.de",
@@ -82,32 +85,38 @@ eunog <- read_tsv(fileLocal, col_names = colnames)
 ## NOG: LUCA
 
 ```{r nog}
-fileLocal <- file.path("data-raw", "eggnog", "nog.tsv.gz")
+fileLocal <- file.path(eggnogDir, "nog.tsv.gz")
 download.file(
-    file.path(
+    url = file.path(
         "http://eggnogdb.embl.de",
         "download",
         "latest",
         "data",
         "NOG",
         "NOG.annotations.tsv.gz"),
-    fileLocal)
+    destfile = fileLocal)
 nog <- read_tsv(fileLocal, col_names = colnames)
+```
+
+```{r annotation}
+annotation <- bind_rows(eunog, nog) %>%
+    select(
+        groupName,
+        consensusFunctionalDescription,
+        cogFunctionalCategory
+    ) %>%
+    rename(eggnog = groupName)
+glimpse(annotation)
 ```
 
 
 
 # Save
 
-```{r save}
-annotation <- bind_rows(eunog, nog) %>%
-    select(groupName,
-           consensusFunctionalDescription,
-           cogFunctionalCategory) %>%
-    rename(eggnog = groupName)
-eggnog <- list(annotation = annotation,
-               category = category)
-str(eggnog)
+```{r save_data}
+eggnog <- list(
+    annotation = annotation,
+    category = category)
 saveData(eggnog, dir = dataDir, compress = compress)
 rm(annotation,
    category,
