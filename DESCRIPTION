@@ -33,7 +33,6 @@ Imports:
     UniProt.ws (>= 2.18.0),
     utils
 Suggests:
-    BiocStyle,
     devtools,
     knitr,
     lintr,
