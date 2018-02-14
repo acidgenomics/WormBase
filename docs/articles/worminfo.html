@@ -63,7 +63,7 @@
     <div class="page-header toc-ignore">
       <h1>worminfo</h1>
             
-            <h4 class="date">6 December 2017</h4>
+            <h4 class="date">14 February 2018</h4>
           </div>
 
     
@@ -83,14 +83,13 @@
     <span class="st">"steinbaugh/worminfo"</span>
 ))
 <span class="kw">biocLite</span>(<span class="st">"tidyverse"</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(basejump)
-<span class="kw">library</span>(worminfo)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(worminfo)
 <span class="kw">library</span>(tidyverse)</code></pre></div>
 </div>
 <div id="gene-queries" class="section level2">
 <h2 class="hasAnchor">
 <a href="#gene-queries" class="anchor"></a>Gene queries</h2>
-<p><code><a href="../reference/gene.html">gene()</a></code> accepts multiple <code>identifier</code> formats:</p>
+<p><code><a href="http://www.rdocumentation.org/packages/worminfo/topics/gene">gene()</a></code> accepts multiple <code>identifier</code> formats:</p>
 <ul>
 <li>gene</li>
 <li>sequence</li>
@@ -99,9 +98,9 @@
 <li>keyword</li>
 </ul>
 <p>Output from the function is controlled using the <code>select</code> parameter. The function returns a <code>tibble</code>. We advise that subsequent data manipulations be performed with the <a href="http://tidyverse.org">tidyverse</a> collection of packages, <a href="https://cran.r-project.org/package=dplyr">dplyr</a> in particular.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/gene.html">gene</a></span>(<span class="st">"WBGene00004804"</span>, <span class="dt">format =</span> <span class="st">"gene"</span>)
-<span class="kw"><a href="../reference/gene.html">gene</a></span>(<span class="st">"T19E7.2"</span>, <span class="dt">format =</span> <span class="st">"sequence"</span>)
-<span class="kw"><a href="../reference/gene.html">gene</a></span>(<span class="st">"skn-1"</span>, <span class="dt">format =</span> <span class="st">"name"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/worminfo/topics/gene">gene</a></span>(<span class="st">"WBGene00004804"</span>, <span class="dt">format =</span> <span class="st">"gene"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/worminfo/topics/gene">gene</a></span>(<span class="st">"T19E7.2"</span>, <span class="dt">format =</span> <span class="st">"sequence"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/worminfo/topics/gene">gene</a></span>(<span class="st">"skn-1"</span>, <span class="dt">format =</span> <span class="st">"name"</span>)</code></pre></div>
 <p>These queries all return the same result:</p>
 <pre><code>## Observations: 1
 ## Variables: 3
@@ -109,41 +108,41 @@
 ## $ sequence &lt;chr&gt; "T19E7.2"
 ## $ name     &lt;chr&gt; "skn-1"</code></pre>
 <p>You can obtain all genes in a named <code>class</code>. For example, let’s get the current list of <em>daf</em> (<strong>D</strong>auer <strong>A</strong>rrest <strong>F</strong>orming) genes:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/gene.html">gene</a></span>(<span class="st">"daf"</span>, <span class="dt">format =</span> <span class="st">"class"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/worminfo/topics/gene">gene</a></span>(<span class="st">"daf"</span>, <span class="dt">format =</span> <span class="st">"class"</span>)</code></pre></div>
 <pre><code>## # A tibble: 34 x 4
-##    class           gene sequence   name
-##    &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;
-##  1   daf WBGene00000897  F29C4.1  daf-1
-##  2   daf WBGene00000898 Y55D5A.5  daf-2
-##  3   daf WBGene00000899  F25E2.5  daf-3
-##  4   daf WBGene00000900  C05D2.1  daf-4
-##  5   daf WBGene00000901  W01G7.1  daf-5
-##  6   daf WBGene00000902  F31F6.5  daf-6
-##  7   daf WBGene00000903  B0412.2  daf-7
-##  8   daf WBGene00000904 R05D11.1  daf-8
-##  9   daf WBGene00000905  T13C5.1  daf-9
-## 10   daf WBGene00000906  F23B2.4 daf-10
+##    class gene           sequence name  
+##    &lt;chr&gt; &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt; 
+##  1 daf   WBGene00000897 F29C4.1  daf-1 
+##  2 daf   WBGene00000898 Y55D5A.5 daf-2 
+##  3 daf   WBGene00000899 F25E2.5  daf-3 
+##  4 daf   WBGene00000900 C05D2.1  daf-4 
+##  5 daf   WBGene00000901 W01G7.1  daf-5 
+##  6 daf   WBGene00000902 F31F6.5  daf-6 
+##  7 daf   WBGene00000903 B0412.2  daf-7 
+##  8 daf   WBGene00000904 R05D11.1 daf-8 
+##  9 daf   WBGene00000905 T13C5.1  daf-9 
+## 10 daf   WBGene00000906 F23B2.4  daf-10
 ## # ... with 24 more rows</code></pre>
 <p>You can perform a <code>keyword</code> search. For example, let’s get all genes that are involved in the unfolded protein response:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/gene.html">gene</a></span>(<span class="st">"unfolded protein response"</span>, <span class="dt">format =</span> <span class="st">"keyword"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/worminfo/topics/gene">gene</a></span>(<span class="st">"unfolded protein response"</span>, <span class="dt">format =</span> <span class="st">"keyword"</span>)</code></pre></div>
 <pre><code>## # A tibble: 65 x 4
-##              gene                   keyword  sequence   name
-##             &lt;chr&gt;                     &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt;
-##  1 WBGene00000024 unfolded protein response     AC3.3  abu-1
-##  2 WBGene00000025 unfolded protein response  F19G12.7  abu-2
-##  3 WBGene00000026 unfolded protein response   F31A3.1  abu-3
-##  4 WBGene00000027 unfolded protein response   Y5H2A.3  abu-4
-##  5 WBGene00000028 unfolded protein response Y105C5A.4  abu-5
-##  6 WBGene00000029 unfolded protein response   C03A7.7  abu-6
-##  7 WBGene00000030 unfolded protein response   C03A7.8  abu-7
-##  8 WBGene00000031 unfolded protein response  C03A7.14  abu-8
-##  9 WBGene00000032 unfolded protein response  R09F10.2  abu-9
-## 10 WBGene00000033 unfolded protein response   F35A5.3 abu-10
+##    keyword                   gene           sequence  name  
+##    &lt;chr&gt;                     &lt;chr&gt;          &lt;chr&gt;     &lt;chr&gt; 
+##  1 unfolded protein response WBGene00000024 AC3.3     abu-1 
+##  2 unfolded protein response WBGene00000025 F19G12.7  abu-2 
+##  3 unfolded protein response WBGene00000026 F31A3.1   abu-3 
+##  4 unfolded protein response WBGene00000027 Y5H2A.3   abu-4 
+##  5 unfolded protein response WBGene00000028 Y105C5A.4 abu-5 
+##  6 unfolded protein response WBGene00000029 C03A7.7   abu-6 
+##  7 unfolded protein response WBGene00000030 C03A7.8   abu-7 
+##  8 unfolded protein response WBGene00000031 C03A7.14  abu-8 
+##  9 unfolded protein response WBGene00000032 R09F10.2  abu-9 
+## 10 unfolded protein response WBGene00000033 F35A5.3   abu-10
 ## # ... with 55 more rows</code></pre>
 <div id="select-arguments" class="section level3">
 <h3 class="hasAnchor">
 <a href="#select-arguments" class="anchor"></a><code>select</code> arguments</h3>
-<p>The <code><a href="../reference/gene.html">gene()</a></code> function contains annotation data that can be queried using the <code>select</code> parameter:</p>
+<p>The <code><a href="http://www.rdocumentation.org/packages/worminfo/topics/gene">gene()</a></code> function contains annotation data that can be queried using the <code>select</code> parameter:</p>
 <ul>
 <li>gene</li>
 <li>name</li>
@@ -174,10 +173,10 @@
 <li>name</li>
 </ul>
 <p>Let’s <code>select()</code> the <code>status</code> and <code>otherIDs</code> for <a href="http://www.wormbase.org/species/c_elegans/gene/WBGene00004735"><em>sbp-1</em></a> (bHLH transcription factor):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/gene.html">gene</a></span>(<span class="st">"sbp-1"</span>,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/worminfo/topics/gene">gene</a></span>(<span class="st">"sbp-1"</span>,
      <span class="dt">format =</span> <span class="st">"name"</span>,
      <span class="dt">select =</span> <span class="kw">c</span>(<span class="st">"status"</span>, <span class="st">"otherIDs"</span>)) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tibble/topics/glimpse">glimpse</a></span>()</code></pre></div>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/worminfo/topics/reexports">glimpse</a></span>()</code></pre></div>
 <pre><code>## Observations: 1
 ## Variables: 5
 ## $ name     &lt;chr&gt; "sbp-1"
@@ -190,13 +189,13 @@
 <div id="rnai-clone-queries" class="section level2">
 <h2 class="hasAnchor">
 <a href="#rnai-clone-queries" class="anchor"></a>RNAi clone queries</h2>
-<p>RNA interference libraries are commonly used in <em>C. elegans</em> research. RNAi clones are typically referenced by a gene pair or open reading frame (ORF) sequence, which are often difficult to map to an up-to-date gene identifier. We have written the <code><a href="../reference/rnai.html">rnai()</a></code> function to solve this problem. The function enables a researcher to search for RNAi clones by a gene identifier, or map an RNAi clone by plate location and return the up-to-date <a href="http://www.wormbase.org">WormBase</a> gene identifier. The <code><a href="../reference/rnai.html">rnai()</a></code> function has built-in support for the commonly used <a href="http://worfdb.dfci.harvard.edu">ORFeome</a> and <a href="http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/">Ahringer</a> RNAi libraries.</p>
+<p>RNA interference libraries are commonly used in <em>C. elegans</em> research. RNAi clones are typically referenced by a gene pair or open reading frame (ORF) sequence, which are often difficult to map to an up-to-date gene identifier. We have written the <code><a href="http://www.rdocumentation.org/packages/worminfo/topics/rnai">rnai()</a></code> function to solve this problem. The function enables a researcher to search for RNAi clones by a gene identifier, or map an RNAi clone by plate location and return the up-to-date <a href="http://www.wormbase.org">WormBase</a> gene identifier. The <code><a href="http://www.rdocumentation.org/packages/worminfo/topics/rnai">rnai()</a></code> function has built-in support for the commonly used <a href="http://worfdb.dfci.harvard.edu">ORFeome</a> and <a href="http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/">Ahringer</a> RNAi libraries.</p>
 <div id="find-clones-by-gene-identifier" class="section level3">
 <h3 class="hasAnchor">
 <a href="#find-clones-by-gene-identifier" class="anchor"></a>Find clones by gene identifier</h3>
-<p>Let’s find the locations of <a href="http://www.wormbase.org/species/c_elegans/gene/WBGene00004735"><em>sbp-1</em></a> in the <a href="http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/">Ahringer</a> and <a href="http://worfdb.dfci.harvard.edu">ORFeome</a> libraries. This can be done easily with the <code><a href="../reference/rnai.html">rnai()</a></code> function, just search by <code>name</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/rnai.html">rnai</a></span>(<span class="st">"sbp-1"</span>, <span class="dt">format =</span> <span class="st">"name"</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tibble/topics/glimpse">glimpse</a></span>()</code></pre></div>
+<p>Let’s find the locations of <a href="http://www.wormbase.org/species/c_elegans/gene/WBGene00004735"><em>sbp-1</em></a> in the <a href="http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/">Ahringer</a> and <a href="http://worfdb.dfci.harvard.edu">ORFeome</a> libraries. This can be done easily with the <code><a href="http://www.rdocumentation.org/packages/worminfo/topics/rnai">rnai()</a></code> function, just search by <code>name</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/worminfo/topics/rnai">rnai</a></span>(<span class="st">"sbp-1"</span>, <span class="dt">format =</span> <span class="st">"name"</span>) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/worminfo/topics/reexports">glimpse</a></span>()</code></pre></div>
 <pre><code>## Observations: 1
 ## Variables: 7
 ## $ name        &lt;chr&gt; "sbp-1"
@@ -207,22 +206,22 @@
 ## $ ahringer384 &lt;chr&gt; "III-6-C01"
 ## $ ahringer96  &lt;chr&gt; "86-B01"</code></pre>
 <p>Alternatively, you can map by <code>gene</code>, <code>sequence</code> (ORF), or legacy <code>genePair</code>. These queries return the same result:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/rnai.html">rnai</a></span>(<span class="st">"WBGene00004735"</span>, <span class="dt">format =</span> <span class="st">"gene"</span>)
-<span class="kw"><a href="../reference/rnai.html">rnai</a></span>(<span class="st">"Y47D3B.7"</span>, <span class="dt">format =</span> <span class="st">"sequence"</span>)
-<span class="kw"><a href="../reference/rnai.html">rnai</a></span>(<span class="st">"Y47D3B.7"</span>, <span class="dt">format =</span> <span class="st">"genePair"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/worminfo/topics/rnai">rnai</a></span>(<span class="st">"WBGene00004735"</span>, <span class="dt">format =</span> <span class="st">"gene"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/worminfo/topics/rnai">rnai</a></span>(<span class="st">"Y47D3B.7"</span>, <span class="dt">format =</span> <span class="st">"sequence"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/worminfo/topics/rnai">rnai</a></span>(<span class="st">"Y47D3B.7"</span>, <span class="dt">format =</span> <span class="st">"genePair"</span>)</code></pre></div>
 </div>
 <div id="map-clones-by-plate-location" class="section level3">
 <h3 class="hasAnchor">
 <a href="#map-clones-by-plate-location" class="anchor"></a>Map clones by plate location</h3>
-<p>The <code><a href="../reference/rnai.html">rnai()</a></code> function was written to simplify the task of identifying wells of interest in an RNAi screen. You can simply input the well identifiers by plate location, and <code><a href="../reference/rnai.html">rnai()</a></code> will return up-to-date gene identifiers from <a href="http://www.wormbase.org">WormBase</a>.</p>
+<p>The <code><a href="http://www.rdocumentation.org/packages/worminfo/topics/rnai">rnai()</a></code> function was written to simplify the task of identifying wells of interest in an RNAi screen. You can simply input the well identifiers by plate location, and <code><a href="http://www.rdocumentation.org/packages/worminfo/topics/rnai">rnai()</a></code> will return up-to-date gene identifiers from <a href="http://www.wormbase.org">WormBase</a>.</p>
 <div id="ahringer-library-format" class="section level4">
 <h4 class="hasAnchor">
 <a href="#ahringer-library-format" class="anchor"></a><a href="http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/">Ahringer</a> library format</h4>
 <p>Well identifiers for the <a href="http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/">Ahringer</a> 384 well library must include a chromosome prefix in roman numeral format. The 96 well <a href="http://www.us.lifesciences.sourcebioscience.com/clone-products/non-mammalian/c-elegans/c-elegans-rnai-library/">Ahringer</a> library has unique plate numbers and does not require a chromosome prefix.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="st">"ahringer384-III-6C01"</span>,
   <span class="st">"ahringer96-86-B01"</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../reference/rnai.html">rnai</a></span>() <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tibble/topics/glimpse">glimpse</a></span>()</code></pre></div>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/worminfo/topics/rnai">rnai</a></span>() <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/worminfo/topics/reexports">glimpse</a></span>()</code></pre></div>
 <pre><code>## Observations: 2
 ## Variables: 4
 ## $ clone    &lt;chr&gt; "ahringer384-III-6C01", "ahringer96-86-B01"
@@ -236,8 +235,8 @@
 <p>We advise formatting identifiers for the 96 well <a href="http://worfdb.dfci.harvard.edu">ORFeome</a> library as <code>orfeome96-10001-A01</code>. However, the function is flexible, and also supports the historical format (e.g. <code>GHR-11010@G06</code>):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="st">"GHR-11010@G06"</span>,
   <span class="st">"orfeome96-11010-G06"</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../reference/rnai.html">rnai</a></span>() <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tibble/topics/glimpse">glimpse</a></span>()</code></pre></div>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/worminfo/topics/rnai">rnai</a></span>() <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/worminfo/topics/reexports">glimpse</a></span>()</code></pre></div>
 <pre><code>## Observations: 2
 ## Variables: 4
 ## $ clone    &lt;chr&gt; "GHR-11010@G06", "orfeome96-11010-G06"
@@ -250,22 +249,21 @@
 <h3 class="hasAnchor">
 <a href="#construct-a-cherrypick-library" class="anchor"></a>Construct a cherrypick library</h3>
 <p>Here’s a how to generate a list of <a href="http://worfdb.dfci.harvard.edu">ORFeome</a> clones that target the unfolded protein response:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/cherrypick.html">cherrypick</a></span>(<span class="st">"unfolded protein response"</span>, <span class="dt">format =</span> <span class="st">"keyword"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/worminfo/topics/cherrypick">cherrypick</a></span>(<span class="st">"unfolded protein response"</span>, <span class="dt">format =</span> <span class="st">"keyword"</span>)</code></pre></div>
 <pre><code>## # A tibble: 62 x 7
-##                      keyword           gene  sequence   name
-##                        &lt;chr&gt;          &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt;
-##  1 unfolded protein response WBGene00000024     AC3.3  abu-1
-##  2 unfolded protein response WBGene00000025  F19G12.7  abu-2
-##  3 unfolded protein response WBGene00000026   F31A3.1  abu-3
-##  4 unfolded protein response WBGene00000027   Y5H2A.3  abu-4
-##  5 unfolded protein response WBGene00000028 Y105C5A.4  abu-5
-##  6 unfolded protein response WBGene00000029   C03A7.7  abu-6
-##  7 unfolded protein response WBGene00000030   C03A7.8  abu-7
-##  8 unfolded protein response WBGene00000031  C03A7.14  abu-8
-##  9 unfolded protein response WBGene00000032  R09F10.2  abu-9
-## 10 unfolded protein response WBGene00000033   F35A5.3 abu-10
-## # ... with 52 more rows, and 3 more variables: orfeome96 &lt;chr&gt;,
-## #   ahringer384 &lt;chr&gt;, ahringer96 &lt;chr&gt;</code></pre>
+##    keyword     gene    sequence name  orfeome96     ahringer384 ahringer96
+##    &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;         &lt;chr&gt;       &lt;chr&gt;     
+##  1 unfolded p… WBGene… AC3.3    abu-1 10183-A06, 1… NA          NA        
+##  2 unfolded p… WBGene… F19G12.7 abu-2 10215-D01     X-1-M24     177-G12   
+##  3 unfolded p… WBGene… F31A3.1  abu-3 10207-H05     X-7-H20     203-D10   
+##  4 unfolded p… WBGene… Y5H2A.3  abu-4 30029-A02, 1… NA          NA        
+##  5 unfolded p… WBGene… Y105C5A… abu-5 30041-E09     IV-7-D22    119-B11   
+##  6 unfolded p… WBGene… C03A7.7  abu-6 10195-E03     V-4-G23     137-D12   
+##  7 unfolded p… WBGene… C03A7.8  abu-7 30044-F06     V-4-I01     137-E01   
+##  8 unfolded p… WBGene… C03A7.14 abu-8 10196-B08     V-4-I13     137-E07   
+##  9 unfolded p… WBGene… R09F10.2 abu-9 10212-C06     X-4-A22     189-A11   
+## 10 unfolded p… WBGene… F35A5.3  abu-… 10212-C03, 1… X-2-M08     181-G04   
+## # ... with 52 more rows</code></pre>
 </div>
 </div>
 </div>
@@ -291,7 +289,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
