@@ -6,11 +6,9 @@ date: "`r Sys.Date()`"
 
 ```{r setup, message=FALSE}
 source("setup.R")
-loadData(
-    geneIDs,
-    worfdbHTML,
-    worfdbHTMLRemap,
-    dir = dataDir)
+loadRemoteData("http://worminfo.steinbaugh.com/worfdbHTML.rda")
+loadRemoteData("http://worminfo.steinbaugh.com/worfdbHTMLRemap.rda")
+loadData(geneIDs, dir = dataDir)
 ```
 
 ```{r header, child="_header.Rmd"}
@@ -28,7 +26,7 @@ worfdbData1 <- worfdbData(worfdbList1)
 worfdbList2 <- worfdbList(worfdbHTMLRemap)
 worfdbData2 <- worfdbData(worfdbList2)
 
-# Add step for filtering bad sequence?
+# FIXME Add step for filtering bad sequence?
 worfdb <- bind_rows(worfdbData1, worfdbData2) %>%
     fixNA() %>%
     filter(is.na(remap)) %>%
