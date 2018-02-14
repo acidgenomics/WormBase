@@ -26,8 +26,12 @@ biocLite("tidyverse")
 ```
 
 ```{r setup, eval=FALSE, message=FALSE}
-library(basejump)
 library(worminfo)
+library(tidyverse)
+```
+
+```{r setup_hide, include=FALSE}
+devtools::load_all()
 library(tidyverse)
 ```
 
