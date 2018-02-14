@@ -16,7 +16,7 @@ source("setup.R")
 ```{r functions}
 splitGOTerms <- function(x) {
     x %>%
-        str_split(string = ., pattern = ";") %>%
+        str_split(";") %>%
         unlist() %>%
         unique() %>%
         paste(collapse = " / ")

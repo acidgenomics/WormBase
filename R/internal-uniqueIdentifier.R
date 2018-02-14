@@ -6,12 +6,9 @@
     }
     # Fix WBGene capitalization and alert user if necessary:
     grep <- "^(WBGENE|WBgene|Wbgene|wbgene)(\\d{8})$"
-    if (any(grepl(pattern = grep, x = identifier))) {
+    if (any(grepl(grep, identifier))) {
         message("WormBase gene identifiers should begin with `WBGene`")
-        identifier <- gsub(
-            pattern = grep,
-            replacement = "WBGene\\2",
-            x = identifier)
+        identifier <- gsub(grep, "WBGene\\2", identifier)
     }
     identifier %>%
         na.omit() %>%

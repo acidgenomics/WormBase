@@ -21,9 +21,10 @@ worfdbHTML <- function(sequence) {
         na.omit() %>%
         unique()
     list <- pbmclapply(seq_along(sequence), function(a) {
-        file.path("http://worfdb.dfci.harvard.edu",
-                  "searchallwormorfs.pl?by=name&sid=",
-                  sequence[a]) %>%
+        file.path(
+            "http://worfdb.dfci.harvard.edu",
+            "searchallwormorfs.pl?by=name&sid=",
+            sequence[a]) %>%
             GET(user_agent = user_agent(userAgent)) %>%
             content(as = "text")
     })
@@ -42,25 +43,23 @@ worfdbList <- function(worfdbHTML) {
         html <- worfdbHTML[[a]] %>%
             # Remove `<map>` that has other clone information
             # This messes up well identifier matching otherwise
-            gsub(x = ., pattern = "<map.+</map>", replacement = "")
+            gsub("<map.+</map>", "", .)
         clone <- html %>%
             str_extract_all("[0-9]{5}@[A-H][0-9]+") %>%
             unlist()
         inFrame <- html %>%
             str_extract_all("In Frame.+<font color=black>([NY])</font>") %>%
             unlist() %>%
-            gsub(x = .,
-                 pattern = "&nbsp;<font color=black>([NY])</font>",
-                 replacement = "\\1") %>%
-            gsub(x = ., pattern = "Y$", replacement = TRUE) %>%
-            gsub(x = ., pattern = "N$", replacement = FALSE)
+            gsub("&nbsp;<font color=black>([NY])</font>", "\\1", .) %>%
+            gsub("Y$", TRUE, .) %>%
+            gsub("N$", FALSE, .)
         sequence <- html %>%
             # FIXME E_BE45912.2 ?
             str_match_all("<A HREF=.+/sequence\\?name=([A-Za-z0-9_\\.]+)>") %>%
             .[[1L]] %>%
             .[, 2L] %>%
             # Strip isoform
-            gsub(x = ., pattern = "[a-z]$", replacement = "")
+            gsub("[a-z]$", "", .)
         sequencingInformation <- html %>%
             str_extract_all("OST in ORFeome version.+\\(WS[0-9]+\\)") %>%
             unlist()

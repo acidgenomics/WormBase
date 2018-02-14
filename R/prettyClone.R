@@ -19,17 +19,11 @@ prettyClone <- function(identifier) {
             strsplit(split = ", ") %>%
             .[[1L]] %>%
             # Pad well numbers
-            gsub(x = .,
-                 pattern = "(\\D)(\\d)$",
-                 replacement = "\\10\\2") %>%
+            gsub("(\\D)(\\d)$", "\\10\\2", .) %>%
             # Well separator
-            gsub(x = .,
-                 pattern = "(\\d+)(\\D\\d{2})$",
-                 replacement = "\\1-\\2") %>%
+            gsub("(\\d+)(\\D\\d{2})$", "\\1-\\2", .) %>%
             # Plate separator
-            gsub(x = .,
-                 pattern = "^([a-z]+|[IVX]+)(\\d+)-",
-                 replacement = "\\1-\\2-") %>%
+            gsub("^([a-z]+|[IVX]+)(\\d+)-", "\\1-\\2-", .) %>%
             toString()
     },
     FUN.VALUE = character(1))

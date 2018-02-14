@@ -14,7 +14,7 @@
 geneExternal <- function(identifier) {
     identifier <- .uniqueIdentifier(identifier)
     list <- lapply(seq_along(identifier), function(a) {
-        if (!grepl(pattern = "^WBGene[0-9]{8}$", x = identifier[[a]])) {
+        if (!grepl("^WBGene[0-9]{8}$", identifier[[a]])) {
             warning(paste(
                 "Invalid identifier:", identifier[[a]]
             ), call. = FALSE)
