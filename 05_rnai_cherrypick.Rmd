@@ -14,6 +14,15 @@ loadData(geneIDs, dir = dataDir)
 
 
 
+
+```{r render}
+rmarkdownFiles <- list.files(pattern = "*.Rmd") %>%
+    .[grepl("^\\d{2}_", .)]
+lapply(rmarkdownFiles, function(file) {
+    render(file, envir = new.env())
+})
+```
+
 ```{r cherrypick}
 cherrypick <- file.path("http://worminfo.steinbaugh.com", "cherrypick.xlsx") %>%
     readFileByExtension() %>%

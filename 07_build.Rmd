@@ -6,9 +6,6 @@ date: "`r Sys.Date()`"
 
 ```{r setup, message=FALSE}
 source("setup.R")
-```
-
-```{r load_data}
 loadData(
     ahringer,
     blastp,

@@ -9,12 +9,16 @@ wormbaseAnnotationFile(file, dir = file.path("data-raw", "wormbase"))
 \arguments{
 \item{file}{Annotation file name.}
 
-\item{dir}{Directory where to save the file.}
+\item{dir}{Output directory.}
 }
 \value{
-File path.
+Silently return the file path.
 }
 \description{
 WormBase Annotation File
 }
-\keyword{internal}
+\examples{
+wormbaseAnnotationFile("geneIDs", dir = getwd())
+file.exists("geneIDs.txt.gz")
+unlink("geneIDs.txt.gz")
+}

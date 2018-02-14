@@ -61,9 +61,7 @@ gene <- function(
         } else if (format == "keyword") {
             # `apply(..., 1)` processes by row
             grepl <- apply(data, 1L, function(x) {
-                any(grepl(x = x,
-                          pattern = identifier[[a]],
-                          ignore.case = TRUE))
+                any(grepl(identifier[[a]], x, ignore.case = TRUE))
             })
             gene <- data[grepl, ] %>%
                 pull("gene")

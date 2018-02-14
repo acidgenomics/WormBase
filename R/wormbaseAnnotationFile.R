@@ -1,14 +1,17 @@
 #' WormBase Annotation File
 #'
-#' @keywords internal
-#'
 #' @importFrom utils download.file
 #'
 #' @param file Annotation file name.
-#' @param dir Directory where to save the file.
+#' @param dir Output directory.
 #'
-#' @return File path.
+#' @return Silently return the file path.
 #' @export
+#'
+#' @examples
+#' wormbaseAnnotationFile("geneIDs", dir = getwd())
+#' file.exists("geneIDs.txt.gz")
+#' unlink("geneIDs.txt.gz")
 wormbaseAnnotationFile <- function(
     file,
     dir = file.path("data-raw", "wormbase")) {
@@ -33,5 +36,5 @@ wormbaseAnnotationFile <- function(
     )
     filePath <- file.path(dir, fileName)
     download.file(fileUrl, filePath)
-    filePath
+    invisible(filePath)
 }

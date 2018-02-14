@@ -15,11 +15,7 @@
 minimalClone <- function(identifier) {
     identifier %>%
         # Remove `@` and `-` from clones
-        gsub(x = .,
-             pattern = "[@-]",
-             replacement = "") %>%
+        gsub("[@-]", "", .) %>%
         # Strip padded zero from well number
-        gsub(x = .,
-             pattern = "([A-Z])0([1-9])",
-             replacement = "\\1\\2")
+        gsub("([A-Z])0([1-9])", "\\1\\2", .)
 }

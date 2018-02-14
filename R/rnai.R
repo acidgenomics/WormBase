@@ -70,7 +70,7 @@ rnai <- function(
         orfeomeGrep <- "^(GHR|orfeome96)-"
         orfeomeQuery <- query[grepl(orfeomeGrep, query)]
         orfeomeClones <- orfeomeQuery %>%
-            gsub(x = ., pattern = orfeomeGrep, replacement = "") %>%
+            gsub(orfeomeGrep, "", .) %>%
             set_names(orfeomeQuery)
         match[["orfeome"]] <- .matchClones(
             clones = orfeomeClones,
@@ -81,7 +81,7 @@ rnai <- function(
         ahringer384Grep <- "^ahringer384-"
         ahringer384Query <- query[grepl(ahringer384Grep, query)]
         ahringer384Clones <- ahringer384Query %>%
-            gsub(x = ., pattern = ahringer384Grep, replacement = "") %>%
+            gsub(ahringer384Grep, "", .) %>%
             set_names(ahringer384Query)
         match[["ahringer384"]] <- .matchClones(
             clones = ahringer384Clones,
@@ -92,7 +92,7 @@ rnai <- function(
         ahringer96Grep <- "^ahringer96-"
         ahringer96Query <- query[grepl(ahringer96Grep, query)]
         ahringer96Clones <- ahringer96Query %>%
-            gsub(x = ., pattern = ahringer96Grep, replacement = "") %>%
+            gsub(ahringer96Grep, "", .) %>%
             set_names(ahringer96Query)
         match[["ahringer96"]] <- .matchClones(
             clones = ahringer96Clones,

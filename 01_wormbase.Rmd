@@ -89,24 +89,16 @@ raw_df <- wormbaseAnnotationFile("orthologs") %>%
     mutate(gene = str_replace(gene, "^(WBGene\\d{8}).*", "\\1"))
 list <- mclapply(1:nrow(raw_df), function(a) {
     # Human
-    hsapiens <- str_extract_all(
-        raw_df[a, 2],
-        pattern = "\\bENSG\\d{11}\\b") %>%
+    hsapiens <- str_extract_all(raw_df[a, 2], "\\bENSG\\d{11}\\b") %>%
         unlist()
     # Mouse
-    mmusculus <- str_extract_all(
-        raw_df[a, 2],
-        pattern = "\\bENSMUSG\\d{11}\\b") %>%
+    mmusculus <- str_extract_all(raw_df[a, 2], "\\bENSMUSG\\d{11}\\b") %>%
         unlist()
     # Fruitfly
-    dmelanogaster <- str_extract_all(
-        raw_df[a, 2],
-        pattern = "\\bFBgn\\d{7}\\b") %>%
+    dmelanogaster <- str_extract_all(raw_df[a, 2], "\\bFBgn\\d{7}\\b") %>%
         unlist()
     # Zebrafish
-    drerio <- str_extract_all(
-        raw_df[a, 2],
-        pattern = "\\bENSDARG\\d{11}\\b") %>%
+    drerio <- str_extract_all(raw_df[a, 2], "\\bENSDARG\\d{11}\\b") %>%
         unlist()
     list(
         hsapiens = hsapiens,
