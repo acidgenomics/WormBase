@@ -3,6 +3,8 @@
 \docType{import}
 \name{reexports}
 \alias{reexports}
+\alias{markdownList}
+\alias{reexports}
 \alias{microplate}
 \alias{reexports}
 \alias{\%>\%}
@@ -17,7 +19,7 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{basejump}{\code{\link[basejump]{microplate}}}
+  \item{basejump}{\code{\link[basejump]{markdownList}}, \code{\link[basejump]{microplate}}}
 
   \item{magrittr}{\code{\link[magrittr]{\%>\%}}}
 
