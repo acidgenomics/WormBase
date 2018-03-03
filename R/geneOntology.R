@@ -1,53 +1,56 @@
-# FIXME Need to improve the separators here
-
-#' WormBase RESTful RNAi Gene Ontology Query
+#' Gene Ontology RESTful Query
 #'
 #' @importFrom basejump camel
+#' @importFrom BiocParallel bplapply
 #' @importFrom dplyr bind_rows mutate
-#' @importFrom parallel mclapply
 #' @importFrom tibble as_tibble tibble
 #'
-#' @param identifier Gene identifier.
+#' @param gene Gene identifier.
 #'
-#' @return JSON content [tibble].
+#' @return [tibble].
 #' @export
 #'
 #' @examples
-#' geneOntology("WBGene00004804") %>% glimpse()
-geneOntology <- function(identifier) {
-    identifier <- .uniqueIdentifier(identifier)
-    list <- lapply(seq_along(identifier), function(a) {
-        if (!grepl("^WBGene[0-9]{8}$", identifier[[a]])) {
-            warning(paste(
-                "Invalid identifier", identifier[[a]]
-            ), call. = FALSE)
-            return(NULL)
-        }
-        rest <- file.path(
+#' geneOntology(c("WBGene00000912", "WBGene00004804")) %>% glimpse()
+geneOntology <- function(gene) {
+    gene <- .uniqueIdentifier(gene)
+    .assertAllAreGenes(gene)
+    list <- lapply(gene, function(id) {
+        query <- paste(
             "widget",
             "gene",
-            identifier[[a]],
-            "gene_ontology") %>%
-            .rest() %>%
+            id,
+            "gene_ontology",
+            sep = "/"
+        )
+        data <- rest(query) %>%
             .[["fields"]] %>%
             .[["gene_ontology"]] %>%
             .[["data"]]
-        if (is.null(rest)) return(NULL)
-        goTerms <- mclapply(seq_along(rest), function(b) {
-            lapply(seq_along(rest[[b]]), function(c) {
-                identifier <- rest[[b]][[c]][["term_description"]][["id"]]
-                name <- rest[[b]][[c]][["term_description"]][["label"]]
-                paste(identifier, name, sep = "~")
+        if (is.null(data)) {
+            return(NULL)
+        }
+        goTerms <- bplapply(seq_along(data), function(a) {
+            lapply(seq_along(data[[a]]), function(b) {
+                gene <- data[[a]][[b]][["term_description"]][["id"]]
+                name <- data[[a]][[b]][["term_description"]][["label"]]
+                paste(gene, name, sep = "~")
             }) %>%
+                unlist() %>%
                 unique() %>%
-                toString()
+                sort()
         })
-        names(goTerms) <- camel(names(rest))
-        goTerms %>%
-            as_tibble() %>%
-            mutate(gene = identifier[[a]])
+        names(goTerms) <- camel(names(data))
+        tibble(
+            "gene" = id,
+            "biologicalProcess" = list(goTerms[["biologicalProcess"]]),
+            "cellularComponent" = list(goTerms[["cellularComponent"]]),
+            "molecularFunction" = list(goTerms[["molecularFunction"]])
+        )
     })
     df <- bind_rows(list)
-    if (!nrow(df)) return(NULL)
+    if (!nrow(df)) {
+        return(NULL)
+    }
     df[, unique(c("gene", sort(colnames(df))))]
 }
