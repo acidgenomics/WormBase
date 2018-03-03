@@ -30,27 +30,25 @@ geneOntology <- function(gene) {
         if (is.null(data)) {
             return(NULL)
         }
-        goTerms <- bplapply(seq_along(data), function(a) {
-            lapply(seq_along(data[[a]]), function(b) {
-                gene <- data[[a]][[b]][["term_description"]][["id"]]
-                name <- data[[a]][[b]][["term_description"]][["label"]]
+        goTerms <- bplapply(data, function(process) {
+            lapply(seq_along(process), function(x) {
+                gene <- process[[x]][["term_description"]][["id"]]
+                name <- process[[x]][["term_description"]][["label"]]
                 paste(gene, name, sep = "~")
             }) %>%
                 unlist() %>%
                 unique() %>%
                 sort()
         })
-        names(goTerms) <- camel(names(data))
-        tibble(
-            "gene" = id,
-            "biologicalProcess" = list(goTerms[["biologicalProcess"]]),
-            "cellularComponent" = list(goTerms[["cellularComponent"]]),
-            "molecularFunction" = list(goTerms[["molecularFunction"]])
-        )
+        lapply(goTerms, list) %>%
+            as_tibble() %>%
+            mutate(gene = id)
     })
-    df <- bind_rows(list)
-    if (!nrow(df)) {
+    if (!length(list)) {
         return(NULL)
     }
-    df[, unique(c("gene", sort(colnames(df))))]
+    list %>%
+        bind_rows() %>%
+        camel() %>%
+        .[, unique(c("gene", sort(colnames(.))))]
 }

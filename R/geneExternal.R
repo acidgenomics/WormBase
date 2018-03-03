@@ -1,8 +1,8 @@
 #' Gene External RESTful Query
 #'
 #' @importFrom basejump toStringUnique
+#' @importFrom BiocParallel bplapply
 #' @importFrom dplyr bind_rows
-#' @importFrom parallel mclapply
 #'
 #' @param gene Gene identifier.
 #'
@@ -26,7 +26,7 @@ geneExternal <- function(gene) {
             .[["fields"]] %>%
             .[["xrefs"]] %>%
             .[["data"]]
-        if (is.null(rest)) {
+        if (is.null(data)) {
             return(NULL)
         }
         xrefs <- bplapply(data, function(x) {
@@ -34,16 +34,18 @@ geneExternal <- function(gene) {
                 .[[1L]] %>%
                 .[[1L]] %>%
                 unlist() %>%
-                toStringUnique()
+                unique() %>%
+                sort()
         })
-        xrefs %>%
+        lapply(xrefs, list) %>%
             as_tibble() %>%
             mutate(gene = id)
     })
-    df <- bind_rows(list)
-    if (!nrow(df)) {
+    if (!length(list)) {
         return(NULL)
     }
-    names(df) <- tolower(names(df))
-    df[, unique(c("gene", sort(colnames(df))))]
+    list %>%
+        bind_rows() %>%
+        set_names(tolower(names(.))) %>%
+        .[, unique(c("gene", sort(colnames(.))))]
 }
