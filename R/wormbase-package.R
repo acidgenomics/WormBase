@@ -2,7 +2,7 @@
 #'
 #' *C. elegans* genome annotations from WormBase.
 #'
-#' @importFrom rlang .data
+#' @importFrom rlang .data abort inform warn
 #' @importFrom utils globalVariables
 "_PACKAGE"
 
