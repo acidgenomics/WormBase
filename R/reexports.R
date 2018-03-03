@@ -8,6 +8,16 @@ basejump::microplate
 
 
 
+#' @importFrom fs file_delete
+#' @export
+fs::file_delete
+
+#' @importFrom fs file_exists
+#' @export
+fs::file_exists
+
+
+
 #' @importFrom magrittr %>%
 #' @export
 magrittr::`%>%`
