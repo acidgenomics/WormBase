@@ -1,49 +1,49 @@
-#' WormBase RESTful Gene External Query
+#' Gene External RESTful Query
 #'
 #' @importFrom basejump toStringUnique
 #' @importFrom dplyr bind_rows
 #' @importFrom parallel mclapply
 #'
-#' @param identifier Gene identifier.
+#' @param gene Gene identifier.
 #'
-#' @return JSON content [tibble].
+#' @return [tibble].
 #' @export
 #'
 #' @examples
-#' geneExternal("WBGene00004804") %>% glimpse()
-geneExternal <- function(identifier) {
-    identifier <- .uniqueIdentifier(identifier)
-    list <- lapply(seq_along(identifier), function(a) {
-        if (!grepl("^WBGene[0-9]{8}$", identifier[[a]])) {
-            warning(paste(
-                "Invalid identifier:", identifier[[a]]
-            ), call. = FALSE)
-            return(NULL)
-        }
-        rest <- file.path(
+#' geneExternal(c("WBGene00000912", "WBGene00004804")) %>% glimpse()
+geneExternal <- function(gene) {
+    gene <- .uniqueIdentifier(gene)
+    .assertAllAreGenes(gene)
+    list <- lapply(gene, function(id) {
+        query <- paste(
             "widget",
             "gene",
-            identifier[[a]],
-            "external_links") %>%
-            .rest() %>%
+            id,
+            "external_links",
+            sep = "/"
+        )
+        data <- rest(query) %>%
             .[["fields"]] %>%
             .[["xrefs"]] %>%
             .[["data"]]
-        if (is.null(rest)) return(NULL)
-        xrefs <- mclapply(seq_along(rest), function(b) {
-            rest[[b]] %>%
+        if (is.null(rest)) {
+            return(NULL)
+        }
+        xrefs <- bplapply(data, function(x) {
+            x %>%
                 .[[1L]] %>%
                 .[[1L]] %>%
                 unlist() %>%
                 toStringUnique()
         })
-        names(xrefs) <- names(rest)
         xrefs %>%
             as_tibble() %>%
-            mutate(gene = identifier[[a]])
+            mutate(gene = id)
     })
     df <- bind_rows(list)
-    if (!nrow(df)) return(NULL)
+    if (!nrow(df)) {
+        return(NULL)
+    }
     names(df) <- tolower(names(df))
     df[, unique(c("gene", sort(colnames(df))))]
 }
