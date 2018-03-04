@@ -4,6 +4,8 @@
 #' @importFrom BiocParallel bplapply
 #' @importFrom dplyr arrange bind_rows everything group_by select
 #' @importFrom rlang !! !!! sym sym
+#' @importFrom stringr str_match str_match_all
+#' @importFrom utils untar
 #'
 #' @inheritParams annotationFile
 #'

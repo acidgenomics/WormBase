@@ -4,6 +4,7 @@
 #'
 #' @importFrom basejump camel
 #' @importFrom readr read_delim read_lines
+#' @importFrom stringr str_match
 #'
 #' @inheritParams annotationFile
 #'
@@ -40,7 +41,8 @@ description <- function(version = NULL, dir = ".") {
             " description\\:"
         ),
         replacement = "\t\\1 description:",
-        x = lines)
+        x = lines
+    )
 
     # Now collapse to a single line and split by the gene separator (`||`)
     lines <- lines %>%

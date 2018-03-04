@@ -4,6 +4,7 @@
 #'
 #' @importFrom BiocParallel bplapply
 #' @importFrom readr read_file read_tsv
+#' @importFrom stringr str_extract_all
 #'
 #' @inheritParams annotationFile
 #'
