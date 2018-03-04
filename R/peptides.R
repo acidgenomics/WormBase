@@ -35,8 +35,9 @@ peptides <- function(version = NULL, dir = ".") {
         remoteDir = remoteDir,
         pattern = "wormpep_package"
     )
+    assert_is_of_length(file, 1L)
     untar(
-        file,
+        as.character(file),
         exdir = dir,
         files = "wormpep.table*"
     )
