@@ -3,7 +3,7 @@
 #' @family Ontology File Functions
 #'
 #' @importFrom basejump transmit
-#' @importFrom BiocParallel lapply
+#' @importFrom BiocParallel bplapply
 #' @importFrom fs file_move
 #'
 #' @inheritParams annotationFile
