@@ -1,4 +1,4 @@
-#' Gene Mapping
+#' Gene Matching
 #'
 #' @importFrom basejump collapseToString
 #' @importFrom dplyr arrange everything group_by left_join pull select
@@ -43,7 +43,7 @@ gene <- function(
     format = "gene",
     select = NULL) {
     identifier <- .uniqueIdentifier(identifier)
-    data <- worminfo::worminfo[["gene"]]
+    data <- wormbase::wormbase[["gene"]]
     return <- mclapply(seq_along(identifier), function(a) {
         if (any(grepl(format, c("gene", "name")))) {
             return <- data %>%
