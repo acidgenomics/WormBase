@@ -1,20 +1,21 @@
-#' Peptide to Gene
+#' Peptides
+#'
+#' @family FTP File Functions
 #'
 #' @importFrom basejump transmit
 #' @importFrom BiocParallel bplapply
 #' @importFrom dplyr arrange bind_rows everything group_by select
-#' @importFrom rlang !! !!! sym sym
 #' @importFrom stringr str_match str_match_all
 #' @importFrom utils untar
 #'
-#' @inheritParams annotationFile
+#' @inheritParams general
 #'
-#' @return [tibble].
+#' @return Gene [tibble].
 #' @export
 #'
 #' @examples
-#' peptide2gene() %>% glimpse()
-peptide2gene <- function(version = NULL, dir = ".") {
+#' peptides() %>% glimpse()
+peptides <- function(version = NULL, dir = ".") {
     .assertFormalVersion(version)
     dir <- initializeDirectory(dir)
     if (is.null(version)) {
