@@ -1,6 +1,6 @@
 #' Best BLASTP Hits
 #'
-#' @family Annotation File Functions
+#' @family FTP File Functions
 #'
 #' @importFrom dplyr group_by mutate
 #' @importFrom magrittr set_colnames
@@ -15,12 +15,27 @@
 #' @examples
 #' blastp() %>% glimpse()
 blastp <- function(version = NULL, dir = ".") {
-    file <- annotationFile(
-        file = "best_blastp_hits",
-        version = version,
-        dir = dir
+    .assertFormalVersion(version)
+    dir <- initializeDirectory(dir)
+    if (is.null(version)) {
+        version <- "current-production-release"
+    }
+    remoteDir = file.path(
+        "ftp://ftp.wormbase.org",
+        "pub",
+        "wormbase",
+        "releases",
+        version,
+        "species",
+        "c_elegans",
+        bioproject
     )
-    read_csv(file, col_names = FALSE) %>%
+    file <- transmit(
+        remoteDir = remoteDir,
+        pattern = "best_blastp_hits"
+    )
+    assert_is_of_length(file, 1L)
+    read_csv(file = as.character(file), col_names = FALSE) %>%
         .[, c(1L, 4L, 5L)] %>%
         set_colnames(c("wormpep", "peptide", "eValue")) %>%
         .[grepl("^ENSEMBL:ENSP\\d{11}$", .[["peptide"]]), , drop = FALSE] %>%
