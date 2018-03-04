@@ -1,7 +1,9 @@
 #' Annotation File
 #'
+#' @family Annotation File Functions
+#'
 #' @importFrom basejump initializeDirectory
-#' @importFrom fs path
+#' @importFrom fs file_exists path
 #' @importFrom utils download.file
 #'
 #' @param file Annotation file name.
@@ -81,6 +83,8 @@ annotationFile <- function(
     }
     destfile <- path(dir, fileName)
     names(destfile) <- file
-    download.file(url = url, destfile = destfile)
+    if (!file_exists(destfile)) {
+        download.file(url = url, destfile = destfile)
+    }
     invisible(destfile)
 }
