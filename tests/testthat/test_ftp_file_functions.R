@@ -1,5 +1,16 @@
 context("Annotation File Functions")
 
+# blastp =======================================================================
+test_that("blastp : Current", {
+    x <- blastp()
+})
+
+test_that("blastp : Versioned", {
+    x <- blastp(version = version)
+})
+
+
+
 # description ==================================================================
 test_that("description : Current", {
     x <- description()
@@ -85,4 +96,32 @@ test_that("oligos : Versioned", {
     x <- oligos(version = version)
     expect_is(x, "tbl_df")
     expect_identical(dim(x), c(18833L, 2L))
+})
+
+
+
+# peptides =====================================================================
+test_that("peptides : Current", {
+
+})
+
+
+
+# rnaiPhenotypes ===============================================================
+test_that("rnaiPhenotypes : Current", {
+    x <- rnaiPhenotypes()
+    expect_is(x, "tbl_df")
+    expect_identical(
+        lapply(x, class),
+        list(
+            "gene" = "character",
+            "rnaiPhenotypes" = "list"
+        )
+    )
+})
+
+test_that("rnaiPhenotypes : Versioned", {
+    x <- rnaiPhenotypes(version = version)
+    expect_is(x, "tbl_df")
+    expect_identical(dim(x), c(8010L, 2L))
 })
