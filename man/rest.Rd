@@ -13,7 +13,7 @@ rest(query)
 RESTful API Query
 }
 \seealso{
-Other REST API Functions: \code{\link{geneExternal}},
+Other REST API Functions: \code{\link{externalIDs}},
   \code{\link{geneOntology}}
 }
 \keyword{internal}

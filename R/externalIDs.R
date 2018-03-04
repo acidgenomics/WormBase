@@ -1,4 +1,4 @@
-#' Gene External Identifiers
+#' External Identifiers
 #'
 #' @family REST API Functions
 #'
@@ -13,8 +13,8 @@
 #' @export
 #'
 #' @examples
-#' geneExternal(c("WBGene00000912", "WBGene00004804")) %>% glimpse()
-geneExternal <- function(gene) {
+#' externalIDs(c("WBGene00000912", "WBGene00004804")) %>% glimpse()
+externalIDs <- function(gene) {
     .assertAllAreGenes(gene)
     list <- lapply(gene, function(id) {
         query <- paste(

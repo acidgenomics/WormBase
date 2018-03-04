@@ -1,8 +1,8 @@
 context("REST API Functions")
 
-# geneExternal =================================================================
-test_that("geneExternal", {
-    x <- geneExternal(genes)
+# externalIDs =================================================================
+test_that("externalIDs", {
+    x <- externalIDs(genes)
     expect_identical(x[["gene"]], as.character(genes))
     extonly <- x
     extonly[["gene"]] <- NULL

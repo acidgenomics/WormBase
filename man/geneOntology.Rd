@@ -19,6 +19,6 @@ Gene Ontology
 geneOntology(c("WBGene00000912", "WBGene00004804")) \%>\% glimpse()
 }
 \seealso{
-Other REST API Functions: \code{\link{geneExternal}},
+Other REST API Functions: \code{\link{externalIDs}},
   \code{\link{rest}}
 }
