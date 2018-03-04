@@ -1,12 +1,23 @@
-context("Annotation File Functions")
+context("FTP File Functions")
 
 # blastp =======================================================================
 test_that("blastp : Current", {
     x <- blastp()
+    expect_is(x, "tbl_df")
+    expect_identical(
+        lapply(x, class),
+        list(
+            "wormpep" = "character",
+            "peptide" = "character",
+            "eValue" = "numeric"
+        )
+    )
 })
 
 test_that("blastp : Versioned", {
     x <- blastp(version = version)
+    expect_is(x, "tbl_df")
+    expect_identical(dim(x), c(14511L, 3L))
 })
 
 
@@ -102,7 +113,27 @@ test_that("oligos : Versioned", {
 
 # peptides =====================================================================
 test_that("peptides : Current", {
+    x <- peptides()
+    expect_is(x, "tbl_df")
+    expect_identical(
+        lapply(x, class),
+        list(
+            "gene" = "character",
+            "sequence" = "character",
+            "wormpep" = "character",
+            "status" = "character",
+            "uniprot" = "character",
+            "insdc" = "character",
+            "locus" = "character",
+            "product" = "character"
+        )
+    )
+})
 
+test_that("peptides : Versioned", {
+    # FIXME This seems to be broken
+    x <- peptides(version = version)
+    expect_is(x, "tbl_df")
 })
 
 
