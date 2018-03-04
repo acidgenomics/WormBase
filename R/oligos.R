@@ -4,7 +4,7 @@
 #'
 #' @importFrom dplyr arrange group_by mutate select
 #' @importFrom readr read_tsv
-#' @importFrom stats aggregate
+#' @importFrom stats aggregate formula
 #' @importFrom stringr str_extract
 #' @importFrom tibble as_tibble
 #'
