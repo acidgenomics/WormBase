@@ -33,8 +33,7 @@ rnaiPhenotypes <- function(version = NULL, dir= ".") {
         pattern = "rnai_phenotypes_quick",
         localDir = dir,
         compress = TRUE
-    ) %>%
-        unlist()
+    )
     data <- read_tsv(
         file,
         col_names = c("gene", "sequence", "rnaiPhenotypes")
