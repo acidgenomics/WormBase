@@ -1,19 +1,15 @@
 context("geneOntology")
 
 test_that("geneOntology", {
-    data <- geneOntology("WBGene00004804")
-    expect_equal(
-        colnames(data),
-        c("gene",
-          "biologicalProcess",
-          "cellularComponent",
-          "molecularFunction")
+    x <- geneOntology(genes)
+    expect_identical(x[["gene"]], as.character(genes))
+    expect_identical(
+        lapply(x, class),
+        list(
+            "gene" = "character",
+            "biologicalProcess" = "list",
+            "cellularComponent" = "list",
+            "molecularFunction" = "list"
+        )
     )
-})
-
-test_that("bad identifier", {
-    data <- suppressWarnings(
-        geneOntology(c("XXX", "YYY"))
-    )
-    expect_equal(data, NULL)
 })
