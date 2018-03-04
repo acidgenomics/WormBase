@@ -35,9 +35,8 @@ file_exists(c(current, versioned))
 file_delete(c(current, versioned))
 }
 \seealso{
-Other Annotation File Functions: \code{\link{blastp}},
-  \code{\link{description}}, \code{\link{geneIDs}},
-  \code{\link{geneOtherIDs}}, \code{\link{oligos}},
-  \code{\link{orthologs}}
+Other Annotation File Functions: \code{\link{description}},
+  \code{\link{geneIDs}}, \code{\link{geneOtherIDs}},
+  \code{\link{oligos}}, \code{\link{orthologs}}
 }
 \keyword{internal}

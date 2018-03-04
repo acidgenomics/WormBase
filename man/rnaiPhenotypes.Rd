@@ -23,5 +23,6 @@ RNAi Phenotypes
 rnaiPhenotypes() \%>\% glimpse()
 }
 \seealso{
-Other FTP File Functions: \code{\link{peptides}}
+Other FTP File Functions: \code{\link{blastp}},
+  \code{\link{peptides}}
 }

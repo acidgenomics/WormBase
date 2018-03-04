@@ -24,7 +24,6 @@ geneIDs() \%>\% glimpse()
 }
 \seealso{
 Other Annotation File Functions: \code{\link{annotationFile}},
-  \code{\link{blastp}}, \code{\link{description}},
-  \code{\link{geneOtherIDs}}, \code{\link{oligos}},
-  \code{\link{orthologs}}
+  \code{\link{description}}, \code{\link{geneOtherIDs}},
+  \code{\link{oligos}}, \code{\link{orthologs}}
 }
