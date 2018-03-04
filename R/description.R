@@ -11,7 +11,10 @@
 #' @return [tibble]
 #'
 #' @examples
+#' # CPU intensive
+#' \dontrun{
 #' description() %>% glimpse()
+#' }
 description <- function(version = NULL, dir = ".") {
     file <- annotationFile(
         file = "functional_descriptions",
