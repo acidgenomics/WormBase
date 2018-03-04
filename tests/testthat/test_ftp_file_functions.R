@@ -15,7 +15,7 @@ test_that("blastp : Current", {
 })
 
 test_that("blastp : Versioned", {
-    x <- blastp(version = version)
+    x <- blastp(version = wbstable)
     expect_is(x, "tbl_df")
     expect_identical(dim(x), c(14511L, 3L))
 })
@@ -39,7 +39,7 @@ test_that("description : Current", {
 })
 
 test_that("description : Versioned", {
-    x <- description(version = version)
+    x <- description(version = wbstable)
     expect_is(x, "tbl_df")
     expect_identical(dim(x), c(ngene, 5L))
 })
@@ -62,7 +62,7 @@ test_that("geneIDs : Current", {
 })
 
 test_that("geneIDs : Versioned", {
-    x <- geneIDs(version = version)
+    x <- geneIDs(version = wbstable)
     expect_is(x, "tbl_df")
     expect_identical(dim(x), c(ngene, 4L))
 })
@@ -83,7 +83,7 @@ test_that("geneOtherIDs : Current", {
 })
 
 test_that("geneOtherIDs : Versioned", {
-    x <- geneOtherIDs(version = version)
+    x <- geneOtherIDs(version = wbstable)
     expect_is(x, "tbl_df")
     expect_identical(dim(x), c(ngene, 2L))
 })
@@ -104,7 +104,7 @@ test_that("oligos : Current", {
 })
 
 test_that("oligos : Versioned", {
-    x <- oligos(version = version)
+    x <- oligos(version = wbstable)
     expect_is(x, "tbl_df")
     expect_identical(dim(x), c(18833L, 2L))
 })
@@ -131,9 +131,9 @@ test_that("peptides : Current", {
 })
 
 test_that("peptides : Versioned", {
-    x <- peptides(version = version)
+    x <- peptides(version = wbstable)
     expect_is(x, "tbl_df")
-    expect_identical(dim(x), c(28167L, 8L))
+    expect_identical(dim(x), c(28237L, 8L))
 })
 
 
@@ -152,7 +152,7 @@ test_that("rnaiPhenotypes : Current", {
 })
 
 test_that("rnaiPhenotypes : Versioned", {
-    x <- rnaiPhenotypes(version = version)
+    x <- rnaiPhenotypes(version = wbstable)
     expect_is(x, "tbl_df")
     expect_identical(dim(x), c(8010L, 2L))
 })

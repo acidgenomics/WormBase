@@ -7,5 +7,5 @@ genes <- c(
 )
 
 # Version-specific checks
-version <- "WS260"
+wbstable <- "WS260"
 ngene <- 51031L
