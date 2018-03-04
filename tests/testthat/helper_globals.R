@@ -5,3 +5,5 @@ genes <- c(
     "daf-2" = "WBGene00000898",
     "daf-16" = "WBGene00000912"
 )
+
+version <- "WS260"
