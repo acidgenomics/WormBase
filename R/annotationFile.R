@@ -3,7 +3,7 @@
 #' @family Annotation File Functions
 #'
 #' @importFrom basejump initializeDirectory transmit
-#' @importFrom fs file_exists path
+#' @importFrom fs file_exists path path_real
 #' @importFrom utils download.file
 #'
 #' @inheritParams general
@@ -46,9 +46,14 @@ annotationFile <- function(
         "annotation",
         sep = "/"
     )
-    transmit(
+    return <- transmit(
         remoteDir = remoteDir,
         localDir = dir,
         pattern = file
     )
+    assert_is_of_length(return, 1L)
+    length(return)
+    return <- path_real(as.character(return))
+    names(return) <- file
+    return
 }

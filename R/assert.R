@@ -9,6 +9,7 @@
 #' @importFrom assertive assert_has_no_duplicates
 #' @importFrom assertive assert_is_a_string
 #' @importFrom assertive assert_is_character
+#' @importFrom assertive assert_is_of_length
 #' @importFrom assertive is_a_string
 #'
 #' @importFrom basejump assertIsAStringOrNULL
