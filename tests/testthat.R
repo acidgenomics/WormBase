@@ -1,4 +1,4 @@
 library(testthat)
-library(worminfo)
+library(wormbase)
 
-test_check("worminfo")
+test_check("wormbase")
