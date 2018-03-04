@@ -3,6 +3,7 @@
 #' @importFrom basejump toStringUnique
 #' @importFrom BiocParallel bplapply
 #' @importFrom dplyr bind_rows
+#' @importFrom magrittr set_colnames
 #'
 #' @param gene Gene identifier.
 #'
@@ -45,6 +46,6 @@ geneExternal <- function(gene) {
     }
     list %>%
         bind_rows() %>%
-        set_names(tolower(names(.))) %>%
+        set_colnames(tolower(names(.))) %>%
         .[, unique(c("gene", sort(colnames(.))))]
 }
