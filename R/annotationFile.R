@@ -33,9 +33,9 @@ annotationFile <- function(
     dir = "."
 ) {
     assert_is_a_string(file)
+    .assertFormalVersion(version)
     dir <- initializeDirectory(dir)
     if (is_a_string(version)) {
-        assert_all_are_matching_regex(version, versionPattern)
         fileName <- paste(
             "c_elegans",
             bioproject,
