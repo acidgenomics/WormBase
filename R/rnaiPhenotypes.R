@@ -34,8 +34,9 @@ rnaiPhenotypes <- function(version = NULL, dir= ".") {
         localDir = dir,
         compress = TRUE
     )
+    assert_is_of_length(file, 1L)
     data <- read_tsv(
-        file,
+        file = as.character(file),
         col_names = c("gene", "sequence", "rnaiPhenotypes")
     )
     data[["sequence"]] <- NULL
