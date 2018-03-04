@@ -2,7 +2,7 @@
 #'
 #' @family Annotation File Functions
 #'
-#' @importFrom basejump camel
+#' @importFrom basejump camel fixNA removeNA
 #' @importFrom readr read_delim read_lines
 #' @importFrom stringr str_match
 #'
@@ -13,9 +13,7 @@
 #'
 #' @examples
 #' # CPU intensive
-#' \dontrun{
 #' description() %>% glimpse()
-#' }
 description <- function(version = NULL, dir = ".") {
     file <- annotationFile(
         file = "functional_descriptions",
@@ -69,8 +67,6 @@ description <- function(version = NULL, dir = ".") {
         names <- make.names(names)
         # Now remove the keys
         x <- gsub(paste0(keyPattern, " "), "", x)
-        # Sanitize `none available` to `NA`
-        x <- gsub("none available", NA, x)
         names(x) <- names
         tbl <- as_tibble(t(x))
         # Ensure the user uses the values from `geneIDs()` instead
@@ -81,5 +77,7 @@ description <- function(version = NULL, dir = ".") {
 
     dflist %>%
         bind_rows() %>%
-        camel()
+        camel() %>%
+        fixNA() %>%
+        removeNA()
 }
