@@ -1,6 +1,7 @@
 #' Annotation File
 #'
 #' @family Annotation File Functions
+#' @keywords internal
 #'
 #' @importFrom basejump initializeDirectory transmit
 #' @importFrom fs file_exists path path_real

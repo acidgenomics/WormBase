@@ -16,3 +16,4 @@ RESTful API Query
 Other REST API Functions: \code{\link{geneExternal}},
   \code{\link{geneOntology}}
 }
+\keyword{internal}

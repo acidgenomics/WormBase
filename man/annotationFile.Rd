@@ -40,3 +40,4 @@ Other Annotation File Functions: \code{\link{blastp}},
   \code{\link{geneOtherIDs}}, \code{\link{oligos}},
   \code{\link{orthologs}}
 }
+\keyword{internal}

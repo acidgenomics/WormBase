@@ -1,6 +1,7 @@
 #' RESTful API Query
 #'
 #' @family REST API Functions
+#' @keywords internal
 #'
 #' @importFrom httr content content_type_json GET user_agent
 #'
