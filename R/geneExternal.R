@@ -12,7 +12,6 @@
 #' @examples
 #' geneExternal(c("WBGene00000912", "WBGene00004804")) %>% glimpse()
 geneExternal <- function(gene) {
-    gene <- .uniqueIdentifier(gene)
     .assertAllAreGenes(gene)
     list <- lapply(gene, function(id) {
         query <- paste(

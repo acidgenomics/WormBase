@@ -13,7 +13,6 @@
 #' @examples
 #' geneOntology(c("WBGene00000912", "WBGene00004804")) %>% glimpse()
 geneOntology <- function(gene) {
-    gene <- .uniqueIdentifier(gene)
     .assertAllAreGenes(gene)
     list <- lapply(gene, function(id) {
         query <- paste(
