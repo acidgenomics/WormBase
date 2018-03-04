@@ -1,12 +1,12 @@
 #' Orthologs
 #'
-#' @family Annotation File Functions
+#' @family FTP File Functions
 #'
 #' @importFrom BiocParallel bplapply
 #' @importFrom readr read_file read_tsv
 #' @importFrom stringr str_extract_all
 #'
-#' @inheritParams annotationFile
+#' @inheritParams general
 #'
 #' @return Gene [tibble].
 #' @export
@@ -14,8 +14,8 @@
 #' @examples
 #' orthologs() %>% glimpse()
 orthologs <- function(version = NULL, dir = ".") {
-    file <- annotationFile(
-        file = "orthologs",
+    file <- .annotationFile(
+        pattern = "orthologs",
         version = version,
         dir = dir
     )

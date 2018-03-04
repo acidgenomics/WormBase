@@ -13,28 +13,14 @@
 #'
 #' @examples
 #' rnaiPhenotypes() %>% glimpse()
-rnaiPhenotypes <- function(version = NULL, dir= ".") {
-    .assertFormalVersion(version)
-    dir <- initializeDirectory(dir)
-    if (is.null(version)) {
-        version <- "current-production-release"
-    }
-    remoteDir <- paste(
-        "ftp://ftp.wormbase.org",
-        "pub",
-        "wormbase",
-        "releases",
-        version,
-        "ONTOLOGY",
-        sep = "/"
-    )
-    file <- transmit(
-        remoteDir = remoteDir,
+rnaiPhenotypes <- function(version = NULL, dir = ".") {
+    file <- .transmit(
+        subdir = "ONTOLOGY",
         pattern = "rnai_phenotypes_quick",
-        localDir = dir,
+        version = version,
+        dir = dir,
         compress = TRUE
     )
-    assert_is_of_length(file, 1L)
     data <- read_tsv(
         file = as.character(file),
         col_names = c("gene", "sequence", "rnaiPhenotypes")

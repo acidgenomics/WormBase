@@ -1,6 +1,6 @@
 #' PCR Oligo Sequences
 #'
-#' @family Annotation File Functions
+#' @family FTP File Functions
 #'
 #' @importFrom dplyr arrange group_by mutate select
 #' @importFrom readr read_tsv
@@ -8,7 +8,7 @@
 #' @importFrom stringr str_extract
 #' @importFrom tibble as_tibble
 #'
-#' @inheritParams annotationFile
+#' @inheritParams general
 #'
 #' @return Gene [tibble].
 #' @export
@@ -16,8 +16,8 @@
 #' @examples
 #' oligos() %>% glimpse()
 oligos <- function(version = NULL, dir = ".") {
-    file <- annotationFile(
-        file = "pcr_product2gene",
+    file <- .annotationFile(
+        pattern = "pcr_product2gene",
         version = version,
         dir = dir
     )

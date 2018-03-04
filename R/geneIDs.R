@@ -1,10 +1,10 @@
 #' Gene Identifiers
 #'
-#' @family Annotation File Functions
+#' @family FTP File Functions
 #'
 #' @importFrom readr read_csv
 #'
-#' @inheritParams annotationFile
+#' @inheritParams general
 #'
 #' @return Gene [tibble].
 #' @export
@@ -12,8 +12,8 @@
 #' @examples
 #' geneIDs() %>% glimpse()
 geneIDs <- function(version = NULL, dir = ".") {
-    file <- annotationFile(
-        file = "geneIDs",
+    file <- .annotationFile(
+        pattern = "geneIDs",
         version = version,
         dir = dir
     )

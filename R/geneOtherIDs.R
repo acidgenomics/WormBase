@@ -1,12 +1,12 @@
 #' Other Gene Identifiers
 #'
-#' @family Annotation File Functions
+#' @family FTP File Functions
 #'
 #' @importFrom dplyr mutate
 #' @importFrom magrittr set_rownames
 #' @importFrom tibble as_tibble
 #'
-#' @inheritParams annotationFile
+#' @inheritParams general
 #'
 #' @return Gene [tibble].
 #' @export
@@ -14,8 +14,8 @@
 #' @examples
 #' geneOtherIDs() %>% glimpse()
 geneOtherIDs <- function(version = NULL, dir = ".") {
-    file <- annotationFile(
-        file = "geneOtherIDs",
+    file <- .annotationFile(
+        pattern = "geneOtherIDs",
         version = version,
         dir = dir
     )

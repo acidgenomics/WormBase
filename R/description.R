@@ -1,12 +1,16 @@
+# TODO Add handling for older versions that delimited the columns differently
+
+
+
 #' Gene Functional Descriptions
 #'
-#' @family Annotation File Functions
+#' @family FTP File Functions
 #'
 #' @importFrom basejump camel fixNA removeNA
 #' @importFrom readr read_delim read_lines
 #' @importFrom stringr str_match
 #'
-#' @inheritParams annotationFile
+#' @inheritParams general
 #'
 #' @export
 #' @return Gene [tibble].
@@ -15,8 +19,8 @@
 #' # CPU intensive
 #' description() %>% glimpse()
 description <- function(version = NULL, dir = ".") {
-    file <- annotationFile(
-        file = "functional_descriptions",
+    file <- .annotationFile(
+        pattern = "functional_descriptions",
         version = version,
         dir = dir
     )

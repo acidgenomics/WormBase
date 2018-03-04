@@ -7,7 +7,7 @@
 #' @importFrom readr read_csv
 #' @importFrom stringr str_sub
 #'
-#' @inheritParams annotationFile
+#' @inheritParams general
 #'
 #' @return [tibble] grouped by wormpep.
 #' @export
@@ -15,26 +15,11 @@
 #' @examples
 #' blastp() %>% glimpse()
 blastp <- function(version = NULL, dir = ".") {
-    .assertFormalVersion(version)
-    dir <- initializeDirectory(dir)
-    if (is.null(version)) {
-        version <- "current-production-release"
-    }
-    remoteDir = file.path(
-        "ftp://ftp.wormbase.org",
-        "pub",
-        "wormbase",
-        "releases",
-        version,
-        "species",
-        "c_elegans",
-        bioproject
+    file <- .assemblyFile(
+        pattern = "best_blastp_hits",
+        version = version,
+        dir = dir
     )
-    file <- transmit(
-        remoteDir = remoteDir,
-        pattern = "best_blastp_hits"
-    )
-    assert_is_of_length(file, 1L)
     read_csv(file = as.character(file), col_names = FALSE) %>%
         .[, c(1L, 4L, 5L)] %>%
         set_colnames(c("wormpep", "peptide", "eValue")) %>%

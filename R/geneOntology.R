@@ -24,7 +24,7 @@ geneOntology <- function(gene) {
             "gene_ontology",
             sep = "/"
         )
-        data <- rest(query) %>%
+        data <- .rest(query) %>%
             .[["fields"]] %>%
             .[["gene_ontology"]] %>%
             .[["data"]]

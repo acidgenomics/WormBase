@@ -16,26 +16,11 @@
 #' @examples
 #' peptides() %>% glimpse()
 peptides <- function(version = NULL, dir = ".") {
-    .assertFormalVersion(version)
-    dir <- initializeDirectory(dir)
-    if (is.null(version)) {
-        version <- "current-production-release"
-    }
-    remoteDir = file.path(
-        "ftp://ftp.wormbase.org",
-        "pub",
-        "wormbase",
-        "releases",
-        version,
-        "species",
-        "c_elegans",
-        bioproject
+    file <- .assemblyFile(
+        pattern = "wormpep_package",
+        version = version,
+        dir = dir
     )
-    file <- transmit(
-        remoteDir = remoteDir,
-        pattern = "wormpep_package"
-    )
-    assert_is_of_length(file, 1L)
     untar(
         tarfile = as.character(file),
         files = "wormpep.table*",

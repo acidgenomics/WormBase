@@ -24,7 +24,7 @@ externalIDs <- function(gene) {
             "external_links",
             sep = "/"
         )
-        data <- rest(query) %>%
+        data <- .rest(query) %>%
             .[["fields"]] %>%
             .[["xrefs"]] %>%
             .[["data"]]
