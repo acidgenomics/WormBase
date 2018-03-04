@@ -45,6 +45,17 @@ annotationFile <- function(
             "gz",
             sep = "."
         )
+        url <- c(
+            "ftp://ftp.wormbase.org",
+            "pub",
+            "wormbase",
+            "releases",
+            version,
+            "species",
+            "c_elegans",
+            bioproject,
+            fileName
+        )
     } else {
         fileName <- paste(
             "c_elegans",
@@ -55,19 +66,19 @@ annotationFile <- function(
             "gz",
             sep = "."
         )
+        url <- paste(
+            "ftp://ftp.wormbase.org",
+            "pub",
+            "wormbase",
+            "species",
+            "c_elegans",
+            bioproject,
+            "annotation",
+            file,
+            fileName,
+            sep = "/"
+        )
     }
-    url <- paste(
-        "ftp://ftp.wormbase.org",
-        "pub",
-        "wormbase",
-        "species",
-        "c_elegans",
-        bioproject,
-        "annotation",
-        file,
-        fileName,
-        sep = "/"
-    )
     destfile <- path(dir, fileName)
     names(destfile) <- file
     if (!file_exists(destfile)) {
