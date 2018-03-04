@@ -4,11 +4,13 @@
 #'
 #' @importFrom dplyr arrange group_by mutate select
 #' @importFrom readr read_tsv
+#' @importFrom stats aggregate
 #' @importFrom stringr str_extract
+#' @importFrom tibble as_tibble
 #'
 #' @inheritParams annotationFile
 #'
-#' @return [tibble] grouped by gene.
+#' @return Gene [tibble].
 #' @export
 #'
 #' @examples
@@ -19,13 +21,20 @@ oligos <- function(version = NULL, dir = ".") {
         version = version,
         dir = dir
     )
-    df <-  suppressWarnings(read_tsv(
+    data <-  suppressWarnings(read_tsv(
         file,
         col_names = c("oligo", "gene")
     ))
-    df %>%
-        mutate(gene = str_extract(.data[["gene"]], "WBGene\\d{8}")) %>%
-        select(!!!syms(c("gene", "oligo"))) %>%
-        group_by(!!sym("gene")) %>%
-        arrange(!!sym("oligo"), .by_group = TRUE)
+    data[["gene"]] <- str_extract(data[["gene"]], "WBGene\\d{8}")
+    aggregate(
+        formula = formula("oligo~gene"),
+        data = data,
+        FUN = function(x) {
+            x %>%
+                unique() %>%
+                sort() %>%
+                list()
+        }
+    ) %>%
+        as_tibble()
 }
