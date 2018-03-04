@@ -2,7 +2,7 @@
 % Please edit documentation in R/gene.R
 \name{gene}
 \alias{gene}
-\title{Gene Mapping}
+\title{Gene Matching}
 \usage{
 gene(identifier, format = "gene", select = NULL)
 }
@@ -19,7 +19,7 @@ available parameters.}
 \link{tibble}.
 }
 \description{
-Gene Mapping
+Gene Matching
 }
 \examples{
 # Match by WormBase/Ensembl gene identifier (preferred)
