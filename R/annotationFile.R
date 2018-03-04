@@ -2,7 +2,7 @@
 #'
 #' @family Annotation File Functions
 #'
-#' @importFrom basejump initializeDirectory
+#' @importFrom basejump initializeDirectory transmit
 #' @importFrom fs file_exists path
 #' @importFrom utils download.file
 #'
@@ -35,59 +35,24 @@ annotationFile <- function(
     assert_is_a_string(file)
     .assertFormalVersion(version)
     dir <- initializeDirectory(dir)
-    if (is_a_string(version)) {
-        fileName <- paste(
-            "c_elegans",
-            bioproject,
-            version,
-            file,
-            "txt",
-            "gz",
-            sep = "."
-        )
-        url <- c(
-            "ftp://ftp.wormbase.org",
-            "pub",
-            "wormbase",
-            "releases",
-            version,
-            "species",
-            "c_elegans",
-            bioproject,
-            fileName
-        )
-    } else {
-        fileName <- paste(
-            "c_elegans",
-            bioproject,
-            "current",
-            file,
-            "txt",
-            "gz",
-            sep = "."
-        )
-        url <- paste(
-            "ftp://ftp.wormbase.org",
-            "pub",
-            "wormbase",
-            "species",
-            "c_elegans",
-            bioproject,
-            "annotation",
-            file,
-            fileName,
-            sep = "/"
-        )
-        # URL mismatch fix for `best_blast(p)_hits`
-        if (file == "best_blastp_hits") {
-            url <- gsub("/best_blastp_hits/", "/best_blast_hits/", url)
-        }
+    if (is.null(version)) {
+        version <- "current-production-release"
     }
-
-    destfile <- path(dir, fileName)
-    names(destfile) <- file
-    if (!file_exists(destfile)) {
-        download.file(url = url, destfile = destfile)
-    }
-    invisible(destfile)
+    remoteDir <- paste(
+        "ftp://ftp.wormbase.org",
+        "pub",
+        "wormbase",
+        "releases",
+        version,
+        "species",
+        "c_elegans",
+        bioproject,
+        "annotation",
+        sep = "/"
+    )
+    transmit(
+        remoteDir = remoteDir,
+        localDir = dir,
+        pattern = file
+    )
 }
