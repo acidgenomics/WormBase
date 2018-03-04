@@ -5,12 +5,13 @@
 #' @importFrom basejump transmit
 #' @importFrom BiocParallel bplapply
 #' @importFrom dplyr arrange bind_rows everything group_by select
+#' @importFrom fs path
 #' @importFrom stringr str_match str_match_all
 #' @importFrom utils untar
 #'
 #' @inheritParams general
 #'
-#' @return Gene [tibble].
+#' @return [tibble] grouped by gene.
 #' @export
 #'
 #' @examples
@@ -21,17 +22,17 @@ peptides <- function(version = NULL, dir = ".") {
         version = version,
         dir = dir
     )
+    # Grep the verion number
+    versionNumber <- str_extract(file, "WS\\d{3}") %>%
+        gsub("^WS", "", .)
+    wormpepTable <- paste0("wormpep.table", versionNumber)
     untar(
         tarfile = as.character(file),
-        files = "wormpep.table*",
+        files = wormpepTable,
         exdir = dir
     )
-    wormpepTable <- list.files(
-        path = dir,
-        pattern = "wormpep.table",
-        full.names = TRUE
-    )
-    lines <- read_lines(wormpepTable)
+    lines <- path(dir, wormpepTable) %>%
+        read_lines()
     dflist <- bplapply(lines, function(line) {
         # Attempt to match quoted values first (e.g. product)
         keyPattern <- "([a-z]+)=(\"[^\"]+\"|[^\\s]+)"
