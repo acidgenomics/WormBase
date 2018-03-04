@@ -2,12 +2,13 @@
 #'
 #' *C. elegans* genome annotations from WormBase.
 #'
-#' @importFrom rlang .data abort inform warn
+#' @importFrom rlang !! !!! .data abort inform warn sym syms
 #' @importFrom utils globalVariables
 "_PACKAGE"
 
-globalVariables(".")
 
+
+globalVariables(".")
 bioproject <- "PRJNA13758"
 defaultCol <- c("gene", "sequence", "name")
 genePattern <- "WBGene\\d{8}"

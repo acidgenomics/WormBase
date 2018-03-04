@@ -7,8 +7,12 @@
 rest(query)
 }
 \value{
-REST query results.
+\link{list}.
 }
 \description{
 RESTful API Query
+}
+\seealso{
+Other REST API Functions: \code{\link{geneExternal}},
+  \code{\link{geneOntology}}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/geneExternal.R
 \name{geneExternal}
 \alias{geneExternal}
-\title{Gene External RESTful Query}
+\title{Gene External Identifiers}
 \usage{
 geneExternal(gene)
 }
@@ -10,11 +10,15 @@ geneExternal(gene)
 \item{gene}{Gene identifier.}
 }
 \value{
-\link{tibble}.
+Gene \link{tibble}.
 }
 \description{
-Gene External RESTful Query
+Gene External Identifiers
 }
 \examples{
 geneExternal(c("WBGene00000912", "WBGene00004804")) \%>\% glimpse()
+}
+\seealso{
+Other REST API Functions: \code{\link{geneOntology}},
+  \code{\link{rest}}
 }

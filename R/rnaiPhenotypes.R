@@ -1,14 +1,14 @@
 #' RNAi Phenotypes
 #'
-#' @family Ontology File Functions
+#' @family FTP File Functions
 #'
 #' @importFrom basejump transmit
 #' @importFrom BiocParallel bplapply
 #' @importFrom fs file_move
 #'
-#' @inheritParams annotationFile
+#' @inheritParams general
 #'
-#' @return [tibble].
+#' @return Gene [tibble].
 #' @export
 #'
 #' @examples

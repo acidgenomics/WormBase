@@ -6,7 +6,7 @@
 #'
 #' @inheritParams annotationFile
 #'
-#' @return [tibble].
+#' @return Gene [tibble].
 #' @export
 #'
 #' @examples

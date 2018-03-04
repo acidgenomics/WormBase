@@ -1,13 +1,15 @@
-#' Gene Ontology RESTful Query
+#' Gene Ontology
+#'
+#' @family REST API Functions
 #'
 #' @importFrom basejump camel
 #' @importFrom BiocParallel bplapply
 #' @importFrom dplyr bind_rows mutate
 #' @importFrom tibble as_tibble tibble
 #'
-#' @param gene Gene identifier.
+#' @inheritParams general
 #'
-#' @return [tibble].
+#' @return Gene [tibble].
 #' @export
 #'
 #' @examples

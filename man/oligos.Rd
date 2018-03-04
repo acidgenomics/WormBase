@@ -14,7 +14,7 @@ be specified as a string (e.g. "WS262").}
 \item{dir}{Output directory.}
 }
 \value{
-Grouped \link{tibble}.
+\link{tibble} grouped by gene.
 }
 \description{
 PCR Oligo Sequences

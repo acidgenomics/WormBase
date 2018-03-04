@@ -16,7 +16,7 @@ be specified as a string (e.g. "WS262").}
 \item{dir}{Output directory.}
 }
 \value{
-Silently return the file path.
+Invisible file path vector.
 }
 \description{
 Annotation File

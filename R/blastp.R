@@ -5,12 +5,11 @@
 #' @importFrom dplyr group_by mutate
 #' @importFrom magrittr set_colnames
 #' @importFrom readr read_csv
-#' @importFrom rlang !! sym
 #' @importFrom stringr str_sub
 #'
 #' @inheritParams annotationFile
 #'
-#' @return [tibble] grouped by `wormpep`.
+#' @return [tibble] grouped by wormpep.
 #' @export
 #'
 #' @examples

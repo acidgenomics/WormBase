@@ -1,4 +1,6 @@
-#' Gene External RESTful Query
+#' Gene External Identifiers
+#'
+#' @family REST API Functions
 #'
 #' @importFrom basejump toStringUnique
 #' @importFrom BiocParallel bplapply
@@ -7,7 +9,7 @@
 #'
 #' @param gene Gene identifier.
 #'
-#' @return [tibble].
+#' @return Gene [tibble].
 #' @export
 #'
 #' @examples

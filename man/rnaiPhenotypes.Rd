@@ -14,11 +14,14 @@ be specified as a string (e.g. "WS262").}
 \item{dir}{Output directory.}
 }
 \value{
-\link{tibble}.
+Gene \link{tibble}.
 }
 \description{
 RNAi Phenotypes
 }
 \examples{
 rnaiPhenotypes() \%>\% glimpse()
+}
+\seealso{
+Other FTP File Functions: \code{\link{peptides}}
 }

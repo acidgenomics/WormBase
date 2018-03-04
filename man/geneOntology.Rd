@@ -2,7 +2,7 @@
 % Please edit documentation in R/geneOntology.R
 \name{geneOntology}
 \alias{geneOntology}
-\title{Gene Ontology RESTful Query}
+\title{Gene Ontology}
 \usage{
 geneOntology(gene)
 }
@@ -10,11 +10,15 @@ geneOntology(gene)
 \item{gene}{Gene identifier.}
 }
 \value{
-\link{tibble}.
+Gene \link{tibble}.
 }
 \description{
-Gene Ontology RESTful Query
+Gene Ontology
 }
 \examples{
 geneOntology(c("WBGene00000912", "WBGene00004804")) \%>\% glimpse()
+}
+\seealso{
+Other REST API Functions: \code{\link{geneExternal}},
+  \code{\link{rest}}
 }

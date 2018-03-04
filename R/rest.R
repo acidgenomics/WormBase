@@ -1,8 +1,10 @@
 #' RESTful API Query
 #'
+#' @family REST API Functions
+#'
 #' @importFrom httr content content_type_json GET user_agent
 #'
-#' @return REST query results.
+#' @return [list].
 #' @export
 rest <- function(query) {
     x <- GET(

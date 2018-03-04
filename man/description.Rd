@@ -14,7 +14,7 @@ be specified as a string (e.g. "WS262").}
 \item{dir}{Output directory.}
 }
 \value{
-\link{tibble}
+Gene \link{tibble}.
 }
 \description{
 Gene Functional Descriptions

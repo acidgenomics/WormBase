@@ -8,11 +8,11 @@
 #'
 #' @inheritParams annotationFile
 #'
-#' @return [tibble].
+#' @return Gene [tibble].
 #' @export
 #'
 #' @examples
-#'  %>% glimpse()
+#' orthologs() %>% glimpse()
 orthologs <- function(version = NULL, dir = ".") {
     file <- annotationFile(
         file = "orthologs",

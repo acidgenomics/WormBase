@@ -4,12 +4,11 @@
 #'
 #' @importFrom dplyr arrange group_by mutate select
 #' @importFrom readr read_tsv
-#' @importFrom rlang !! !!! sym syms
 #' @importFrom stringr str_extract
 #'
 #' @inheritParams annotationFile
 #'
-#' @return Grouped [tibble].
+#' @return [tibble] grouped by gene.
 #' @export
 #'
 #' @examples

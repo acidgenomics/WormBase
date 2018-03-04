@@ -9,7 +9,7 @@
 #' @inheritParams annotationFile
 #'
 #' @export
-#' @return [tibble]
+#' @return Gene [tibble].
 #'
 #' @examples
 #' # CPU intensive
