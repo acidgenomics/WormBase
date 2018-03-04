@@ -131,9 +131,9 @@ test_that("peptides : Current", {
 })
 
 test_that("peptides : Versioned", {
-    # FIXME This seems to be broken
     x <- peptides(version = version)
     expect_is(x, "tbl_df")
+    expect_identical(dim(x), c(28167L, 8L))
 })
 
 
