@@ -6,4 +6,6 @@ genes <- c(
     "daf-16" = "WBGene00000912"
 )
 
+# Version-specific checks
 version <- "WS260"
+ngene <- 51031L
