@@ -24,5 +24,7 @@ peptides() \%>\% glimpse()
 }
 \seealso{
 Other FTP File Functions: \code{\link{blastp}},
-  \code{\link{rnaiPhenotypes}}
+  \code{\link{description}}, \code{\link{geneIDs}},
+  \code{\link{geneOtherIDs}}, \code{\link{oligos}},
+  \code{\link{orthologs}}, \code{\link{rnaiPhenotypes}}
 }

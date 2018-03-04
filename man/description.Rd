@@ -24,7 +24,8 @@ Gene Functional Descriptions
 description() \%>\% glimpse()
 }
 \seealso{
-Other Annotation File Functions: \code{\link{annotationFile}},
+Other FTP File Functions: \code{\link{blastp}},
   \code{\link{geneIDs}}, \code{\link{geneOtherIDs}},
-  \code{\link{oligos}}, \code{\link{orthologs}}
+  \code{\link{oligos}}, \code{\link{orthologs}},
+  \code{\link{peptides}}, \code{\link{rnaiPhenotypes}}
 }
