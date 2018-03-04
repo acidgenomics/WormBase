@@ -78,7 +78,12 @@ annotationFile <- function(
             fileName,
             sep = "/"
         )
+        # URL mismatch fix for `best_blast(p)_hits`
+        if (file == "best_blastp_hits") {
+            url <- gsub("/best_blastp_hits/", "/best_blast_hits/", url)
+        }
     }
+
     destfile <- path(dir, fileName)
     names(destfile) <- file
     if (!file_exists(destfile)) {
