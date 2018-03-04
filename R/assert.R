@@ -6,6 +6,7 @@
 #' @keywords internal
 #'
 #' @importFrom assertive assert_all_are_matching_regex
+#' @importFrom assertive assert_has_no_duplicates
 #' @importFrom assertive assert_is_a_string
 #' @importFrom assertive assert_is_character
 #' @importFrom assertive is_a_string
@@ -21,6 +22,7 @@ NULL
         x,
         pattern = paste0("^", genePattern, "$")
     )
+    assert_has_no_duplicates(x)
 }
 
 
