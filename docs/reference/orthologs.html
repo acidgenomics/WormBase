@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Minimal RNAi Clones — minimalClone • worminfo</title>
+<title>Orthologs — orthologs • wormbase</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -47,7 +47,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">worminfo</a>
+      <a class="navbar-brand" href="../index.html">wormbase</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -58,16 +58,16 @@
   </a>
 </li>
 <li>
-  <a href="../articles/worminfo.html">Get Started</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../news/index.html">News</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/steinbaugh/worminfo">
+  <a href="https://github.com/steinbaugh/wormbase">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -83,32 +83,50 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Minimal RNAi Clones</h1>
+    <h1>Orthologs</h1>
     </div>
 
     
-    <p>Strip out unnecessary plate and well separators. Also remove zero padding
-for well numbers, for fast and consistent clone matching.</p>
+    <p>Orthologs</p>
     
 
-    <pre class="usage"><span class='fu'>minimalClone</span>(<span class='no'>identifier</span>)</pre>
+    <pre class="usage"><span class='fu'>orthologs</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>identifier</th>
-      <td><p>Clone identifier.</p></td>
+      <th>version</th>
+      <td><p>WormBase version. If <code>NULL</code>, defaults to current production
+release version available on the WormBase website. Legacy versions can
+be specified as a string (e.g. "WS262").</p></td>
+    </tr>
+    <tr>
+      <th>dir</th>
+      <td><p>Output directory.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Character vector.</p>
+    <p>Gene tibble.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Other FTP File Functions: <code>blastp</code>,
+  <code>description</code>, <code>geneIDs</code>,
+  <code>geneOtherIDs</code>, <code>oligos</code>,
+  <code>peptides</code>, <code>rnaiPhenotypes</code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>minimalClone</span>(<span class='fu'>c</span>(<span class='st'>"11010-G06"</span>, <span class='st'>"11010@G06"</span>, <span class='st'>"III-6-C01"</span>))</div><div class='output co'>#&gt; [1] "11010G6" "11010G6" "III6C1" </div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>orthologs</span>() <span class='kw'>%&gt;%</span> <span class='fu'>glimpse</span>()</div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS262.orthologs.txt.gz</span></div><div class='output co'>#&gt; Observations: 18,991
+#&gt; Variables: 5
+#&gt; $ gene                   &lt;chr&gt; "WBGene00000001", "WBGene00000002", "WBGene0...
+#&gt; $ homoSapiens            &lt;list&gt; [&lt;"ENSG00000105647", "ENSG00000117461", "EN...
+#&gt; $ musMusculus            &lt;list&gt; [&lt;"ENSMUSG00000028698", "ENSMUSG00000031834...
+#&gt; $ drosophilaMelanogaster &lt;list&gt; ["FBgn0020622", "FBgn0039844", &lt;"FBgn000277...
+#&gt; $ danioRerio             &lt;list&gt; [&lt;"ENSDARG00000018060", "ENSDARG00000034409...</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -116,6 +134,8 @@ for well numbers, for fast and consistent clone matching.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

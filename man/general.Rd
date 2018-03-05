@@ -17,3 +17,4 @@ be specified as a string (e.g. "WS262").}
 \description{
 General Arguments
 }
+\keyword{internal}

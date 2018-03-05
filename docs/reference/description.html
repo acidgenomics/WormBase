@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>EggNOG Annotations — eggnog • worminfo</title>
+<title>Gene Functional Descriptions — description • wormbase</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -47,7 +47,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">worminfo</a>
+      <a class="navbar-brand" href="../index.html">wormbase</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -58,16 +58,16 @@
   </a>
 </li>
 <li>
-  <a href="../articles/worminfo.html">Get Started</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../news/index.html">News</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/steinbaugh/worminfo">
+  <a href="https://github.com/steinbaugh/wormbase">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -83,44 +83,52 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>EggNOG Annotations</h1>
+    <h1>Gene Functional Descriptions</h1>
     </div>
 
     
-    <p>EggNOG Annotations</p>
+    <p>Gene Functional Descriptions</p>
     
 
-    <pre class="usage"><span class='fu'>eggnog</span>(<span class='no'>identifier</span>)</pre>
+    <pre class="usage"><span class='fu'>description</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>identifier</th>
-      <td><p>EggNOG identifier.</p></td>
+      <th>version</th>
+      <td><p>WormBase version. If <code>NULL</code>, defaults to current production
+release version available on the WormBase website. Legacy versions can
+be specified as a string (e.g. "WS262").</p></td>
+    </tr>
+    <tr>
+      <th>dir</th>
+      <td><p>Output directory.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>tibble.</p>
+    <p>Gene tibble.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Other FTP File Functions: <code>blastp</code>,
+  <code>geneIDs</code>, <code>geneOtherIDs</code>,
+  <code>oligos</code>, <code>orthologs</code>,
+  <code>peptides</code>, <code>rnaiPhenotypes</code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># daf-2</span>
-<span class='fu'>eggnog</span>(<span class='fu'>c</span>(<span class='st'>"KOG4258"</span>, <span class='st'>"COG0515"</span>)) <span class='kw'>%&gt;%</span> <span class='fu'>glimpse</span>()</div><div class='output co'>#&gt; Observations: 2
-#&gt; Variables: 4
-#&gt; $ eggnog                         &lt;chr&gt; "KOG4258", "COG0515"
-#&gt; $ consensusFunctionalDescription &lt;chr&gt; "Tyrosine-protein kinase receptor", ...
-#&gt; $ cogFunctionalCategory          &lt;chr&gt; "T", "T"
-#&gt; $ cogFunctionalDescription       &lt;chr&gt; "Signal transduction mechanisms", "S...</div><div class='input'>
-<span class='co'># Multiple EGGNOG letters</span>
-<span class='fu'>eggnog</span>(<span class='st'>"ENOG410IU5G"</span>) <span class='kw'>%&gt;%</span> <span class='fu'>glimpse</span>()</div><div class='output co'>#&gt; Observations: 1
-#&gt; Variables: 4
-#&gt; $ eggnog                         &lt;chr&gt; "ENOG410IU5G"
-#&gt; $ consensusFunctionalDescription &lt;chr&gt; "RNA recognition motif. (a.k.a. RRM,...
-#&gt; $ cogFunctionalCategory          &lt;chr&gt; "AK"
-#&gt; $ cogFunctionalDescription       &lt;chr&gt; "RNA processing and modification, Tr...</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># CPU intensive</span>
+<span class='fu'>description</span>() <span class='kw'>%&gt;%</span> <span class='fu'>glimpse</span>()</div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS262.functional_descriptions.txt.gz</span></div><div class='output co'>#&gt; Observations: 51,081
+#&gt; Variables: 6
+#&gt; $ gene                   &lt;chr&gt; "WBGene00000001", "WBGene00000002", "WBGene0...
+#&gt; $ conciseDescription     &lt;chr&gt; "aap-1 encodes the C. elegans ortholog of th...
+#&gt; $ provisionalDescription &lt;chr&gt; "aap-1 encodes the C. elegans ortholog of th...
+#&gt; $ detailedDescription    &lt;chr&gt; "none available", "none available", "none av...
+#&gt; $ automatedDescription   &lt;chr&gt; "none available", "none available", "none av...
+#&gt; $ geneClassDescription   &lt;chr&gt; "phosphoinositide kinase AdAPter subunit", "...</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -128,6 +136,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

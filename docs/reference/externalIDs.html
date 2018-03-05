@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>WormBase RESTful Gene External Query — geneExternal • worminfo</title>
+<title>External Identifiers — externalIDs • wormbase</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -47,7 +47,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">worminfo</a>
+      <a class="navbar-brand" href="../index.html">wormbase</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -58,16 +58,16 @@
   </a>
 </li>
 <li>
-  <a href="../articles/worminfo.html">Get Started</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../news/index.html">News</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/steinbaugh/worminfo">
+  <a href="https://github.com/steinbaugh/wormbase">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -83,44 +83,49 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>WormBase RESTful Gene External Query</h1>
+    <h1>External Identifiers</h1>
     </div>
 
     
-    <p>WormBase RESTful Gene External Query</p>
+    <p>External Identifiers</p>
     
 
-    <pre class="usage"><span class='fu'>geneExternal</span>(<span class='no'>identifier</span>)</pre>
+    <pre class="usage"><span class='fu'>externalIDs</span>(<span class='no'>gene</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>identifier</th>
+      <th>gene</th>
       <td><p>Gene identifier.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>JSON content tibble.</p>
+    <p>Gene tibble.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Other REST API Functions: <code>geneOntology</code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>geneExternal</span>(<span class='st'>"WBGene00004804"</span>) <span class='kw'>%&gt;%</span> <span class='fu'>glimpse</span>()</div><div class='output co'>#&gt; Observations: 1
-#&gt; Variables: 12
-#&gt; $ gene      &lt;chr&gt; "WBGene00004804"
-#&gt; $ aceview   &lt;chr&gt; "4G416"
-#&gt; $ ncbi      &lt;chr&gt; "177343"
-#&gt; $ ndb       &lt;chr&gt; "CELE_T19E7.2"
-#&gt; $ panther   &lt;chr&gt; "CAEEL|WormBase=WBGene00004804|UniProtKB=P34707"
-#&gt; $ refseq    &lt;chr&gt; "NP_001293683.1, NP_741405.1, NP_741404.1, NP_741406.1"
-#&gt; $ signalink &lt;chr&gt; "WBGene00004804"
-#&gt; $ swissprot &lt;chr&gt; "P34707"
-#&gt; $ treefam   &lt;chr&gt; "TF317782"
-#&gt; $ trembl    &lt;chr&gt; "V6CLA3"
-#&gt; $ wormflux  &lt;chr&gt; "WBGene00004804"
-#&gt; $ wormqtl   &lt;chr&gt; "WBGene00004804"</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>externalIDs</span>(<span class='fu'>c</span>(<span class='st'>"WBGene00000912"</span>, <span class='st'>"WBGene00004804"</span>)) <span class='kw'>%&gt;%</span> <span class='fu'>glimpse</span>()</div><div class='output co'>#&gt; Observations: 2
+#&gt; Variables: 13
+#&gt; $ gene      &lt;chr&gt; "WBGene00000912", "WBGene00004804"
+#&gt; $ aceview   &lt;list&gt; ["1L351", "4G416"]
+#&gt; $ ncbi      &lt;list&gt; ["172981", "177343"]
+#&gt; $ ndb       &lt;list&gt; ["CELE_R13H8.1", "CELE_T19E7.2"]
+#&gt; $ omim      &lt;list&gt; [&lt;"136533", "300033", "602681", "611457"&gt;, NULL]
+#&gt; $ panther   &lt;list&gt; ["CAEEL|WormBase=WBGene00000912|UniProtKB=O16850", "CAEE...
+#&gt; $ refseq    &lt;list&gt; [&lt;"NP_001021593.1", "NP_001021594.1", "NP_001021595.1", ...
+#&gt; $ signalink &lt;list&gt; ["WBGene00000912", "WBGene00004804"]
+#&gt; $ swissprot &lt;list&gt; ["O16850", "P34707"]
+#&gt; $ treefam   &lt;list&gt; ["TF315583", "TF317782"]
+#&gt; $ trembl    &lt;list&gt; [&lt;"A0A0K3AR63", "A0A0K3AR95", "A0A0K3ATP5", "A0A0K3AWG6"...
+#&gt; $ wormflux  &lt;list&gt; ["WBGene00000912", "WBGene00004804"]
+#&gt; $ wormqtl   &lt;list&gt; ["WBGene00000912", "WBGene00004804"]</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -128,6 +133,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
