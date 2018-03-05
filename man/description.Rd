@@ -21,7 +21,9 @@ Gene Functional Descriptions
 }
 \examples{
 # CPU intensive
+\dontrun{
 description() \%>\% glimpse()
+}
 }
 \seealso{
 Other FTP File Functions: \code{\link{blastp}},

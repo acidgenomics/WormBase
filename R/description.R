@@ -17,7 +17,9 @@
 #'
 #' @examples
 #' # CPU intensive
+#' \dontrun{
 #' description() %>% glimpse()
+#' }
 description <- function(version = NULL, dir = ".") {
     file <- .annotationFile(
         pattern = "functional_descriptions",
