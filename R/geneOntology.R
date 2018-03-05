@@ -45,6 +45,7 @@ geneOntology <- function(gene) {
             as_tibble() %>%
             mutate(gene = id)
     })
+    list <- Filter(Negate(is.null), list)
     if (!length(list)) {
         return(NULL)
     }

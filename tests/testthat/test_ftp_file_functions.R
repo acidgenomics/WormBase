@@ -102,6 +102,30 @@ test_that("oligos : Versioned", {
 
 
 
+# orthologs ====================================================================
+test_that("orthologs : Current", {
+    x <- orthologs()
+    expect_is(x, "tbl_df")
+    expect_identical(
+        lapply(x, class),
+        list(
+            "gene" = "character",
+            "homoSapiens" = "list",
+            "musMusculus" = "list",
+            "drosophilaMelanogaster" = "list",
+            "danioRerio" = "list"
+        )
+    )
+})
+
+test_that("orthologs : Versioned", {
+    x <- orthologs(version = wbstable)
+    expect_is(x, "tbl_df")
+    expect_identical(dim(x), c(18966L, 5L))
+})
+
+
+
 # peptides =====================================================================
 test_that("peptides : Current", {
     x <- peptides()
