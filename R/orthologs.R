@@ -12,7 +12,9 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' orthologs() %>% glimpse()
+#' }
 orthologs <- function(version = NULL, dir = ".") {
     file <- .annotationFile(
         pattern = "orthologs",

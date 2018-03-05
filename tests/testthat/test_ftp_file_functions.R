@@ -91,23 +91,23 @@ test_that("geneOtherIDs : Versioned", {
 
 
 # oligos =======================================================================
-test_that("oligos : Current", {
-    x <- oligos()
-    expect_is(x, "tbl_df")
-    expect_identical(
-        lapply(x, class),
-        list(
-            "gene" = "character",
-            "oligo" = "list"
-        )
-    )
-})
-
-test_that("oligos : Versioned", {
-    x <- oligos(version = wbstable)
-    expect_is(x, "tbl_df")
-    expect_identical(dim(x), c(18833L, 2L))
-})
+# test_that("oligos : Current", {
+#     x <- oligos()
+#     expect_is(x, "tbl_df")
+#     expect_identical(
+#         lapply(x, class),
+#         list(
+#             "gene" = "character",
+#             "oligo" = "list"
+#         )
+#     )
+# })
+#
+# test_that("oligos : Versioned", {
+#     x <- oligos(version = wbstable)
+#     expect_is(x, "tbl_df")
+#     expect_identical(dim(x), c(18833L, 2L))
+# })
 
 
 
