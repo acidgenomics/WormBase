@@ -1,47 +1,45 @@
-#' Gene Ontology
+#' External Identifiers
 #'
 #' @family REST API Functions
 #'
-#' @importFrom basejump camel
-#' @importFrom dplyr bind_rows mutate
+#' @importFrom basejump toStringUnique
+#' @importFrom dplyr bind_rows
+#' @importFrom magrittr set_colnames
 #' @importFrom parallel mclapply
-#' @importFrom tibble as_tibble tibble
 #'
-#' @inheritParams general
+#' @param gene Gene identifier.
 #'
 #' @return Gene [tibble].
 #' @export
 #'
 #' @examples
-#' geneOntology(c("WBGene00000912", "WBGene00004804")) %>% glimpse()
-geneOntology <- function(gene) {
+#' externalIDs(c("WBGene00000912", "WBGene00004804")) %>% glimpse()
+externalIDs <- function(gene) {
     .assertAllAreGenes(gene)
     list <- lapply(gene, function(id) {
         query <- paste(
             "widget",
             "gene",
             id,
-            "gene_ontology",
+            "external_links",
             sep = "/"
         )
         data <- .rest(query) %>%
             .[["fields"]] %>%
-            .[["gene_ontology"]] %>%
+            .[["xrefs"]] %>%
             .[["data"]]
         if (is.null(data)) {
             return(NULL)
         }
-        goTerms <- mclapply(data, function(process) {
-            lapply(seq_along(process), function(x) {
-                gene <- process[[x]][["term_description"]][["id"]]
-                name <- process[[x]][["term_description"]][["label"]]
-                paste(gene, name, sep = "~")
-            }) %>%
+        xrefs <- mclapply(data, function(x) {
+            x %>%
+                .[[1L]] %>%
+                .[[1L]] %>%
                 unlist() %>%
                 unique() %>%
                 sort()
         })
-        lapply(goTerms, list) %>%
+        lapply(xrefs, list) %>%
             as_tibble() %>%
             mutate(gene = id)
     })
@@ -50,6 +48,6 @@ geneOntology <- function(gene) {
     }
     list %>%
         bind_rows() %>%
-        camel() %>%
+        set_colnames(tolower(names(.))) %>%
         .[, unique(c("gene", sort(colnames(.))))]
 }

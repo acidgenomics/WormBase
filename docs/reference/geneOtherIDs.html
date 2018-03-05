@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Objects exported from other packages — reexports • wormbase</title>
+<title>Other Gene Identifiers — geneOtherIDs • wormbase</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -83,29 +83,59 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Objects exported from other packages</h1>
+    <h1>Other Gene Identifiers</h1>
     </div>
 
     
-    <p>These objects are imported from other packages. Follow the links
-below to see their documentation.</p><dl class='dl-horizontal'>
-  <dt>basejump</dt><dd><p><code><a href='http://www.rdocumentation.org/packages/basejump/topics/markdownList'>markdownList</a></code>, <code><a href='http://www.rdocumentation.org/packages/basejump/topics/microplate'>microplate</a></code></p></dd>
-
-    <dt>fs</dt><dd><p><code><a href='http://fs.r-lib.org/reference/delete.html'>file_delete</a></code>, <code><a href='http://fs.r-lib.org/reference/file_access.html'>file_exists</a></code></p></dd>
-
-    <dt>magrittr</dt><dd><p><code>%&gt;%</code></p></dd>
-
-    <dt>tibble</dt><dd><p><code><a href='http://www.rdocumentation.org/packages/tibble/topics/glimpse'>glimpse</a></code>, <code><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></code></p></dd>
-</dl>
+    <p>Other Gene Identifiers</p>
     
 
-        
+    <pre class="usage"><span class='fu'>geneOtherIDs</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>version</th>
+      <td><p>WormBase version. If <code>NULL</code>, defaults to current production
+release version available on the WormBase website. Legacy versions can
+be specified as a string (e.g. "WS262").</p></td>
+    </tr>
+    <tr>
+      <th>dir</th>
+      <td><p>Output directory.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>Gene tibble.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Other FTP File Functions: <code>blastp</code>,
+  <code>description</code>, <code>geneIDs</code>,
+  <code>oligos</code>, <code>orthologs</code>,
+  <code>peptides</code>, <code>rnaiPhenotypes</code></p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>geneOtherIDs</span>() <span class='kw'>%&gt;%</span> <span class='fu'>glimpse</span>()</div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS262.geneOtherIDs.txt.gz</span></div><div class='output co'>#&gt; Observations: 51,081
+#&gt; Variables: 2
+#&gt; $ gene     &lt;chr&gt; "WBGene00000001", "WBGene00000002", "WBGene00000003", "WBG...
+#&gt; $ otherIDs &lt;list&gt; [&lt;"Y110A7A.10", "aap-1"&gt;, &lt;"F27C8.1", "aat-1"&gt;, &lt;"F07C3.7...</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-                </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
