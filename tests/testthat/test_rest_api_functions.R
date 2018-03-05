@@ -13,6 +13,13 @@ test_that("externalIDs", {
     )))
 })
 
+test_that("externalIDs : NULL return", {
+    expect_identical(
+        externalIDs("WBGene00000000"),
+        NULL
+    )
+})
+
 
 
 # geneOntology =================================================================
@@ -27,5 +34,12 @@ test_that("geneOntology", {
             "cellularComponent" = "list",
             "molecularFunction" = "list"
         )
+    )
+})
+
+test_that("geneOntology : NULL return", {
+    expect_identical(
+        geneOntology("WBGene00000000"),
+        NULL
     )
 })
