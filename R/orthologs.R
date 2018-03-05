@@ -19,7 +19,10 @@ orthologs <- function(version = NULL, dir = ".") {
         version = version,
         dir = dir
     )
-    lines <- read_lines(file, progress = FALSE)
+    lines <- read_lines(
+        file = as.character(file),
+        progress = FALSE
+    )
 
     # Remove the comment lines
     lines <- lines[!grepl("^#", lines)]

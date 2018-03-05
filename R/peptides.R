@@ -22,15 +22,20 @@ peptides <- function(version = NULL, dir = ".") {
         version = version,
         dir = dir
     )
+    file <- as.character(file)
+
     # Grep the verion number
     versionNumber <- str_extract(file, "WS\\d{3}") %>%
         gsub("^WS", "", .)
+
+    # Extract the individual table
     wormpepTable <- paste0("wormpep.table", versionNumber)
     untar(
-        tarfile = as.character(file),
+        tarfile = file,
         files = wormpepTable,
         exdir = dir
     )
+
     lines <- read_lines(path(dir, wormpepTable), progress = FALSE)
     dflist <- bplapply(lines, function(line) {
         # Attempt to match quoted values first (e.g. product)

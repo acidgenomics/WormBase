@@ -22,7 +22,7 @@ oligos <- function(version = NULL, dir = ".") {
         dir = dir
     )
     data <-  suppressWarnings(read_tsv(
-        file = file,
+        file = as.character(file),
         col_names = c("oligo", "gene"),
         progress = FALSE
     ))
