@@ -3,9 +3,9 @@
 #' @family FTP File Functions
 #'
 #' @importFrom basejump transmit
-#' @importFrom BiocParallel bplapply
 #' @importFrom dplyr arrange bind_rows everything group_by select
 #' @importFrom fs path
+#' @importFrom parallel mclapply
 #' @importFrom stringr str_match str_match_all
 #' @importFrom utils untar
 #'
@@ -37,7 +37,7 @@ peptides <- function(version = NULL, dir = ".") {
     )
 
     lines <- read_lines(path(dir, wormpepTable), progress = FALSE)
-    dflist <- bplapply(lines, function(line) {
+    dflist <- mclapply(lines, function(line) {
         # Attempt to match quoted values first (e.g. product)
         keyPattern <- "([a-z]+)=(\"[^\"]+\"|[^\\s]+)"
         keyPairs <- str_match_all(line, keyPattern) %>%

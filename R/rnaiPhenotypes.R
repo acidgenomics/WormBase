@@ -3,8 +3,8 @@
 #' @family FTP File Functions
 #'
 #' @importFrom basejump transmit
-#' @importFrom BiocParallel bplapply
 #' @importFrom fs file_move
+#' @importFrom parallel mclapply
 #'
 #' @inheritParams general
 #'
@@ -27,7 +27,7 @@ rnaiPhenotypes <- function(version = NULL, dir = ".") {
         progress = FALSE
     )
     data[["sequence"]] <- NULL
-    list <- bplapply(
+    list <- mclapply(
         X = strsplit(data[["rnaiPhenotypes"]], ", "),
         FUN = function(x) {
             sort(unique(x))

@@ -3,9 +3,9 @@
 #' @family REST API Functions
 #'
 #' @importFrom basejump toStringUnique
-#' @importFrom BiocParallel bplapply
 #' @importFrom dplyr bind_rows
 #' @importFrom magrittr set_colnames
+#' @importFrom parallel mclapply
 #'
 #' @param gene Gene identifier.
 #'
@@ -31,7 +31,7 @@ externalIDs <- function(gene) {
         if (is.null(data)) {
             return(NULL)
         }
-        xrefs <- bplapply(data, function(x) {
+        xrefs <- mclapply(data, function(x) {
             x %>%
                 .[[1L]] %>%
                 .[[1L]] %>%

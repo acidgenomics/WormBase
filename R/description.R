@@ -7,6 +7,7 @@
 #' @family FTP File Functions
 #'
 #' @importFrom basejump camel fixNA removeNA
+#' @importFrom parallel mclapply
 #' @importFrom readr read_delim read_lines
 #' @importFrom stringr str_match
 #'
@@ -16,10 +17,7 @@
 #' @return Gene [tibble].
 #'
 #' @examples
-#' # CPU intensive
-#' \dontrun{
 #' description() %>% glimpse()
-#' }
 description <- function(version = NULL, dir = ".") {
     file <- .annotationFile(
         pattern = "functional_descriptions",
@@ -70,7 +68,7 @@ description <- function(version = NULL, dir = ".") {
     lines <- strsplit(lines, "\t")
 
     # Make this call parallel
-    dflist <- bplapply(lines, function(x) {
+    dflist <- mclapply(lines, function(x) {
         keyPattern <- "^([A-Za-z[:space:]]+)\\:"
         names <- str_match(x, keyPattern)[, 2L]
         names[1:3] <- c("gene", "name", "sequence")

@@ -3,8 +3,8 @@
 #' @family REST API Functions
 #'
 #' @importFrom basejump camel
-#' @importFrom BiocParallel bplapply
 #' @importFrom dplyr bind_rows mutate
+#' @importFrom parallel mclapply
 #' @importFrom tibble as_tibble tibble
 #'
 #' @inheritParams general
@@ -31,7 +31,7 @@ geneOntology <- function(gene) {
         if (is.null(data)) {
             return(NULL)
         }
-        goTerms <- bplapply(data, function(process) {
+        goTerms <- mclapply(data, function(process) {
             lapply(seq_along(process), function(x) {
                 gene <- process[[x]][["term_description"]][["id"]]
                 name <- process[[x]][["term_description"]][["label"]]

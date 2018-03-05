@@ -2,7 +2,7 @@
 #'
 #' @family FTP File Functions
 #'
-#' @importFrom BiocParallel bplapply
+#' @importFrom parallel mclapply
 #' @importFrom readr read_file read_tsv
 #' @importFrom stringr str_extract_all
 #'
@@ -12,9 +12,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' orthologs() %>% glimpse()
-#' }
 orthologs <- function(version = NULL, dir = ".") {
     file <- .annotationFile(
         pattern = "orthologs",
@@ -40,7 +38,7 @@ orthologs <- function(version = NULL, dir = ".") {
     lines <- lines %>%
         .[grepl(paste0("^", genePattern), .)]
 
-    dflist <- bplapply(lines, function(x) {
+    dflist <- mclapply(lines, function(x) {
         gene <- str_extract(x, genePattern)
         patterns <- c(
             "homoSapiens" = "ENSG\\d{11}",

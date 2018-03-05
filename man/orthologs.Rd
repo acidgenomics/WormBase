@@ -20,9 +20,7 @@ Gene \link{tibble}.
 Orthologs
 }
 \examples{
-\dontrun{
 orthologs() \%>\% glimpse()
-}
 }
 \seealso{
 Other FTP File Functions: \code{\link{blastp}},
