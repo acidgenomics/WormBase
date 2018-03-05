@@ -31,8 +31,7 @@ peptides <- function(version = NULL, dir = ".") {
         files = wormpepTable,
         exdir = dir
     )
-    lines <- path(dir, wormpepTable) %>%
-        read_lines()
+    lines <- read_lines(path(dir, wormpepTable), progress = FALSE)
     dflist <- bplapply(lines, function(line) {
         # Attempt to match quoted values first (e.g. product)
         keyPattern <- "([a-z]+)=(\"[^\"]+\"|[^\\s]+)"

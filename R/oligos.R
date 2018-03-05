@@ -22,8 +22,9 @@ oligos <- function(version = NULL, dir = ".") {
         dir = dir
     )
     data <-  suppressWarnings(read_tsv(
-        file,
-        col_names = c("oligo", "gene")
+        file = file,
+        col_names = c("oligo", "gene"),
+        progress = FALSE
     ))
     data[["gene"]] <- str_extract(data[["gene"]], "WBGene\\d{8}")
     aggregate(

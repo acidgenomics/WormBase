@@ -20,7 +20,11 @@ blastp <- function(version = NULL, dir = ".") {
         version = version,
         dir = dir
     )
-    read_csv(file = as.character(file), col_names = FALSE) %>%
+    read_csv(
+        file = as.character(file),
+        col_names = FALSE,
+        progress = FALSE
+    ) %>%
         .[, c(1L, 4L, 5L)] %>%
         set_colnames(c("wormpep", "peptide", "eValue")) %>%
         .[grepl("^ENSEMBL:ENSP\\d{11}$", .[["peptide"]]), , drop = FALSE] %>%

@@ -19,7 +19,7 @@ geneOtherIDs <- function(version = NULL, dir = ".") {
         version = version,
         dir = dir
     )
-    read_lines(file) %>%
+    read_lines(file, progress = FALSE) %>%
         # Remove status, already present in geneIDs file
         gsub("\t(Dead|Live)", "", .) %>%
         # Remove `CELE_*` identifiers

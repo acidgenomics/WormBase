@@ -23,7 +23,8 @@ rnaiPhenotypes <- function(version = NULL, dir = ".") {
     )
     data <- read_tsv(
         file = as.character(file),
-        col_names = c("gene", "sequence", "rnaiPhenotypes")
+        col_names = c("gene", "sequence", "rnaiPhenotypes"),
+        progress = FALSE
     )
     data[["sequence"]] <- NULL
     list <- bplapply(

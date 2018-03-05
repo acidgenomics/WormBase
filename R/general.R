@@ -1,6 +1,7 @@
 #' General Arguments
 #'
 #' @name general
+#' @keywords internal
 #'
 #' @param dir Output directory.
 #' @param file Annotation file name.

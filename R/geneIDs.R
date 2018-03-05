@@ -20,7 +20,8 @@ geneIDs <- function(version = NULL, dir = ".") {
     data <- read_csv(
         file = file,
         col_names = c("X1", "gene", "symbol", "sequence", "status"),
-        na = ""
+        na = "",
+        progress = FALSE
     )
     data[["X1"]] <- NULL
     data

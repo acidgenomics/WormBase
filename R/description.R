@@ -26,7 +26,11 @@ description <- function(version = NULL, dir = ".") {
     )
 
     # The first 3 lines contain comments
-    lines <- read_lines(file, skip = 3L)
+    lines <- read_lines(
+        file = as.character(file),
+        skip = 3L,
+        progress = FALSE
+    )
 
     # Genes are separated by a line containing `=`
     lines <- gsub("^=$", "\\|\\|", lines)
