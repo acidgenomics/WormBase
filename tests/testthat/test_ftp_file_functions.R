@@ -23,26 +23,26 @@ test_that("blastp : Versioned", {
 
 
 # description ==================================================================
-test_that("description : Current", {
-    x <- description()
-    expect_is(x, "tbl_df")
-    expect_identical(
-        lapply(x, class),
-        list(
-            "gene" = "character",
-            "conciseDescription" = "character",
-            "provisionalDescription" = "character",
-            "automatedDescription" = "character",
-            "geneClassDescription" = "character"
-        )
-    )
-})
-
-test_that("description : Versioned", {
-    x <- description(version = wbstable)
-    expect_is(x, "tbl_df")
-    expect_identical(dim(x), c(ngene, 5L))
-})
+# test_that("description : Current", {
+#     x <- description()
+#     expect_is(x, "tbl_df")
+#     expect_identical(
+#         lapply(x, class),
+#         list(
+#             "gene" = "character",
+#             "conciseDescription" = "character",
+#             "provisionalDescription" = "character",
+#             "automatedDescription" = "character",
+#             "geneClassDescription" = "character"
+#         )
+#     )
+# })
+#
+# test_that("description : Versioned", {
+#     x <- description(version = wbstable)
+#     expect_is(x, "tbl_df")
+#     expect_identical(dim(x), c(ngene, 5L))
+# })
 
 
 
