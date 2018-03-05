@@ -50,21 +50,17 @@ test_that("description : Versioned", {
 test_that("geneIDs : Current", {
     x <- geneIDs()
     expect_is(x, "tbl_df")
-    expect_identical(
-        lapply(x, class),
-        list(
-            "gene" = "character",
-            "symbol" = "character",
-            "sequence" = "character",
-            "status" = "character"
-        )
-    )
+    expect_true(all(vapply(
+        X = x,
+        FUN = is.character,
+        FUN.VALUE = logical(1L)
+    )))
 })
 
 test_that("geneIDs : Versioned", {
     x <- geneIDs(version = wbstable)
     expect_is(x, "tbl_df")
-    expect_identical(dim(x), c(ngene, 4L))
+    expect_identical(nrow(x), ngene)
 })
 
 
