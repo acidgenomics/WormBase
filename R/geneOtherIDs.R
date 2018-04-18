@@ -30,6 +30,6 @@ geneOtherIDs <- function(version = NULL, dir = ".") {
         strsplit("\t") %>%
         do.call(rbind, .) %>%
         as_tibble() %>%
-        set_colnames(c("gene", "otherIDs")) %>%
-        mutate(otherIDs = strsplit(.data[["otherIDs"]], "\\|"))
+        set_colnames(c("geneID", "geneOtherIDs")) %>%
+        mutate(geneOtherIDs = strsplit(!!sym("geneOtherIDs"), "\\|"))
 }
