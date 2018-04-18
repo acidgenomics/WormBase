@@ -21,15 +21,6 @@ biocLite("steinbaugh/wormbase")
 ```
 
 
-## Usage
-
-Tutorials and code examples are available as a vignette.
-
-```r
-browseVignettes("wormbase")
-```
-
-
 [Bioconductor]: https://bioconductor.org
 [devtools]: https://cran.r-project.org/package=devtools
 [R]: https://www.r-project.org
