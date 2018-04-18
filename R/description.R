@@ -66,14 +66,14 @@ description <- function(version = NULL, dir = ".") {
     dflist <- mclapply(lines, function(x) {
         keyPattern <- "^([A-Za-z[:space:]]+)\\:"
         names <- str_match(x, keyPattern)[, 2L]
-        names[1:3] <- c("gene", "name", "sequence")
+        names[1:3] <- c("geneID", "geneName", "sequence")
         names <- make.names(names)
         # Now remove the keys
         x <- gsub(paste0(keyPattern, " "), "", x)
         names(x) <- names
         tbl <- as_tibble(t(x))
         # Ensure the user uses the values from `geneIDs()` instead
-        tbl[["name"]] <- NULL
+        tbl[["geneName"]] <- NULL
         tbl[["sequence"]] <- NULL
         tbl
     })
