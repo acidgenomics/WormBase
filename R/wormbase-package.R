@@ -2,9 +2,11 @@
 #'
 #' *C. elegans* genome annotations from WormBase.
 #'
+#' @keywords internal
+#'
 #' @importFrom basejump camel fixNA initializeDirectory removeNA toStringUnique
 #'   transmit
-#' @importFrom dplyr arrange bind_rows everything group_by mutate select
+#' @importFrom dplyr arrange bind_rows everything group_by mutate rename select
 #' @importFrom httr content content_type_json GET user_agent
 #' @importFrom magrittr set_colnames set_rownames
 #' @importFrom parallel mclapply
