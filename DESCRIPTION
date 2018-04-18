@@ -36,6 +36,9 @@ Imports:
     tibble (>= 1.4),
     utils
 Suggests:
+    BiocStyle,
+    knitr,
+    rmarkdown,
     testthat,
     tidyverse
 Remotes:
