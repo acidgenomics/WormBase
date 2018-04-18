@@ -10,7 +10,7 @@ externalIDs(gene)
 \item{gene}{Gene identifier.}
 }
 \value{
-Gene \link{tibble}.
+\code{tbl_df}.
 }
 \description{
 External Identifiers

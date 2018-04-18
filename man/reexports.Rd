@@ -7,10 +7,6 @@
 \alias{reexports}
 \alias{microplate}
 \alias{reexports}
-\alias{file_delete}
-\alias{reexports}
-\alias{file_exists}
-\alias{reexports}
 \alias{\%>\%}
 \alias{reexports}
 \alias{glimpse}
@@ -24,8 +20,6 @@ below to see their documentation.
 
 \describe{
   \item{basejump}{\code{\link[basejump]{markdownList}}, \code{\link[basejump]{microplate}}}
-
-  \item{fs}{\code{\link[fs]{file_delete}}, \code{\link[fs]{file_exists}}}
 
   \item{magrittr}{\code{\link[magrittr]{\%>\%}}}
 

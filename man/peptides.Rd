@@ -14,7 +14,7 @@ be specified as a string (e.g. "WS262").}
 \item{dir}{Output directory.}
 }
 \value{
-\link{tibble} grouped by gene.
+\code{tbl_df} grouped by \code{gene} column.
 }
 \description{
 Peptides
