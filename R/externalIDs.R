@@ -2,7 +2,7 @@
 #'
 #' @family REST API Functions
 #'
-#' @param genes Gene identifiers.
+#' @inheritParams general
 #'
 #' @return `tbl_df`.
 #' @export

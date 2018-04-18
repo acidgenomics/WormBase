@@ -4,10 +4,10 @@
 \alias{geneOntology}
 \title{Gene Ontology}
 \usage{
-geneOntology(gene)
+geneOntology(genes)
 }
 \arguments{
-\item{gene}{Gene identifier.}
+\item{genes}{Gene identifiers.}
 }
 \value{
 \code{tbl_df}.
