@@ -3,9 +3,9 @@ context("REST API Functions")
 # externalIDs =================================================================
 test_that("externalIDs", {
     x <- externalIDs(genes)
-    expect_identical(x[["gene"]], as.character(genes))
+    expect_identical(x[["geneID"]], as.character(genes))
     extonly <- x
-    extonly[["gene"]] <- NULL
+    extonly[["geneID"]] <- NULL
     expect_true(all(vapply(
         X = extonly,
         FUN = is.list,
@@ -25,11 +25,11 @@ test_that("externalIDs : NULL return", {
 # geneOntology =================================================================
 test_that("geneOntology", {
     x <- geneOntology(genes)
-    expect_identical(x[["gene"]], as.character(genes))
+    expect_identical(x[["geneID"]], as.character(genes))
     expect_identical(
         lapply(x, class),
         list(
-            "gene" = "character",
+            "geneID" = "character",
             "biologicalProcess" = "list",
             "cellularComponent" = "list",
             "molecularFunction" = "list"

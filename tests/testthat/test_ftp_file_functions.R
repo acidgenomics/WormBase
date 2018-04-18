@@ -67,8 +67,8 @@ test_that("geneOtherIDs : Current", {
     expect_identical(
         lapply(x, class),
         list(
-            "gene" = "character",
-            "otherIDs" = "list"
+            "geneID" = "character",
+            "geneOtherIDs" = "list"
         )
     )
 })
@@ -88,7 +88,7 @@ test_that("oligos : Current", {
     expect_identical(
         lapply(x, class),
         list(
-            "gene" = "character",
+            "geneID" = "character",
             "oligo" = "list"
         )
     )
@@ -109,7 +109,7 @@ test_that("orthologs : Current", {
     expect_identical(
         lapply(x, class),
         list(
-            "gene" = "character",
+            "geneID" = "character",
             "homoSapiens" = "list",
             "musMusculus" = "list",
             "drosophilaMelanogaster" = "list",
@@ -133,7 +133,7 @@ test_that("peptides : Current", {
     expect_identical(
         lapply(x, class),
         list(
-            "gene" = "character",
+            "geneID" = "character",
             "sequence" = "character",
             "wormpep" = "character",
             "status" = "character",
@@ -160,7 +160,7 @@ test_that("rnaiPhenotypes : Current", {
     expect_identical(
         lapply(x, class),
         list(
-            "gene" = "character",
+            "geneID" = "character",
             "rnaiPhenotypes" = "list"
         )
     )
