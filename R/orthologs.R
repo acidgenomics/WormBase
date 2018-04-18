@@ -63,11 +63,11 @@ orthologs <- function(version = NULL, dir = ".") {
         )
         tbl <- lapply(orthologs, list) %>%
             as_tibble()
-        tbl[["gene"]] <- gene
+        tbl[["geneID"]] <- gene
         tbl
     })
 
     dflist %>%
         bind_rows() %>%
-        .[, c("gene", setdiff(colnames(.), "gene"))]
+        select(!!sym("geneID"), everything())
 }
