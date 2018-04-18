@@ -9,13 +9,13 @@
 #'
 #' @examples
 #' geneOntology(c("WBGene00000912", "WBGene00004804")) %>% glimpse()
-geneOntology <- function(gene) {
-    .assertAllAreGenes(gene)
-    list <- lapply(gene, function(id) {
+geneOntology <- function(genes) {
+    .assertAllAreGenes(genes)
+    list <- lapply(genes, function(gene) {
         query <- paste(
             "widget",
             "gene",
-            id,
+            gene,
             "gene_ontology",
             sep = "/"
         )
@@ -28,9 +28,9 @@ geneOntology <- function(gene) {
         }
         goTerms <- mclapply(data, function(process) {
             lapply(seq_along(process), function(x) {
-                gene <- process[[x]][["term_description"]][["id"]]
-                name <- process[[x]][["term_description"]][["label"]]
-                paste(gene, name, sep = "~")
+                id <- process[[x]][["term_description"]][["id"]]
+                label <- process[[x]][["term_description"]][["label"]]
+                paste(id, label, sep = "~")
             }) %>%
                 unlist() %>%
                 unique() %>%
@@ -38,7 +38,7 @@ geneOntology <- function(gene) {
         })
         lapply(goTerms, list) %>%
             as_tibble() %>%
-            mutate(gene = id)
+            mutate(geneID = gene)
     })
     list <- Filter(Negate(is.null), list)
     if (!length(list)) {
@@ -47,5 +47,5 @@ geneOntology <- function(gene) {
     list %>%
         bind_rows() %>%
         camel() %>%
-        .[, unique(c("gene", sort(colnames(.))))]
+        .[, unique(c("geneID", sort(colnames(.))))]
 }
