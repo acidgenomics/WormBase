@@ -28,6 +28,7 @@ Imports:
     httr (>= 1.3),
     magrittr (>= 1.5),
     parallel,
+    pbapply,
     readr (>= 1.1),
     rlang (>= 0.2),
     stats,

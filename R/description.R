@@ -63,7 +63,7 @@ description <- function(version = NULL, dir = ".") {
     lines <- strsplit(lines, "\t")
 
     # Make this call parallel
-    dflist <- mclapply(lines, function(x) {
+    dflist <- pblapply(lines, function(x) {
         keyPattern <- "^([A-Za-z[:space:]]+)\\:"
         names <- str_match(x, keyPattern)[, 2L]
         names[1:3] <- c("geneID", "geneName", "sequence")

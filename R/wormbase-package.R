@@ -8,6 +8,7 @@
 #' @importFrom httr content content_type_json GET user_agent
 #' @importFrom magrittr set_colnames set_rownames
 #' @importFrom parallel mclapply
+#' @importFrom pbapply pblapply
 #' @importFrom readr read_csv read_delim read_file read_lines read_tsv
 #' @importFrom rlang !! !!! .data abort inform warn sym syms
 #' @importFrom stats aggregate formula
