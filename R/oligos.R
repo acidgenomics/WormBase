@@ -17,12 +17,12 @@ oligos <- function(version = NULL, dir = ".") {
     )
     data <-  suppressWarnings(read_tsv(
         file = as.character(file),
-        col_names = c("oligo", "gene"),
+        col_names = c("oligo", "geneID"),
         progress = FALSE
     ))
-    data[["gene"]] <- str_extract(data[["gene"]], "WBGene\\d{8}")
+    data[["geneID"]] <- str_extract(data[["geneID"]], "WBGene\\d{8}")
     aggregate(
-        formula = formula("oligo~gene"),
+        formula = formula("oligo~geneID"),
         data = data,
         FUN = function(x) {
             x %>%
