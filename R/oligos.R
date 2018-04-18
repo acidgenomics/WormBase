@@ -2,15 +2,9 @@
 #'
 #' @family FTP File Functions
 #'
-#' @importFrom dplyr arrange group_by mutate select
-#' @importFrom readr read_tsv
-#' @importFrom stats aggregate formula
-#' @importFrom stringr str_extract
-#' @importFrom tibble as_tibble
-#'
 #' @inheritParams general
 #'
-#' @return Gene [tibble].
+#' @return `tbl_df`.
 #' @export
 #'
 #' @examples
@@ -23,12 +17,12 @@ oligos <- function(version = NULL, dir = ".") {
     )
     data <-  suppressWarnings(read_tsv(
         file = as.character(file),
-        col_names = c("oligo", "gene"),
+        col_names = c("oligo", "geneID"),
         progress = FALSE
     ))
-    data[["gene"]] <- str_extract(data[["gene"]], "WBGene\\d{8}")
+    data[["geneID"]] <- str_extract(data[["geneID"]], "WBGene\\d{8}")
     aggregate(
-        formula = formula("oligo~gene"),
+        formula = formula("oligo~geneID"),
         data = data,
         FUN = function(x) {
             x %>%

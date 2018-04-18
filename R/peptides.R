@@ -2,27 +2,22 @@
 #'
 #' @family FTP File Functions
 #'
-#' @importFrom basejump transmit
-#' @importFrom dplyr arrange bind_rows everything group_by select
-#' @importFrom fs path
-#' @importFrom parallel mclapply
-#' @importFrom stringr str_match str_match_all
-#' @importFrom utils untar
-#'
 #' @inheritParams general
 #'
-#' @return [tibble] grouped by gene.
+#' @return `tbl_df` grouped by `gene` column.
 #' @export
 #'
 #' @examples
-#' peptides() %>% glimpse()
+#' invisible(capture.output(
+#'     x <- peptides()
+#' ))
+#' glimpse(x)
 peptides <- function(version = NULL, dir = ".") {
     file <- .assemblyFile(
         pattern = "wormpep_package",
         version = version,
         dir = dir
     )
-    file <- as.character(file)
 
     # Grep the verion number
     versionNumber <- str_extract(file, "WS\\d{3}") %>%
@@ -36,8 +31,8 @@ peptides <- function(version = NULL, dir = ".") {
         exdir = dir
     )
 
-    lines <- read_lines(path(dir, wormpepTable), progress = FALSE)
-    dflist <- mclapply(lines, function(line) {
+    lines <- read_lines(file.path(dir, wormpepTable), progress = FALSE)
+    dflist <- pblapply(lines, function(line) {
         # Attempt to match quoted values first (e.g. product)
         keyPattern <- "([a-z]+)=(\"[^\"]+\"|[^\\s]+)"
         keyPairs <- str_match_all(line, keyPattern) %>%
@@ -54,7 +49,8 @@ peptides <- function(version = NULL, dir = ".") {
     })
     dflist %>%
         bind_rows() %>%
-        select(!!sym("gene"), everything()) %>%
-        group_by(!!sym("gene")) %>%
+        rename(geneID = !!sym("gene")) %>%
+        select(!!sym("geneID"), everything()) %>%
+        group_by(!!sym("geneID")) %>%
         arrange(!!!syms(c("sequence", "wormpep")), .by_group = TRUE)
 }

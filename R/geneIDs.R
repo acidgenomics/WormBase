@@ -2,11 +2,9 @@
 #'
 #' @family FTP File Functions
 #'
-#' @importFrom readr read_csv
-#'
 #' @inheritParams general
 #'
-#' @return Gene [tibble].
+#' @return `tbl_df`.
 #' @export
 #'
 #' @examples
@@ -19,7 +17,7 @@ geneIDs <- function(version = NULL, dir = ".") {
     )
     data <- read_csv(
         file = as.character(file),
-        col_names = c("X1", "gene", "symbol", "sequence", "status"),
+        col_names = c("X1", "geneID", "geneName", "sequence", "status"),
         na = "",
         progress = FALSE
     )

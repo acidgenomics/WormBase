@@ -14,7 +14,7 @@ be specified as a string (e.g. "WS262").}
 \item{dir}{Output directory.}
 }
 \value{
-Gene \link{tibble}.
+\code{tbl_df}.
 }
 \description{
 PCR Oligo Sequences

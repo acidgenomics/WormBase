@@ -2,13 +2,9 @@
 #'
 #' @family FTP File Functions
 #'
-#' @importFrom basejump transmit
-#' @importFrom fs file_move
-#' @importFrom parallel mclapply
-#'
 #' @inheritParams general
 #'
-#' @return Gene [tibble].
+#' @return `tbl_df`.
 #' @export
 #'
 #' @examples
@@ -23,9 +19,10 @@ rnaiPhenotypes <- function(version = NULL, dir = ".") {
     )
     data <- read_tsv(
         file = as.character(file),
-        col_names = c("gene", "sequence", "rnaiPhenotypes"),
+        col_names = c("geneID", "sequence", "rnaiPhenotypes"),
         progress = FALSE
     )
+    # Use `sequence` from `geneID()` return
     data[["sequence"]] <- NULL
     list <- mclapply(
         X = strsplit(data[["rnaiPhenotypes"]], ", "),

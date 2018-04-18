@@ -2,25 +2,20 @@
 #'
 #' @family REST API Functions
 #'
-#' @importFrom basejump toStringUnique
-#' @importFrom dplyr bind_rows
-#' @importFrom magrittr set_colnames
-#' @importFrom parallel mclapply
+#' @inheritParams general
 #'
-#' @param gene Gene identifier.
-#'
-#' @return Gene [tibble].
+#' @return `tbl_df`.
 #' @export
 #'
 #' @examples
 #' externalIDs(c("WBGene00000912", "WBGene00004804")) %>% glimpse()
-externalIDs <- function(gene) {
-    .assertAllAreGenes(gene)
-    list <- lapply(gene, function(id) {
+externalIDs <- function(genes) {
+    .assertAllAreGenes(genes)
+    list <- lapply(genes, function(gene) {
         query <- paste(
             "widget",
             "gene",
-            id,
+            gene,
             "external_links",
             sep = "/"
         )
@@ -41,7 +36,7 @@ externalIDs <- function(gene) {
         })
         lapply(xrefs, list) %>%
             as_tibble() %>%
-            mutate(gene = id)
+            mutate(geneID = gene)
     })
     list <- Filter(Negate(is.null), list)
     if (!length(list)) {
@@ -49,6 +44,6 @@ externalIDs <- function(gene) {
     }
     list %>%
         bind_rows() %>%
-        set_colnames(tolower(names(.))) %>%
-        .[, unique(c("gene", sort(colnames(.))))]
+        camel() %>%
+        .[, unique(c("geneID", sort(colnames(.))))]
 }

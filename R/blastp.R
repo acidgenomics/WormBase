@@ -2,14 +2,9 @@
 #'
 #' @family FTP File Functions
 #'
-#' @importFrom dplyr group_by mutate
-#' @importFrom magrittr set_colnames
-#' @importFrom readr read_csv
-#' @importFrom stringr str_sub
-#'
 #' @inheritParams general
 #'
-#' @return [tibble] grouped by wormpep.
+#' @return `tbl_df` grouped by `wormpep` column.
 #' @export
 #'
 #' @examples
@@ -29,6 +24,6 @@ blastp <- function(version = NULL, dir = ".") {
         set_colnames(c("wormpep", "peptide", "eValue")) %>%
         .[grepl("^ENSEMBL:ENSP\\d{11}$", .[["peptide"]]), , drop = FALSE] %>%
         .[order(.[["wormpep"]], .[["eValue"]]), ] %>%
-        mutate(peptide = str_sub(.data[["peptide"]], 9L)) %>%
+        mutate(peptide = str_sub(!!sym("peptide"), 9L)) %>%
         group_by(!!sym("wormpep"))
 }

@@ -14,13 +14,16 @@ be specified as a string (e.g. "WS262").}
 \item{dir}{Output directory.}
 }
 \value{
-\link{tibble} grouped by gene.
+\code{tbl_df} grouped by \code{gene} column.
 }
 \description{
 Peptides
 }
 \examples{
-peptides() \%>\% glimpse()
+invisible(capture.output(
+    x <- peptides()
+))
+glimpse(x)
 }
 \seealso{
 Other FTP File Functions: \code{\link{blastp}},

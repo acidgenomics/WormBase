@@ -4,13 +4,13 @@
 \alias{externalIDs}
 \title{External Identifiers}
 \usage{
-externalIDs(gene)
+externalIDs(genes)
 }
 \arguments{
-\item{gene}{Gene identifier.}
+\item{genes}{Gene identifiers.}
 }
 \value{
-Gene \link{tibble}.
+\code{tbl_df}.
 }
 \description{
 External Identifiers

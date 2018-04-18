@@ -4,13 +4,13 @@
 \alias{geneOntology}
 \title{Gene Ontology}
 \usage{
-geneOntology(gene)
+geneOntology(genes)
 }
 \arguments{
-\item{gene}{Gene identifier.}
+\item{genes}{Gene identifiers.}
 }
 \value{
-Gene \link{tibble}.
+\code{tbl_df}.
 }
 \description{
 Gene Ontology

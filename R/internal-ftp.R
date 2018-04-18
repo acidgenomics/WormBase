@@ -27,8 +27,6 @@
 
 
 
-#' @importFrom basejump initializeDirectory transmit
-#' @importFrom fs path_real
 .transmit <- function(
     subdir,
     version = NULL,

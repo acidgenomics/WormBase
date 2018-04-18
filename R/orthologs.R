@@ -2,17 +2,16 @@
 #'
 #' @family FTP File Functions
 #'
-#' @importFrom parallel mclapply
-#' @importFrom readr read_file read_tsv
-#' @importFrom stringr str_extract_all
-#'
 #' @inheritParams general
 #'
-#' @return Gene [tibble].
+#' @return `tbl_df`.
 #' @export
 #'
 #' @examples
-#' orthologs() %>% glimpse()
+#' invisible(capture.output(
+#'     x <- orthologs()
+#' ))
+#' glimpse(x)
 orthologs <- function(version = NULL, dir = ".") {
     file <- .annotationFile(
         pattern = "orthologs",
@@ -38,7 +37,7 @@ orthologs <- function(version = NULL, dir = ".") {
     lines <- lines %>%
         .[grepl(paste0("^", genePattern), .)]
 
-    dflist <- mclapply(lines, function(x) {
+    dflist <- pblapply(lines, function(x) {
         gene <- str_extract(x, genePattern)
         patterns <- c(
             "homoSapiens" = "ENSG\\d{11}",
@@ -67,11 +66,11 @@ orthologs <- function(version = NULL, dir = ".") {
         )
         tbl <- lapply(orthologs, list) %>%
             as_tibble()
-        tbl[["gene"]] <- gene
+        tbl[["geneID"]] <- gene
         tbl
     })
 
     dflist %>%
         bind_rows() %>%
-        .[, c("gene", setdiff(colnames(.), "gene"))]
+        select(!!sym("geneID"), everything())
 }

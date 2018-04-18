@@ -14,13 +14,16 @@ be specified as a string (e.g. "WS262").}
 \item{dir}{Output directory.}
 }
 \value{
-Gene \link{tibble}.
+\code{tbl_df}.
 }
 \description{
 Orthologs
 }
 \examples{
-orthologs() \%>\% glimpse()
+invisible(capture.output(
+    x <- orthologs()
+))
+glimpse(x)
 }
 \seealso{
 Other FTP File Functions: \code{\link{blastp}},
