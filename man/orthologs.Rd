@@ -20,7 +20,10 @@ be specified as a string (e.g. "WS262").}
 Orthologs
 }
 \examples{
-orthologs() \%>\% glimpse()
+invisible(capture.output(
+    x <- orthologs()
+))
+glimpse(x)
 }
 \seealso{
 Other FTP File Functions: \code{\link{blastp}},

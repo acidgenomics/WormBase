@@ -8,7 +8,10 @@
 #' @export
 #'
 #' @examples
-#' orthologs() %>% glimpse()
+#' invisible(capture.output(
+#'     x <- orthologs()
+#' ))
+#' glimpse(x)
 orthologs <- function(version = NULL, dir = ".") {
     file <- .annotationFile(
         pattern = "orthologs",

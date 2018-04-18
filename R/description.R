@@ -12,7 +12,10 @@
 #' @export
 #'
 #' @examples
-#' description() %>% glimpse()
+#' invisible(capture.output(
+#'     x <- description()
+#' ))
+#' glimpse(x)
 description <- function(version = NULL, dir = ".") {
     file <- .annotationFile(
         pattern = "functional_descriptions",

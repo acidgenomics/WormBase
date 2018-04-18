@@ -20,7 +20,10 @@ be specified as a string (e.g. "WS262").}
 Gene Functional Descriptions
 }
 \examples{
-description() \%>\% glimpse()
+invisible(capture.output(
+    x <- description()
+))
+glimpse(x)
 }
 \seealso{
 Other FTP File Functions: \code{\link{blastp}},

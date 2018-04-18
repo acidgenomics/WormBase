@@ -20,7 +20,10 @@ be specified as a string (e.g. "WS262").}
 Peptides
 }
 \examples{
-peptides() \%>\% glimpse()
+invisible(capture.output(
+    x <- peptides()
+))
+glimpse(x)
 }
 \seealso{
 Other FTP File Functions: \code{\link{blastp}},

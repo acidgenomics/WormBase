@@ -8,7 +8,10 @@
 #' @export
 #'
 #' @examples
-#' peptides() %>% glimpse()
+#' invisible(capture.output(
+#'     x <- peptides()
+#' ))
+#' glimpse(x)
 peptides <- function(version = NULL, dir = ".") {
     file <- .assemblyFile(
         pattern = "wormpep_package",
