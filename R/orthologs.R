@@ -34,7 +34,7 @@ orthologs <- function(version = NULL, dir = ".") {
     lines <- lines %>%
         .[grepl(paste0("^", genePattern), .)]
 
-    dflist <- mclapply(lines, function(x) {
+    dflist <- pblapply(lines, function(x) {
         gene <- str_extract(x, genePattern)
         patterns <- c(
             "homoSapiens" = "ENSG\\d{11}",
