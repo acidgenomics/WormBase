@@ -6,15 +6,10 @@
 #'
 #' @family FTP File Functions
 #'
-#' @importFrom basejump camel fixNA removeNA
-#' @importFrom parallel mclapply
-#' @importFrom readr read_delim read_lines
-#' @importFrom stringr str_match
-#'
 #' @inheritParams general
 #'
+#' @return `tbl_df`.
 #' @export
-#' @return Gene [tibble].
 #'
 #' @examples
 #' description() %>% glimpse()

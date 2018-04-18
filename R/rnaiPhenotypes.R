@@ -2,13 +2,9 @@
 #'
 #' @family FTP File Functions
 #'
-#' @importFrom basejump transmit
-#' @importFrom fs file_move
-#' @importFrom parallel mclapply
-#'
 #' @inheritParams general
 #'
-#' @return Gene [tibble].
+#' @return `tbl_df`.
 #' @export
 #'
 #' @examples

@@ -2,14 +2,9 @@
 #'
 #' @family REST API Functions
 #'
-#' @importFrom basejump camel
-#' @importFrom dplyr bind_rows mutate
-#' @importFrom parallel mclapply
-#' @importFrom tibble as_tibble tibble
-#'
 #' @inheritParams general
 #'
-#' @return Gene [tibble].
+#' @return `tbl_df`.
 #' @export
 #'
 #' @examples

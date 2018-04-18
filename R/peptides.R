@@ -2,16 +2,9 @@
 #'
 #' @family FTP File Functions
 #'
-#' @importFrom basejump transmit
-#' @importFrom dplyr arrange bind_rows everything group_by select
-#' @importFrom fs path
-#' @importFrom parallel mclapply
-#' @importFrom stringr str_match str_match_all
-#' @importFrom utils untar
-#'
 #' @inheritParams general
 #'
-#' @return [tibble] grouped by gene.
+#' @return `tbl_df` grouped by `gene` column.
 #' @export
 #'
 #' @examples
@@ -36,7 +29,7 @@ peptides <- function(version = NULL, dir = ".") {
         exdir = dir
     )
 
-    lines <- read_lines(path(dir, wormpepTable), progress = FALSE)
+    lines <- read_lines(file.path(dir, wormpepTable), progress = FALSE)
     dflist <- mclapply(lines, function(line) {
         # Attempt to match quoted values first (e.g. product)
         keyPattern <- "([a-z]+)=(\"[^\"]+\"|[^\\s]+)"

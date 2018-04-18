@@ -2,11 +2,9 @@
 #'
 #' @family FTP File Functions
 #'
-#' @importFrom readr read_csv
-#'
 #' @inheritParams general
 #'
-#' @return Gene [tibble].
+#' @return `tbl_df`.
 #' @export
 #'
 #' @examples

@@ -2,14 +2,9 @@
 #'
 #' @family FTP File Functions
 #'
-#' @importFrom dplyr group_by mutate
-#' @importFrom magrittr set_colnames
-#' @importFrom readr read_csv
-#' @importFrom stringr str_sub
-#'
 #' @inheritParams general
 #'
-#' @return [tibble] grouped by wormpep.
+#' @return `tbl_df` grouped by `wormpep` column.
 #' @export
 #'
 #' @examples

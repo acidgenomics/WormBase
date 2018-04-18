@@ -2,13 +2,9 @@
 #'
 #' @family FTP File Functions
 #'
-#' @importFrom parallel mclapply
-#' @importFrom readr read_file read_tsv
-#' @importFrom stringr str_extract_all
-#'
 #' @inheritParams general
 #'
-#' @return Gene [tibble].
+#' @return `tbl_df`.
 #' @export
 #'
 #' @examples

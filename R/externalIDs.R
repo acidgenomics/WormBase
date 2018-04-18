@@ -2,14 +2,9 @@
 #'
 #' @family REST API Functions
 #'
-#' @importFrom basejump toStringUnique
-#' @importFrom dplyr bind_rows
-#' @importFrom magrittr set_colnames
-#' @importFrom parallel mclapply
-#'
 #' @param gene Gene identifier.
 #'
-#' @return Gene [tibble].
+#' @return `tbl_df`.
 #' @export
 #'
 #' @examples

@@ -2,15 +2,9 @@
 #'
 #' @family FTP File Functions
 #'
-#' @importFrom dplyr arrange group_by mutate select
-#' @importFrom readr read_tsv
-#' @importFrom stats aggregate formula
-#' @importFrom stringr str_extract
-#' @importFrom tibble as_tibble
-#'
 #' @inheritParams general
 #'
-#' @return Gene [tibble].
+#' @return `tbl_df`.
 #' @export
 #'
 #' @examples
