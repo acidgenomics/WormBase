@@ -22,7 +22,9 @@ LazyData: TRUE
 Depends:
     R (>= 3.4)
 Imports:
-    assertive (>= 0.3),
+    assertive.properties,
+    assertive.strings,
+    assertive.types,
     basejump (>= 0.5.3),
     dplyr (>= 0.7),
     httr (>= 1.3),
