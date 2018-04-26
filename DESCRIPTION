@@ -1,7 +1,7 @@
 Package: wormbase
 Title: WormBase Annotations
 Description: C. elegans genome annotations from WormBase.
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: person(
     given = "Michael",
     family = "Steinbaugh",
@@ -23,7 +23,7 @@ Depends:
     R (>= 3.4)
 Imports:
     assertive (>= 0.3),
-    basejump (>= 0.3),
+    basejump (>= 0.5.3),
     dplyr (>= 0.7),
     httr (>= 1.3),
     magrittr (>= 1.5),
