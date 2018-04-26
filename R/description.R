@@ -1,7 +1,3 @@
-# TODO Add handling for older versions that delimited the columns differently
-
-
-
 #' Gene Functional Descriptions
 #'
 #' @family FTP File Functions
