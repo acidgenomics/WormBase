@@ -17,10 +17,11 @@ geneIDs <- function(version = NULL, dir = ".") {
     )
     data <- read_csv(
         file = as.character(file),
-        col_names = c("X1", "geneID", "geneName", "sequence", "status"),
+        col_names = FALSE,
         na = "",
         progress = FALSE
     )
-    data[["X1"]] <- NULL
+    data <- data[, 2L:5L]
+    colnames(data) <- c("geneID", "geneName", "sequence", "status")
     data
 }
