@@ -24,7 +24,7 @@ rnaiPhenotypes <- function(version = NULL, dir = ".") {
     )
     # Use `sequence` from `geneID()` return
     data[["sequence"]] <- NULL
-    list <- mclapply(
+    list <- pblapply(
         X = strsplit(data[["rnaiPhenotypes"]], ", "),
         FUN = function(x) {
             sort(unique(x))

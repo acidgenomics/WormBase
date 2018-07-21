@@ -26,7 +26,7 @@ geneOntology <- function(genes) {
         if (is.null(data)) {
             return(NULL)
         }
-        goTerms <- mclapply(data, function(process) {
+        goTerms <- pblapply(data, function(process) {
             lapply(seq_along(process), function(x) {
                 id <- process[[x]][["term_description"]][["id"]]
                 label <- process[[x]][["term_description"]][["label"]]

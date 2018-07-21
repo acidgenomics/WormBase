@@ -26,7 +26,7 @@ externalIDs <- function(genes) {
         if (is.null(data)) {
             return(NULL)
         }
-        xrefs <- mclapply(data, function(x) {
+        xrefs <- pblapply(data, function(x) {
             x %>%
                 .[[1L]] %>%
                 .[[1L]] %>%
