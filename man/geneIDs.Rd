@@ -20,7 +20,8 @@ be specified as a string (e.g. "WS262").}
 Gene Identifiers
 }
 \examples{
-geneIDs() \%>\% glimpse()
+x <- geneIDs()
+glimpse(x)
 }
 \seealso{
 Other FTP File Functions: \code{\link{blastp}},

@@ -20,7 +20,8 @@ be specified as a string (e.g. "WS262").}
 PCR Oligo Sequences
 }
 \examples{
-oligos() \%>\% glimpse()
+x <- oligos()
+glimpse(x)
 }
 \seealso{
 Other FTP File Functions: \code{\link{blastp}},

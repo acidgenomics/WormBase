@@ -16,7 +16,10 @@ geneOntology(genes)
 Gene Ontology
 }
 \examples{
-geneOntology(c("WBGene00000912", "WBGene00004804")) \%>\% glimpse()
+invisible(capture.output(
+    x <- geneOntology(c("WBGene00000912", "WBGene00004804"))
+))
+glimpse(x)
 }
 \seealso{
 Other REST API Functions: \code{\link{externalIDs}}
