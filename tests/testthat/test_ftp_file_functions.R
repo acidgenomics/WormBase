@@ -7,9 +7,9 @@ test_that("blastp : Current", {
     expect_identical(
         lapply(x, class),
         list(
-            "wormpep" = "character",
-            "peptide" = "character",
-            "eValue" = "numeric"
+            wormpep = "character",
+            peptide = "character",
+            eValue = "numeric"
         )
     )
 })
@@ -67,8 +67,8 @@ test_that("geneOtherIDs : Current", {
     expect_identical(
         lapply(x, class),
         list(
-            "geneID" = "character",
-            "geneOtherIDs" = "list"
+            geneID = "character",
+            geneOtherIDs = "list"
         )
     )
 })
@@ -88,8 +88,8 @@ test_that("oligos : Current", {
     expect_identical(
         lapply(x, class),
         list(
-            "geneID" = "character",
-            "oligo" = "list"
+            geneID = "character",
+            oligo = "list"
         )
     )
 })
@@ -109,11 +109,11 @@ test_that("orthologs : Current", {
     expect_identical(
         lapply(x, class),
         list(
-            "geneID" = "character",
-            "homoSapiens" = "list",
-            "musMusculus" = "list",
-            "drosophilaMelanogaster" = "list",
-            "danioRerio" = "list"
+            geneID = "character",
+            homoSapiens = "list",
+            musMusculus = "list",
+            drosophilaMelanogaster = "list",
+            danioRerio = "list"
         )
     )
 })
@@ -133,14 +133,14 @@ test_that("peptides : Current", {
     expect_identical(
         lapply(x, class),
         list(
-            "geneID" = "character",
-            "sequence" = "character",
-            "wormpep" = "character",
-            "status" = "character",
-            "uniprot" = "character",
-            "insdc" = "character",
-            "locus" = "character",
-            "product" = "character"
+            geneID = "character",
+            sequence = "character",
+            wormpep = "character",
+            status = "character",
+            uniprot = "character",
+            insdc = "character",
+            locus = "character",
+            product = "character"
         )
     )
 })
@@ -160,8 +160,8 @@ test_that("rnaiPhenotypes : Current", {
     expect_identical(
         lapply(x, class),
         list(
-            "geneID" = "character",
-            "rnaiPhenotypes" = "list"
+            geneID = "character",
+            rnaiPhenotypes = "list"
         )
     )
 })

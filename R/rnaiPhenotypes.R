@@ -8,7 +8,10 @@
 #' @export
 #'
 #' @examples
-#' rnaiPhenotypes() %>% glimpse()
+#' invisible(capture.output(
+#'     x <- rnaiPhenotypes()
+#' ))
+#' glimpse(x)
 rnaiPhenotypes <- function(version = NULL, dir = ".") {
     file <- .transmit(
         subdir = "ONTOLOGY",
@@ -19,12 +22,11 @@ rnaiPhenotypes <- function(version = NULL, dir = ".") {
     )
     data <- read_tsv(
         file = as.character(file),
-        col_names = c("geneID", "sequence", "rnaiPhenotypes"),
-        progress = FALSE
+        col_names = c("geneID", "sequence", "rnaiPhenotypes")
     )
     # Use `sequence` from `geneID()` return
     data[["sequence"]] <- NULL
-    list <- mclapply(
+    list <- pblapply(
         X = strsplit(data[["rnaiPhenotypes"]], ", "),
         FUN = function(x) {
             sort(unique(x))

@@ -8,7 +8,8 @@
 #' @export
 #'
 #' @examples
-#' blastp() %>% glimpse()
+#' x <- blastp()
+#' glimpse(x)
 blastp <- function(version = NULL, dir = ".") {
     file <- .assemblyFile(
         pattern = "best_blastp_hits",

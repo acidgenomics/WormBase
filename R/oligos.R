@@ -8,7 +8,8 @@
 #' @export
 #'
 #' @examples
-#' oligos() %>% glimpse()
+#' x <- oligos()
+#' glimpse(x)
 oligos <- function(version = NULL, dir = ".") {
     file <- .annotationFile(
         pattern = "pcr_product2gene",

@@ -11,7 +11,7 @@
 \seealso{
 Useful links:
 \itemize{
-  \item \url{http://steinbaugh.com/wormbase/}
+  \item \url{https://steinbaugh.com/wormbase}
   \item \url{https://github.com/steinbaugh/wormbase}
   \item Report bugs at \url{https://github.com/steinbaugh/wormbase/issues}
 }
@@ -21,4 +21,3 @@ Useful links:
 \strong{Maintainer}: Michael Steinbaugh \email{mike@steinbaugh.com} (0000-0002-2403-2221)
 
 }
-\keyword{internal}

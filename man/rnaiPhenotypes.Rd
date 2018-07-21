@@ -20,7 +20,10 @@ be specified as a string (e.g. "WS262").}
 RNAi Phenotypes
 }
 \examples{
-rnaiPhenotypes() \%>\% glimpse()
+invisible(capture.output(
+    x <- rnaiPhenotypes()
+))
+glimpse(x)
 }
 \seealso{
 Other FTP File Functions: \code{\link{blastp}},

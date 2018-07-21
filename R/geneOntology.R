@@ -8,7 +8,10 @@
 #' @export
 #'
 #' @examples
-#' geneOntology(c("WBGene00000912", "WBGene00004804")) %>% glimpse()
+#' invisible(capture.output(
+#'     x <- geneOntology(c("WBGene00000912", "WBGene00004804"))
+#' ))
+#' glimpse(x)
 geneOntology <- function(genes) {
     .assertAllAreGenes(genes)
     list <- lapply(genes, function(gene) {
@@ -26,7 +29,7 @@ geneOntology <- function(genes) {
         if (is.null(data)) {
             return(NULL)
         }
-        goTerms <- mclapply(data, function(process) {
+        goTerms <- pblapply(data, function(process) {
             lapply(seq_along(process), function(x) {
                 id <- process[[x]][["term_description"]][["id"]]
                 label <- process[[x]][["term_description"]][["label"]]

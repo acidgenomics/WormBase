@@ -43,7 +43,7 @@ peptides <- function(version = NULL, dir = ".") {
         names(x) <- keyPairs[, 2L]
         sequence <- str_match(line, "^>([A-Za-z0-9\\.]+)") %>%
             .[[2]]
-        c("sequence" = sequence, x) %>%
+        c(sequence = sequence, x) %>%
             t() %>%
             as_tibble()
     })

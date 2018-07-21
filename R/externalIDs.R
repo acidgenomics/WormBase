@@ -8,7 +8,10 @@
 #' @export
 #'
 #' @examples
-#' externalIDs(c("WBGene00000912", "WBGene00004804")) %>% glimpse()
+#' invisible(capture.output(
+#'     x <- externalIDs(c("WBGene00000912", "WBGene00004804"))
+#' ))
+#' glimpse(x)
 externalIDs <- function(genes) {
     .assertAllAreGenes(genes)
     list <- lapply(genes, function(gene) {
@@ -26,7 +29,7 @@ externalIDs <- function(genes) {
         if (is.null(data)) {
             return(NULL)
         }
-        xrefs <- mclapply(data, function(x) {
+        xrefs <- pblapply(data, function(x) {
             x %>%
                 .[[1L]] %>%
                 .[[1L]] %>%

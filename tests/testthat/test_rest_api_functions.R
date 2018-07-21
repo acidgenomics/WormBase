@@ -29,10 +29,10 @@ test_that("geneOntology", {
     expect_identical(
         lapply(x, class),
         list(
-            "geneID" = "character",
-            "biologicalProcess" = "list",
-            "cellularComponent" = "list",
-            "molecularFunction" = "list"
+            geneID = "character",
+            biologicalProcess = "list",
+            cellularComponent = "list",
+            molecularFunction = "list"
         )
     )
 })

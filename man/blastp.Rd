@@ -20,7 +20,8 @@ be specified as a string (e.g. "WS262").}
 Best BLASTP Hits
 }
 \examples{
-blastp() \%>\% glimpse()
+x <- blastp()
+glimpse(x)
 }
 \seealso{
 Other FTP File Functions: \code{\link{description}},

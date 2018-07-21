@@ -40,10 +40,10 @@ orthologs <- function(version = NULL, dir = ".") {
     dflist <- pblapply(lines, function(x) {
         gene <- str_extract(x, genePattern)
         patterns <- c(
-            "homoSapiens" = "ENSG\\d{11}",
-            "musMusculus" = "ENSMUSG\\d{11}",
-            "drosophilaMelanogaster" = "FBgn\\d{7}",
-            "danioRerio" = "ENSDARG\\d{11}"
+            homoSapiens = "ENSG\\d{11}",
+            musMusculus = "ENSMUSG\\d{11}",
+            drosophilaMelanogaster = "FBgn\\d{7}",
+            danioRerio = "ENSDARG\\d{11}"
         )
         orthologs <- mapply(
             FUN = function(string, pattern) {

@@ -16,7 +16,10 @@ externalIDs(genes)
 External Identifiers
 }
 \examples{
-externalIDs(c("WBGene00000912", "WBGene00004804")) \%>\% glimpse()
+invisible(capture.output(
+    x <- externalIDs(c("WBGene00000912", "WBGene00004804"))
+))
+glimpse(x)
 }
 \seealso{
 Other REST API Functions: \code{\link{geneOntology}}
