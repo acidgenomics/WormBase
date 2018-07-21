@@ -8,7 +8,10 @@
 #' @export
 #'
 #' @examples
-#' geneOntology(c("WBGene00000912", "WBGene00004804")) %>% glimpse()
+#' invisible(capture.output(
+#'     x <- geneOntology(c("WBGene00000912", "WBGene00004804"))
+#' ))
+#' glimpse(x)
 geneOntology <- function(genes) {
     .assertAllAreGenes(genes)
     list <- lapply(genes, function(gene) {

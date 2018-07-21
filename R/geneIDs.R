@@ -8,7 +8,8 @@
 #' @export
 #'
 #' @examples
-#' geneIDs() %>% glimpse()
+#' x <- geneIDs()
+#' glimpse(x)
 geneIDs <- function(version = NULL, dir = ".") {
     file <- .annotationFile(
         pattern = "geneIDs",
