@@ -2,7 +2,7 @@
 #'
 #' @inheritParams params
 #'
-#' @return `tbl_df` grouped by `wormpep` column.
+#' @return `tbl_df`. Grouped by `wormpep` column.
 #' @export
 #'
 #' @examples
