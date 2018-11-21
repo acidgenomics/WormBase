@@ -1,8 +1,6 @@
 #' External Identifiers
 #'
-#' @family REST API Functions
-#'
-#' @inheritParams general
+#' @inheritParams params
 #'
 #' @return `tbl_df`.
 #' @export

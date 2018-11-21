@@ -21,7 +21,3 @@ invisible(capture.output(
 ))
 glimpse(x)
 }
-\seealso{
-Other REST API Functions: \code{\link{geneOntology}}
-}
-\concept{REST API Functions}

@@ -25,10 +25,3 @@ invisible(capture.output(
 ))
 glimpse(x)
 }
-\seealso{
-Other FTP File Functions: \code{\link{blastp}},
-  \code{\link{description}}, \code{\link{geneIDs}},
-  \code{\link{geneOtherIDs}}, \code{\link{oligos}},
-  \code{\link{orthologs}}, \code{\link{peptides}}
-}
-\concept{FTP File Functions}

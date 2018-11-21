@@ -23,10 +23,3 @@ Best BLASTP Hits
 x <- blastp()
 glimpse(x)
 }
-\seealso{
-Other FTP File Functions: \code{\link{description}},
-  \code{\link{geneIDs}}, \code{\link{geneOtherIDs}},
-  \code{\link{oligos}}, \code{\link{orthologs}},
-  \code{\link{peptides}}, \code{\link{rnaiPhenotypes}}
-}
-\concept{FTP File Functions}

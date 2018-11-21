@@ -1,6 +1,6 @@
-#' General Arguments
+#' Parameters
 #'
-#' @name general
+#' @name params
 #' @keywords internal
 #'
 #' @param dir Output directory.

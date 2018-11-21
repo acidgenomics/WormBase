@@ -1,8 +1,6 @@
 #' Peptides
 #'
-#' @family FTP File Functions
-#'
-#' @inheritParams general
+#' @inheritParams params
 #'
 #' @return `tbl_df` grouped by `gene` column.
 #' @export

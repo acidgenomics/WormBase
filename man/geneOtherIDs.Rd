@@ -23,10 +23,3 @@ Other Gene Identifiers
 x <- geneOtherIDs()
 glimpse(x)
 }
-\seealso{
-Other FTP File Functions: \code{\link{blastp}},
-  \code{\link{description}}, \code{\link{geneIDs}},
-  \code{\link{oligos}}, \code{\link{orthologs}},
-  \code{\link{peptides}}, \code{\link{rnaiPhenotypes}}
-}
-\concept{FTP File Functions}

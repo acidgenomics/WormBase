@@ -1,3 +1,17 @@
 authors:
   Michael Steinbaugh:
-    href: https://steinbaugh.com
+    href: https://steinbaugh.com/
+
+reference:
+  - title: FTP files
+    contents:
+    - blastp
+    - description
+    - geneIDs
+    - oligos
+    - orthologs
+    - rnaiPhenotypes
+  - title: REST API
+    contents
+    - externalIDs
+    - geneOntology

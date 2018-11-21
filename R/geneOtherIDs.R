@@ -1,8 +1,6 @@
 #' Other Gene Identifiers
 #'
-#' @family FTP File Functions
-#'
-#' @inheritParams general
+#' @inheritParams params
 #'
 #' @return `tbl_df`.
 #' @export
