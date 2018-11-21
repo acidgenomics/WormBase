@@ -80,6 +80,9 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -102,7 +105,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Parameters</h1>
-    <small class="dont-index">Source: <a href='https://github.com/steinbaugh/wormbase/blob/master/R/general.R'><code>R/general.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/steinbaugh/wormbase/blob/master/R/params.R'><code>R/params.R</code></a></small>
     <div class="hidden name"><code>params.Rd</code></div>
     </div>
 
@@ -118,25 +121,29 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dir</th>
-      <td><p>Output directory.</p></td>
+      <td><p><code>string</code>. Output directory.</p></td>
     </tr>
     <tr>
       <th>file</th>
-      <td><p>Annotation file name.</p></td>
+      <td><p><code>string</code>. Annotation file name.</p></td>
     </tr>
     <tr>
       <th>gene</th>
-      <td><p>Gene identifier.</p></td>
+      <td><p><code>string</code>. Gene identifier.</p></td>
     </tr>
     <tr>
       <th>genes</th>
-      <td><p>Gene identifiers.</p></td>
+      <td><p><code>character</code>. Gene identifiers.</p></td>
+    </tr>
+    <tr>
+      <th>progress</th>
+      <td><p><code>boolean</code>. Show progress using pbapply package.</p></td>
     </tr>
     <tr>
       <th>version</th>
-      <td><p>WormBase version. If <code>NULL</code>, defaults to current production
-release version available on the WormBase website. Legacy versions can
-be specified as a string (e.g. "WS262").</p></td>
+      <td><p><code>string</code> or <code>NULL</code>. WormBase version. If <code>NULL</code> (recommended),
+defaults to current production release version available on the WormBase
+website. Legacy versions can be specified as a <code>string</code> (e.g. "WS262").</p></td>
     </tr>
     </table>
     

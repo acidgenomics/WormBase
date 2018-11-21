@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>wormbase — wormbase-package • wormbase</title>
+<title>Changelog • wormbase</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,10 +32,7 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="wormbase — wormbase-package" />
-
-<meta property="og:description" content="C. elegans genome annotations from WormBase." />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Changelog" />
 
 
 
@@ -52,7 +49,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -104,38 +101,81 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>wormbase</h1>
-    <small class="dont-index">Source: <a href='https://github.com/steinbaugh/wormbase/blob/master/R/package.R'><code>R/package.R</code></a></small>
-    <div class="hidden name"><code>wormbase-package.Rd</code></div>
+      <h1>Changelog <small></small></h1>
+      <small>Source: <a href='https://github.com/steinbaugh/wormbase/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="ref-description">
-    
-    <p><em>C. elegans</em> genome annotations from WormBase.</p>
-    
-    </div>
-
-        
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Useful links:</p><ul>
-<li><p><a href='https://steinbaugh.com/wormbase/'>https://steinbaugh.com/wormbase/</a></p></li>
-<li><p><a href='https://github.com/steinbaugh/wormbase/'>https://github.com/steinbaugh/wormbase/</a></p></li>
-<li><p>Report bugs at <a href='https://github.com/steinbaugh/wormbase/issues/'>https://github.com/steinbaugh/wormbase/issues/</a></p></li>
-</ul></div>
-    
-
+    <div id="wormbase-0-2-4-2018-11-21" class="section level2">
+<h2 class="hasAnchor">
+<a href="#wormbase-0-2-4-2018-11-21" class="anchor"></a>wormbase 0.2.4 (2018-11-21)</h2>
+<ul>
+<li>Maintenance release updating the package to require R 3.5.</li>
+<li>Improved documentation for functions and rebuild pkgdown website.</li>
+<li>Added <code>progress = TRUE</code> option for functions that can take a long time to parse data. Previously, this was always enabled but now can be disabled using this <code>progress = FALSE</code>. Note that <code><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible(capture.output(x))</a></code> also works to suppress progress bars.</li>
+</ul>
+</div>
+    <div id="wormbase-0-2-3-2018-07-21" class="section level2">
+<h2 class="hasAnchor">
+<a href="#wormbase-0-2-3-2018-07-21" class="anchor"></a>wormbase 0.2.3 (2018-07-21)</h2>
+<ul>
+<li>Fixed <code>geneID()</code> function to work with latest WormBase release that now returns an extra biotype column.</li>
+<li>Removed internal parallel <code>mclapply()</code> calls in favor of <code>pblapply()</code> for better compatibility across platforms.</li>
+</ul>
+</div>
+    <div id="wormbase-0-2-2-2018-04-23" class="section level2">
+<h2 class="hasAnchor">
+<a href="#wormbase-0-2-2-2018-04-23" class="anchor"></a>wormbase 0.2.2 (2018-04-23)</h2>
+<ul>
+<li>Broke out assertive imports into separate packages: assertive.properties, assertive.strings, assertive.types.</li>
+<li>Removed TODO comment in <code>description.R</code> file.</li>
+</ul>
+</div>
+    <div id="wormbase-0-2-1-2018-04-18" class="section level2">
+<h2 class="hasAnchor">
+<a href="#wormbase-0-2-1-2018-04-18" class="anchor"></a>wormbase 0.2.1 (2018-04-18)</h2>
+<ul>
+<li>Renamed <code>gene</code> column to <code>geneID</code> where applicable.</li>
+<li>Removed fs package dependency.</li>
+<li>Added progress bars for functions that take a long time to load.</li>
+</ul>
+</div>
+    <div id="wormbase-0-2-0-2018-03-04" class="section level2">
+<h2 class="hasAnchor">
+<a href="#wormbase-0-2-0-2018-03-04" class="anchor"></a>wormbase 0.2.0 (2018-03-04)</h2>
+<ul>
+<li>Renamed package to <code>wormbase</code> from <code>worminfo</code>.</li>
+<li>Simplified core functionality to simply pull genome annotations from the WormBase website into R.</li>
+<li>Previous functionality querying the ENSEMBL, PANTHER, and EggNOG databases will be split out into organism-agnostic packages.</li>
+<li>RNAi clone support is being migrated to the rnaiscreen package.</li>
+</ul>
+</div>
+    <div id="wormbase-0-1-0-2018-02-14" class="section level2">
+<h2 class="hasAnchor">
+<a href="#wormbase-0-1-0-2018-02-14" class="anchor"></a>wormbase 0.1.0 (2018-02-14)</h2>
+<p>(worminfo): Pre-release using internal build annotations from WormBase, ENSEMBL, PANTHER, and EggNOG databases. RNAi clone support for ORFeome (WORFDB), Ahringer, and Ruvkun Lab cherrypick libraries.</p>
+</div>
+    <div id="wormbase-0-0-99-2017-12-06" class="section level2">
+<h2 class="hasAnchor">
+<a href="#wormbase-0-0-99-2017-12-06" class="anchor"></a>wormbase 0.0.99 (2017-12-06)</h2>
+<p>(worminfo): Initial pre-release version.</p>
+</div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#see-also">See also</a></li>
-          </ul>
-
-    <h2>Author</h2>
-    <p><strong>Maintainer</strong>: Michael Steinbaugh <a href='mailto:mike@steinbaugh.com'>mike@steinbaugh.com</a> (0000-0002-2403-2221)</p>
+    <div id="tocnav">
+      <h2>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="#wormbase-0-2-4-2018-11-21">0.2.4</a></li>
+        <li><a href="#wormbase-0-2-3-2018-07-21">0.2.3</a></li>
+        <li><a href="#wormbase-0-2-2-2018-04-23">0.2.2</a></li>
+        <li><a href="#wormbase-0-2-1-2018-04-18">0.2.1</a></li>
+        <li><a href="#wormbase-0-2-0-2018-03-04">0.2.0</a></li>
+        <li><a href="#wormbase-0-1-0-2018-02-14">0.1.0</a></li>
+        <li><a href="#wormbase-0-0-99-2017-12-06">0.0.99</a></li>
+      </ul>
+    </div>
   </div>
+
 </div>
 
       <footer>

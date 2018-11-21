@@ -17,7 +17,7 @@
 #' @importFrom httr content content_type_json GET user_agent
 #' @importFrom magrittr set_colnames set_rownames
 #' @importFrom pbapply pblapply
-#' @importFrom readr read_csv read_delim read_file read_lines read_tsv
+#' @importFrom readr cols read_csv read_delim read_file read_lines read_tsv
 #' @importFrom rlang !! !!! sym syms
 #' @importFrom stats aggregate formula
 #' @importFrom stringr str_extract str_extract_all str_match str_match_all

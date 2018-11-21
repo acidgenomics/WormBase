@@ -80,6 +80,9 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -112,20 +115,24 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>rnaiPhenotypes</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
+    <pre class="usage"><span class='fu'>rnaiPhenotypes</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>version</th>
-      <td><p>WormBase version. If <code>NULL</code>, defaults to current production
-release version available on the WormBase website. Legacy versions can
-be specified as a string (e.g. "WS262").</p></td>
+      <td><p><code>string</code> or <code>NULL</code>. WormBase version. If <code>NULL</code> (recommended),
+defaults to current production release version available on the WormBase
+website. Legacy versions can be specified as a <code>string</code> (e.g. "WS262").</p></td>
     </tr>
     <tr>
       <th>dir</th>
-      <td><p>Output directory.</p></td>
+      <td><p><code>string</code>. Output directory.</p></td>
+    </tr>
+    <tr>
+      <th>progress</th>
+      <td><p><code>boolean</code>. Show progress using pbapply package.</p></td>
     </tr>
     </table>
     
@@ -135,32 +142,7 @@ be specified as a string (e.g. "WS262").</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/invisible'>invisible</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/capture.output'>capture.output</a></span>(
-    <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>rnaiPhenotypes</span>()
-))</div><div class='output co'>#&gt; <span class='message'>Files in directory:</span>
-#&gt; <span class='message'> [1] "anatomy_association.WS267.wb"         </span>
-#&gt; <span class='message'> [2] "anatomy_ontology.WS267.obo"           </span>
-#&gt; <span class='message'> [3] "development_association.WS267.wb"     </span>
-#&gt; <span class='message'> [4] "development_ontology.WS267.obo"       </span>
-#&gt; <span class='message'> [5] "disease_association.WS267.daf.txt"    </span>
-#&gt; <span class='message'> [6] "disease_association.WS267.wb"         </span>
-#&gt; <span class='message'> [7] "disease_ontology.WS267.obo"           </span>
-#&gt; <span class='message'> [8] "gene_association.WS267.wb"            </span>
-#&gt; <span class='message'> [9] "gene_association.WS267.wb.b_malayi"   </span>
-#&gt; <span class='message'>[10] "gene_association.WS267.wb.c_brenneri" </span>
-#&gt; <span class='message'>[11] "gene_association.WS267.wb.c_briggsae" </span>
-#&gt; <span class='message'>[12] "gene_association.WS267.wb.c_elegans"  </span>
-#&gt; <span class='message'>[13] "gene_association.WS267.wb.c_japonica" </span>
-#&gt; <span class='message'>[14] "gene_association.WS267.wb.c_remanei"  </span>
-#&gt; <span class='message'>[15] "gene_association.WS267.wb.o_volvulus" </span>
-#&gt; <span class='message'>[16] "gene_association.WS267.wb.p_pacificus"</span>
-#&gt; <span class='message'>[17] "gene_association.WS267.wb.s_ratti"    </span>
-#&gt; <span class='message'>[18] "gene_association.WS267.wb.t_muris"    </span>
-#&gt; <span class='message'>[19] "gene_ontology.WS267.obo"              </span>
-#&gt; <span class='message'>[20] "phenotype_association.WS267.wb"       </span>
-#&gt; <span class='message'>[21] "phenotype_ontology.WS267.obo"         </span>
-#&gt; <span class='message'>[22] "rnai_phenotypes.WS267.wb"             </span>
-#&gt; <span class='message'>[23] "rnai_phenotypes_quick.WS267.wb"       </span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
+    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>rnaiPhenotypes</span>(<span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from ftp.wormbase.org.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
 #&gt; <span class='message'>[1] "rnai_phenotypes_quick.WS267.wb"</span></div><div class='output co'>#&gt; <span class='message'>Downloading rnai_phenotypes_quick.WS267.wb.gz.</span></div><div class='output co'>#&gt; <span class='message'>Parsed with column specification:</span>
 #&gt; <span class='message'>cols(</span>
 #&gt; <span class='message'>  geneID = col_character(),</span>

@@ -17,6 +17,7 @@ geneIDs <- function(version = NULL, dir = ".") {
     data <- read_csv(
         file = as.character(file),
         col_names = FALSE,
+        col_types = cols(),
         na = "",
         progress = FALSE
     )

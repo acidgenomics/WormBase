@@ -80,6 +80,9 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -112,50 +115,34 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>peptides</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
+    <pre class="usage"><span class='fu'>peptides</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>version</th>
-      <td><p>WormBase version. If <code>NULL</code>, defaults to current production
-release version available on the WormBase website. Legacy versions can
-be specified as a string (e.g. "WS262").</p></td>
+      <td><p><code>string</code> or <code>NULL</code>. WormBase version. If <code>NULL</code> (recommended),
+defaults to current production release version available on the WormBase
+website. Legacy versions can be specified as a <code>string</code> (e.g. "WS262").</p></td>
     </tr>
     <tr>
       <th>dir</th>
-      <td><p>Output directory.</p></td>
+      <td><p><code>string</code>. Output directory.</p></td>
+    </tr>
+    <tr>
+      <th>progress</th>
+      <td><p><code>boolean</code>. Show progress using pbapply package.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>tbl_df</code> grouped by <code>gene</code> column.</p>
+    <p><code>tbl_df</code>. Grouped by <code>gene</code> column.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/invisible'>invisible</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/capture.output'>capture.output</a></span>(
-    <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>peptides</span>()
-))</div><div class='output co'>#&gt; <span class='message'>Files in directory:</span>
-#&gt; <span class='message'> [1] "c_elegans.PRJNA13758.WS267.CDS_transcripts.fa.gz"        </span>
-#&gt; <span class='message'> [2] "c_elegans.PRJNA13758.WS267.annotations.gff2.gz"          </span>
-#&gt; <span class='message'> [3] "c_elegans.PRJNA13758.WS267.annotations.gff3.gz"          </span>
-#&gt; <span class='message'> [4] "c_elegans.PRJNA13758.WS267.assembly.agp.gz"              </span>
-#&gt; <span class='message'> [5] "c_elegans.PRJNA13758.WS267.best_blastp_hits.txt.gz"      </span>
-#&gt; <span class='message'> [6] "c_elegans.PRJNA13758.WS267.canonical_geneset.gtf.gz"     </span>
-#&gt; <span class='message'> [7] "c_elegans.PRJNA13758.WS267.ests.fa.gz"                   </span>
-#&gt; <span class='message'> [8] "c_elegans.PRJNA13758.WS267.genomic.fa.gz"                </span>
-#&gt; <span class='message'> [9] "c_elegans.PRJNA13758.WS267.genomic_masked.fa.gz"         </span>
-#&gt; <span class='message'>[10] "c_elegans.PRJNA13758.WS267.genomic_softmasked.fa.gz"     </span>
-#&gt; <span class='message'>[11] "c_elegans.PRJNA13758.WS267.intergenic_sequences.fa.gz"   </span>
-#&gt; <span class='message'>[12] "c_elegans.PRJNA13758.WS267.mRNA_transcripts.fa.gz"       </span>
-#&gt; <span class='message'>[13] "c_elegans.PRJNA13758.WS267.ncRNA_transcripts.fa.gz"      </span>
-#&gt; <span class='message'>[14] "c_elegans.PRJNA13758.WS267.protein.fa.gz"                </span>
-#&gt; <span class='message'>[15] "c_elegans.PRJNA13758.WS267.pseudogenic_transcripts.fa.gz"</span>
-#&gt; <span class='message'>[16] "c_elegans.PRJNA13758.WS267.transposon_transcripts.fa.gz" </span>
-#&gt; <span class='message'>[17] "c_elegans.PRJNA13758.WS267.transposons.fa.gz"            </span>
-#&gt; <span class='message'>[18] "c_elegans.PRJNA13758.WS267.wormpep_package.tar.gz"       </span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
+    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>peptides</span>(<span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from ftp.wormbase.org.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
 #&gt; <span class='message'>[1] "c_elegans.PRJNA13758.WS267.wormpep_package.tar.gz"</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS267.wormpep_package.tar.gz.</span></div><div class='input'><span class='fu'>glimpse</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Observations: 28,378
 #&gt; Variables: 8
 #&gt; $ geneID   &lt;chr&gt; "WBGene00000001", "WBGene00000002", "WBGene00000003", "WBG...
