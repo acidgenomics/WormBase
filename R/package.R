@@ -1,6 +1,6 @@
 #' wormbase
 #'
-#' *C. elegans* genome annotations from WormBase.
+#' Fetch *Caenorhabditis elegans* genome annotations from WormBase.
 #'
 #' @keywords internal
 #'

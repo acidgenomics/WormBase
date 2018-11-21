@@ -6,7 +6,7 @@
 \alias{wormbase-package}
 \title{wormbase}
 \description{
-\emph{C. elegans} genome annotations from WormBase.
+Fetch \emph{Caenorhabditis elegans} genome annotations from WormBase.
 }
 \seealso{
 Useful links:
