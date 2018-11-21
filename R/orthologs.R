@@ -6,11 +6,19 @@
 #' @export
 #'
 #' @examples
-#' invisible(capture.output(
-#'     x <- orthologs()
-#' ))
+#' x <- orthologs(progress = FALSE)
 #' glimpse(x)
-orthologs <- function(version = NULL, dir = ".") {
+orthologs <- function(
+    version = NULL,
+    dir = ".",
+    progress = TRUE
+) {
+    assert_is_a_bool(progress)
+    # Allow the user to disable progress bar.
+    if (!isTRUE(progress)) {
+        pblapply <- lapply
+    }
+
     file <- .annotationFile(
         pattern = "orthologs",
         version = version,
@@ -21,7 +29,7 @@ orthologs <- function(version = NULL, dir = ".") {
         progress = FALSE
     )
 
-    # Remove the comment lines
+    # Remove the comment lines.
     lines <- lines[!grepl("^#", lines)]
 
     lines <- lines %>%
@@ -31,7 +39,7 @@ orthologs <- function(version = NULL, dir = ".") {
         unlist() %>%
         gsub("^ ", "", .)
 
-    # Drop any lines that don't contain a gene identifier
+    # Drop any lines that don't contain a gene identifier.
     lines <- lines %>%
         .[grepl(paste0("^", genePattern), .)]
 

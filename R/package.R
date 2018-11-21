@@ -9,7 +9,7 @@
 #' @importFrom assertive.strings assert_all_are_matching_regex
 #' @importFrom assertive.types assert_is_a_string
 #' @importFrom assertive.types assert_is_character
-#' @importFrom assertive.types is_a_string
+#' @importFrom assertive.types assert_is_a_bool is_a_string
 #' @importFrom basejump camel fixNA initializeDirectory removeNA toStringUnique
 #'   transmit
 #' @importFrom goalie assertIsStringOrNULL
@@ -25,3 +25,5 @@
 #' @importFrom tibble as_tibble
 #' @importFrom utils globalVariables untar
 "_PACKAGE"
+
+# Use `sanitizeNA()` instead of `fixNA()` once basejump v0.8 is released.

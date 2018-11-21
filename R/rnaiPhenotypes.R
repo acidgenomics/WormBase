@@ -6,11 +6,18 @@
 #' @export
 #'
 #' @examples
-#' invisible(capture.output(
-#'     x <- rnaiPhenotypes()
-#' ))
+#' x <- rnaiPhenotypes(progress = FALSE)
 #' glimpse(x)
-rnaiPhenotypes <- function(version = NULL, dir = ".") {
+rnaiPhenotypes <- function(
+    version = NULL,
+    dir = ".",
+    progress = FALSE
+) {
+    assert_is_a_bool(progress)
+    # Allow the user to disable progress bar.
+    if (!isTRUE(progress)) {
+        pblapply <- lapply
+    }
     file <- .transmit(
         subdir = "ONTOLOGY",
         pattern = "rnai_phenotypes_quick",
@@ -22,7 +29,7 @@ rnaiPhenotypes <- function(version = NULL, dir = ".") {
         file = as.character(file),
         col_names = c("geneID", "sequence", "rnaiPhenotypes")
     )
-    # Use `sequence` from `geneID()` return
+    # Use `sequence` from `geneID()` return.
     data[["sequence"]] <- NULL
     list <- pblapply(
         X = strsplit(data[["rnaiPhenotypes"]], ", "),
