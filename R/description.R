@@ -6,25 +6,33 @@
 #' @export
 #'
 #' @examples
-#' invisible(capture.output(
-#'     x <- description()
-#' ))
+#' x <- description(progress = FALSE)
 #' glimpse(x)
-description <- function(version = NULL, dir = ".") {
+description <- function(
+    version = NULL,
+    dir = ".",
+    progress = TRUE
+) {
+    assert_is_a_bool(progress)
+    # Allow the user to disable progress bar.
+    if (!isTRUE(progress)) {
+        pblapply <- lapply
+    }
+
     file <- .annotationFile(
         pattern = "functional_descriptions",
         version = version,
         dir = dir
     )
 
-    # The first 3 lines contain comments
+    # The first 3 lines contain comments.
     lines <- read_lines(
         file = as.character(file),
         skip = 3L,
         progress = FALSE
     )
 
-    # Genes are separated by a line containing `=`
+    # Genes are separated by a line containing `=`.
     lines <- gsub("^=$", "\\|\\|", lines)
 
     # Add a tab delimiter before our keys of interest:
@@ -42,13 +50,13 @@ description <- function(version = NULL, dir = ".") {
         x = lines
     )
 
-    # Now collapse to a single line and split by the gene separator (`||`)
+    # Now collapse to a single line and split by the gene separator (`||`).
     lines <- lines %>%
         paste(collapse = " ") %>%
         strsplit("\\|\\|") %>%
         unlist()
 
-    # Clean up spaces and tabs
+    # Clean up spaces and tabs.
     lines <- lines %>%
         gsub("  ", " ", .) %>%
         gsub("^ ", "", .) %>%
@@ -56,10 +64,10 @@ description <- function(version = NULL, dir = ".") {
         gsub(" \t", "\t", .) %>%
         gsub("\t ", "\t", .)
 
-    # Now split by the tab delimiters
+    # Now split by the tab delimiters.
     lines <- strsplit(lines, "\t")
 
-    # Make this call parallel
+    # Make this call parallel.
     dflist <- pblapply(lines, function(x) {
         keyPattern <- "^([A-Za-z[:space:]]+)\\:"
         names <- str_match(x, keyPattern)[, 2L]
@@ -69,7 +77,7 @@ description <- function(version = NULL, dir = ".") {
         x <- gsub(paste0(keyPattern, " "), "", x)
         names(x) <- names
         tbl <- as_tibble(t(x))
-        # Ensure the user uses the values from `geneIDs()` instead
+        # Ensure the user uses the values from `geneIDs()` instead.
         tbl[["geneName"]] <- NULL
         tbl[["sequence"]] <- NULL
         tbl

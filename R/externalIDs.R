@@ -6,12 +6,19 @@
 #' @export
 #'
 #' @examples
-#' invisible(capture.output(
-#'     x <- externalIDs(c("WBGene00000912", "WBGene00004804"))
-#' ))
+#' x <- externalIDs(
+#'     genes = c("WBGene00000912", "WBGene00004804"),
+#'     progress = FALSE
+#' )
 #' glimpse(x)
-externalIDs <- function(genes) {
+externalIDs <- function(genes, progress = TRUE) {
     .assertAllAreGenes(genes)
+    assert_is_a_bool(progress)
+    # Allow the user to disable progress bar.
+    if (!isTRUE(progress)) {
+        pblapply <- lapply
+    }
+
     list <- lapply(genes, function(gene) {
         query <- paste(
             "widget",
