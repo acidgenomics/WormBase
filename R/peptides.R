@@ -44,11 +44,11 @@ peptides <- function(
         keyPairs <- str_match_all(line, keyPattern) %>%
             .[[1L]] %>%
             # Remove any escaped quotes.
-            gsub('"', '', .)
+            gsub("\"", "", .)
         x <- c(keyPairs[, 3L])
         names(x) <- keyPairs[, 2L]
         sequence <- str_match(line, "^>([A-Za-z0-9\\.]+)") %>%
-            .[[2]]
+            .[[2L]]
         c(sequence = sequence, x) %>%
             t() %>%
             as_tibble()

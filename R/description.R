@@ -71,7 +71,7 @@ description <- function(
     dflist <- pblapply(lines, function(x) {
         keyPattern <- "^([A-Za-z[:space:]]+)\\:"
         names <- str_match(x, keyPattern)[, 2L]
-        names[1:3] <- c("geneID", "geneName", "sequence")
+        names[1L:3L] <- c("geneID", "geneName", "sequence")
         names <- make.names(names)
         # Now remove the keys
         x <- gsub(paste0(keyPattern, " "), "", x)
