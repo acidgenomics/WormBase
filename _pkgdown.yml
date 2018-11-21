@@ -8,10 +8,12 @@ reference:
     - blastp
     - description
     - geneIDs
+    - geneOtherIDs
     - oligos
     - orthologs
+    - peptides
     - rnaiPhenotypes
   - title: REST API
-    contents
+    contents:
     - externalIDs
     - geneOntology
