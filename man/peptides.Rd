@@ -4,24 +4,24 @@
 \alias{peptides}
 \title{Peptides}
 \usage{
-peptides(version = NULL, dir = ".")
+peptides(version = NULL, dir = ".", progress = TRUE)
 }
 \arguments{
-\item{version}{WormBase version. If \code{NULL}, defaults to current production
-release version available on the WormBase website. Legacy versions can
-be specified as a string (e.g. "WS262").}
+\item{version}{\code{string} or \code{NULL}. WormBase version. If \code{NULL} (recommended),
+defaults to current production release version available on the WormBase
+website. Legacy versions can be specified as a \code{string} (e.g. "WS262").}
 
-\item{dir}{Output directory.}
+\item{dir}{\code{string}. Output directory.}
+
+\item{progress}{\code{boolean}. Show progress using pbapply package.}
 }
 \value{
-\code{tbl_df} grouped by \code{gene} column.
+\code{tbl_df}. Grouped by \code{gene} column.
 }
 \description{
 Peptides
 }
 \examples{
-invisible(capture.output(
-    x <- peptides()
-))
+x <- peptides(progress = FALSE)
 glimpse(x)
 }

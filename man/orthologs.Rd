@@ -4,14 +4,16 @@
 \alias{orthologs}
 \title{Orthologs}
 \usage{
-orthologs(version = NULL, dir = ".")
+orthologs(version = NULL, dir = ".", progress = TRUE)
 }
 \arguments{
-\item{version}{WormBase version. If \code{NULL}, defaults to current production
-release version available on the WormBase website. Legacy versions can
-be specified as a string (e.g. "WS262").}
+\item{version}{\code{string} or \code{NULL}. WormBase version. If \code{NULL} (recommended),
+defaults to current production release version available on the WormBase
+website. Legacy versions can be specified as a \code{string} (e.g. "WS262").}
 
-\item{dir}{Output directory.}
+\item{dir}{\code{string}. Output directory.}
+
+\item{progress}{\code{boolean}. Show progress using pbapply package.}
 }
 \value{
 \code{tbl_df}.
@@ -20,8 +22,6 @@ be specified as a string (e.g. "WS262").}
 Orthologs
 }
 \examples{
-invisible(capture.output(
-    x <- orthologs()
-))
+x <- orthologs(progress = FALSE)
 glimpse(x)
 }
