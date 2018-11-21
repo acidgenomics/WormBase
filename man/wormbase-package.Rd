@@ -11,9 +11,9 @@
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://steinbaugh.com/wormbase}
-  \item \url{https://github.com/steinbaugh/wormbase}
-  \item Report bugs at \url{https://github.com/steinbaugh/wormbase/issues}
+  \item \url{https://steinbaugh.com/wormbase/}
+  \item \url{https://github.com/steinbaugh/wormbase/}
+  \item Report bugs at \url{https://github.com/steinbaugh/wormbase/issues/}
 }
 
 }

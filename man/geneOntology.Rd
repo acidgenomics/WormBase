@@ -24,3 +24,4 @@ glimpse(x)
 \seealso{
 Other REST API Functions: \code{\link{externalIDs}}
 }
+\concept{REST API Functions}

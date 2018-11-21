@@ -31,3 +31,4 @@ Other FTP File Functions: \code{\link{blastp}},
   \code{\link{geneOtherIDs}}, \code{\link{oligos}},
   \code{\link{orthologs}}, \code{\link{rnaiPhenotypes}}
 }
+\concept{FTP File Functions}

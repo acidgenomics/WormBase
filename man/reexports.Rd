@@ -4,13 +4,9 @@
 \name{reexports}
 \alias{reexports}
 \alias{markdownList}
-\alias{reexports}
 \alias{microplate}
-\alias{reexports}
 \alias{\%>\%}
-\alias{reexports}
 \alias{glimpse}
-\alias{reexports}
 \alias{tibble}
 \title{Objects exported from other packages}
 \keyword{internal}
