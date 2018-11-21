@@ -1,29 +1,35 @@
 #' Peptides
 #'
-#' @family FTP File Functions
+#' @inheritParams params
 #'
-#' @inheritParams general
-#'
-#' @return `tbl_df` grouped by `gene` column.
+#' @return `tbl_df`. Grouped by `gene` column.
 #' @export
 #'
 #' @examples
-#' invisible(capture.output(
-#'     x <- peptides()
-#' ))
+#' x <- peptides(progress = FALSE)
 #' glimpse(x)
-peptides <- function(version = NULL, dir = ".") {
+peptides <- function(
+    version = NULL,
+    dir = ".",
+    progress = TRUE
+) {
+    assert_is_a_bool(progress)
+    # Allow the user to disable progress bar.
+    if (!isTRUE(progress)) {
+        pblapply <- lapply
+    }
+
     file <- .assemblyFile(
         pattern = "wormpep_package",
         version = version,
         dir = dir
     )
 
-    # Grep the verion number
+    # Grep the verion number.
     versionNumber <- str_extract(file, "WS\\d{3}") %>%
         gsub("^WS", "", .)
 
-    # Extract the individual table
+    # Extract the individual table.
     wormpepTable <- paste0("wormpep.table", versionNumber)
     untar(
         tarfile = file,
@@ -33,16 +39,16 @@ peptides <- function(version = NULL, dir = ".") {
 
     lines <- read_lines(file.path(dir, wormpepTable), progress = FALSE)
     dflist <- pblapply(lines, function(line) {
-        # Attempt to match quoted values first (e.g. product)
+        # Attempt to match quoted values first (e.g. product).
         keyPattern <- "([a-z]+)=(\"[^\"]+\"|[^\\s]+)"
         keyPairs <- str_match_all(line, keyPattern) %>%
             .[[1L]] %>%
-            # Remove any escaped quotes
-            gsub('"', '', .)
+            # Remove any escaped quotes.
+            gsub("\"", "", .)
         x <- c(keyPairs[, 3L])
         names(x) <- keyPairs[, 2L]
         sequence <- str_match(line, "^>([A-Za-z0-9\\.]+)") %>%
-            .[[2]]
+            .[[2L]]
         c(sequence = sequence, x) %>%
             t() %>%
             as_tibble()

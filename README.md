@@ -5,8 +5,7 @@
 [![Codecov](https://codecov.io/gh/steinbaugh/wormbase/branch/master/graph/badge.svg)](https://codecov.io/gh/steinbaugh/wormbase)
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 
-*C. elegans* genome annotations from [WormBase][].
-
+Fetch *Caenorhabditis elegans* genome annotations from [WormBase][].
 
 ## Installation
 
@@ -14,14 +13,17 @@ This is an [R][] package.
 
 ### [Bioconductor][] method
 
+We recommend installing the package with [BiocManager][].
+
 ```r
-source("https://bioconductor.org/biocLite.R")
-biocLite("devtools")
-biocLite("steinbaugh/wormbase")
+if (!require("BiocManager")) {
+    install.packages("BiocManager")
+}
+BiocManager::install("remotes")
+BiocManager::install("steinbaugh/wormbase")
 ```
 
-
-[Bioconductor]: https://bioconductor.org
-[devtools]: https://cran.r-project.org/package=devtools
-[R]: https://www.r-project.org
-[WormBase]: http://www.wormbase.org
+[BiocManager]: https://cran.r-project.org/package=BiocManager
+[Bioconductor]: https://bioconductor.org/
+[R]: https://www.r-project.org/
+[WormBase]: http://www.wormbase.org/

@@ -4,10 +4,12 @@
 \alias{externalIDs}
 \title{External Identifiers}
 \usage{
-externalIDs(genes)
+externalIDs(genes, progress = TRUE)
 }
 \arguments{
-\item{genes}{Gene identifiers.}
+\item{genes}{\code{character}. Gene identifiers.}
+
+\item{progress}{\code{boolean}. Show progress using pbapply package.}
 }
 \value{
 \code{tbl_df}.
@@ -16,11 +18,9 @@ externalIDs(genes)
 External Identifiers
 }
 \examples{
-invisible(capture.output(
-    x <- externalIDs(c("WBGene00000912", "WBGene00004804"))
-))
+x <- externalIDs(
+    genes = c("WBGene00000912", "WBGene00004804"),
+    progress = FALSE
+)
 glimpse(x)
-}
-\seealso{
-Other REST API Functions: \code{\link{geneOntology}}
 }

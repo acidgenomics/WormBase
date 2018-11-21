@@ -1,8 +1,6 @@
 #' Gene Identifiers
 #'
-#' @family FTP File Functions
-#'
-#' @inheritParams general
+#' @inheritParams params
 #'
 #' @return `tbl_df`.
 #' @export
@@ -19,6 +17,7 @@ geneIDs <- function(version = NULL, dir = ".") {
     data <- read_csv(
         file = as.character(file),
         col_names = FALSE,
+        col_types = cols(),
         na = "",
         progress = FALSE
     )

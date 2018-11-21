@@ -1,9 +1,11 @@
 ^.*\.Rproj$
 ^.*\.gz$
 ^.*\.yml$
+^CONTRIBUTING\.md$
 ^NEWS\.md$
 ^\.Rproj\.user$
 ^\.lintr$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^wormpep\.*$

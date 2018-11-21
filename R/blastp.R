@@ -1,10 +1,8 @@
 #' Best BLASTP Hits
 #'
-#' @family FTP File Functions
+#' @inheritParams params
 #'
-#' @inheritParams general
-#'
-#' @return `tbl_df` grouped by `wormpep` column.
+#' @return `tbl_df`. Grouped by `wormpep` column.
 #' @export
 #'
 #' @examples
@@ -19,6 +17,7 @@ blastp <- function(version = NULL, dir = ".") {
     read_csv(
         file = as.character(file),
         col_names = FALSE,
+        col_types = cols(),
         progress = FALSE
     ) %>%
         .[, c(1L, 4L, 5L)] %>%

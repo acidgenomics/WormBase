@@ -4,10 +4,12 @@
 \alias{geneOntology}
 \title{Gene Ontology}
 \usage{
-geneOntology(genes)
+geneOntology(genes, progress = TRUE)
 }
 \arguments{
-\item{genes}{Gene identifiers.}
+\item{genes}{\code{character}. Gene identifiers.}
+
+\item{progress}{\code{boolean}. Show progress using pbapply package.}
 }
 \value{
 \code{tbl_df}.
@@ -16,11 +18,9 @@ geneOntology(genes)
 Gene Ontology
 }
 \examples{
-invisible(capture.output(
-    x <- geneOntology(c("WBGene00000912", "WBGene00004804"))
-))
+x <- geneOntology(
+    genes = c("WBGene00000912", "WBGene00004804"),
+    progress = FALSE
+)
 glimpse(x)
-}
-\seealso{
-Other REST API Functions: \code{\link{externalIDs}}
 }

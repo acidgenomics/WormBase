@@ -7,11 +7,11 @@
 oligos(version = NULL, dir = ".")
 }
 \arguments{
-\item{version}{WormBase version. If \code{NULL}, defaults to current production
-release version available on the WormBase website. Legacy versions can
-be specified as a string (e.g. "WS262").}
+\item{version}{\code{string} or \code{NULL}. WormBase version. If \code{NULL} (recommended),
+defaults to current production release version available on the WormBase
+website. Legacy versions can be specified as a \code{string} (e.g. "WS262").}
 
-\item{dir}{Output directory.}
+\item{dir}{\code{string}. Output directory.}
 }
 \value{
 \code{tbl_df}.
@@ -22,10 +22,4 @@ PCR Oligo Sequences
 \examples{
 x <- oligos()
 glimpse(x)
-}
-\seealso{
-Other FTP File Functions: \code{\link{blastp}},
-  \code{\link{description}}, \code{\link{geneIDs}},
-  \code{\link{geneOtherIDs}}, \code{\link{orthologs}},
-  \code{\link{peptides}}, \code{\link{rnaiPhenotypes}}
 }

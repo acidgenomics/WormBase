@@ -1,18 +1,22 @@
 #' Gene Ontology
 #'
-#' @family REST API Functions
-#'
-#' @inheritParams general
+#' @inheritParams params
 #'
 #' @return `tbl_df`.
 #' @export
 #'
 #' @examples
-#' invisible(capture.output(
-#'     x <- geneOntology(c("WBGene00000912", "WBGene00004804"))
-#' ))
+#' x <- geneOntology(
+#'     genes = c("WBGene00000912", "WBGene00004804"),
+#'     progress = FALSE
+#' )
 #' glimpse(x)
-geneOntology <- function(genes) {
+geneOntology <- function(genes, progress = TRUE) {
+    assert_is_a_bool(progress)
+    # Allow the user to disable progress bar.
+    if (!isTRUE(progress)) {
+        pblapply <- lapply
+    }
     .assertAllAreGenes(genes)
     list <- lapply(genes, function(gene) {
         query <- paste(
