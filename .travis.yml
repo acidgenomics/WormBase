@@ -33,7 +33,6 @@ r_packages:
   - covr
 bioc_packages:
   - BiocCheck
-  - GenomeInfoDbData
 r_github_packages:
   - jimhester/lintr
 
