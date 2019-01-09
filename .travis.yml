@@ -6,14 +6,14 @@ cache: packages
 
 matrix:
   include:
+  - os: linux
+    r: bioc-release
+    warnings_are_errors: true
   - os: osx
     r: bioc-release
     fortran: false
     latex: false
     warnings_are_errors: false
-  - os: linux
-    r: bioc-release
-    warnings_are_errors: true
   fast_finish: true
 
 env:
