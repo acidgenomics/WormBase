@@ -14,7 +14,10 @@ matrix:
     fortran: false
     latex: false
     warnings_are_errors: false
-  fast_finish: true
+
+branches:
+  only:
+  - master
 
 env:
   global:
