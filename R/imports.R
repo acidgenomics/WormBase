@@ -6,7 +6,8 @@
 #' @importFrom assertive.types assert_is_a_bool is_a_string
 #' @importFrom basejump camel initializeDirectory removeNA sanitizeNA
 #'   toStringUnique transmit
-#' @importFrom goalie assert
+#' @importFrom goalie allAreMatchingRegex assert hasNoDuplicates isCharacter
+#'   isFlag
 #' @importFrom dplyr arrange bind_rows everything group_by mutate rename select
 #' @importFrom httr content content_type_json GET user_agent
 #' @importFrom magrittr set_colnames set_rownames
