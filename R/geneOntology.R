@@ -6,18 +6,22 @@
 #' @export
 #'
 #' @examples
-#' x <- geneOntology(
-#'     genes = c("WBGene00000912", "WBGene00004804"),
-#'     progress = FALSE
-#' )
+#' x <- geneOntology(c("WBGene00000912", "WBGene00004804"))
 #' glimpse(x)
-geneOntology <- function(genes, progress = TRUE) {
-    assert_is_a_bool(progress)
-    # Allow the user to disable progress bar.
-    if (!isTRUE(progress)) {
+geneOntology <- function(genes, progress = FALSE) {
+    assert(
+        .allAreGenes(genes),
+        isFlag(progress)
+    )
+
+    # Progress bar.
+    if (isTRUE(progress)) {
+        requireNamespace("pbapply")
+        pblapply <- pbapply::pblapply
+    } else {
         pblapply <- lapply
     }
-    .assertAllAreGenes(genes)
+
     list <- lapply(genes, function(gene) {
         query <- paste(
             "widget",

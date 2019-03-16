@@ -6,16 +6,19 @@
 #' @export
 #'
 #' @examples
-#' x <- externalIDs(
-#'     genes = c("WBGene00000912", "WBGene00004804"),
-#'     progress = FALSE
-#' )
+#' x <- externalIDs(c("WBGene00000912", "WBGene00004804"))
 #' glimpse(x)
-externalIDs <- function(genes, progress = TRUE) {
-    .assertAllAreGenes(genes)
-    assert_is_a_bool(progress)
-    # Allow the user to disable progress bar.
-    if (!isTRUE(progress)) {
+externalIDs <- function(genes, progress = FALSE) {
+    assert(
+        .allAreGenes(genes),
+        isFlag(progress)
+    )
+
+    # Progress bar.
+    if (isTRUE(progress)) {
+        requireNamespace("pbapply")
+        pblapply <- pbapply::pblapply
+    } else {
         pblapply <- lapply
     }
 
