@@ -86,6 +86,6 @@ description <- function(
     dflist %>%
         bind_rows() %>%
         camel() %>%
-        fixNA() %>%
+        sanitizeNA() %>%
         removeNA()
 }
