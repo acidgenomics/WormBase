@@ -1,4 +1,4 @@
-#' Gene Functional Descriptions
+#' Gene functional descriptions
 #'
 #' @inheritParams params
 #'
@@ -6,16 +6,20 @@
 #' @export
 #'
 #' @examples
-#' x <- description(progress = FALSE)
+#' x <- description()
 #' glimpse(x)
 description <- function(
     version = NULL,
     dir = ".",
-    progress = TRUE
+    progress = FALSE
 ) {
-    assert_is_a_bool(progress)
-    # Allow the user to disable progress bar.
-    if (!isTRUE(progress)) {
+    assert(isFlag(progress))
+
+    # Progress bar.
+    if (isTRUE(progress)) {
+        requireNamespace("pbapply")
+        pblapply <- pbapply::pblapply
+    } else {
         pblapply <- lapply
     }
 
@@ -68,6 +72,7 @@ description <- function(
     lines <- strsplit(lines, "\t")
 
     # Make this call parallel.
+    message("Processing functional descriptions file.")
     dflist <- pblapply(lines, function(x) {
         keyPattern <- "^([A-Za-z[:space:]]+)\\:"
         names <- str_match(x, keyPattern)[, 2L]
