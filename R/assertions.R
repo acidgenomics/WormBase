@@ -17,6 +17,8 @@
 
 
 .isVersion <- function(x) {
+    if (is.null(x)) return(TRUE)
+
     ok <- isString(x)
     if (!isTRUE(x)) return(FALSE)
 
