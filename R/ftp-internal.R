@@ -33,8 +33,11 @@
     dir = ".",
     ...
 ) {
-    assert_is_a_string(subdir)
-    .assertFormalVersion(version)
+    assert(
+        isString(subdir),
+        .isVersion(version),
+        isString(dir)
+    )
 
     # Prepare remote directory path for transmit call
     if (is.null(version)) {
@@ -50,11 +53,7 @@
     )
     remoteDir <- paste(releaseDir, subdir, sep = "/")
 
-    file <- transmit(
-        remoteDir = remoteDir,
-        localDir = dir,
-        ...
-    )
+    file <- transmit(remoteDir = remoteDir, localDir = dir, ...)
 
     # Check for single file match
     assert_is_of_length(file, 1L)

@@ -1,24 +1,27 @@
-.assertAllAreGenes <- function(x) {
-    assert_is_character(x)
-    assert_all_are_matching_regex(
+.allAreGenes <- function(x) {
+    ok <- isCharacter(x)
+    if (!isTRUE(ok)) return(FALSE)
+
+    ok <- allAreMatchingRegex(
         x = x,
         pattern = paste0("^", genePattern, "$")
     )
-    assert_has_no_duplicates(x)
+    if (!isTRUE(ok)) return(FALSE)
+
+    ok <- hasNoDuplicates(x)
+    if (!isTRUE(ok)) return(FALSE)
+
+    TRUE
 }
 
 
 
-.assertFormalVersion <- function(x) {
-    assertIsStringOrNULL(x)
-    if (is_a_string(x)) {
-        .assertIsVersion(x)
-    }
-}
+.isVersion <- function(x) {
+    ok <- isString(x)
+    if (!isTRUE(x)) return(FALSE)
 
+    ok <- allAreMatchingRegex(x, pattern = versionPattern)
+    if (!isTRUE(x)) return(FALSE)
 
-
-.assertIsVersion <- function(x) {
-    assert_is_a_string(x)
-    assert_all_are_matching_regex(x, versionPattern)
+    TRUE
 }
