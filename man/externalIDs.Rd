@@ -4,7 +4,7 @@
 \alias{externalIDs}
 \title{External Identifiers}
 \usage{
-externalIDs(genes, progress = TRUE)
+externalIDs(genes, progress = FALSE)
 }
 \arguments{
 \item{genes}{\code{character}. Gene identifiers.}
@@ -18,9 +18,6 @@ externalIDs(genes, progress = TRUE)
 External Identifiers
 }
 \examples{
-x <- externalIDs(
-    genes = c("WBGene00000912", "WBGene00004804"),
-    progress = FALSE
-)
+x <- externalIDs(c("WBGene00000912", "WBGene00004804"))
 glimpse(x)
 }

@@ -4,7 +4,7 @@
 \alias{geneOntology}
 \title{Gene Ontology}
 \usage{
-geneOntology(genes, progress = TRUE)
+geneOntology(genes, progress = FALSE)
 }
 \arguments{
 \item{genes}{\code{character}. Gene identifiers.}
@@ -18,9 +18,6 @@ geneOntology(genes, progress = TRUE)
 Gene Ontology
 }
 \examples{
-x <- geneOntology(
-    genes = c("WBGene00000912", "WBGene00004804"),
-    progress = FALSE
-)
+x <- geneOntology(c("WBGene00000912", "WBGene00004804"))
 glimpse(x)
 }
