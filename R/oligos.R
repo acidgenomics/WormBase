@@ -14,7 +14,7 @@ oligos <- function(version = NULL, dir = ".") {
         version = version,
         dir = dir
     )
-    # `pcr_product2gene.txt` file is malformed.
+    # `pcr_product2gene.txt` file is malformed and may produce warnings.
     suppressWarnings(
         data <- read_tsv(
             file = unname(file),
