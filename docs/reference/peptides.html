@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wormbase</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -115,24 +115,27 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>peptides</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>peptides</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>version</th>
-      <td><p><code>string</code> or <code>NULL</code>. WormBase version. If <code>NULL</code> (recommended),
-defaults to current production release version available on the WormBase
-website. Legacy versions can be specified as a <code>string</code> (e.g. "WS262").</p></td>
+      <td><p><code><a href='https://www.rdocumentation.org/packages/base/topics/character'>character(1)</a></code> or <code>NULL</code>.
+WormBase version. If <code>NULL</code> (recommended), defaults to current production
+release version available on the WormBase website. Legacy versions can be
+specified as a character string (e.g. "WS262").</p></td>
     </tr>
     <tr>
       <th>dir</th>
-      <td><p><code>string</code>. Output directory.</p></td>
+      <td><p><code><a href='https://www.rdocumentation.org/packages/base/topics/character'>character(1)</a></code>.
+Output directory.</p></td>
     </tr>
     <tr>
       <th>progress</th>
-      <td><p><code>boolean</code>. Show progress using pbapply package.</p></td>
+      <td><p><code><a href='https://www.rdocumentation.org/packages/base/topics/logical'>logical(1)</a></code>.
+Show progress using pbapply package.</p></td>
     </tr>
     </table>
     
@@ -143,16 +146,17 @@ website. Legacy versions can be specified as a <code>string</code> (e.g. "WS262"
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>peptides</span>(<span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from ftp.wormbase.org.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
-#&gt; <span class='message'>[1] "c_elegans.PRJNA13758.WS267.wormpep_package.tar.gz"</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS267.wormpep_package.tar.gz.</span></div><div class='input'><span class='fu'>glimpse</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Observations: 28,378
+#&gt; <span class='message'>c_elegans.PRJNA13758.WS269.wormpep_package.tar.gz</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS269.wormpep_package.tar.gz.</span></div><div class='input'><span class='fu'>glimpse</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Observations: 28,420
 #&gt; Variables: 8
-#&gt; $ geneID   &lt;chr&gt; "WBGene00000001", "WBGene00000002", "WBGene00000003", "WBG...
-#&gt; $ sequence &lt;chr&gt; "Y110A7A.10", "F27C8.1", "F07C3.7", "F52H2.2a", "F52H2.2b"...
-#&gt; $ wormpep  &lt;chr&gt; "CE23248", "CE03266", "CE32853", "CE28440", "CE50751", "CE...
-#&gt; $ status   &lt;chr&gt; "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Parti...
-#&gt; $ uniprot  &lt;chr&gt; "G5EDP9", "Q19834", "Q19151", "O17395", "A0A0K3AVL7", "Q7Y...
-#&gt; $ insdc    &lt;chr&gt; "CCD66201.1", "CAA92459.1", "CCD68934.1", "CCD71657.1", "C...
-#&gt; $ locus    &lt;chr&gt; "aap-1", "aat-1", "aat-2", "aat-3", "aat-3", "aat-4", "aat...
-#&gt; $ product  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "Antib...</div></pre>
+#&gt; Groups: geneID [20,191]
+#&gt; $ geneID   <span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "WBGene00000001", "WBGene00000002", "WBGene00000003", "WBGen…
+#&gt; $ sequence </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "Y110A7A.10", "F27C8.1", "F07C3.7", "F52H2.2a", "F52H2.2b", …
+#&gt; $ wormpep  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "CE23248", "CE03266", "CE32853", "CE28440", "CE50751", "CE35…
+#&gt; $ status   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "Predicted", "Predicted", "Predicted", "Predicted", "Predict…
+#&gt; $ uniprot  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "G5EDP9", "Q19834", "Q19151", "O17395", "A0A0K3AVL7", "Q7YXH…
+#&gt; $ insdc    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "CCD66201.1", "CAA92459.1", "CCD68934.1", "CCD71657.1", "CTQ…
+#&gt; $ locus    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "aap-1", "aat-1", "aat-2", "aat-3", "aat-3", "aat-4", "aat-5…
+#&gt; $ product  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "Antibac…</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -173,7 +177,7 @@ website. Legacy versions can be specified as a <code>string</code> (e.g. "WS262"
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>
