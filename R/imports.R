@@ -7,7 +7,7 @@
 #' @importFrom basejump camel import initializeDirectory removeNA sanitizeNA
 #'   toStringUnique transmit
 #' @importFrom goalie allAreMatchingRegex assert hasNoDuplicates isCharacter
-#'   isFlag
+#'   isFlag isString
 #' @importFrom dplyr arrange bind_rows everything group_by mutate rename select
 #' @importFrom httr content content_type_json GET user_agent
 #' @importFrom magrittr set_colnames set_rownames
