@@ -7,9 +7,11 @@
 externalIDs(genes, progress = FALSE)
 }
 \arguments{
-\item{genes}{\code{character}. Gene identifiers.}
+\item{genes}{\code{character}.
+Gene identifiers.}
 
-\item{progress}{\code{boolean}. Show progress using pbapply package.}
+\item{progress}{\code{logical(1)}.
+Show progress using pbapply package.}
 }
 \value{
 \code{tbl_df}.
