@@ -41,9 +41,7 @@
 
     # Prepare remote directory path for transmit call.
     if (is.null(version)) {
-        # WS269 files are currently buggy.
-        # version <- "current-production-release"
-        version <- "WS268"
+        version <- "current-production-release"
     }
     releaseDir <- paste(
         "ftp://ftp.wormbase.org",
