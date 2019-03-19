@@ -20,10 +20,10 @@
     if (is.null(x)) return(TRUE)
 
     ok <- isString(x)
-    if (!isTRUE(x)) return(FALSE)
+    if (!isTRUE(ok)) return(FALSE)
 
     ok <- allAreMatchingRegex(x, pattern = versionPattern)
-    if (!isTRUE(x)) return(FALSE)
+    if (!isTRUE(ok)) return(FALSE)
 
     TRUE
 }
