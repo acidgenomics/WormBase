@@ -15,6 +15,7 @@ geneIDs <- function(version = NULL, dir = ".") {
         dir = dir
     )
     data <- import(file = unname(file), colnames = FALSE)
+    data <- as_tibble(data)
     data <- data[, 2L:5L]
     colnames(data) <- c("geneID", "geneName", "sequence", "status")
     data

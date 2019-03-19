@@ -15,6 +15,7 @@ blastp <- function(version = NULL, dir = ".") {
         dir = dir
     )
     import(file = unname(file), colnames = FALSE) %>%
+        as_tibble() %>%
         .[, c(1L, 4L, 5L)] %>%
         set_colnames(c("wormpep", "peptide", "eValue")) %>%
         .[grepl("^ENSEMBL:ENSP\\d{11}$", .[["peptide"]]), , drop = FALSE] %>%

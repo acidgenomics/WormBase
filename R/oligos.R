@@ -23,6 +23,7 @@ oligos <- function(version = NULL, dir = ".") {
         )
     )
     data %>%
+        as_tibble() %>%
         mutate(geneID = str_extract(!!sym("geneID"), "WBGene\\d{8}")) %>%
         aggregate(
             formula = formula("oligo~geneID"),
