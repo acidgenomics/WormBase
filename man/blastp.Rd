@@ -2,7 +2,7 @@
 % Please edit documentation in R/blastp.R
 \name{blastp}
 \alias{blastp}
-\title{Best BLASTP Hits}
+\title{Best BLASTP hits}
 \usage{
 blastp(version = NULL, dir = ".")
 }
@@ -17,7 +17,7 @@ website. Legacy versions can be specified as a \code{string} (e.g. "WS262").}
 \code{tbl_df}. Grouped by \code{wormpep} column.
 }
 \description{
-Best BLASTP Hits
+Best BLASTP hits
 }
 \examples{
 x <- blastp()

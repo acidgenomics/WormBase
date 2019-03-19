@@ -2,7 +2,7 @@
 % Please edit documentation in R/geneIDs.R
 \name{geneIDs}
 \alias{geneIDs}
-\title{Gene Identifiers}
+\title{Gene identifiers}
 \usage{
 geneIDs(version = NULL, dir = ".")
 }
@@ -17,7 +17,7 @@ website. Legacy versions can be specified as a \code{string} (e.g. "WS262").}
 \code{tbl_df}.
 }
 \description{
-Gene Identifiers
+Gene identifiers
 }
 \examples{
 x <- geneIDs()

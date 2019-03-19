@@ -2,7 +2,7 @@
 % Please edit documentation in R/externalIDs.R
 \name{externalIDs}
 \alias{externalIDs}
-\title{External Identifiers}
+\title{External identifiers}
 \usage{
 externalIDs(genes, progress = FALSE)
 }
@@ -15,7 +15,7 @@ externalIDs(genes, progress = FALSE)
 \code{tbl_df}.
 }
 \description{
-External Identifiers
+External identifiers
 }
 \examples{
 x <- externalIDs(c("WBGene00000912", "WBGene00004804"))

@@ -2,9 +2,9 @@
 % Please edit documentation in R/description.R
 \name{description}
 \alias{description}
-\title{Gene Functional Descriptions}
+\title{Gene functional descriptions}
 \usage{
-description(version = NULL, dir = ".", progress = TRUE)
+description(version = NULL, dir = ".", progress = FALSE)
 }
 \arguments{
 \item{version}{\code{string} or \code{NULL}. WormBase version. If \code{NULL} (recommended),
@@ -19,9 +19,9 @@ website. Legacy versions can be specified as a \code{string} (e.g. "WS262").}
 \code{tbl_df}.
 }
 \description{
-Gene Functional Descriptions
+Gene functional descriptions
 }
 \examples{
-x <- description(progress = FALSE)
+x <- description()
 glimpse(x)
 }
