@@ -4,7 +4,7 @@
 #' @importFrom assertive.types assert_is_a_string
 #' @importFrom assertive.types assert_is_character
 #' @importFrom assertive.types assert_is_a_bool is_a_string
-#' @importFrom basejump camel initializeDirectory removeNA sanitizeNA
+#' @importFrom basejump camel import initializeDirectory removeNA sanitizeNA
 #'   toStringUnique transmit
 #' @importFrom goalie allAreMatchingRegex assert hasNoDuplicates isCharacter
 #'   isFlag
