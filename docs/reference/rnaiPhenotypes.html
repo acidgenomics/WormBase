@@ -145,16 +145,17 @@ Show progress using pbapply package.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>rnaiPhenotypes</span>(<span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from ftp.wormbase.org.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
-#&gt; <span class='message'>rnai_phenotypes_quick.WS269.wb</span></div><div class='output co'>#&gt; <span class='message'>Downloading rnai_phenotypes_quick.WS269.wb.gz.</span></div><div class='output co'>#&gt; <span class='message'>Parsed with column specification:</span>
+    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>rnaiPhenotypes</span>(<span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Current production release (WS269) FTP files are malformed.</span>
+#&gt; <span class='message'>Returning WS268 release file instead.</span></div><div class='output co'>#&gt; <span class='message'>Transmitting files from ftp.wormbase.org.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
+#&gt; <span class='message'>rnai_phenotypes_quick.WS268.wb</span></div><div class='output co'>#&gt; <span class='message'>Downloading rnai_phenotypes_quick.WS268.wb.gz.</span></div><div class='output co'>#&gt; <span class='message'>Parsed with column specification:</span>
 #&gt; <span class='message'>cols(</span>
 #&gt; <span class='message'>  geneID = <span style='color: #BB0000;'>col_character()</span><span>,</span>
 #&gt; <span class='message'>  sequence = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
 #&gt; <span class='message'>  rnaiPhenotypes = </span><span style='color: #BB0000;'>col_character()</span><span></span>
-#&gt; <span class='message'>)</span></div><div class='input'><span class='fu'>glimpse</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Observations: 7,900
+#&gt; <span class='message'>)</span></div><div class='input'><span class='fu'>glimpse</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Observations: 8,136
 #&gt; Variables: 2
-#&gt; $ geneID         </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "WBGene00019433", "WBGene00002090", "WBGene00020874", …
-#&gt; $ rnaiPhenotypes </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span> [&lt;"embryonic lethal", "peptide uptake by intestinal c…</div></span></pre>
+#&gt; $ geneID         </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> "WBGene00001908", "WBGene00019433", "WBGene00002090", …
+#&gt; $ rnaiPhenotypes </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> [&lt;"accumulated cell corpses", "anaphase bridging", "a…</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

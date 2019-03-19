@@ -140,13 +140,14 @@ Output directory.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>blastp</span>()</div><div class='output co'>#&gt; <span class='message'>Transmitting files from ftp.wormbase.org.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
-#&gt; <span class='message'>c_elegans.PRJNA13758.WS269.best_blastp_hits.txt.gz</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS269.best_blastp_hits.txt.gz.</span></div><div class='output co'>#&gt; <span class='message'>Decompressing c_elegans.PRJNA13758.WS269.best_blastp_hits.txt.gz in tempdir().</span></div><div class='output co'>#&gt; <span class='message'>Importing c_elegans.PRJNA13758.WS269.best_blastp_hits.txt using data.table::fread().</span></div><div class='input'><span class='fu'>glimpse</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Observations: 14,660
+    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>blastp</span>()</div><div class='output co'>#&gt; <span class='message'>Current production release (WS269) FTP files are malformed.</span>
+#&gt; <span class='message'>Returning WS268 release file instead.</span></div><div class='output co'>#&gt; <span class='message'>Transmitting files from ftp.wormbase.org.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
+#&gt; <span class='message'>c_elegans.PRJNA13758.WS268.best_blastp_hits.txt.gz</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS268.best_blastp_hits.txt.gz.</span></div><div class='output co'>#&gt; <span class='message'>Decompressing c_elegans.PRJNA13758.WS268.best_blastp_hits.txt.gz in tempdir().</span></div><div class='output co'>#&gt; <span class='message'>Importing c_elegans.PRJNA13758.WS268.best_blastp_hits.txt using data.table::fread().</span></div><div class='input'><span class='fu'>glimpse</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Observations: 14,634
 #&gt; Variables: 3
-#&gt; Groups: wormpep [14,557]
-#&gt; $ wormpep <span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "CE00004", "CE00015", "CE00034", "CE00063", "CE00072", "CE000…
-#&gt; $ peptide </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "ENSP00000308897", "ENSP00000444192", "ENSP00000384886", "ENS…
-#&gt; $ eValue  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 1e-46, 0e+00, 4e-19, 8e-08, 1e-20, 9e-66, 7e-07, 2e-25, 9e-39…</div></span></pre>
+#&gt; Groups: wormpep [14,531]
+#&gt; $ wormpep <span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> "CE00004", "CE00015", "CE00034", "CE00063", "CE00072", "CE000…
+#&gt; $ peptide </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> "ENSP00000308897", "ENSP00000444192", "ENSP00000384886", "ENS…
+#&gt; $ eValue  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 1e-46, 0e+00, 4e-19, 8e-08, 1e-20, 9e-66, 7e-07, 2e-25, 9e-39…</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
