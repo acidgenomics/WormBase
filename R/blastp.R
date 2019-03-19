@@ -1,4 +1,4 @@
-#' Best BLASTP Hits
+#' Best BLASTP hits
 #'
 #' @inheritParams params
 #'

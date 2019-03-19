@@ -1,4 +1,4 @@
-#' External Identifiers
+#' External identifiers
 #'
 #' @inheritParams params
 #'
