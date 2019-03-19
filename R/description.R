@@ -13,15 +13,7 @@ description <- function(
     dir = ".",
     progress = FALSE
 ) {
-    assert(isFlag(progress))
-
-    # Progress bar.
-    if (isTRUE(progress)) {
-        requireNamespace("pbapply")
-        pblapply <- pbapply::pblapply
-    } else {
-        pblapply <- lapply
-    }
+    pblapply <- .pblapply(progress = progress)
 
     file <- .annotationFile(
         pattern = "functional_descriptions",
@@ -31,7 +23,7 @@ description <- function(
 
     # The first 3 lines contain comments.
     lines <- read_lines(
-        file = as.character(file),
+        file = unname(file),
         skip = 3L,
         progress = FALSE
     )
