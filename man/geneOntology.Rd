@@ -2,25 +2,24 @@
 % Please edit documentation in R/geneOntology.R
 \name{geneOntology}
 \alias{geneOntology}
-\title{Gene Ontology}
+\title{Gene Ontology terms}
 \usage{
-geneOntology(genes, progress = TRUE)
+geneOntology(genes, progress = FALSE)
 }
 \arguments{
-\item{genes}{\code{character}. Gene identifiers.}
+\item{genes}{\code{character}.
+Gene identifiers.}
 
-\item{progress}{\code{boolean}. Show progress using pbapply package.}
+\item{progress}{\code{logical(1)}.
+Show progress using pbapply package.}
 }
 \value{
 \code{tbl_df}.
 }
 \description{
-Gene Ontology
+Gene Ontology terms
 }
 \examples{
-x <- geneOntology(
-    genes = c("WBGene00000912", "WBGene00004804"),
-    progress = FALSE
-)
+x <- geneOntology(c("WBGene00000912", "WBGene00004804"))
 glimpse(x)
 }

@@ -2,25 +2,24 @@
 % Please edit documentation in R/externalIDs.R
 \name{externalIDs}
 \alias{externalIDs}
-\title{External Identifiers}
+\title{External identifiers}
 \usage{
-externalIDs(genes, progress = TRUE)
+externalIDs(genes, progress = FALSE)
 }
 \arguments{
-\item{genes}{\code{character}. Gene identifiers.}
+\item{genes}{\code{character}.
+Gene identifiers.}
 
-\item{progress}{\code{boolean}. Show progress using pbapply package.}
+\item{progress}{\code{logical(1)}.
+Show progress using pbapply package.}
 }
 \value{
 \code{tbl_df}.
 }
 \description{
-External Identifiers
+External identifiers
 }
 \examples{
-x <- externalIDs(
-    genes = c("WBGene00000912", "WBGene00004804"),
-    progress = FALSE
-)
+x <- externalIDs(c("WBGene00000912", "WBGene00004804"))
 glimpse(x)
 }

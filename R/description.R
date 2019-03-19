@@ -1,4 +1,4 @@
-#' Gene Functional Descriptions
+#' Gene functional descriptions
 #'
 #' @inheritParams params
 #'
@@ -6,18 +6,14 @@
 #' @export
 #'
 #' @examples
-#' x <- description(progress = FALSE)
+#' x <- description()
 #' glimpse(x)
 description <- function(
     version = NULL,
     dir = ".",
-    progress = TRUE
+    progress = FALSE
 ) {
-    assert_is_a_bool(progress)
-    # Allow the user to disable progress bar.
-    if (!isTRUE(progress)) {
-        pblapply <- lapply
-    }
+    pblapply <- .pblapply(progress = progress)
 
     file <- .annotationFile(
         pattern = "functional_descriptions",
@@ -27,7 +23,7 @@ description <- function(
 
     # The first 3 lines contain comments.
     lines <- read_lines(
-        file = as.character(file),
+        file = unname(file),
         skip = 3L,
         progress = FALSE
     )
@@ -68,6 +64,7 @@ description <- function(
     lines <- strsplit(lines, "\t")
 
     # Make this call parallel.
+    message("Processing functional descriptions file.")
     dflist <- pblapply(lines, function(x) {
         keyPattern <- "^([A-Za-z[:space:]]+)\\:"
         names <- str_match(x, keyPattern)[, 2L]
@@ -86,6 +83,6 @@ description <- function(
     dflist %>%
         bind_rows() %>%
         camel() %>%
-        fixNA() %>%
+        sanitizeNA() %>%
         removeNA()
 }

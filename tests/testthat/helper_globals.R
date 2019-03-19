@@ -1,4 +1,4 @@
-# Ensure these aren't sorted by ID to check internal code
+# Ensure these aren't sorted by ID to check internal code.
 genes <- c(
     "skn-1" = "WBGene00004804",
     "sbp-1" = "WBGene00004735",
@@ -6,6 +6,6 @@ genes <- c(
     "daf-16" = "WBGene00000912"
 )
 
-# Version-specific checks
+# Version-specific checks.
 wbstable <- "WS260"
 ngene <- 51031L

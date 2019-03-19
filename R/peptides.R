@@ -11,13 +11,9 @@
 peptides <- function(
     version = NULL,
     dir = ".",
-    progress = TRUE
+    progress = FALSE
 ) {
-    assert_is_a_bool(progress)
-    # Allow the user to disable progress bar.
-    if (!isTRUE(progress)) {
-        pblapply <- lapply
-    }
+    pblapply <- .pblapply(progress = progress)
 
     file <- .assemblyFile(
         pattern = "wormpep_package",

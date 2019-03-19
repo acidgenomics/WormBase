@@ -2,22 +2,24 @@
 % Please edit documentation in R/geneIDs.R
 \name{geneIDs}
 \alias{geneIDs}
-\title{Gene Identifiers}
+\title{Gene identifiers}
 \usage{
 geneIDs(version = NULL, dir = ".")
 }
 \arguments{
-\item{version}{\code{string} or \code{NULL}. WormBase version. If \code{NULL} (recommended),
-defaults to current production release version available on the WormBase
-website. Legacy versions can be specified as a \code{string} (e.g. "WS262").}
+\item{version}{\code{character(1)} or \code{NULL}.
+WormBase version. If \code{NULL} (recommended), defaults to current production
+release version available on the WormBase website. Legacy versions can be
+specified as a character string (e.g. "WS262").}
 
-\item{dir}{\code{string}. Output directory.}
+\item{dir}{\code{character(1)}.
+Output directory.}
 }
 \value{
 \code{tbl_df}.
 }
 \description{
-Gene Identifiers
+Gene identifiers
 }
 \examples{
 x <- geneIDs()

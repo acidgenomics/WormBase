@@ -1,4 +1,4 @@
-#' External Identifiers
+#' External identifiers
 #'
 #' @inheritParams params
 #'
@@ -6,19 +6,11 @@
 #' @export
 #'
 #' @examples
-#' x <- externalIDs(
-#'     genes = c("WBGene00000912", "WBGene00004804"),
-#'     progress = FALSE
-#' )
+#' x <- externalIDs(c("WBGene00000912", "WBGene00004804"))
 #' glimpse(x)
-externalIDs <- function(genes, progress = TRUE) {
-    .assertAllAreGenes(genes)
-    assert_is_a_bool(progress)
-    # Allow the user to disable progress bar.
-    if (!isTRUE(progress)) {
-        pblapply <- lapply
-    }
-
+externalIDs <- function(genes, progress = FALSE) {
+    assert(.allAreGenes(genes))
+    pblapply <- .pblapply(progress = progress)
     list <- lapply(genes, function(gene) {
         query <- paste(
             "widget",

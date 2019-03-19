@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wormbase</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -115,24 +115,27 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>orthologs</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>orthologs</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>version</th>
-      <td><p><code>string</code> or <code>NULL</code>. WormBase version. If <code>NULL</code> (recommended),
-defaults to current production release version available on the WormBase
-website. Legacy versions can be specified as a <code>string</code> (e.g. "WS262").</p></td>
+      <td><p><code><a href='https://www.rdocumentation.org/packages/base/topics/character'>character(1)</a></code> or <code>NULL</code>.
+WormBase version. If <code>NULL</code> (recommended), defaults to current production
+release version available on the WormBase website. Legacy versions can be
+specified as a character string (e.g. "WS262").</p></td>
     </tr>
     <tr>
       <th>dir</th>
-      <td><p><code>string</code>. Output directory.</p></td>
+      <td><p><code><a href='https://www.rdocumentation.org/packages/base/topics/character'>character(1)</a></code>.
+Output directory.</p></td>
     </tr>
     <tr>
       <th>progress</th>
-      <td><p><code>boolean</code>. Show progress using pbapply package.</p></td>
+      <td><p><code><a href='https://www.rdocumentation.org/packages/base/topics/logical'>logical(1)</a></code>.
+Show progress using pbapply package.</p></td>
     </tr>
     </table>
     
@@ -142,14 +145,15 @@ website. Legacy versions can be specified as a <code>string</code> (e.g. "WS262"
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>orthologs</span>(<span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from ftp.wormbase.org.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
-#&gt; <span class='message'>[1] "c_elegans.PRJNA13758.WS267.orthologs.txt.gz"</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS267.orthologs.txt.gz.</span></div><div class='input'><span class='fu'>glimpse</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Observations: 19,019
+    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>orthologs</span>(<span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Current production release (WS269) FTP files are malformed.</span>
+#&gt; <span class='message'>Returning WS268 release file instead.</span></div><div class='output co'>#&gt; <span class='message'>Transmitting files from ftp.wormbase.org.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
+#&gt; <span class='message'>c_elegans.PRJNA13758.WS268.orthologs.txt.gz</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS268.orthologs.txt.gz.</span></div><div class='input'><span class='fu'>glimpse</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Observations: 20,215
 #&gt; Variables: 5
-#&gt; $ geneID                 &lt;chr&gt; "WBGene00000001", "WBGene00000002", "WBGene0...
-#&gt; $ homoSapiens            &lt;list&gt; [&lt;"ENSG00000101082", "ENSG00000105647", "EN...
-#&gt; $ musMusculus            &lt;list&gt; [&lt;"ENSMUSG00000027636", "ENSMUSG00000028698...
-#&gt; $ drosophilaMelanogaster &lt;list&gt; ["FBgn0020622", "FBgn0039844", &lt;"FBgn000277...
-#&gt; $ danioRerio             &lt;list&gt; [&lt;"ENSDARG00000018060", "ENSDARG00000034409...</div></pre>
+#&gt; $ geneID                 <span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> "WBGene00000001", "WBGene00000002", "WBGene000…
+#&gt; $ homoSapiens            </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> [&lt;"ENSG00000101082", "ENSG00000105647", "ENSG…
+#&gt; $ musMusculus            </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> [&lt;"ENSMUSG00000027636", "ENSMUSG00000028698",…
+#&gt; $ drosophilaMelanogaster </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> ["FBgn0020622", "FBgn0039844", &lt;"FBgn0002778"…
+#&gt; $ danioRerio             </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> [&lt;"ENSDARG00000018060", "ENSDARG00000034409",…</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -170,7 +174,7 @@ website. Legacy versions can be specified as a <code>string</code> (e.g. "WS262"
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

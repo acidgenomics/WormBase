@@ -1,4 +1,4 @@
-#' Gene Identifiers
+#' Gene identifiers
 #'
 #' @inheritParams params
 #'
@@ -14,13 +14,8 @@ geneIDs <- function(version = NULL, dir = ".") {
         version = version,
         dir = dir
     )
-    data <- read_csv(
-        file = as.character(file),
-        col_names = FALSE,
-        col_types = cols(),
-        na = "",
-        progress = FALSE
-    )
+    data <- import(file = unname(file), colnames = FALSE)
+    data <- as_tibble(data)
     data <- data[, 2L:5L]
     colnames(data) <- c("geneID", "geneName", "sequence", "status")
     data

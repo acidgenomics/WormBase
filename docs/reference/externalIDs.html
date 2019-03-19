@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>External Identifiers — externalIDs • wormbase</title>
+<title>External identifiers — externalIDs • wormbase</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,9 +32,9 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="External Identifiers — externalIDs" />
+<meta property="og:title" content="External identifiers — externalIDs" />
 
-<meta property="og:description" content="External Identifiers" />
+<meta property="og:description" content="External identifiers" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wormbase</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -104,29 +104,31 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>External Identifiers</h1>
+    <h1>External identifiers</h1>
     <small class="dont-index">Source: <a href='https://github.com/steinbaugh/wormbase/blob/master/R/externalIDs.R'><code>R/externalIDs.R</code></a></small>
     <div class="hidden name"><code>externalIDs.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>External Identifiers</p>
+    <p>External identifiers</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>externalIDs</span>(<span class='no'>genes</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>externalIDs</span>(<span class='no'>genes</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>genes</th>
-      <td><p><code>character</code>. Gene identifiers.</p></td>
+      <td><p><code>character</code>.
+Gene identifiers.</p></td>
     </tr>
     <tr>
       <th>progress</th>
-      <td><p><code>boolean</code>. Show progress using pbapply package.</p></td>
+      <td><p><code><a href='https://www.rdocumentation.org/packages/base/topics/logical'>logical(1)</a></code>.
+Show progress using pbapply package.</p></td>
     </tr>
     </table>
     
@@ -136,26 +138,23 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>externalIDs</span>(
-    <span class='kw'>genes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"WBGene00000912"</span>, <span class='st'>"WBGene00004804"</span>),
-    <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)
+    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>externalIDs</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"WBGene00000912"</span>, <span class='st'>"WBGene00004804"</span>))
 <span class='fu'>glimpse</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Observations: 2
 #&gt; Variables: 14
-#&gt; $ geneID      &lt;chr&gt; "WBGene00000912", "WBGene00004804"
-#&gt; $ aceView     &lt;list&gt; ["1L351", "4G416"]
-#&gt; $ ncbi        &lt;list&gt; ["172981", "177343"]
-#&gt; $ ndb         &lt;list&gt; ["CELE_R13H8.1", "CELE_T19E7.2"]
-#&gt; $ omim        &lt;list&gt; [&lt;"136533", "300033", "602681", "611457"&gt;, NULL]
-#&gt; $ panther     &lt;list&gt; ["CAEEL|WormBase=WBGene00000912|UniProtKB=O16850", NULL]
-#&gt; $ refSeq      &lt;list&gt; [&lt;"NM_001026422.4", "NM_001026423.4", "NM_001026424.4"...
-#&gt; $ signaLink   &lt;list&gt; ["WBGene00000912", "WBGene00004804"]
-#&gt; $ swissProt   &lt;list&gt; ["O16850", "P34707"]
-#&gt; $ treefam     &lt;list&gt; ["TF315583", "TF317782"]
-#&gt; $ trEMBL      &lt;list&gt; [&lt;"A0A0K3AR63", "A0A0K3AR95", "A0A0K3ATP5", "A0A0K3AWG...
-#&gt; $ uniProtGCRP &lt;list&gt; ["O16850", "P34707"]
-#&gt; $ wormFlux    &lt;list&gt; ["WBGene00000912", "WBGene00004804"]
-#&gt; $ wormQTL     &lt;list&gt; ["WBGene00000912", "WBGene00004804"]</div></pre>
+#&gt; $ geneID      <span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> "WBGene00000912", "WBGene00004804"
+#&gt; $ aceView     </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> ["1L351", "4G416"]
+#&gt; $ ncbi        </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> ["172981", "177343"]
+#&gt; $ ndb         </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> ["CELE_R13H8.1", "CELE_T19E7.2"]
+#&gt; $ omim        </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> [&lt;"136533", "300033", "602681", "611457"&gt;, NULL]
+#&gt; $ panther     </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> ["PTHR45767", NULL]
+#&gt; $ refSeq      </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> [&lt;"NM_001026422.4", "NM_001026423.4", "NM_001026424.4", …
+#&gt; $ signaLink   </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> ["WBGene00000912", "WBGene00004804"]
+#&gt; $ swissProt   </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> ["O16850", "P34707"]
+#&gt; $ treefam     </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> ["TF315583", "TF317782"]
+#&gt; $ trEMBL      </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> [&lt;"A0A0K3AR63", "A0A0K3AR95", "A0A0K3ATP5", "A0A0K3AWG6"…
+#&gt; $ uniProtGCRP </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> ["O16850", "P34707"]
+#&gt; $ wormFlux    </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> ["WBGene00000912", "WBGene00004804"]
+#&gt; $ wormQTL     </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> ["WBGene00000912", "WBGene00004804"]</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -176,7 +175,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>
