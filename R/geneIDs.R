@@ -14,7 +14,13 @@ geneIDs <- function(version = NULL, dir = ".") {
         version = version,
         dir = dir
     )
-    data <- import(file = unname(file), colnames = FALSE)
+    data <- read_csv(
+        file = unname(file),
+        col_names = FALSE,
+        col_types = cols(),
+        na = "",
+        progress = FALSE
+    )
     data <- data[, 2L:5L]
     colnames(data) <- c("geneID", "geneName", "sequence", "status")
     data
