@@ -14,16 +14,14 @@ blastp <- function(version = NULL, dir = ".") {
         version = version,
         dir = dir
     )
-    read_csv(
-        file = as.character(file),
-        col_names = FALSE,
-        col_types = cols(),
-        progress = FALSE
-    ) %>%
+    import(unname(file), colnames = FALSE) %>%
         .[, c(1L, 4L, 5L)] %>%
         set_colnames(c("wormpep", "peptide", "eValue")) %>%
         .[grepl("^ENSEMBL:ENSP\\d{11}$", .[["peptide"]]), , drop = FALSE] %>%
         .[order(.[["wormpep"]], .[["eValue"]]), ] %>%
-        mutate(peptide = str_sub(!!sym("peptide"), 9L)) %>%
+        mutate(
+            peptide = str_sub(!!sym("peptide"), 9L),
+            eValue = as.numeric(!!sym("eValue"))
+        ) %>%
         group_by(!!sym("wormpep"))
 }
