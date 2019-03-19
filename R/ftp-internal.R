@@ -39,9 +39,11 @@
         isString(dir)
     )
 
-    # Prepare remote directory path for transmit call
+    # Prepare remote directory path for transmit call.
     if (is.null(version)) {
-        version <- "current-production-release"
+        # WS269 files are currently buggy.
+        # version <- "current-production-release"
+        version <- "WS268"
     }
     releaseDir <- paste(
         "ftp://ftp.wormbase.org",
