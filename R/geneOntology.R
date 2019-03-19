@@ -1,4 +1,4 @@
-#' Gene Ontology
+#' Gene Ontology terms
 #'
 #' @inheritParams params
 #'

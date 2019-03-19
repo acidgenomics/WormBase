@@ -1,4 +1,4 @@
-#' PCR Oligo Sequences
+#' PCR oligo sequences
 #'
 #' @inheritParams params
 #'
