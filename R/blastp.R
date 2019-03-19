@@ -14,7 +14,7 @@ blastp <- function(version = NULL, dir = ".") {
         version = version,
         dir = dir
     )
-    import(unname(file), colnames = FALSE) %>%
+    import(file = unname(file), colnames = FALSE) %>%
         .[, c(1L, 4L, 5L)] %>%
         set_colnames(c("wormpep", "peptide", "eValue")) %>%
         .[grepl("^ENSEMBL:ENSP\\d{11}$", .[["peptide"]]), , drop = FALSE] %>%
