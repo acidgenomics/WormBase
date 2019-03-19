@@ -2,7 +2,7 @@
 % Please edit documentation in R/oligos.R
 \name{oligos}
 \alias{oligos}
-\title{PCR Oligo Sequences}
+\title{PCR oligo sequences}
 \usage{
 oligos(version = NULL, dir = ".")
 }
@@ -19,7 +19,7 @@ Output directory.}
 \code{tbl_df}.
 }
 \description{
-PCR Oligo Sequences
+PCR oligo sequences
 }
 \examples{
 x <- oligos()

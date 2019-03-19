@@ -2,7 +2,7 @@
 % Please edit documentation in R/geneOntology.R
 \name{geneOntology}
 \alias{geneOntology}
-\title{Gene Ontology}
+\title{Gene Ontology terms}
 \usage{
 geneOntology(genes, progress = FALSE)
 }
@@ -17,7 +17,7 @@ Show progress using pbapply package.}
 \code{tbl_df}.
 }
 \description{
-Gene Ontology
+Gene Ontology terms
 }
 \examples{
 x <- geneOntology(c("WBGene00000912", "WBGene00004804"))
