@@ -1,4 +1,4 @@
-#' RNAi Phenotypes
+#' RNAi phenotypes
 #'
 #' @inheritParams params
 #'
@@ -13,7 +13,7 @@ rnaiPhenotypes <- function(
     dir = ".",
     progress = FALSE
 ) {
-    assert_is_a_bool(progress)
+    assert(isFlag(progress))
     # Allow the user to disable progress bar.
     if (!isTRUE(progress)) {
         pblapply <- lapply

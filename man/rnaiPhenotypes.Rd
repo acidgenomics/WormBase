@@ -2,7 +2,7 @@
 % Please edit documentation in R/rnaiPhenotypes.R
 \name{rnaiPhenotypes}
 \alias{rnaiPhenotypes}
-\title{RNAi Phenotypes}
+\title{RNAi phenotypes}
 \usage{
 rnaiPhenotypes(version = NULL, dir = ".", progress = FALSE)
 }
@@ -19,7 +19,7 @@ website. Legacy versions can be specified as a \code{string} (e.g. "WS262").}
 \code{tbl_df}.
 }
 \description{
-RNAi Phenotypes
+RNAi phenotypes
 }
 \examples{
 x <- rnaiPhenotypes(progress = FALSE)
