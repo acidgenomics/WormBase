@@ -1,4 +1,4 @@
-#' Other Gene Identifiers
+#' Other gene identifiers
 #'
 #' @inheritParams params
 #'
@@ -15,7 +15,7 @@ geneOtherIDs <- function(version = NULL, dir = ".") {
         dir = dir
     )
     read_lines(
-        file = as.character(file),
+        file = unname(file),
         progress = FALSE
     ) %>%
         # Remove status, already present in geneIDs file

@@ -9,19 +9,8 @@
 #' x <- externalIDs(c("WBGene00000912", "WBGene00004804"))
 #' glimpse(x)
 externalIDs <- function(genes, progress = FALSE) {
-    assert(
-        .allAreGenes(genes),
-        isFlag(progress)
-    )
-
-    # Progress bar.
-    if (isTRUE(progress)) {
-        requireNamespace("pbapply")
-        pblapply <- pbapply::pblapply
-    } else {
-        pblapply <- lapply
-    }
-
+    assert(.allAreGenes(genes))
+    pblapply <- .pblapply(progress = progress)
     list <- lapply(genes, function(gene) {
         query <- paste(
             "widget",

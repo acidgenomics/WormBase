@@ -11,7 +11,6 @@
 geneOntology <- function(genes, progress = FALSE) {
     assert(.allAreGenes(genes))
     pblapply <- .pblapply(progress = progress)
-
     list <- lapply(genes, function(gene) {
         query <- paste(
             "widget",

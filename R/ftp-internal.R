@@ -55,8 +55,8 @@
 
     file <- transmit(remoteDir = remoteDir, localDir = dir, ...)
 
-    # Check for single file match
-    assert_is_of_length(file, 1L)
+    # Check for single file match.
+    assert(isString(file))
 
     file
 }
