@@ -9,15 +9,6 @@
 #' x <- geneIDs()
 #' glimpse(x)
 geneIDs <- function(version = NULL, dir = ".") {
-    # Temporary fix for buggy WS269 file.
-    if (is.null(version)) {
-        message(paste(
-            "Gene identifier file is currently malformed for current",
-            "production release (WS269).",
-            "Returning WS268 identifiers instead."
-        ))
-        version <- "WS268"
-    }
     file <- .annotationFile(
         pattern = "geneIDs",
         version = version,
