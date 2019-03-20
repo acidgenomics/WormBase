@@ -41,7 +41,7 @@
 
     # Prepare remote directory path for transmit call.
     if (is.null(version)) {
-        # version <- "current-production-release"
+        # version <- "current-production-release"  # nolint
 
         # Temporary fix for buggy WS269 FTP files.
         # In the process of contacting WormBase to fix this issue.
