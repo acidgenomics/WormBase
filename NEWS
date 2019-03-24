@@ -1,3 +1,11 @@
+## wormbase 0.2.6 (2019-03-23)
+
+### Minor changes
+
+- Migrated code to [Acid Genomics][].
+
+
+
 ## wormbase 0.2.5 (2019-03-19)
 
 - Reworked progress bar handling via `pbapply::pblapply`. This is now disabled
@@ -65,3 +73,7 @@ Ahringer, and Ruvkun Lab cherrypick libraries.
 ## wormbase 0.0.99 (2017-12-06)
 
 (worminfo): Initial pre-release version.
+
+
+
+[Acid Genomics]: https://acidgenomics.com/

@@ -1,8 +1,8 @@
 Package: wormbase
-Title: WormBase Data
+Title: WormBase annotations
 Description: Fetch Caenorhabditis elegans genome annotations from WormBase.
-Version: 0.2.5
-Date: 2019-03-16
+Version: 0.2.6
+Date: 2019-03-23
 Authors@R: person(
     given = "Michael",
     family = "Steinbaugh",
@@ -11,15 +11,15 @@ Authors@R: person(
     comment = c(ORCID = "0000-0002-2403-2221"))
 License: MIT + file LICENSE
 URL:
-    https://steinbaugh.com/wormbase/,
-    https://github.com/steinbaugh/wormbase/
-BugReports: https://github.com/steinbaugh/wormbase/issues/
+    https://wormbase.acidgenomics.com/,
+    https://github.com/acidgenomics/wormbase/
+BugReports: https://github.com/acidgenomics/wormbase/issues/
 Encoding: UTF-8
 Depends: R (>= 3.5)
 Imports:
-    basejump (>= 0.9.13), goalie (>= 0.2.11),
+    basejump (>= 0.9.16), goalie (>= 0.2.12),
     dplyr (>= 0.8), httr (>= 1.4), magrittr (>= 1.5), readr (>= 1.3),
-        rlang (>= 0.3), stringr (>= 1.4), tibble (>= 2.0),
+        rlang (>= 0.3), stringr (>= 1.4), tibble (>= 2.1),
     stats, utils
 Enhances:
     pbapply
@@ -27,8 +27,8 @@ Suggests:
     BiocStyle,
     knitr, rmarkdown, testthat, tidyverse
 Remotes:
-    steinbaugh/basejump,
-    steinbaugh/goalie
+    acidgenomics/basejump,
+    acidgenomics/goalie
 biocViews:
     AnnotationData,
     Caenorhabditis_elegans
