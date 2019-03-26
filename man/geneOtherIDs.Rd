@@ -21,6 +21,11 @@ Output directory.}
 \description{
 Other gene identifiers
 }
+\note{
+As of WS269 release, some non-N2 gene IDs are included in the flat
+files available on the WormBase FTP server. These annotations are removed
+from the return here, using grep matching to return only \code{WBGene} entries.
+}
 \examples{
 x <- geneOtherIDs()
 glimpse(x)

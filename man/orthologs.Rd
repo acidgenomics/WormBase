@@ -25,6 +25,6 @@ Show progress using pbapply package.}
 Orthologs
 }
 \examples{
-x <- orthologs(progress = FALSE)
+x <- orthologs()
 glimpse(x)
 }

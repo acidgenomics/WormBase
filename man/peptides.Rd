@@ -25,6 +25,6 @@ Show progress using pbapply package.}
 Peptides
 }
 \examples{
-x <- peptides(progress = FALSE)
+x <- peptides()
 glimpse(x)
 }
