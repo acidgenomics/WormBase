@@ -62,7 +62,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wormbase</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
       </span>
     </div>
 
@@ -105,16 +105,20 @@
       <small>Source: <a href='https://github.com/acidgenomics/wormbase/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="wormbase-0-2-7-2019-03-26" class="section level2">
+<h2 class="hasAnchor">
+<a href="#wormbase-0-2-7-2019-03-26" class="anchor"></a>wormbase 0.2.7 (2019-03-26)</h2>
+<ul>
+<li>Added support for WS269 release. Functions that parse files from the WormBase FTP server had to be modified to ensure only annotations matching N2 gene identifiers (e.g. <code>WBGene</code>) are returned.</li>
+<li>Improved internal tidyeval code where applicable, notably inside <code>mutate</code> calls using <code>sym</code> and <code>:=</code> <a href="https://rlang.r-lib.org/">rlang</a> functions.</li>
+</ul>
+</div>
     <div id="wormbase-0-2-6-2019-03-23" class="section level2">
 <h2 class="hasAnchor">
 <a href="#wormbase-0-2-6-2019-03-23" class="anchor"></a>wormbase 0.2.6 (2019-03-23)</h2>
-<div id="minor-changes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#minor-changes" class="anchor"></a>Minor changes</h3>
 <ul>
 <li>Migrated code to <a href="https://acidgenomics.com/">Acid Genomics</a>.</li>
 </ul>
-</div>
 </div>
     <div id="wormbase-0-2-5-2019-03-19" class="section level2">
 <h2 class="hasAnchor">
@@ -184,6 +188,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#wormbase-0-2-7-2019-03-26">0.2.7</a></li>
         <li><a href="#wormbase-0-2-6-2019-03-23">0.2.6</a></li>
         <li><a href="#wormbase-0-2-5-2019-03-19">0.2.5</a></li>
         <li><a href="#wormbase-0-2-4-2018-11-21">0.2.4</a></li>
