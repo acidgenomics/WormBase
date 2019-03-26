@@ -96,5 +96,6 @@ description <- function(
         bind_rows() %>%
         camel() %>%
         sanitizeNA() %>%
-        removeNA()
+        removeNA() %>%
+        arrange(!!sym("geneID"))
 }
