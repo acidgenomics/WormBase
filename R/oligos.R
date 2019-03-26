@@ -17,14 +17,16 @@ oligos <- function(version = NULL, dir = ".") {
     # `pcr_product2gene.txt` file is malformed and may produce warnings.
     suppressWarnings(
         data <- read_tsv(
-            file = unname(file),
+            file = file,
             col_names = c("oligo", "geneID"),
             progress = FALSE
         )
     )
     data %>%
         as_tibble() %>%
-        mutate(geneID = str_extract(!!sym("geneID"), "WBGene\\d{8}")) %>%
+        mutate(
+            !!sym("geneID") := str_extract(!!sym("geneID"), "WBGene\\d{8}")
+        ) %>%
         aggregate(
             formula = formula("oligo~geneID"),
             data = .,
@@ -35,5 +37,7 @@ oligos <- function(version = NULL, dir = ".") {
                     list()
             }
         ) %>%
-        as_tibble()
+        as_tibble() %>%
+        filter(grepl(pattern = genePattern, x = !!sym("geneID"))) %>%
+        arrange(!!sym("geneID"))
 }

@@ -21,8 +21,8 @@ blastp <- function(version = NULL, dir = ".") {
         .[grepl("^ENSEMBL:ENSP\\d{11}$", .[["peptide"]]), , drop = FALSE] %>%
         .[order(.[["wormpep"]], .[["eValue"]]), ] %>%
         mutate(
-            peptide = str_sub(!!sym("peptide"), 9L),
-            eValue = as.numeric(!!sym("eValue"))
+            !!sym("peptide") := str_sub(!!sym("peptide"), 9L),
+            !!sym("eValue") := as.numeric(!!sym("eValue"))
         ) %>%
         group_by(!!sym("wormpep"))
 }

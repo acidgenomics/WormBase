@@ -38,7 +38,7 @@ geneOntology <- function(genes, progress = FALSE) {
         })
         lapply(goTerms, list) %>%
             as_tibble() %>%
-            mutate(geneID = gene)
+            mutate(!!sym("geneID") := !!gene)
     })
     list <- Filter(Negate(is.null), list)
     if (!length(list)) {
