@@ -1,3 +1,6 @@
 # Contributing to development
 
-Please follow all [recommended guidelines](https://steinbaugh.com/basejump/CONTRIBUTING.html) defined in the [basejump](https://steinbaugh.com/basejump) package.
+Follow the [recommended guidelines][] defined in the [basejump][] package.
+
+[basejump]: https://basejump.acidgenomics.com/
+[recommended guidelines]: https://basejump.acidgenomics.com/CONTRIBUTING.html
