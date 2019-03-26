@@ -110,6 +110,7 @@
 <a href="#wormbase-0-2-7-2019-03-26" class="anchor"></a>wormbase 0.2.7 (2019-03-26)</h2>
 <ul>
 <li>Added support for WS269 release. Functions that parse files from the WormBase FTP server had to be modified to ensure only annotations matching N2 gene identifiers (e.g. <code>WBGene</code>) are returned.</li>
+<li>Removed <code>dir</code> argument for all functions that parse files from WormBase FTP server. Files now always download to <code>tempdir</code> instead.</li>
 <li>Improved internal tidyeval code where applicable, notably inside <code>mutate</code> calls using <code>sym</code> and <code>:=</code> <a href="https://rlang.r-lib.org/">rlang</a> functions.</li>
 </ul>
 </div>
@@ -206,7 +207,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://steinbaugh.com/'>Michael Steinbaugh</a>.</p>
+  <p>Developed by <a href='https://steinbaugh.com/'>Michael Steinbaugh</a>, <a href='https://acidgenomics.com/'>Acid Genomics</a>.</p>
 </div>
 
 <div class="pkgdown">
