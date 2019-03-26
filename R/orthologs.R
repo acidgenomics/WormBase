@@ -8,18 +8,9 @@
 #' @examples
 #' x <- orthologs()
 #' glimpse(x)
-orthologs <- function(
-    version = NULL,
-    dir = ".",
-    progress = FALSE
-) {
+orthologs <- function(version = NULL, progress = FALSE) {
     pblapply <- .pblapply(progress = progress)
-
-    file <- .annotationFile(
-        pattern = "orthologs",
-        version = version,
-        dir = dir
-    )
+    file <- .annotationFile(pattern = "orthologs", version = version)
 
     message("Parsing lines in file...")
     lines <- read_lines(file, progress = FALSE) %>%

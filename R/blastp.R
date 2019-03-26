@@ -8,11 +8,10 @@
 #' @examples
 #' x <- blastp()
 #' glimpse(x)
-blastp <- function(version = NULL, dir = ".") {
+blastp <- function(version = NULL) {
     file <- .assemblyFile(
         pattern = "best_blastp_hits",
-        version = version,
-        dir = dir
+        version = version
     )
     import(file = unname(file), colnames = FALSE) %>%
         as_tibble() %>%

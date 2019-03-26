@@ -14,15 +14,12 @@
 #' glimpse(x)
 description <- function(
     version = NULL,
-    dir = ".",
     progress = FALSE
 ) {
     pblapply <- .pblapply(progress = progress)
-
     file <- .annotationFile(
         pattern = "functional_descriptions",
-        version = version,
-        dir = dir
+        version = version
     )
 
     # Process file by reading lines in directly.

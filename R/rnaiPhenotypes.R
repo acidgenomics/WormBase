@@ -6,19 +6,14 @@
 #' @export
 #'
 #' @examples
-#' x <- rnaiPhenotypes(progress = FALSE)
+#' x <- rnaiPhenotypes()
 #' glimpse(x)
-rnaiPhenotypes <- function(
-    version = NULL,
-    dir = ".",
-    progress = FALSE
-) {
+rnaiPhenotypes <- function(version = NULL, progress = FALSE) {
     pblapply <- .pblapply(progress = progress)
     file <- .transmit(
         subdir = "ONTOLOGY",
         pattern = "rnai_phenotypes_quick",
         version = version,
-        dir = dir,
         compress = TRUE
     )
     data <- read_tsv(

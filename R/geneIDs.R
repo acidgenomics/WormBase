@@ -12,8 +12,8 @@
 #' @examples
 #' x <- geneIDs()
 #' glimpse(x)
-geneIDs <- function(version = NULL, dir = ".") {
-    file <- .annotationFile(pattern = "geneIDs", version = version, dir = dir)
+geneIDs <- function(version = NULL) {
+    file <- .annotationFile(pattern = "geneIDs", version = version)
     import(file, colnames = FALSE) %>%
         as_tibble() %>%
         .[, 2L:5L] %>%

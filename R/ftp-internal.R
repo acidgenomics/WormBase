@@ -30,13 +30,11 @@
 .transmit <- function(
     subdir,
     version = NULL,
-    dir = ".",
     ...
 ) {
     assert(
         isString(subdir),
-        .isVersion(version),
-        isString(dir)
+        .isVersion(version)
     )
     # Prepare remote directory path for transmit call.
     if (is.null(version)) {
@@ -51,7 +49,11 @@
         sep = "/"
     )
     remoteDir <- paste(releaseDir, subdir, sep = "/")
-    file <- transmit(remoteDir = remoteDir, localDir = dir, ...)
+    file <- transmit(
+        remoteDir = remoteDir,
+        localDir = tempdir(),
+        ...
+    )
     # Check for single file match.
     assert(isString(file))
     unname(file)

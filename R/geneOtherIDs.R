@@ -12,12 +12,8 @@
 #' @examples
 #' x <- geneOtherIDs()
 #' glimpse(x)
-geneOtherIDs <- function(version = NULL, dir = ".") {
-    file <- .annotationFile(
-        pattern = "geneOtherIDs",
-        version = version,
-        dir = dir
-    )
+geneOtherIDs <- function(version = NULL) {
+    file <- .annotationFile(pattern = "geneOtherIDs", version = version)
     read_lines(file, progress = FALSE) %>%
         # Remove status. Already present in geneIDs file.
         gsub("\t(Dead|Live)", "", .) %>%

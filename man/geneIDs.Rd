@@ -4,16 +4,13 @@
 \alias{geneIDs}
 \title{Gene identifiers}
 \usage{
-geneIDs(version = NULL, dir = ".")
+geneIDs(version = NULL)
 }
 \arguments{
 \item{version}{\code{character(1)} or \code{NULL}.
 WormBase version. If \code{NULL} (recommended), defaults to current production
 release version available on the WormBase website. Legacy versions can be
 specified as a character string (e.g. "WS262").}
-
-\item{dir}{\code{character(1)}.
-Output directory.}
 }
 \value{
 \code{tbl_df}.

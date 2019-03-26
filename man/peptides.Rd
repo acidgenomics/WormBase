@@ -4,16 +4,13 @@
 \alias{peptides}
 \title{Peptides}
 \usage{
-peptides(version = NULL, dir = ".", progress = FALSE)
+peptides(version = NULL, progress = FALSE)
 }
 \arguments{
 \item{version}{\code{character(1)} or \code{NULL}.
 WormBase version. If \code{NULL} (recommended), defaults to current production
 release version available on the WormBase website. Legacy versions can be
 specified as a character string (e.g. "WS262").}
-
-\item{dir}{\code{character(1)}.
-Output directory.}
 
 \item{progress}{\code{logical(1)}.
 Show progress using pbapply package.}
