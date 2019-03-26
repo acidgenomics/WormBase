@@ -8,11 +8,10 @@
 #' @examples
 #' x <- blastp()
 #' glimpse(x)
-blastp <- function(version = NULL, dir = ".") {
+blastp <- function(version = NULL) {
     file <- .assemblyFile(
         pattern = "best_blastp_hits",
-        version = version,
-        dir = dir
+        version = version
     )
     import(file = unname(file), colnames = FALSE) %>%
         as_tibble() %>%
@@ -21,8 +20,8 @@ blastp <- function(version = NULL, dir = ".") {
         .[grepl("^ENSEMBL:ENSP\\d{11}$", .[["peptide"]]), , drop = FALSE] %>%
         .[order(.[["wormpep"]], .[["eValue"]]), ] %>%
         mutate(
-            peptide = str_sub(!!sym("peptide"), 9L),
-            eValue = as.numeric(!!sym("eValue"))
+            !!sym("peptide") := str_sub(!!sym("peptide"), 9L),
+            !!sym("eValue") := as.numeric(!!sym("eValue"))
         ) %>%
         group_by(!!sym("wormpep"))
 }

@@ -4,22 +4,24 @@
 \alias{geneOtherIDs}
 \title{Other gene identifiers}
 \usage{
-geneOtherIDs(version = NULL, dir = ".")
+geneOtherIDs(version = NULL)
 }
 \arguments{
 \item{version}{\code{character(1)} or \code{NULL}.
 WormBase version. If \code{NULL} (recommended), defaults to current production
 release version available on the WormBase website. Legacy versions can be
 specified as a character string (e.g. "WS262").}
-
-\item{dir}{\code{character(1)}.
-Output directory.}
 }
 \value{
 \code{tbl_df}.
 }
 \description{
 Other gene identifiers
+}
+\note{
+As of WS269 release, some non-N2 gene IDs are included in the flat
+files available on the WormBase FTP server. These annotations are removed
+from the return here, using grep matching to return only \code{WBGene} entries.
 }
 \examples{
 x <- geneOtherIDs()

@@ -6,23 +6,16 @@
 #' @export
 #'
 #' @examples
-#' x <- peptides(progress = FALSE)
+#' x <- peptides()
 #' glimpse(x)
-peptides <- function(
-    version = NULL,
-    dir = ".",
-    progress = FALSE
-) {
+peptides <- function(version = NULL, progress = FALSE) {
     pblapply <- .pblapply(progress = progress)
-
-    file <- .assemblyFile(
-        pattern = "wormpep_package",
-        version = version,
-        dir = dir
-    )
+    file <- .assemblyFile(pattern = "wormpep_package", version = version)
+    dir <- tempdir()
 
     # Grep the verion number.
-    versionNumber <- str_extract(file, "WS\\d{3}") %>%
+    versionNumber <- file %>%
+        str_extract("WS\\d{3}") %>%
         gsub("^WS", "", .)
 
     # Extract the individual table.
@@ -34,6 +27,8 @@ peptides <- function(
     )
 
     lines <- read_lines(file.path(dir, wormpepTable), progress = FALSE)
+
+    message("Processing peptides...")
     dflist <- pblapply(lines, function(line) {
         # Attempt to match quoted values first (e.g. product).
         keyPattern <- "([a-z]+)=(\"[^\"]+\"|[^\\s]+)"
@@ -53,6 +48,7 @@ peptides <- function(
         bind_rows() %>%
         rename(geneID = !!sym("gene")) %>%
         select(!!sym("geneID"), everything()) %>%
+        filter(grepl(pattern = genePattern, x = !!sym("geneID"))) %>%
         group_by(!!sym("geneID")) %>%
         arrange(!!!syms(c("sequence", "wormpep")), .by_group = TRUE)
 }

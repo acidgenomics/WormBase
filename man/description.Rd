@@ -4,16 +4,13 @@
 \alias{description}
 \title{Gene functional descriptions}
 \usage{
-description(version = NULL, dir = ".", progress = FALSE)
+description(version = NULL, progress = FALSE)
 }
 \arguments{
 \item{version}{\code{character(1)} or \code{NULL}.
 WormBase version. If \code{NULL} (recommended), defaults to current production
 release version available on the WormBase website. Legacy versions can be
 specified as a character string (e.g. "WS262").}
-
-\item{dir}{\code{character(1)}.
-Output directory.}
 
 \item{progress}{\code{logical(1)}.
 Show progress using pbapply package.}
@@ -23,6 +20,11 @@ Show progress using pbapply package.}
 }
 \description{
 Gene functional descriptions
+}
+\note{
+As of WS269 release, some non-N2 gene IDs are included in the flat
+files available on the WormBase FTP server. These annotations are removed
+from the return here, using grep matching to return only \code{WBGene} entries.
 }
 \examples{
 x <- description()

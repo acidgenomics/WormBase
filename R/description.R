@@ -1,5 +1,9 @@
 #' Gene functional descriptions
 #'
+#' @note As of WS269 release, some non-N2 gene IDs are included in the flat
+#'   files available on the WormBase FTP server. These annotations are removed
+#'   from the return here, using grep matching to return only `WBGene` entries.
+#'
 #' @inheritParams params
 #'
 #' @return `tbl_df`.
@@ -10,79 +14,85 @@
 #' glimpse(x)
 description <- function(
     version = NULL,
-    dir = ".",
     progress = FALSE
 ) {
     pblapply <- .pblapply(progress = progress)
-
     file <- .annotationFile(
         pattern = "functional_descriptions",
-        version = version,
-        dir = dir
+        version = version
     )
 
+    # Process file by reading lines in directly.
     # The first 3 lines contain comments.
-    lines <- read_lines(
-        file = unname(file),
-        skip = 3L,
-        progress = FALSE
-    )
-
-    # Genes are separated by a line containing `=`.
-    lines <- gsub("^=$", "\\|\\|", lines)
-
-    # Add a tab delimiter before our keys of interest:
-    # - Concise description
-    # - Provisional description
-    # - Detailed description
-    # - Automated description
-    # - Gene class description
-    lines <- gsub(
-        pattern = paste0(
-            "(Concise|Provisional|Detailed|Automated|Gene class)",
-            " description\\:"
-        ),
-        replacement = "\t\\1 description:",
-        x = lines
-    )
-
-    # Now collapse to a single line and split by the gene separator (`||`).
-    lines <- lines %>%
+    message("Parsing lines in file...")
+    lines <- read_lines(file, skip = 3L, progress = FALSE) %>%
+        # Genes are separated by a line containing `=`.
+        gsub(pattern = "^=$", replacement = "\\|\\|", x = .) %>%
+        # Add a tab delimiter before our keys of interest:
+        # - Concise description
+        # - Provisional description
+        # - Detailed description
+        # - Automated description
+        # - Gene class description
+        gsub(
+            pattern = paste0(
+                "(Concise|Provisional|Detailed|Automated|Gene class)",
+                " description\\:"
+            ),
+            replacement = "\t\\1 description:",
+            x = .
+        ) %>%
+        # Now collapse to a single line and split by the gene separator (`||`).
         paste(collapse = " ") %>%
         strsplit("\\|\\|") %>%
-        unlist()
-
-    # Clean up spaces and tabs.
-    lines <- lines %>%
+        unlist() %>%
+        # Clean up spaces and tabs.
         gsub("  ", " ", .) %>%
         gsub("^ ", "", .) %>%
         gsub(" $", "", .) %>%
         gsub(" \t", "\t", .) %>%
-        gsub("\t ", "\t", .)
+        gsub("\t ", "\t", .) %>%
+        # Now split by the tab delimiters.
+        strsplit("\t")
 
-    # Now split by the tab delimiters.
-    lines <- strsplit(lines, "\t")
+    # Before we process the list, remove non-N2 annotations.
+    # These were added in WS269.
+    # For example, drop these: "PRJEB28388_chrIII_pilon.g6684".
+    keep <- bapply(
+        X = lines,
+        FUN = function(x) {
+            grepl(pattern = genePattern, x = x[[1L]])
+        }
+    )
+    lines <- lines[keep]
 
-    # Make this call parallel.
-    message("Processing functional descriptions file.")
+    # Parallelize the processing steps here to speed up the return.
+    message("Processing functional descriptions...")
     dflist <- pblapply(lines, function(x) {
+        # This step checks for columns such as "Concise description:".
         keyPattern <- "^([A-Za-z[:space:]]+)\\:"
-        names <- str_match(x, keyPattern)[, 2L]
+        names <- str_match(x, pattern = keyPattern)[, 2L]
+        # The first 3 columns won't match the pattern, so assign manually.
         names[1L:3L] <- c("geneID", "geneName", "sequence")
-        names <- make.names(names)
-        # Now remove the keys
-        x <- gsub(paste0(keyPattern, " "), "", x)
-        names(x) <- names
-        tbl <- as_tibble(t(x))
-        # Ensure the user uses the values from `geneIDs()` instead.
-        tbl[["geneName"]] <- NULL
-        tbl[["sequence"]] <- NULL
-        tbl
+        names <- camel(names)
+        x %>%
+            # Remove the key prefix (e.g. "Concise description:").
+            gsub(
+                pattern = paste0(keyPattern, " "),
+                replacement = "",
+                x = .
+            ) %>%
+            set_names(names) %>%
+            t() %>%
+            as_tibble() %>%
+            # Ensure the user uses the values from `geneIDs()` return instead.
+            .[, setdiff(colnames(.), c("geneName", "sequence"))]
     })
 
     dflist %>%
         bind_rows() %>%
         camel() %>%
         sanitizeNA() %>%
-        removeNA()
+        removeNA() %>%
+        arrange(!!sym("geneID"))
 }

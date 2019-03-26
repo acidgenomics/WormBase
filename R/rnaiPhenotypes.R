@@ -6,37 +6,32 @@
 #' @export
 #'
 #' @examples
-#' x <- rnaiPhenotypes(progress = FALSE)
+#' x <- rnaiPhenotypes()
 #' glimpse(x)
-rnaiPhenotypes <- function(
-    version = NULL,
-    dir = ".",
-    progress = FALSE
-) {
-    assert(isFlag(progress))
-    # Allow the user to disable progress bar.
-    if (!isTRUE(progress)) {
-        pblapply <- lapply
-    }
+rnaiPhenotypes <- function(version = NULL, progress = FALSE) {
+    pblapply <- .pblapply(progress = progress)
     file <- .transmit(
         subdir = "ONTOLOGY",
         pattern = "rnai_phenotypes_quick",
         version = version,
-        dir = dir,
         compress = TRUE
     )
     data <- read_tsv(
-        file = as.character(file),
+        file = file,
         col_names = c("geneID", "sequence", "rnaiPhenotypes")
     )
-    # Use `sequence` from `geneID()` return.
-    data[["sequence"]] <- NULL
     list <- pblapply(
         X = strsplit(data[["rnaiPhenotypes"]], ", "),
         FUN = function(x) {
             sort(unique(x))
         }
     )
-    data[["rnaiPhenotypes"]] <- list
-    data
+    data %>%
+        mutate(
+            # Use `sequence` from `geneID()` return instead.
+            !!sym("sequence") := NULL,
+            !!sym("rnaiPhenotypes") := !!list
+        ) %>%
+        filter(grepl(pattern = genePattern, x = !!sym("geneID"))) %>%
+        arrange(!!sym("geneID"))
 }

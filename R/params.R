@@ -3,8 +3,6 @@
 #' @name params
 #' @keywords internal
 #'
-#' @param dir `character(1)`.
-#'   Output directory.
 #' @param file `character(1)`.
 #'   Annotation file name.
 #' @param gene `character(1)`.

@@ -6,39 +6,25 @@
 #' @export
 #'
 #' @examples
-#' x <- orthologs(progress = FALSE)
+#' x <- orthologs()
 #' glimpse(x)
-orthologs <- function(
-    version = NULL,
-    dir = ".",
-    progress = FALSE
-) {
+orthologs <- function(version = NULL, progress = FALSE) {
     pblapply <- .pblapply(progress = progress)
+    file <- .annotationFile(pattern = "orthologs", version = version)
 
-    file <- .annotationFile(
-        pattern = "orthologs",
-        version = version,
-        dir = dir
-    )
-    lines <- read_lines(
-        file = unname(file),
-        progress = FALSE
-    )
-
-    # Remove the comment lines.
-    lines <- lines[!grepl("^#", lines)]
-
-    lines <- lines %>%
+    message("Parsing lines in file...")
+    lines <- read_lines(file, progress = FALSE) %>%
+        # Remove the comment lines.
+        .[!grepl("^#", .)] %>%
         gsub("^=$", "\\|\\|", .) %>%
         paste(collapse = " ") %>%
         strsplit("\\|\\|") %>%
         unlist() %>%
-        gsub("^ ", "", .)
-
-    # Drop any lines that don't contain a gene identifier.
-    lines <- lines %>%
+        gsub("^ ", "", .) %>%
+        # Drop any lines that don't contain a gene identifier.
         .[grepl(paste0("^", genePattern), .)]
 
+    message("Processing orthologs...")
     dflist <- pblapply(lines, function(x) {
         gene <- str_extract(x, genePattern)
         patterns <- c(
@@ -74,5 +60,7 @@ orthologs <- function(
 
     dflist %>%
         bind_rows() %>%
-        select(!!sym("geneID"), everything())
+        select(!!sym("geneID"), everything()) %>%
+        filter(grepl(pattern = genePattern, x = !!sym("geneID"))) %>%
+        arrange(!!sym("geneID"))
 }

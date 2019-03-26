@@ -4,9 +4,6 @@
 \alias{params}
 \title{Parameters}
 \arguments{
-\item{dir}{\code{character(1)}.
-Output directory.}
-
 \item{file}{\code{character(1)}.
 Annotation file name.}
 

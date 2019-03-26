@@ -1,6 +1,16 @@
-## wormbase 0.2.6 (2019-03-23)
+## wormbase 0.2.7 (2019-03-26)
 
-### Minor changes
+- Added support for WS269 release. Functions that parse files from the WormBase
+  FTP server had to be modified to ensure only annotations matching N2 gene
+  identifiers (e.g. `WBGene`) are returned.
+- Removed `dir` argument for all functions that parse files from WormBase FTP
+  server. Files now always download to `tempdir` instead.
+- Improved internal tidyeval code where applicable, notably inside `mutate`
+  calls using `sym` and `:=` [rlang][] functions.
+
+
+
+## wormbase 0.2.6 (2019-03-23)
 
 - Migrated code to [Acid Genomics][].
 
@@ -77,3 +87,4 @@ Ahringer, and Ruvkun Lab cherrypick libraries.
 
 
 [Acid Genomics]: https://acidgenomics.com/
+[rlang]: https://rlang.r-lib.org/
