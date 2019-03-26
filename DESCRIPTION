@@ -3,12 +3,18 @@ Title: WormBase annotations
 Description: Fetch Caenorhabditis elegans genome annotations from WormBase.
 Version: 0.2.7
 Date: 2019-03-26
-Authors@R: person(
-    given = "Michael",
-    family = "Steinbaugh",
-    email = "mike@steinbaugh.com",
-    role = c("aut", "cre"),
-    comment = c(ORCID = "0000-0002-2403-2221"))
+Authors@R: c(
+    person(
+        given = "Michael",
+        family = "Steinbaugh",
+        email = "mike@steinbaugh.com",
+        role = c("aut", "cre"),
+        comment = c(ORCID = "0000-0002-2403-2221")
+    ),
+    person(
+        given = "Acid Genomics",
+        role = c("cph", "fnd")
+    ))
 License: MIT + file LICENSE
 URL:
     https://wormbase.acidgenomics.com/,
