@@ -54,5 +54,5 @@
     file <- transmit(remoteDir = remoteDir, localDir = dir, ...)
     # Check for single file match.
     assert(isString(file))
-    file
+    unname(file)
 }
