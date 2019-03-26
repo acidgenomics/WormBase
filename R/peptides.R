@@ -6,7 +6,7 @@
 #' @export
 #'
 #' @examples
-#' x <- peptides(progress = FALSE)
+#' x <- peptides()
 #' glimpse(x)
 peptides <- function(
     version = NULL,
@@ -53,6 +53,7 @@ peptides <- function(
         bind_rows() %>%
         rename(geneID = !!sym("gene")) %>%
         select(!!sym("geneID"), everything()) %>%
+        filter(grepl(pattern = genePattern, x = !!sym("geneID"))) %>%
         group_by(!!sym("geneID")) %>%
         arrange(!!!syms(c("sequence", "wormpep")), .by_group = TRUE)
 }
