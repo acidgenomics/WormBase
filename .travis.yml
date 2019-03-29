@@ -31,9 +31,9 @@ r_github_packages:
   - acidgenomics/lintr
 
 after_success:
+  - R CMD BiocCheck .
   - Rscript -e 'lintr::lint_package()'
   - Rscript -e 'covr::codecov()'
-  - R CMD BiocCheck .
 
 notifications:
   email:
