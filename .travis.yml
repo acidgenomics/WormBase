@@ -26,7 +26,6 @@ r_packages:
   - covr
 bioc_packages:
   - BiocCheck
-  - GenomeInfoDbData
 r_github_packages:
   - acidgenomics/lintr
 
