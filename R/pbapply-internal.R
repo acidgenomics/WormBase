@@ -1,4 +1,4 @@
-# Optional progress bar.
+## Optional progress bar.
 .pblapply <- function(progress) {
     assert(isFlag(progress))
     if (isTRUE(progress)) {

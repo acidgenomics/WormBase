@@ -22,18 +22,18 @@ description <- function(
         version = version
     )
 
-    # Process file by reading lines in directly.
-    # The first 3 lines contain comments.
+    ## Process file by reading lines in directly.
+    ## The first 3 lines contain comments.
     message("Parsing lines in file...")
     lines <- read_lines(file, skip = 3L, progress = FALSE) %>%
-        # Genes are separated by a line containing `=`.
+        ## Genes are separated by a line containing `=`.
         gsub(pattern = "^=$", replacement = "\\|\\|", x = .) %>%
-        # Add a tab delimiter before our keys of interest:
-        # - Concise description
-        # - Provisional description
-        # - Detailed description
-        # - Automated description
-        # - Gene class description
+        ## Add a tab delimiter before our keys of interest:
+        ## - Concise description
+        ## - Provisional description
+        ## - Detailed description
+        ## - Automated description
+        ## - Gene class description
         gsub(
             pattern = paste0(
                 "(Concise|Provisional|Detailed|Automated|Gene class)",
@@ -42,22 +42,22 @@ description <- function(
             replacement = "\t\\1 description:",
             x = .
         ) %>%
-        # Now collapse to a single line and split by the gene separator (`||`).
+        ## Now collapse to a single line and split by the gene separator (`||`).
         paste(collapse = " ") %>%
         strsplit("\\|\\|") %>%
         unlist() %>%
-        # Clean up spaces and tabs.
+        ## Clean up spaces and tabs.
         gsub("  ", " ", .) %>%
         gsub("^ ", "", .) %>%
         gsub(" $", "", .) %>%
         gsub(" \t", "\t", .) %>%
         gsub("\t ", "\t", .) %>%
-        # Now split by the tab delimiters.
+        ## Now split by the tab delimiters.
         strsplit("\t")
 
-    # Before we process the list, remove non-N2 annotations.
-    # These were added in WS269.
-    # For example, drop these: "PRJEB28388_chrIII_pilon.g6684".
+    ## Before we process the list, remove non-N2 annotations.
+    ## These were added in WS269.
+    ## For example, drop these: "PRJEB28388_chrIII_pilon.g6684".
     keep <- bapply(
         X = lines,
         FUN = function(x) {
@@ -66,17 +66,17 @@ description <- function(
     )
     lines <- lines[keep]
 
-    # Parallelize the processing steps here to speed up the return.
+    ## Parallelize the processing steps here to speed up the return.
     message("Processing functional descriptions...")
     dflist <- pblapply(lines, function(x) {
-        # This step checks for columns such as "Concise description:".
+        ## This step checks for columns such as "Concise description:".
         keyPattern <- "^([A-Za-z[:space:]]+)\\:"
         names <- str_match(x, pattern = keyPattern)[, 2L]
-        # The first 3 columns won't match the pattern, so assign manually.
+        ## The first 3 columns won't match the pattern, so assign manually.
         names[1L:3L] <- c("geneID", "geneName", "sequence")
         names <- camel(names)
         x %>%
-            # Remove the key prefix (e.g. "Concise description:").
+            ## Remove the key prefix (e.g. "Concise description:").
             gsub(
                 pattern = paste0(keyPattern, " "),
                 replacement = "",
@@ -85,7 +85,7 @@ description <- function(
             set_names(names) %>%
             t() %>%
             as_tibble() %>%
-            # Ensure the user uses the values from `geneIDs()` return instead.
+            ## Ensure the user uses the values from `geneIDs()` return instead.
             .[, setdiff(colnames(.), c("geneName", "sequence"))]
     })
 

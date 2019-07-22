@@ -36,7 +36,7 @@
         isString(subdir),
         .isVersion(version)
     )
-    # Prepare remote directory path for transmit call.
+    ## Prepare remote directory path for transmit call.
     if (is.null(version)) {
         version <- "current-production-release"
     }
@@ -54,7 +54,7 @@
         localDir = tempdir(),
         ...
     )
-    # Check for single file match.
+    ## Check for single file match.
     assert(isString(file))
     unname(file)
 }

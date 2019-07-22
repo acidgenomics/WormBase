@@ -14,14 +14,14 @@ orthologs <- function(version = NULL, progress = FALSE) {
 
     message("Parsing lines in file...")
     lines <- read_lines(file, progress = FALSE) %>%
-        # Remove the comment lines.
+        ## Remove the comment lines.
         .[!grepl("^#", .)] %>%
         gsub("^=$", "\\|\\|", .) %>%
         paste(collapse = " ") %>%
         strsplit("\\|\\|") %>%
         unlist() %>%
         gsub("^ ", "", .) %>%
-        # Drop any lines that don't contain a gene identifier.
+        ## Drop any lines that don't contain a gene identifier.
         .[grepl(paste0("^", genePattern), .)]
 
     message("Processing orthologs...")

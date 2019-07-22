@@ -10,7 +10,7 @@
 #' glimpse(x)
 oligos <- function(version = NULL) {
     file <- .annotationFile(pattern = "pcr_product2gene", version = version)
-    # `pcr_product2gene.txt` file is malformed and may produce warnings.
+    ## `pcr_product2gene.txt` file is malformed and may produce warnings.
     suppressWarnings(
         data <- read_tsv(
             file = file,

@@ -13,12 +13,12 @@ peptides <- function(version = NULL, progress = FALSE) {
     file <- .assemblyFile(pattern = "wormpep_package", version = version)
     dir <- tempdir()
 
-    # Grep the verion number.
+    ## Grep the verion number.
     versionNumber <- file %>%
         str_extract("WS\\d{3}") %>%
         gsub("^WS", "", .)
 
-    # Extract the individual table.
+    ## Extract the individual table.
     wormpepTable <- paste0("wormpep.table", versionNumber)
     untar(
         tarfile = file,
@@ -30,11 +30,11 @@ peptides <- function(version = NULL, progress = FALSE) {
 
     message("Processing peptides...")
     dflist <- pblapply(lines, function(line) {
-        # Attempt to match quoted values first (e.g. product).
+        ## Attempt to match quoted values first (e.g. product).
         keyPattern <- "([a-z]+)=(\"[^\"]+\"|[^\\s]+)"
         keyPairs <- str_match_all(line, keyPattern) %>%
             .[[1L]] %>%
-            # Remove any escaped quotes.
+            ## Remove any escaped quotes.
             gsub("\"", "", .)
         x <- c(keyPairs[, 3L])
         names(x) <- keyPairs[, 2L]

@@ -15,13 +15,13 @@
 geneOtherIDs <- function(version = NULL) {
     file <- .annotationFile(pattern = "geneOtherIDs", version = version)
     read_lines(file, progress = FALSE) %>%
-        # Remove status. Already present in geneIDs file.
+        ## Remove status. Already present in geneIDs file.
         gsub("\t(Dead|Live)", "", .) %>%
-        # Remove `CELE_*` identifiers.
+        ## Remove `CELE_*` identifiers.
         gsub("\t(CELE_[A-Z0-9\\.]+)", "", .) %>%
-        # Convert tabs to commas for identifiers.
+        ## Convert tabs to commas for identifiers.
         gsub("\t", "|", .) %>%
-        # Add tab back in to separate \code{gene} for row names.
+        ## Add tab back in to separate \code{gene} for row names.
         gsub("^(WBGene\\d+)(\\|)?", "\\1\t", .) %>%
         strsplit("\t") %>%
         do.call(rbind, .) %>%

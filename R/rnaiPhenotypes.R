@@ -28,7 +28,7 @@ rnaiPhenotypes <- function(version = NULL, progress = FALSE) {
     )
     data %>%
         mutate(
-            # Use `sequence` from `geneID()` return instead.
+            ## Use `sequence` from `geneID()` return instead.
             !!sym("sequence") := NULL,
             !!sym("rnaiPhenotypes") := !!list
         ) %>%
