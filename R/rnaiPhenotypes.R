@@ -8,6 +8,8 @@
 #' @examples
 #' x <- rnaiPhenotypes()
 #' glimpse(x)
+
+## Updated 2019-07-24.
 rnaiPhenotypes <- function(version = NULL, progress = FALSE) {
     pblapply <- .pblapply(progress = progress)
     file <- .transmit(

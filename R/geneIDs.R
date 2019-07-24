@@ -12,6 +12,8 @@
 #' @examples
 #' x <- geneIDs()
 #' glimpse(x)
+
+## Updated 2019-07-24.
 geneIDs <- function(version = NULL) {
     file <- .annotationFile(pattern = "geneIDs", version = version)
     import(file, colnames = FALSE) %>%

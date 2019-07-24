@@ -8,6 +8,8 @@
 #' @examples
 #' x <- oligos()
 #' glimpse(x)
+
+## Updated 2019-07-24.
 oligos <- function(version = NULL) {
     file <- .annotationFile(pattern = "pcr_product2gene", version = version)
     ## `pcr_product2gene.txt` file is malformed and may produce warnings.

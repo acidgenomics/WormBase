@@ -12,6 +12,8 @@
 #' @examples
 #' x <- geneOtherIDs()
 #' glimpse(x)
+
+## Updated 2019-07-24.
 geneOtherIDs <- function(version = NULL) {
     file <- .annotationFile(pattern = "geneOtherIDs", version = version)
     read_lines(file, progress = FALSE) %>%

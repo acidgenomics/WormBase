@@ -2,7 +2,7 @@ context("FTP File Functions")
 
 
 
-## blastp =======================================================================
+## blastp ======================================================================
 test_that("blastp : Current", {
     x <- blastp()
     expect_is(x, "tbl_df")
@@ -24,7 +24,7 @@ test_that("blastp : Versioned", {
 
 
 
-## description ==================================================================
+## description =================================================================
 test_that("description : Current", {
     x <- description()
     expect_is(x, "tbl_df")
@@ -43,7 +43,7 @@ test_that("description : Versioned", {
 
 
 
-## geneIDs ======================================================================
+## geneIDs =====================================================================
 test_that("geneIDs : Current", {
     x <- geneIDs()
     expect_is(x, "tbl_df")
@@ -62,7 +62,7 @@ test_that("geneIDs : Versioned", {
 
 
 
-## geneOtherIDs =================================================================
+## geneOtherIDs ================================================================
 test_that("geneOtherIDs : Current", {
     x <- geneOtherIDs()
     expect_is(x, "tbl_df")
@@ -83,7 +83,7 @@ test_that("geneOtherIDs : Versioned", {
 
 
 
-## oligos =======================================================================
+## oligos ======================================================================
 test_that("oligos : Current", {
     x <- oligos()
     expect_is(x, "tbl_df")
@@ -104,7 +104,7 @@ test_that("oligos : Versioned", {
 
 
 
-## orthologs ====================================================================
+## orthologs ===================================================================
 test_that("orthologs : Current", {
     x <- orthologs()
     expect_is(x, "tbl_df")
@@ -128,7 +128,7 @@ test_that("orthologs : Versioned", {
 
 
 
-## peptides =====================================================================
+## peptides ====================================================================
 test_that("peptides : Current", {
     x <- peptides()
     expect_is(x, "tbl_df")
@@ -155,7 +155,7 @@ test_that("peptides : Versioned", {
 
 
 
-## rnaiPhenotypes ===============================================================
+## rnaiPhenotypes ==============================================================
 test_that("rnaiPhenotypes : Current", {
     x <- rnaiPhenotypes()
     expect_is(x, "tbl_df")

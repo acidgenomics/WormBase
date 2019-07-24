@@ -1,3 +1,4 @@
+## Updated 2019-07-24.
 .annotationFile <- function(...) {
     .transmit(
         subdir = paste(
@@ -13,6 +14,7 @@
 
 
 
+## Updated 2019-07-24.
 .assemblyFile <- function(...) {
     .transmit(
         subdir = paste(
@@ -27,6 +29,7 @@
 
 
 
+## Updated 2019-07-24.
 .transmit <- function(
     subdir,
     version = NULL,

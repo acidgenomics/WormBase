@@ -8,6 +8,8 @@
 #' @examples
 #' x <- peptides()
 #' glimpse(x)
+
+## Updated 2019-07-24.
 peptides <- function(version = NULL, progress = FALSE) {
     pblapply <- .pblapply(progress = progress)
     file <- .assemblyFile(pattern = "wormpep_package", version = version)

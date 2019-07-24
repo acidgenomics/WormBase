@@ -8,6 +8,8 @@
 #' @examples
 #' x <- orthologs()
 #' glimpse(x)
+
+## Updated 2019-07-24.
 orthologs <- function(version = NULL, progress = FALSE) {
     pblapply <- .pblapply(progress = progress)
     file <- .annotationFile(pattern = "orthologs", version = version)

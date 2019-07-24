@@ -12,6 +12,8 @@
 #' @examples
 #' x <- description()
 #' glimpse(x)
+
+## Updated 2019-07-24.
 description <- function(
     version = NULL,
     progress = FALSE

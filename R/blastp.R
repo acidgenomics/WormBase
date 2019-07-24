@@ -8,6 +8,8 @@
 #' @examples
 #' x <- blastp()
 #' glimpse(x)
+
+## Updated 2019-07-24.
 blastp <- function(version = NULL) {
     file <- .assemblyFile(
         pattern = "best_blastp_hits",

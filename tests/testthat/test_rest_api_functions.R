@@ -22,7 +22,7 @@ test_that("externalIDs : NULL return", {
 
 
 
-## geneOntology =================================================================
+## geneOntology ================================================================
 test_that("geneOntology", {
     x <- geneOntology(genes)
     expect_identical(x[["geneID"]], as.character(genes))
