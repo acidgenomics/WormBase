@@ -23,3 +23,5 @@ geneIDs <- function(version = NULL) {
         filter(grepl(pattern = genePattern, x = !!sym("geneID"))) %>%
         arrange(!!sym("geneID"))
 }
+
+formals(geneIDs)[["version"]] <- versionArg

@@ -27,3 +27,5 @@ blastp <- function(version = NULL) {
         ) %>%
         group_by(!!sym("wormpep"))
 }
+
+formals(blastp)[["version"]] <- versionArg

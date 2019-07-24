@@ -30,6 +30,18 @@
 
 
 ## Updated 2019-07-24.
+.invalidFTPFile <- function(file) {
+    stop(paste0(
+        "Failed to detect any valid gene identifiers.\n",
+        "Please file an issue on GitHub that file ",
+        "`", basename(file), "` ",
+        "is malformed on the WormBase FTP server."
+    ))
+}
+
+
+
+## Updated 2019-07-24.
 .transmit <- function(
     subdir,
     version = NULL,

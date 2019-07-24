@@ -66,6 +66,9 @@ description <- function(
             grepl(pattern = genePattern, x = x[[1L]])
         }
     )
+    if (!any(keep)) {
+        .invalidFTPFile(file)
+    }
     lines <- lines[keep]
 
     ## Parallelize the processing steps here to speed up the return.
@@ -98,3 +101,5 @@ description <- function(
         removeNA() %>%
         arrange(!!sym("geneID"))
 }
+
+formals(description)[["version"]] <- versionArg
