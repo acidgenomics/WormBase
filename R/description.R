@@ -76,7 +76,7 @@ description <- function(
         names <- str_match(x, pattern = keyPattern)[, 2L]
         ## The first 3 columns won't match the pattern, so assign manually.
         names[1L:3L] <- c("geneID", "geneName", "sequence")
-        names <- camel(names)
+        names <- camelCase(names)
         x %>%
             ## Remove the key prefix (e.g. "Concise description:").
             gsub(
@@ -93,7 +93,7 @@ description <- function(
 
     dflist %>%
         bind_rows() %>%
-        camel() %>%
+        camelCase() %>%
         sanitizeNA() %>%
         removeNA() %>%
         arrange(!!sym("geneID"))

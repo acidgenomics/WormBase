@@ -48,6 +48,6 @@ geneOntology <- function(genes, progress = FALSE) {
     }
     list %>%
         bind_rows() %>%
-        camel() %>%
+        camelCase() %>%
         .[, unique(c("geneID", sort(colnames(.))))]
 }

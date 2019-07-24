@@ -1,7 +1,7 @@
-#' @importFrom basejump bapply camel import initializeDirectory makeNames
-#'   removeNA sanitizeNA toStringUnique transmit
-#' @importFrom goalie allAreMatchingRegex assert hasNoDuplicates isCharacter
-#'   isFlag isString
+#' @importFrom basejump camelCase import initializeDirectory makeNames removeNA
+#'   sanitizeNA toStringUnique transmit
+#' @importFrom goalie allAreMatchingRegex assert bapply hasNoDuplicates
+#'   isCharacter isFlag isString
 #' @importFrom dplyr arrange bind_rows everything filter group_by mutate rename
 #'   select
 #' @importFrom httr content content_type_json GET user_agent
