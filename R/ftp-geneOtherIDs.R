@@ -33,3 +33,5 @@ geneOtherIDs <- function(version = NULL) {
         arrange(!!sym("geneID")) %>%
         mutate(!!sym("geneOtherIDs") := strsplit(!!sym("geneOtherIDs"), "\\|"))
 }
+
+formals(geneOtherIDs)[["version"]] <- versionArg

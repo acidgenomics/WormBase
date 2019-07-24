@@ -54,3 +54,5 @@ peptides <- function(version = NULL, progress = FALSE) {
         group_by(!!sym("geneID")) %>%
         arrange(!!!syms(c("sequence", "wormpep")), .by_group = TRUE)
 }
+
+formals(peptides)[["version"]] <- versionArg

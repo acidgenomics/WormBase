@@ -37,3 +37,5 @@ rnaiPhenotypes <- function(version = NULL, progress = FALSE) {
         filter(grepl(pattern = genePattern, x = !!sym("geneID"))) %>%
         arrange(!!sym("geneID"))
 }
+
+formals(rnaiPhenotypes)[["version"]] <- versionArg
