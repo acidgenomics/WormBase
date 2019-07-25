@@ -4,7 +4,7 @@
 \alias{blastp}
 \title{Best BLASTP hits}
 \usage{
-blastp(version = getOption(x = "wormbase.version", default = "WS269"))
+blastp(version = getOption(x = "wormbase.version", default = NULL))
 }
 \arguments{
 \item{version}{\code{character(1)} or \code{NULL}.

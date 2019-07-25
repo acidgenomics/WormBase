@@ -4,7 +4,7 @@
 \alias{oligos}
 \title{PCR oligo sequences}
 \usage{
-oligos(version = getOption(x = "wormbase.version", default = "WS269"))
+oligos(version = getOption(x = "wormbase.version", default = NULL))
 }
 \arguments{
 \item{version}{\code{character(1)} or \code{NULL}.

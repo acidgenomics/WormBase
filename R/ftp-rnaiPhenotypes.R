@@ -19,7 +19,7 @@ rnaiPhenotypes <- function(version = NULL, progress = FALSE) {
         compress = TRUE
     )
     data <- read_tsv(
-        file = file,
+        file = unname(file),
         col_names = c("geneID", "sequence", "rnaiPhenotypes")
     )
     list <- pblapply(

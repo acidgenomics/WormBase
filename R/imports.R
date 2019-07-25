@@ -1,5 +1,5 @@
-#' @importFrom basejump camelCase import initializeDirectory makeNames removeNA
-#'   sanitizeNA toStringUnique transmit
+#' @importFrom basejump camelCase import initializeDirectory makeNames pasteURL
+#'   removeNA sanitizeNA toStringUnique transmit
 #' @importFrom goalie allAreMatchingRegex assert bapply hasNoDuplicates
 #'   isCharacter isFlag isString
 #' @importFrom dplyr arrange bind_rows everything filter group_by mutate rename

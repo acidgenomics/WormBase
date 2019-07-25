@@ -4,8 +4,8 @@
 \alias{description}
 \title{Gene functional descriptions}
 \usage{
-description(version = getOption(x = "wormbase.version", default =
-  "WS269"), progress = FALSE)
+description(version = getOption(x = "wormbase.version", default = NULL),
+  progress = FALSE)
 }
 \arguments{
 \item{version}{\code{character(1)} or \code{NULL}.
@@ -28,6 +28,7 @@ files available on the WormBase FTP server. These annotations are removed
 from the return here, using grep matching to return only \code{WBGene} entries.
 }
 \examples{
-x <- description()
+## Currently failing for WS270, WS271.
+x <- description(version = "WS269")
 glimpse(x)
 }

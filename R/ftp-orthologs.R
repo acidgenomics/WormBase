@@ -15,7 +15,9 @@ orthologs <- function(version = NULL, progress = FALSE) {
     file <- .annotationFile(pattern = "orthologs", version = version)
 
     message("Parsing lines in file...")
-    lines <- read_lines(file, progress = FALSE) %>%
+    lines <- file %>%
+        unname() %>%
+        read_lines(progress = FALSE) %>%
         ## Remove the comment lines.
         .[!grepl("^#", .)] %>%
         gsub("^=$", "\\|\\|", .) %>%

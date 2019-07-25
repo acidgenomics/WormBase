@@ -1,4 +1,4 @@
-context("REST API Functions")
+context("REST API")
 
 ## externalIDs =================================================================
 test_that("externalIDs", {

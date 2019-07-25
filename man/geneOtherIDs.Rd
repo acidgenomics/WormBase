@@ -4,8 +4,7 @@
 \alias{geneOtherIDs}
 \title{Other gene identifiers}
 \usage{
-geneOtherIDs(version = getOption(x = "wormbase.version", default =
-  "WS269"))
+geneOtherIDs(version = getOption(x = "wormbase.version", default = NULL))
 }
 \arguments{
 \item{version}{\code{character(1)} or \code{NULL}.

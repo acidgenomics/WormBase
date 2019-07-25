@@ -15,7 +15,9 @@ blastp <- function(version = NULL) {
         pattern = "best_blastp_hits",
         version = version
     )
-    import(file = unname(file), colnames = FALSE) %>%
+    file %>%
+        unname() %>%
+        import(colnames = FALSE) %>%
         as_tibble() %>%
         .[, c(1L, 4L, 5L)] %>%
         set_colnames(c("wormpep", "peptide", "eValue")) %>%

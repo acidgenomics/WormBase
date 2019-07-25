@@ -4,7 +4,7 @@
 \alias{orthologs}
 \title{Orthologs}
 \usage{
-orthologs(version = getOption(x = "wormbase.version", default = "WS269"),
+orthologs(version = getOption(x = "wormbase.version", default = NULL),
   progress = FALSE)
 }
 \arguments{

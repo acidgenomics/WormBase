@@ -16,7 +16,9 @@
 ## Updated 2019-07-24.
 geneOtherIDs <- function(version = NULL) {
     file <- .annotationFile(pattern = "geneOtherIDs", version = version)
-    read_lines(file, progress = FALSE) %>%
+    file %>%
+        unname() %>%
+        read_lines(progress = FALSE) %>%
         ## Remove status. Already present in geneIDs file.
         gsub("\t(Dead|Live)", "", .) %>%
         ## Remove `CELE_*` identifiers.
@@ -25,10 +27,11 @@ geneOtherIDs <- function(version = NULL) {
         gsub("\t", "|", .) %>%
         ## Add tab back in to separate \code{gene} for row names.
         gsub("^(WBGene\\d+)(\\|)?", "\\1\t", .) %>%
+        ## Break out the chain and evaluate.
         strsplit("\t") %>%
         do.call(rbind, .) %>%
-        as_tibble() %>%
         set_colnames(c("geneID", "geneOtherIDs")) %>%
+        as_tibble() %>%
         filter(grepl(pattern = genePattern, x = !!sym("geneID"))) %>%
         arrange(!!sym("geneID")) %>%
         mutate(!!sym("geneOtherIDs") := strsplit(!!sym("geneOtherIDs"), "\\|"))

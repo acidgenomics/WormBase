@@ -16,7 +16,9 @@
 ## Updated 2019-07-24.
 geneIDs <- function(version = NULL) {
     file <- .annotationFile(pattern = "geneIDs", version = version)
-    import(file, colnames = FALSE) %>%
+    file %>%
+        unname() %>%
+        import(colnames = FALSE) %>%
         as_tibble() %>%
         .[, 2L:5L] %>%
         set_colnames(c("geneID", "geneName", "sequence", "status")) %>%

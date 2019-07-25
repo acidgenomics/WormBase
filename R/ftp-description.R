@@ -10,7 +10,8 @@
 #' @export
 #'
 #' @examples
-#' x <- description()
+#' ## Currently failing for WS270, WS271.
+#' x <- description(version = "WS269")
 #' glimpse(x)
 
 ## Updated 2019-07-24.
@@ -27,7 +28,9 @@ description <- function(
     ## Process file by reading lines in directly.
     ## The first 3 lines contain comments.
     message("Parsing lines in file...")
-    lines <- read_lines(file, skip = 3L, progress = FALSE) %>%
+    lines <- file %>%
+        unname() %>%
+        read_lines(skip = 3L, progress = FALSE) %>%
         ## Genes are separated by a line containing `=`.
         gsub(pattern = "^=$", replacement = "\\|\\|", x = .) %>%
         ## Add a tab delimiter before our keys of interest:

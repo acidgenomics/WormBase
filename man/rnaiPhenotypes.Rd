@@ -5,7 +5,7 @@
 \title{RNAi phenotypes}
 \usage{
 rnaiPhenotypes(version = getOption(x = "wormbase.version", default =
-  "WS269"), progress = FALSE)
+  NULL), progress = FALSE)
 }
 \arguments{
 \item{version}{\code{character(1)} or \code{NULL}.

@@ -4,7 +4,7 @@
 \alias{peptides}
 \title{Peptides}
 \usage{
-peptides(version = getOption(x = "wormbase.version", default = "WS269"),
+peptides(version = getOption(x = "wormbase.version", default = NULL),
   progress = FALSE)
 }
 \arguments{
