@@ -1,3 +1,4 @@
+## Updated 2019-07-24.
 .allAreGenes <- function(x) {
     ok <- isCharacter(x)
     if (!isTRUE(ok)) return(FALSE)
@@ -16,6 +17,7 @@
 
 
 
+## Updated 2019-07-24.
 .isVersion <- function(x) {
     if (is.null(x)) return(TRUE)
 

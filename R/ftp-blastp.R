@@ -8,12 +8,16 @@
 #' @examples
 #' x <- blastp()
 #' glimpse(x)
+
+## Updated 2019-07-24.
 blastp <- function(version = NULL) {
     file <- .assemblyFile(
         pattern = "best_blastp_hits",
         version = version
     )
-    import(file = unname(file), colnames = FALSE) %>%
+    file %>%
+        unname() %>%
+        import(colnames = FALSE) %>%
         as_tibble() %>%
         .[, c(1L, 4L, 5L)] %>%
         set_colnames(c("wormpep", "peptide", "eValue")) %>%
@@ -25,3 +29,5 @@ blastp <- function(version = NULL) {
         ) %>%
         group_by(!!sym("wormpep"))
 }
+
+formals(blastp)[["version"]] <- versionArg

@@ -8,6 +8,8 @@
 #' @examples
 #' x <- rnaiPhenotypes()
 #' glimpse(x)
+
+## Updated 2019-07-24.
 rnaiPhenotypes <- function(version = NULL, progress = FALSE) {
     pblapply <- .pblapply(progress = progress)
     file <- .transmit(
@@ -17,7 +19,7 @@ rnaiPhenotypes <- function(version = NULL, progress = FALSE) {
         compress = TRUE
     )
     data <- read_tsv(
-        file = file,
+        file = unname(file),
         col_names = c("geneID", "sequence", "rnaiPhenotypes")
     )
     list <- pblapply(
@@ -28,10 +30,12 @@ rnaiPhenotypes <- function(version = NULL, progress = FALSE) {
     )
     data %>%
         mutate(
-            # Use `sequence` from `geneID()` return instead.
+            ## Use `sequence` from `geneID()` return instead.
             !!sym("sequence") := NULL,
             !!sym("rnaiPhenotypes") := !!list
         ) %>%
         filter(grepl(pattern = genePattern, x = !!sym("geneID"))) %>%
         arrange(!!sym("geneID"))
 }
+
+formals(rnaiPhenotypes)[["version"]] <- versionArg

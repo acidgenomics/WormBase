@@ -1,6 +1,6 @@
-context("REST API Functions")
+context("REST API")
 
-# externalIDs =================================================================
+## externalIDs =================================================================
 test_that("externalIDs", {
     x <- externalIDs(genes)
     expect_identical(x[["geneID"]], as.character(genes))
@@ -22,7 +22,7 @@ test_that("externalIDs : NULL return", {
 
 
 
-# geneOntology =================================================================
+## geneOntology ================================================================
 test_that("geneOntology", {
     x <- geneOntology(genes)
     expect_identical(x[["geneID"]], as.character(genes))

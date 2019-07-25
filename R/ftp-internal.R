@@ -1,3 +1,4 @@
+## Updated 2019-07-24.
 .annotationFile <- function(...) {
     .transmit(
         subdir = paste(
@@ -13,6 +14,7 @@
 
 
 
+## Updated 2019-07-24.
 .assemblyFile <- function(...) {
     .transmit(
         subdir = paste(
@@ -27,6 +29,19 @@
 
 
 
+## Updated 2019-07-24.
+.invalidFTPFile <- function(file) {
+    stop(paste0(
+        "Invalid FTP file detected.\n",
+        "Please submit an issue on the WormBase GitHub",
+        " (https://github.com/wormbase) ",
+        "that the FTP file `", basename(file), "` is malformed."
+    ))
+}
+
+
+
+## Updated 2019-07-24.
 .transmit <- function(
     subdir,
     version = NULL,
@@ -36,7 +51,7 @@
         isString(subdir),
         .isVersion(version)
     )
-    # Prepare remote directory path for transmit call.
+    ## Prepare remote directory path for transmit call.
     if (is.null(version)) {
         version <- "current-production-release"
     }
@@ -54,7 +69,7 @@
         localDir = tempdir(),
         ...
     )
-    # Check for single file match.
+    ## Check for single file match.
     assert(isString(file))
     unname(file)
 }

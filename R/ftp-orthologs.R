@@ -8,20 +8,24 @@
 #' @examples
 #' x <- orthologs()
 #' glimpse(x)
+
+## Updated 2019-07-24.
 orthologs <- function(version = NULL, progress = FALSE) {
     pblapply <- .pblapply(progress = progress)
     file <- .annotationFile(pattern = "orthologs", version = version)
 
     message("Parsing lines in file...")
-    lines <- read_lines(file, progress = FALSE) %>%
-        # Remove the comment lines.
+    lines <- file %>%
+        unname() %>%
+        read_lines(progress = FALSE) %>%
+        ## Remove the comment lines.
         .[!grepl("^#", .)] %>%
         gsub("^=$", "\\|\\|", .) %>%
         paste(collapse = " ") %>%
         strsplit("\\|\\|") %>%
         unlist() %>%
         gsub("^ ", "", .) %>%
-        # Drop any lines that don't contain a gene identifier.
+        ## Drop any lines that don't contain a gene identifier.
         .[grepl(paste0("^", genePattern), .)]
 
     message("Processing orthologs...")
@@ -64,3 +68,5 @@ orthologs <- function(version = NULL, progress = FALSE) {
         filter(grepl(pattern = genePattern, x = !!sym("geneID"))) %>%
         arrange(!!sym("geneID"))
 }
+
+formals(orthologs)[["version"]] <- versionArg

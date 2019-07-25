@@ -1,3 +1,4 @@
+## Updated 2019-07-24.
 .rest <- function(query) {
     x <- GET(
         url = paste("http://api.wormbase.org", "rest", query, sep = "/"),

@@ -1,4 +1,4 @@
-#' Gene Ontology terms
+#' External identifiers
 #'
 #' @inheritParams params
 #'
@@ -6,9 +6,11 @@
 #' @export
 #'
 #' @examples
-#' x <- geneOntology(c("WBGene00000912", "WBGene00004804"))
+#' x <- externalIDs(c("WBGene00000912", "WBGene00004804"))
 #' glimpse(x)
-geneOntology <- function(genes, progress = FALSE) {
+
+## Updated 2019-07-24.
+externalIDs <- function(genes, progress = FALSE) {
     assert(.allAreGenes(genes))
     pblapply <- .pblapply(progress = progress)
     list <- lapply(genes, function(gene) {
@@ -16,27 +18,25 @@ geneOntology <- function(genes, progress = FALSE) {
             "widget",
             "gene",
             gene,
-            "gene_ontology",
+            "external_links",
             sep = "/"
         )
         data <- .rest(query) %>%
             .[["fields"]] %>%
-            .[["gene_ontology"]] %>%
+            .[["xrefs"]] %>%
             .[["data"]]
         if (is.null(data)) {
             return(NULL)
         }
-        goTerms <- pblapply(data, function(process) {
-            lapply(seq_along(process), function(x) {
-                id <- process[[x]][["term_description"]][["id"]]
-                label <- process[[x]][["term_description"]][["label"]]
-                paste(id, label, sep = "~")
-            }) %>%
+        xrefs <- pblapply(data, function(x) {
+            x %>%
+                .[[1L]] %>%
+                .[[1L]] %>%
                 unlist() %>%
                 unique() %>%
                 sort()
         })
-        lapply(goTerms, list) %>%
+        lapply(xrefs, list) %>%
             as_tibble() %>%
             mutate(!!sym("geneID") := !!gene)
     })
@@ -46,6 +46,6 @@ geneOntology <- function(genes, progress = FALSE) {
     }
     list %>%
         bind_rows() %>%
-        camel() %>%
+        camelCase() %>%
         .[, unique(c("geneID", sort(colnames(.))))]
 }

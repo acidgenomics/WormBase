@@ -12,22 +12,29 @@
 #' @examples
 #' x <- geneOtherIDs()
 #' glimpse(x)
+
+## Updated 2019-07-24.
 geneOtherIDs <- function(version = NULL) {
     file <- .annotationFile(pattern = "geneOtherIDs", version = version)
-    read_lines(file, progress = FALSE) %>%
-        # Remove status. Already present in geneIDs file.
+    file %>%
+        unname() %>%
+        read_lines(progress = FALSE) %>%
+        ## Remove status. Already present in geneIDs file.
         gsub("\t(Dead|Live)", "", .) %>%
-        # Remove `CELE_*` identifiers.
+        ## Remove `CELE_*` identifiers.
         gsub("\t(CELE_[A-Z0-9\\.]+)", "", .) %>%
-        # Convert tabs to commas for identifiers.
+        ## Convert tabs to commas for identifiers.
         gsub("\t", "|", .) %>%
-        # Add tab back in to separate \code{gene} for row names.
+        ## Add tab back in to separate \code{gene} for row names.
         gsub("^(WBGene\\d+)(\\|)?", "\\1\t", .) %>%
+        ## Break out the chain and evaluate.
         strsplit("\t") %>%
         do.call(rbind, .) %>%
-        as_tibble() %>%
         set_colnames(c("geneID", "geneOtherIDs")) %>%
+        as_tibble() %>%
         filter(grepl(pattern = genePattern, x = !!sym("geneID"))) %>%
         arrange(!!sym("geneID")) %>%
         mutate(!!sym("geneOtherIDs") := strsplit(!!sym("geneOtherIDs"), "\\|"))
 }
+
+formals(geneOtherIDs)[["version"]] <- versionArg
