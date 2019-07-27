@@ -1,15 +1,18 @@
 #' Orthologs
 #'
+#' @note Updated 2019-07-27.
+#' @export
+#'
 #' @inheritParams params
 #'
 #' @return `tbl_df`.
-#' @export
 #'
 #' @examples
-#' x <- orthologs()
-#' glimpse(x)
-
-## Updated 2019-07-24.
+#' ## WormBase FTP server must be accessible.
+#' tryCatch(
+#'     expr = orthologs(),
+#'     error = function(e) e
+#' )
 orthologs <- function(version = NULL, progress = FALSE) {
     pblapply <- .pblapply(progress = progress)
     file <- .annotationFile(pattern = "orthologs", version = version)

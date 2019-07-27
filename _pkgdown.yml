@@ -4,18 +4,5 @@ authors:
   Acid Genomics:
     href: https://acidgenomics.com/
 
-reference:
-  - title: FTP files
-    contents:
-    - blastp
-    - description
-    - geneIDs
-    - geneOtherIDs
-    - oligos
-    - orthologs
-    - peptides
-    - rnaiPhenotypes
-  - title: REST API
-    contents:
-    - externalIDs
-    - geneOntology
+news:
+  - one_page: false

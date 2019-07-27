@@ -148,18 +148,34 @@ Show progress using pbapply package.</p></td>
     <p>As of WS269 release, some non-N2 gene IDs are included in the flat
 files available on the WormBase FTP server. These annotations are removed
 from the return here, using grep matching to return only <code>WBGene</code> entries.</p>
+<p>This file is currently malformed on the WormBase FTP server for WS270
+and WS271 releases.</p>
+<p>Updated 2019-07-27.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Currently failing for WS270, WS271.</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>description</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"WS269"</span>)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from ftp.wormbase.org.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
-#&gt; <span class='message'>c_elegans.PRJNA13758.WS269.functional_descriptions.txt.gz</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS269.functional_descriptions.txt.gz.</span></div><div class='output co'>#&gt; <span class='message'>Parsing lines in file...</span></div><div class='output co'>#&gt; <span class='message'>Processing functional descriptions...</span></div><div class='input'><span class='fu'><a href='https://tibble.tidyverse.org/reference/glimpse.html'>glimpse</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Observations: 51,254
-#&gt; Variables: 5
-#&gt; $ geneID                 <span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> "WBGene00000001", "WBGene00000002", "WBGene000…
-#&gt; $ conciseDescription     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> "aap-1 encodes the C. elegans ortholog of the …
-#&gt; $ provisionalDescription </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-#&gt; $ automatedDescription   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> "aap-1 is an ortholog of human PIK3R1 (phospho…
-#&gt; $ geneClassDescription   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> "phosphoinositide kinase AdAPter subunit", "Am…</div></span></pre>
+    <pre class="examples"><div class='input'><span class='co'>## WormBase FTP server must be accessible.</span>
+<span class='co'>## Currently failing for WS270, WS271 releases.</span>
+<span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
+    <span class='kw'>expr</span> <span class='kw'>=</span> <span class='fu'>description</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"WS269"</span>),
+    <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='no'>e</span>
+)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from ftp.wormbase.org.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
+#&gt; <span class='message'>c_elegans.PRJNA13758.WS269.functional_descriptions.txt.gz</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS269.functional_descriptions.txt.gz.</span></div><div class='output co'>#&gt; <span class='message'>Parsing lines in file...</span></div><div class='output co'>#&gt; <span class='message'>Processing functional descriptions...</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 51,254 x 5</span><span>
+#&gt;    geneID conciseDescript… provisionalDesc…
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>           
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> WBGen… aap-1 encodes t… </span><span style='color: #BB0000;'>NA</span><span>              
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> WBGen… aat-1 encodes a… </span><span style='color: #BB0000;'>NA</span><span>              
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> WBGen… aat-2 encodes a… </span><span style='color: #BB0000;'>NA</span><span>              
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> WBGen… aat-3 encodes a… </span><span style='color: #BB0000;'>NA</span><span>              
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> WBGen… aat-4 encodes a… </span><span style='color: #BB0000;'>NA</span><span>              
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> WBGen… aat-5 encodes a… </span><span style='color: #BB0000;'>NA</span><span>              
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> WBGen… aat-6 encodes a… </span><span style='color: #BB0000;'>NA</span><span>              
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> WBGen… aat-7 encodes a… </span><span style='color: #BB0000;'>NA</span><span>              
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> WBGen… aat-8 encodes a… </span><span style='color: #BB0000;'>NA</span><span>              
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> WBGen… aat-9 encodes a… </span><span style='color: #BB0000;'>NA</span><span>              
+#&gt; </span><span style='color: #949494;'># … with 51,244 more rows, and 2 more variables:
+#&gt; #   automatedDescription </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span style='color: #949494;'>,
+#&gt; #   geneClassDescription </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -13,6 +13,13 @@ WormBase release version (e.g. WS271).
 \description{
 Current WormBase release
 }
+\note{
+Updated 2019-07-27.
+}
 \examples{
-currentRelease()
+## WormBase FTP server must be accessible.
+tryCatch(
+    expr = currentRelease(),
+    error = function(e) e
+)
 }

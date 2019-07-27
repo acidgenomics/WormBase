@@ -1,15 +1,18 @@
 #' External identifiers
 #'
+#' @note Updated 2019-07-27.
+#' @export
+#'
 #' @inheritParams params
 #'
 #' @return `tbl_df`.
-#' @export
 #'
 #' @examples
-#' x <- externalIDs(c("WBGene00000912", "WBGene00004804"))
-#' glimpse(x)
-
-## Updated 2019-07-24.
+#' ## WormBase REST API must be accessible.
+#' tryCatch(
+#'     expr = externalIDs(c("WBGene00000912", "WBGene00004804")),
+#'     error = function(e) e
+#' )
 externalIDs <- function(genes, progress = FALSE) {
     assert(.allAreGenes(genes))
     pblapply <- .pblapply(progress = progress)

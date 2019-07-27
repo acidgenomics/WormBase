@@ -22,7 +22,13 @@ Show progress using pbapply package.}
 \description{
 Orthologs
 }
+\note{
+Updated 2019-07-27.
+}
 \examples{
-x <- orthologs()
-glimpse(x)
+## WormBase FTP server must be accessible.
+tryCatch(
+    expr = orthologs(),
+    error = function(e) e
+)
 }

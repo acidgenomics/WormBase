@@ -1,15 +1,18 @@
 #' Gene Ontology terms
 #'
+#' @note Updated 2019-07-27.
+#' @export
+#'
 #' @inheritParams params
 #'
 #' @return `tbl_df`.
-#' @export
 #'
 #' @examples
-#' x <- geneOntology(c("WBGene00000912", "WBGene00004804"))
-#' glimpse(x)
-
-## Updated 2019-07-24.
+#' ## WormBase REST API must be accessible.
+#' tryCatch(
+#'     expr = geneOntology(c("WBGene00000912", "WBGene00004804")),
+#'     error = function(e) e
+#' )
 geneOntology <- function(genes, progress = FALSE) {
     assert(.allAreGenes(genes))
     pblapply <- .pblapply(progress = progress)

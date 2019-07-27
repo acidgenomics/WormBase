@@ -1,15 +1,18 @@
 #' PCR oligo sequences
 #'
+#' @note Updated 2019-07-27.
+#' @export
+#'
 #' @inheritParams params
 #'
 #' @return `tbl_df`.
-#' @export
 #'
 #' @examples
-#' x <- oligos()
-#' glimpse(x)
-
-## Updated 2019-07-24.
+#' ## WormBase FTP server must be accessible.
+#' tryCatch(
+#'     expr = oligos,
+#'     error = function(e) e
+#' )
 oligos <- function(version = NULL) {
     file <- .annotationFile(pattern = "pcr_product2gene", version = version)
     ## `pcr_product2gene.txt` file is malformed and may produce warnings.

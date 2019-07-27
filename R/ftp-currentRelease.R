@@ -1,10 +1,17 @@
 #' Current WormBase release
 #'
+#' @note Updated 2019-07-27.
 #' @export
+#'
 #' @return `character(1)`.
 #'   WormBase release version (e.g. WS271).
+#'
 #' @examples
-#' currentRelease()
+#' ## WormBase FTP server must be accessible.
+#' tryCatch(
+#'     expr = currentRelease(),
+#'     error = function(e) e
+#' )
 currentRelease <- function() {
     suppressMessages(
         file <- transmit(

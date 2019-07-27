@@ -18,7 +18,13 @@ specified as a character string (e.g. "WS262").}
 \description{
 Best BLASTP hits
 }
+\note{
+Updated 2019-07-27.
+}
 \examples{
-x <- blastp()
-glimpse(x)
+## WormBase FTP server must be accessible.
+tryCatch(
+    expr = blastp(),
+    error = function(e) e
+)
 }

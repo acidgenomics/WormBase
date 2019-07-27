@@ -143,16 +143,32 @@ Show progress using pbapply package.</p></td>
 
     <p><code>tbl_df</code>.</p>
     
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>Updated 2019-07-27.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>orthologs</span>()</div><div class='output co'>#&gt; <span class='message'>Transmitting files from ftp.wormbase.org.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
-#&gt; <span class='message'>c_elegans.PRJNA13758.WS271.orthologs.txt.gz</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS271.orthologs.txt.gz.</span></div><div class='output co'>#&gt; <span class='message'>Parsing lines in file...</span></div><div class='output co'>#&gt; <span class='message'>Processing orthologs...</span></div><div class='input'><span class='fu'><a href='https://tibble.tidyverse.org/reference/glimpse.html'>glimpse</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Observations: 20,179
-#&gt; Variables: 5
-#&gt; $ geneID                 <span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> "WBGene00000001", "WBGene00000002", "WBGene000…
-#&gt; $ homoSapiens            </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> [&lt;"ENSG00000105647", "ENSG00000117461", "ENSG…
-#&gt; $ musMusculus            </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> [&lt;"ENSMUSG00000028698", "ENSMUSG00000031834",…
-#&gt; $ drosophilaMelanogaster </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> ["FBgn0020622", "FBgn0039844", &lt;"FBgn0002778"…
-#&gt; $ danioRerio             </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span> [&lt;"ENSDARG00000018060", "ENSDARG00000034409",…</div></span></pre>
+    <pre class="examples"><div class='input'><span class='co'>## WormBase FTP server must be accessible.</span>
+<span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
+    <span class='kw'>expr</span> <span class='kw'>=</span> <span class='fu'>orthologs</span>(),
+    <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='no'>e</span>
+)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from ftp.wormbase.org.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
+#&gt; <span class='message'>c_elegans.PRJNA13758.WS271.orthologs.txt.gz</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS271.orthologs.txt.gz.</span></div><div class='output co'>#&gt; <span class='message'>Parsing lines in file...</span></div><div class='output co'>#&gt; <span class='message'>Processing orthologs...</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20,179 x 5</span><span>
+#&gt;    geneID homoSapiens musMusculus drosophilaMelan…
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>          
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [5]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [3]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>       
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [5]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [6]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>       
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [2]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [3]&gt;</span><span>       
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [4]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [5]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>       
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [3]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [3]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>       
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;NULL&gt;</span><span>          
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;NULL&gt;</span><span>          
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;NULL&gt;</span><span>          
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;NULL&gt;</span><span>          
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;NULL&gt;</span><span>          
+#&gt; </span><span style='color: #949494;'># … with 20,169 more rows, and 1 more variable:
+#&gt; #   danioRerio </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -160,6 +176,8 @@ Show progress using pbapply package.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#note">Note</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

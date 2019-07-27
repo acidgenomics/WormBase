@@ -18,7 +18,13 @@ specified as a character string (e.g. "WS262").}
 \description{
 PCR oligo sequences
 }
+\note{
+Updated 2019-07-27.
+}
 \examples{
-x <- oligos()
-glimpse(x)
+## WormBase FTP server must be accessible.
+tryCatch(
+    expr = oligos,
+    error = function(e) e
+)
 }
