@@ -22,7 +22,13 @@ Show progress using pbapply package.}
 \description{
 RNAi phenotypes
 }
+\note{
+Updated 2019-07-27.
+}
 \examples{
-x <- rnaiPhenotypes()
-glimpse(x)
+## WormBase FTP server must be accessible.
+if (!is.null(curl::nslookup("ftp.wormbase.org"))) {
+    x <- rnaiPhenotypes()
+    glimpse(x)
+}
 }

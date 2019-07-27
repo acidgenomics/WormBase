@@ -22,8 +22,13 @@ Other gene identifiers
 As of WS269 release, some non-N2 gene IDs are included in the flat
 files available on the WormBase FTP server. These annotations are removed
 from the return here, using grep matching to return only \code{WBGene} entries.
+
+Updated 2019-07-27.
 }
 \examples{
-x <- geneOtherIDs()
-glimpse(x)
+## WormBase FTP server must be accessible.
+if (!is.null(curl::nslookup("ftp.wormbase.org"))) {
+    x <- geneOtherIDs()
+    glimpse(x)
+ }
 }

@@ -1,15 +1,18 @@
 #' RNAi phenotypes
 #'
+#' @note Updated 2019-07-27.
+#' @export
+#'
 #' @inheritParams params
 #'
 #' @return `tbl_df`.
-#' @export
 #'
 #' @examples
-#' x <- rnaiPhenotypes()
-#' glimpse(x)
-
-## Updated 2019-07-24.
+#' ## WormBase FTP server must be accessible.
+#' if (!is.null(curl::nslookup("ftp.wormbase.org"))) {
+#'     x <- rnaiPhenotypes()
+#'     glimpse(x)
+#' }
 rnaiPhenotypes <- function(version = NULL, progress = FALSE) {
     pblapply <- .pblapply(progress = progress)
     file <- .transmit(

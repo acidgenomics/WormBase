@@ -26,9 +26,17 @@ Gene functional descriptions
 As of WS269 release, some non-N2 gene IDs are included in the flat
 files available on the WormBase FTP server. These annotations are removed
 from the return here, using grep matching to return only \code{WBGene} entries.
+
+This file is currently malformed on the WormBase FTP server for WS270
+and WS271 releases.
+
+Updated 2019-07-27.
 }
 \examples{
-## Currently failing for WS270, WS271.
-x <- description(version = "WS269")
-glimpse(x)
+## WormBase FTP server must be accessible.
+if (!is.null(curl::nslookup("ftp.wormbase.org"))) {
+    ## Currently failing for WS270, WS271.
+    x <- description(version = "WS269")
+    glimpse(x)
+}
 }

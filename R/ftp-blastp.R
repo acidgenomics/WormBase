@@ -1,15 +1,18 @@
 #' Best BLASTP hits
 #'
+#' @note Updated 2019-07-27.
+#' @export
+#'
 #' @inheritParams params
 #'
 #' @return `tbl_df`. Grouped by `wormpep` column.
-#' @export
 #'
 #' @examples
-#' x <- blastp()
-#' glimpse(x)
-
-## Updated 2019-07-24.
+#' ## WormBase FTP server must be accessible.
+#' if (!is.null(curl::nslookup("ftp.wormbase.org"))) {
+#'     x <- blastp()
+#'     glimpse(x)
+#' }
 blastp <- function(version = NULL) {
     file <- .assemblyFile(
         pattern = "best_blastp_hits",

@@ -19,7 +19,13 @@ Show progress using pbapply package.}
 \description{
 Gene Ontology terms
 }
+\note{
+Updated 2019-07-27.
+}
 \examples{
-x <- geneOntology(c("WBGene00000912", "WBGene00004804"))
-glimpse(x)
+## WormBase server must be accessible.
+if (!is.null(curl::nslookup("wormbase.org"))) {
+    x <- geneOntology(c("WBGene00000912", "WBGene00004804"))
+    glimpse(x)
+}
 }

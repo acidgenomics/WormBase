@@ -2,7 +2,7 @@ Package: wormbase
 Title: WormBase annotations
 Description: Fetch Caenorhabditis elegans genome annotations from WormBase.
 Version: 0.2.8
-Date: 2019-07-24
+Date: 2019-07-27
 Authors@R: c(
     person(
         given = "Michael",
@@ -36,9 +36,10 @@ Imports:
     stats,
     utils
 Enhances:
-    pbapply
+    pbapply (>= 1.4)
 Suggests:
     BiocStyle,
+    curl (>= 4.0),
     knitr (>= 1.23),
     rmarkdown (>= 1.14),
     testthat (>= 2.2),

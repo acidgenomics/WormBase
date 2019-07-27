@@ -22,7 +22,13 @@ Show progress using pbapply package.}
 \description{
 Peptides
 }
+\note{
+Updated 2019-07-27.
+}
 \examples{
-x <- peptides()
-glimpse(x)
+## WormBase FTP server must be accessible.
+if (!is.null(curl::nslookup("ftp.wormbase.org"))) {
+    x <- peptides()
+    glimpse(x)
+}
 }

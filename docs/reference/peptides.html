@@ -143,20 +143,28 @@ Show progress using pbapply package.</p></td>
 
     <p><code>tbl_df</code>. Grouped by <code>gene</code> column.</p>
     
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>Updated 2019-07-27.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>peptides</span>()</div><div class='output co'>#&gt; <span class='message'>Transmitting files from ftp.wormbase.org.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
-#&gt; <span class='message'>c_elegans.PRJNA13758.WS271.wormpep_package.tar.gz</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS271.wormpep_package.tar.gz.</span></div><div class='output co'>#&gt; <span class='message'>Processing peptides...</span></div><div class='input'><span class='fu'><a href='https://tibble.tidyverse.org/reference/glimpse.html'>glimpse</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; Observations: 28,518
+    <pre class="examples"><div class='input'><span class='co'>## WormBase FTP server must be accessible.</span>
+<span class='kw'>if</span> (!<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='kw pkg'>curl</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/curl/man/nslookup.html'>nslookup</a></span>(<span class='st'>"ftp.wormbase.org"</span>))) {
+    <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>peptides</span>()
+    <span class='fu'><a href='https://tibble.tidyverse.org/reference/glimpse.html'>glimpse</a></span>(<span class='no'>x</span>)
+}</div><div class='output co'>#&gt; <span class='message'>Transmitting files from ftp.wormbase.org.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
+#&gt; <span class='message'>c_elegans.PRJNA13758.WS271.wormpep_package.tar.gz</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS271.wormpep_package.tar.gz.</span></div><div class='output co'>#&gt; <span class='message'>Processing peptides...</span></div><div class='output co'>#&gt; Observations: 28,518
 #&gt; Variables: 8
 #&gt; Groups: geneID [20,184]
-#&gt; $ geneID   <span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> "WBGene00000001", "WBGene00000002", "WBGene00000003", "WBGen…
-#&gt; $ sequence </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> "Y110A7A.10", "F27C8.1", "F07C3.7", "F52H2.2a", "F52H2.2b", …
-#&gt; $ wormpep  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> "CE23248", "CE03266", "CE32853", "CE28440", "CE50751", "CE35…
-#&gt; $ status   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Partial…
-#&gt; $ uniprot  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> "G5EDP9", "Q19834", "Q19151", "O17395", "A0A0K3AVL7", "Q7YXH…
-#&gt; $ insdc    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> "CCD66201.1", "CAA92459.1", "CCD68934.1", "CCD71657.1", "CTQ…
-#&gt; $ locus    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> "aap-1", "aat-1", "aat-2", "aat-3", "aat-3", "aat-4", "aat-5…
-#&gt; $ product  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "Antibac…</div></span></pre>
+#&gt; $ geneID   <span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "WBGene00000001", "WBGene00000002", "WBGene00000003", "WBGen…
+#&gt; $ sequence </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "Y110A7A.10", "F27C8.1", "F07C3.7", "F52H2.2a", "F52H2.2b", …
+#&gt; $ wormpep  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "CE23248", "CE03266", "CE32853", "CE28440", "CE50751", "CE35…
+#&gt; $ status   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "Confirmed", "Confirmed", "Confirmed", "Confirmed", "Partial…
+#&gt; $ uniprot  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "G5EDP9", "Q19834", "Q19151", "O17395", "A0A0K3AVL7", "Q7YXH…
+#&gt; $ insdc    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "CCD66201.1", "CAA92459.1", "CCD68934.1", "CCD71657.1", "CTQ…
+#&gt; $ locus    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "aap-1", "aat-1", "aat-2", "aat-3", "aat-3", "aat-4", "aat-5…
+#&gt; $ product  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "Antibac…</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -164,6 +172,8 @@ Show progress using pbapply package.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#note">Note</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
