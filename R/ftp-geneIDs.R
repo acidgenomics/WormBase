@@ -13,10 +13,10 @@
 #'
 #' @examples
 #' ## WormBase FTP server must be accessible.
-#' if (!is.null(curl::nslookup("ftp.wormbase.org"))) {
-#'     x <- geneIDs()
-#'     glimpse(x)
-#'  }
+#' tryCatch(
+#'     expr = geneIDs(),
+#'     error = function(e) e
+#' )
 geneIDs <- function(version = NULL) {
     file <- .annotationFile(pattern = "geneIDs", version = version)
     file %>%

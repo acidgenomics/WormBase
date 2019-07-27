@@ -27,8 +27,8 @@ Updated 2019-07-27.
 }
 \examples{
 ## WormBase FTP server must be accessible.
-if (!is.null(curl::nslookup("ftp.wormbase.org"))) {
-    x <- rnaiPhenotypes()
-    glimpse(x)
-}
+tryCatch(
+    expr = rnaiPhenotypes(),
+    error = function(e) e
+)
 }

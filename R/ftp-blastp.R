@@ -9,10 +9,10 @@
 #'
 #' @examples
 #' ## WormBase FTP server must be accessible.
-#' if (!is.null(curl::nslookup("ftp.wormbase.org"))) {
-#'     x <- blastp()
-#'     glimpse(x)
-#' }
+#' tryCatch(
+#'     expr = blastp(),
+#'     error = function(e) e
+#' )
 blastp <- function(version = NULL) {
     file <- .assemblyFile(
         pattern = "best_blastp_hits",

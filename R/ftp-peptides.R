@@ -9,10 +9,10 @@
 #'
 #' @examples
 #' ## WormBase FTP server must be accessible.
-#' if (!is.null(curl::nslookup("ftp.wormbase.org"))) {
-#'     x <- peptides()
-#'     glimpse(x)
-#' }
+#' tryCatch(
+#'     expr = peptides(),
+#'     error = function(e) e
+#' )
 peptides <- function(version = NULL, progress = FALSE) {
     pblapply <- .pblapply(progress = progress)
     file <- .assemblyFile(pattern = "wormpep_package", version = version)

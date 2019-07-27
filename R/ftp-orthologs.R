@@ -9,10 +9,10 @@
 #'
 #' @examples
 #' ## WormBase FTP server must be accessible.
-#' if (!is.null(curl::nslookup("ftp.wormbase.org"))) {
-#'     x <- orthologs()
-#'     glimpse(x)
-#' }
+#' tryCatch(
+#'     expr = orthologs(),
+#'     error = function(e) e
+#' )
 orthologs <- function(version = NULL, progress = FALSE) {
     pblapply <- .pblapply(progress = progress)
     file <- .annotationFile(pattern = "orthologs", version = version)

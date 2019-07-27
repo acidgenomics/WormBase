@@ -9,10 +9,10 @@
 #'
 #' @examples
 #' ## WormBase FTP server must be accessible.
-#' if (!is.null(curl::nslookup("ftp.wormbase.org"))) {
-#'     x <- rnaiPhenotypes()
-#'     glimpse(x)
-#' }
+#' tryCatch(
+#'     expr = rnaiPhenotypes(),
+#'     error = function(e) e
+#' )
 rnaiPhenotypes <- function(version = NULL, progress = FALSE) {
     pblapply <- .pblapply(progress = progress)
     file <- .transmit(

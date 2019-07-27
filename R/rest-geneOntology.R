@@ -8,11 +8,11 @@
 #' @return `tbl_df`.
 #'
 #' @examples
-#' ## WormBase server must be accessible.
-#' if (!is.null(curl::nslookup("wormbase.org"))) {
-#'     x <- geneOntology(c("WBGene00000912", "WBGene00004804"))
-#'     glimpse(x)
-#' }
+#' ## WormBase REST API must be accessible.
+#' tryCatch(
+#'     expr = geneOntology(c("WBGene00000912", "WBGene00004804")),
+#'     error = function(e) e
+#' )
 geneOntology <- function(genes, progress = FALSE) {
     assert(.allAreGenes(genes))
     pblapply <- .pblapply(progress = progress)

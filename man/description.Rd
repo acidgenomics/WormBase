@@ -34,9 +34,9 @@ Updated 2019-07-27.
 }
 \examples{
 ## WormBase FTP server must be accessible.
-if (!is.null(curl::nslookup("ftp.wormbase.org"))) {
-    ## Currently failing for WS270, WS271.
-    x <- description(version = "WS269")
-    glimpse(x)
-}
+## Currently failing for WS270, WS271 releases.
+tryCatch(
+    expr = description(version = "WS269"),
+    error = function(e) e
+)
 }

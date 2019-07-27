@@ -23,9 +23,9 @@ External identifiers
 Updated 2019-07-27.
 }
 \examples{
-## WormBase server must be accessible.
-if (!is.null(curl::nslookup("wormbase.org"))) {
-    x <- externalIDs(c("WBGene00000912", "WBGene00004804"))
-    glimpse(x)
-}
+## WormBase REST API must be accessible.
+tryCatch(
+    expr = externalIDs(c("WBGene00000912", "WBGene00004804")),
+    error = function(e) e
+)
 }

@@ -18,7 +18,8 @@ Updated 2019-07-27.
 }
 \examples{
 ## WormBase FTP server must be accessible.
-if (!is.null(curl::nslookup("ftp.wormbase.org"))) {
-    currentRelease()
-}
+tryCatch(
+    expr = currentRelease(),
+    error = function(e) e
+)
 }

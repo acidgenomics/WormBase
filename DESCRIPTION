@@ -39,7 +39,6 @@ Enhances:
     pbapply (>= 1.4)
 Suggests:
     BiocStyle,
-    curl (>= 4.0),
     knitr (>= 1.23),
     rmarkdown (>= 1.14),
     testthat (>= 2.2),
