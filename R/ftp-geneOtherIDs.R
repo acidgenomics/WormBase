@@ -13,7 +13,7 @@
 #'
 #' @examples
 #' ## WormBase FTP server must be accessible.
-#' tryCatch
+#' tryCatch(
 #'     expr = geneOtherIDs(),
 #'     error = function(e) e
 #' )

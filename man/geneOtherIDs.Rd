@@ -27,7 +27,7 @@ Updated 2019-07-27.
 }
 \examples{
 ## WormBase FTP server must be accessible.
-tryCatch
+tryCatch(
     expr = geneOtherIDs(),
     error = function(e) e
 )
