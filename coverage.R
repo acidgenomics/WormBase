@@ -18,8 +18,9 @@ requireNamespace("covr", quietly = TRUE)
 cov <- covr::package_coverage()
 pct <- covr::percent_coverage(cov)
 
+print(cov)
+
 ## Since Travis has connectivity issues, don't require minimum coverage.
 ## > if (pct < 90L) {
-## >     print(cov)
 ## >     stop(sprintf("Coverage is %s%%.", round(pct, digits = 2L)))
 ## > }
