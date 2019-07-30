@@ -1,9 +1,8 @@
 # wormbase
 
-[![Travis CI](https://travis-ci.org/acidgenomics/wormbase.svg?branch=master)](https://travis-ci.org/acidgenomics/wormbase)
-[![AppVeyor CI](https://ci.appveyor.com/api/projects/status/8hmhfpsfngn5kcg9/branch/master?svg=true)](https://ci.appveyor.com/project/mjsteinbaugh/wormbase/branch/master)
-[![Codecov](https://codecov.io/gh/acidgenomics/wormbase/branch/master/graph/badge.svg)](https://codecov.io/gh/acidgenomics/wormbase)
-[![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+[![Repo status: active](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+[![Travis CI build status](https://travis-ci.com/acidgenomics/wormbase.svg?branch=master)](https://travis-ci.com/acidgenomics/wormbase)
+[![AppVeyor CI build status](https://ci.appveyor.com/api/projects/status/8hmhfpsfngn5kcg9/branch/master?svg=true)](https://ci.appveyor.com/project/mjsteinbaugh/wormbase/branch/master)
 
 *Caenorhabditis elegans* genome annotations from [WormBase][].
 
