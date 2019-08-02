@@ -1,8 +1,4 @@
 .RData
+.Rcheck
 .Rhistory
 .Rproj.user
-.Ruserdata
-*.gz
-data-raw/
-inst/doc/
-wormpep.*
