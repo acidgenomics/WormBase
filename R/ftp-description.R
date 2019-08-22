@@ -87,7 +87,7 @@ description <- function(
         keyPattern <- "^([A-Za-z[:space:]]+)\\:"
         names <- str_match(x, pattern = keyPattern)[, 2L]
         ## The first 3 columns won't match the pattern, so assign manually.
-        names[1L:3L] <- c("geneID", "geneName", "sequence")
+        names[seq_len(3L)] <- c("geneID", "geneName", "sequence")
         names <- camelCase(names)
         x %>%
             ## Remove the key prefix (e.g. "Concise description:").
