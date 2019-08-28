@@ -76,7 +76,7 @@ description <- function(
     x <- x[keep]
     ## Parallelize the processing steps here to speed up the return.
     message("Processing functional descriptions.")
-    list <- bplapply(
+    x <- bplapply(
         X = x,
         FUN = function(x) {
             ## This step checks for columns such as "Concise description:".
@@ -97,13 +97,13 @@ description <- function(
         },
         BPPARAM = BPPARAM
     )
-    data <- rbindlist(list, fill = TRUE)
-    data <- as(data, "DataFrame")
-    data <- camelCase(data)
-    data <- sanitizeNA(data)
-    data <- removeNA(data)
-    data <- data[order(data[["geneID"]]), , drop = FALSE]
-    data
+    x <- rbindlist(x, fill = TRUE)
+    x <- as(x, "DataFrame")
+    x <- camelCase(x)
+    x <- sanitizeNA(x)
+    x <- removeNA(x)
+    x <- x[order(x[["geneID"]]), , drop = FALSE]
+    x
 }
 
 formals(description)[["version"]] <- versionArg
