@@ -1,7 +1,7 @@
 #' @importFrom BiocGenerics unlist
 #' @importFrom BiocParallel bplapply
 #' @importFrom IRanges DataFrameList unsplit
-#' @importFrom S4Vectors head split t tail
+#' @importFrom S4Vectors aggregate head split t tail
 #' @importFrom basejump camelCase import makeNames pasteURL removeNA sanitizeNA
 #'   toStringUnique transmit
 #' @importFrom data.table rbindlist
@@ -13,7 +13,7 @@
 #' @importFrom magrittr set_colnames set_names set_rownames
 
 #' @importFrom rlang !! !!! := sym syms
-#' @importFrom stats aggregate formula
+#' @importFrom stats formula
 #' @importFrom stringr str_extract str_extract_all str_match str_match_all
 #'   str_sub
 #' @importFrom tibble as_tibble
