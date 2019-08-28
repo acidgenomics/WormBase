@@ -1,4 +1,6 @@
-## Updated 2019-07-24.
+#' WormBase REST API query
+#' @note Updated 2019-07-24.
+#' @noRd
 .rest <- function(query) {
     x <- GET(
         url = paste("http://api.wormbase.org", "rest", query, sep = "/"),

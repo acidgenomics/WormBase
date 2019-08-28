@@ -13,13 +13,14 @@ release version available on the WormBase website. Legacy versions can be
 specified as a character string (e.g. "WS262").}
 }
 \value{
-\code{tbl_df}. Grouped by \code{wormpep} column.
+\code{SplitDataFrameList}.
+Split by \code{wormpep} column.
 }
 \description{
 Best BLASTP hits
 }
 \note{
-Updated 2019-07-27.
+Updated 2019-08-28.
 }
 \examples{
 ## WormBase FTP server must be accessible.

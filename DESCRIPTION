@@ -26,8 +26,11 @@ Depends:
     basejump (>= 0.11.11)
 Imports:
     goalie (>= 0.3.6),
+    BiocGenerics (>= 0.30),
     BiocParallel (>= 1.18),
-    dplyr (>= 0.8),
+    IRanges (>= 2.18.2),
+    S4Vectors (>= 0.22),
+    data.table (>= 1.12),
     httr (>= 1.4),
     magrittr (>= 1.5),
     readr (>= 1.3),
