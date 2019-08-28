@@ -16,7 +16,7 @@
 #' )
 peptides <- function(
     version = NULL,
-    BPPARAM = BiocParallel::bpparam()
+    BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
 ) {
     file <- .assemblyFile(pattern = "wormpep_package", version = version)
     tempdir <- tempdir()
@@ -44,17 +44,20 @@ peptides <- function(
             out <- c(pairs[, 3L])
             names(out) <- pairs[, 2L]
             out[["sequence"]] <- sequence
-            DataFrame(t(out))
+            as.data.frame(t(out), stringsAsFactors = TRUE)
         },
         BPPARAM = BPPARAM
     )
-    dflist %>%
-        bind_rows() %>%
-        rename(geneID = !!sym("gene")) %>%
-        select(!!sym("geneID"), everything()) %>%
-        filter(grepl(pattern = genePattern, x = !!sym("geneID"))) %>%
-        group_by(!!sym("geneID")) %>%
-        arrange(!!!syms(c("sequence", "wormpep")), .by_group = TRUE)
+    x <- rbindlist(x, fill = TRUE)
+    x <- as(x, "DataFrame")
+    colnames(x)[colnames(x) == "gene"] <- "geneID"
+    x <- x[, unique(c("geneID", colnames(x)))]
+    keep <- grepl(pattern = genePattern, x = x[["geneID"]])
+    x <- x[keep, , drop = FALSE]
+    x <- x[
+        order(x[["geneID"]], x[["sequence"]], x[["wormpep"]]), , drop = FALSE
+    ]
+    split(x, f = x[["geneID"]])
 }
 
 formals(peptides)[["version"]] <- versionArg
