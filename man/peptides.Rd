@@ -5,7 +5,7 @@
 \title{Peptides}
 \usage{
 peptides(version = getOption(x = "wormbase.version", default = NULL),
-  BPPARAM = BiocParallel::bpparam())
+  BPPARAM = BiocParallel::SerialParam(progressbar = TRUE))
 }
 \arguments{
 \item{version}{\code{character(1)} or \code{NULL}.

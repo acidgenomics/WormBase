@@ -14,13 +14,13 @@ Gene identifiers.}
 Show progress using pbapply package.}
 }
 \value{
-\code{tbl_df}.
+\code{DataFrame}.
 }
 \description{
 Gene Ontology terms
 }
 \note{
-Updated 2019-07-27.
+Updated 2019-08-28.
 }
 \examples{
 ## WormBase REST API must be accessible.
