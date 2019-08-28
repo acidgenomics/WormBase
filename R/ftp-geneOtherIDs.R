@@ -31,6 +31,7 @@ geneOtherIDs <- function(version = NULL) {
     ## Break out the chain and evaluate.
     x <- strsplit(x, "\t")
     x <- do.call(rbind, x)
+    x <- as.data.frame(x, stringsAsFactors = FALSE)
     x <- as(x, "DataFrame")
     colnames(x) <- c("geneID", "geneOtherIDs")
     keep <- grepl(pattern = genePattern, x = x[["geneID"]])
