@@ -16,10 +16,6 @@
 oligos <- function(version = NULL) {
     file <- .annotationFile(pattern = "pcr_product2gene", version = version)
     ## `pcr_product2gene.txt` file is malformed, so let's parse as lines.
-    ## nolint start
-    ## > x <- read_tsv(file = file, col_names = c("oligo", "geneID"))
-    ## > x <- import(file, format = "tsv", colnames = c("oligo", "geneID"))
-    ## nolint end
     x <- import(file, format = "lines")
     x <- str_match(x, "^([^\t]+)\t(WBGene\\d{8})")
     x <- x[, c(2L:3L)]

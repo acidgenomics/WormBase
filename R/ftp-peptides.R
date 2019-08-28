@@ -1,11 +1,12 @@
 #' Peptides
 #'
-#' @note Updated 2019-07-27.
+#' @note Updated 2019-08-28.
 #' @export
 #'
 #' @inheritParams params
 #'
-#' @return `tbl_df`. Grouped by `gene` column.
+#' @return `SplitDataFrameList`.
+#' Split by `geneID` column.
 #'
 #' @examples
 #' ## WormBase FTP server must be accessible.
@@ -13,42 +14,40 @@
 #'     expr = peptides(),
 #'     error = function(e) e
 #' )
-peptides <- function(version = NULL, progress = FALSE) {
-    pblapply <- .pblapply(progress = progress)
+peptides <- function(
+    version = NULL,
+    BPPARAM = BiocParallel::bpparam()
+) {
     file <- .assemblyFile(pattern = "wormpep_package", version = version)
-    dir <- tempdir()
-
+    tempdir <- tempdir()
     ## Grep the verion number.
-    versionNumber <- file %>%
-        str_extract("WS\\d{3}") %>%
-        gsub("^WS", "", .)
-
+    versionNumber <- str_match(file, "WS([[:digit:]]{3})")[1L, 2L]
     ## Extract the individual table.
     wormpepTable <- paste0("wormpep.table", versionNumber)
     untar(
         tarfile = file,
         files = wormpepTable,
-        exdir = dir
+        exdir = tempdir
     )
-
-    lines <- read_lines(file.path(dir, wormpepTable), progress = FALSE)
-
-    message("Processing peptides...")
-    dflist <- pblapply(lines, function(line) {
-        ## Attempt to match quoted values first (e.g. product).
-        keyPattern <- "([a-z]+)=(\"[^\"]+\"|[^\\s]+)"
-        keyPairs <- str_match_all(line, keyPattern) %>%
-            .[[1L]] %>%
+    x <- import(file = file.path(tempdir, wormpepTable), format = "lines")
+    message("Processing peptides.")
+    x <- bplapply(
+        X = x,
+        FUN = function(x) {
+            sequence <- str_match(x, "^>([A-Za-z0-9\\.]+)")[[2L]]
+            ## Attempt to match quoted values first (e.g. product).
+            pattern <- "([a-z]+)=(\"[^\"]+\"|[^\\s]+)"
+            # Set up our matrix of key value pairs.
+            pairs <- str_match_all(x, pattern)[[1L]]
             ## Remove any escaped quotes.
-            gsub("\"", "", .)
-        x <- c(keyPairs[, 3L])
-        names(x) <- keyPairs[, 2L]
-        sequence <- str_match(line, "^>([A-Za-z0-9\\.]+)") %>%
-            .[[2L]]
-        c(sequence = sequence, x) %>%
-            t() %>%
-            as_tibble()
-    })
+            pairs <- gsub("\"", "", pairs)
+            out <- c(pairs[, 3L])
+            names(out) <- pairs[, 2L]
+            out[["sequence"]] <- sequence
+            DataFrame(t(out))
+        },
+        BPPARAM = BPPARAM
+    )
     dflist %>%
         bind_rows() %>%
         rename(geneID = !!sym("gene")) %>%
