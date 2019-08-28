@@ -26,6 +26,7 @@ Depends:
     basejump (>= 0.11.11)
 Imports:
     goalie (>= 0.3.6),
+    BiocParallel (>= 1.18),
     dplyr (>= 0.8),
     httr (>= 1.4),
     magrittr (>= 1.5),
