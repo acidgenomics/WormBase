@@ -1,11 +1,11 @@
 #' RNAi phenotypes
 #'
-#' @note Updated 2019-07-27.
+#' @note Updated 2019-08-28.
 #' @export
 #'
 #' @inheritParams params
 #'
-#' @return `tbl_df`.
+#' @return `DataFrame`.
 #'
 #' @examples
 #' ## WormBase FTP server must be accessible.
@@ -13,32 +13,37 @@
 #'     expr = rnaiPhenotypes(),
 #'     error = function(e) e
 #' )
-rnaiPhenotypes <- function(version = NULL, progress = FALSE) {
-    pblapply <- .pblapply(progress = progress)
+rnaiPhenotypes <- function(
+    version = NULL,
+    BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
+) {
     file <- .transmit(
         subdir = "ONTOLOGY",
         pattern = "rnai_phenotypes_quick",
         version = version,
         compress = TRUE
     )
-    data <- read_tsv(
-        file = unname(file),
-        col_names = c("geneID", "sequence", "rnaiPhenotypes")
+    x <- import(
+        file = file,
+        format = "tsv",
+        colnames = c("geneID", "sequence", "rnaiPhenotypes")
     )
-    list <- pblapply(
-        X = strsplit(data[["rnaiPhenotypes"]], ", "),
+    ## Using `sequence` from `geneID()` return instead.
+    x[["sequence"]] <- NULL
+    x <- as(x, "DataFrame")
+    pheno <- strsplit(x[["rnaiPhenotypes"]], ", ")
+    pheno <- bplapply(
+        X = pheno,
         FUN = function(x) {
             sort(unique(x))
-        }
+        },
+        BPPARAM = BPPARAM
     )
-    data %>%
-        mutate(
-            ## Use `sequence` from `geneID()` return instead.
-            !!sym("sequence") := NULL,
-            !!sym("rnaiPhenotypes") := !!list
-        ) %>%
-        filter(grepl(pattern = genePattern, x = !!sym("geneID"))) %>%
-        arrange(!!sym("geneID"))
+    x[["rnaiPhenotypes"]] <- pheno
+    keep <- grepl(pattern = genePattern, x = x[["geneID"]])
+    x <- x[keep, , drop = FALSE]
+    x <- x[order(x[["geneID"]]), , drop = FALSE]
+    x
 }
 
 formals(rnaiPhenotypes)[["version"]] <- versionArg
