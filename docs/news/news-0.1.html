@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>PCR oligo sequences — oligos • wormbase</title>
+<title>Version 0.1 • wormbase</title>
 
 
 <!-- jquery -->
@@ -37,9 +37,7 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="PCR oligo sequences — oligos" />
-<meta property="og:description" content="PCR oligo sequences" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Version 0.1" />
 
 
 
@@ -58,7 +56,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -110,75 +108,26 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>PCR oligo sequences</h1>
-    <small class="dont-index">Source: <a href='https://github.com/acidgenomics/wormbase/blob/master/R/ftp-oligos.R'><code>R/ftp-oligos.R</code></a></small>
-    <div class="hidden name"><code>oligos.Rd</code></div>
+      <h1>Changelog <small>0.1</small></h1>
+      
     </div>
 
-    <div class="ref-description">
-    <p>PCR oligo sequences</p>
-    </div>
-
-    <pre class="usage"><span class='fu'>oligos</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wormbase.version"</span>, <span class='kw'>default</span> <span class='kw'>=</span> <span class='kw'>NULL</span>))</pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>version</th>
-      <td><p><code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> or <code>NULL</code>.
-WormBase version. If <code>NULL</code> (recommended), defaults to current production
-release version available on the WormBase website. Legacy versions can be
-specified as a character string (e.g. "WS262").</p></td>
-    </tr>
-    </table>
-
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p><code>DataFrame</code>.</p>
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>Updated 2019-08-28.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## WormBase FTP server must be accessible.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
-    <span class='kw'>expr</span> <span class='kw'>=</span> <span class='no'>oligos</span>,
-    <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='no'>e</span>
-)</div><div class='output co'>#&gt; function (version = getOption(x = "wormbase.version", default = NULL)) 
-#&gt; {
-#&gt;     file &lt;- .annotationFile(pattern = "pcr_product2gene", version = version)
-#&gt;     x &lt;- import(file, format = "lines")
-#&gt;     x &lt;- str_match(x, "^([^\t]+)\t(WBGene\\d{8})")
-#&gt;     x &lt;- x[, c(2L:3L)]
-#&gt;     x &lt;- as.data.frame(x, stringsAsFactors = FALSE)
-#&gt;     colnames(x) &lt;- c("oligo", "geneID")
-#&gt;     x &lt;- aggregate(formula = formula("oligo~geneID"), data = x, 
-#&gt;         FUN = function(x) {
-#&gt;             x &lt;- unique(x)
-#&gt;             x &lt;- sort(x)
-#&gt;             x &lt;- list(x)
-#&gt;             x
-#&gt;         })
-#&gt;     x &lt;- as(x, "DataFrame")
-#&gt;     keep &lt;- grepl(pattern = genePattern, x = x[["geneID"]])
-#&gt;     x &lt;- x[keep, , drop = FALSE]
-#&gt;     x &lt;- x[order(x[["geneID"]]), , drop = FALSE]
-#&gt;     x
-#&gt; }
-#&gt; &lt;bytecode: 0x38cc80f0&gt;
-#&gt; &lt;environment: namespace:wormbase&gt;</div></pre>
+    <div id="wormbase-0-1-0-2018-02-14" class="section level2">
+<h2 class="hasAnchor">
+<a href="#wormbase-0-1-0-2018-02-14" class="anchor"></a>wormbase 0.1.0 (2018-02-14)</h2>
+<p>(worminfo): Pre-release using internal build annotations from WormBase, ENSEMBL, PANTHER, and EggNOG databases. RNAi clone support for ORFeome (WORFDB), Ahringer, and Ruvkun Lab cherrypick libraries.</p>
+</div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#note">Note</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+    <div id="tocnav">
+      <h2>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="#wormbase-0-1-0-2018-02-14">0.1.0</a></li>
+      </ul>
+    </div>
   </div>
+
 </div>
 
 

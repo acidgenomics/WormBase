@@ -8,11 +8,13 @@
 
 <title>Orthologs — orthologs • wormbase</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -34,10 +36,11 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Orthologs — orthologs" />
 
+<meta property="og:title" content="Orthologs — orthologs" />
 <meta property="og:description" content="Orthologs" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -68,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wormbase</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
       </span>
     </div>
 
@@ -87,7 +90,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/acidgenomics/wormbase">
@@ -114,14 +116,12 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Orthologs</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>orthologs</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wormbase.version"</span>, <span class='kw'>default</span> <span class='kw'>=</span> <span class='kw'>NULL</span>),
-  <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
+  <span class='kw'>BPPARAM</span> <span class='kw'>=</span> <span class='kw pkg'>BiocParallel</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/register.html'>bpparam</a></span>())</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -132,53 +132,94 @@ WormBase version. If <code>NULL</code> (recommended), defaults to current produc
 release version available on the WormBase website. Legacy versions can be
 specified as a character string (e.g. "WS262").</p></td>
     </tr>
-    <tr>
-      <th>progress</th>
-      <td><p><code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code>.
-Show progress using pbapply package.</p></td>
-    </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>tbl_df</code>.</p>
-    
+    <p><code>DataFrame</code>.</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>Updated 2019-07-27.</p>
-    
+    <p>Updated 2019-08-28.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## WormBase FTP server must be accessible.</span>
 <span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
     <span class='kw'>expr</span> <span class='kw'>=</span> <span class='fu'>orthologs</span>(),
     <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='no'>e</span>
-)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from ftp.wormbase.org.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
-#&gt; <span class='message'>c_elegans.PRJNA13758.WS271.orthologs.txt.gz</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS271.orthologs.txt.gz.</span></div><div class='output co'>#&gt; <span class='message'>Parsing lines in file...</span></div><div class='output co'>#&gt; <span class='message'>Processing orthologs...</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20,179 x 5</span><span>
-#&gt;    geneID homoSapiens musMusculus drosophilaMelan…
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>          
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [5]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [3]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>       
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [5]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [6]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>       
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [2]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [3]&gt;</span><span>       
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [4]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [5]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>       
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [3]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [3]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>       
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;NULL&gt;</span><span>          
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;NULL&gt;</span><span>          
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;NULL&gt;</span><span>          
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;NULL&gt;</span><span>          
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> WBGen… </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;chr [1]&gt;</span><span>   </span><span style='color: #949494;'>&lt;NULL&gt;</span><span>          
-#&gt; </span><span style='color: #949494;'># … with 20,169 more rows, and 1 more variable:
-#&gt; #   danioRerio </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span></div></span></pre>
+)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from 'ftp.wormbase.org'.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
+#&gt; <span class='message'>c_elegans.PRJNA13758.WS271.orthologs.txt.gz</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS271.orthologs.txt.gz.</span></div><div class='output co'>#&gt; <span class='message'>Decompressing 'c_elegans.PRJNA13758.WS271.orthologs.txt.gz' in 'tempdir()'.</span></div><div class='output co'>#&gt; <span class='message'>Importing 'c_elegans.PRJNA13758.WS271.orthologs.txt' using 'base::readLines()'.</span></div><div class='output co'>#&gt; <span class='message'>Processing orthologs.</span></div><div class='output co'>#&gt; DataFrame with 20179 rows and 5 columns
+#&gt;               geneID
+#&gt;          &lt;character&gt;
+#&gt; 1     WBGene00000001
+#&gt; 2     WBGene00000002
+#&gt; 3     WBGene00000003
+#&gt; 4     WBGene00000004
+#&gt; 5     WBGene00000005
+#&gt; ...              ...
+#&gt; 20175 WBGene00304201
+#&gt; 20176 WBGene00304203
+#&gt; 20177 WBGene00304215
+#&gt; 20178 WBGene00304220
+#&gt; 20179 WBGene00304237
+#&gt;                                                                                                                                                                              danioRerio
+#&gt;                                                                                                                                                                                  &lt;list&gt;
+#&gt; 1                                                                                             c("ENSDARG00000018060", "ENSDARG00000034409", "ENSDARG00000038524", "ENSDARG00000103038")
+#&gt; 2     c("ENSDARG00000008100", "ENSDARG00000020278", "ENSDARG00000051730", "ENSDARG00000054343", "ENSDARG00000054423", "ENSDARG00000055226", "ENSDARG00000075831", "ENSDARG00000099265")
+#&gt; 3                                                                                                                                         c("ENSDARG00000054423", "ENSDARG00000055226")
+#&gt; 4                                                                       c("ENSDARG00000020278", "ENSDARG00000054343", "ENSDARG00000054423", "ENSDARG00000055226", "ENSDARG00000099265")
+#&gt; 5                                                                                                                   c("ENSDARG00000040610", "ENSDARG00000054423", "ENSDARG00000071384")
+#&gt; ...                                                                                                                                                                                 ...
+#&gt; 20175                                                                                                                                                                              NULL
+#&gt; 20176                                                                                                                                                                              NULL
+#&gt; 20177                                                                                                                                                                              NULL
+#&gt; 20178                                                                                                                                                                              NULL
+#&gt; 20179                                                                                                                                                                              NULL
+#&gt;                               drosophilaMelanogaster
+#&gt;                                               &lt;list&gt;
+#&gt; 1                                        FBgn0020622
+#&gt; 2                                        FBgn0039844
+#&gt; 3     c("FBgn0002778", "FBgn0028425", "FBgn0039487")
+#&gt; 4                                        FBgn0039844
+#&gt; 5                                        FBgn0030574
+#&gt; ...                                              ...
+#&gt; 20175                                           NULL
+#&gt; 20176                                           NULL
+#&gt; 20177                                           NULL
+#&gt; 20178                                           NULL
+#&gt; 20179                                           NULL
+#&gt;                                                                                            homoSapiens
+#&gt;                                                                                                 &lt;list&gt;
+#&gt; 1     c("ENSG00000105647", "ENSG00000117461", "ENSG00000145675", "ENSG00000268173", "ENSG00000278139")
+#&gt; 2     c("ENSG00000092068", "ENSG00000103064", "ENSG00000103257", "ENSG00000130876", "ENSG00000155465")
+#&gt; 3                                                              c("ENSG00000103064", "ENSG00000155465")
+#&gt; 4                        c("ENSG00000092068", "ENSG00000103064", "ENSG00000103257", "ENSG00000155465")
+#&gt; 5                                           c("ENSG00000103064", "ENSG00000151012", "ENSG00000155465")
+#&gt; ...                                                                                                ...
+#&gt; 20175                                                                                             NULL
+#&gt; 20176                                                                                             NULL
+#&gt; 20177                                                                                             NULL
+#&gt; 20178                                                                                             NULL
+#&gt; 20179                                                                                             NULL
+#&gt;                                                                                                                                 musMusculus
+#&gt;                                                                                                                                      &lt;list&gt;
+#&gt; 1                                                                       c("ENSMUSG00000028698", "ENSMUSG00000031834", "ENSMUSG00000041417")
+#&gt; 2     c("ENSMUSG00000000958", "ENSMUSG00000022180", "ENSMUSG00000027737", "ENSMUSG00000030495", "ENSMUSG00000031904", "ENSMUSG00000040010")
+#&gt; 3                                                                                                                        ENSMUSG00000000958
+#&gt; 4                           c("ENSMUSG00000000958", "ENSMUSG00000022180", "ENSMUSG00000027737", "ENSMUSG00000031904", "ENSMUSG00000040010")
+#&gt; 5                                                                       c("ENSMUSG00000000958", "ENSMUSG00000027737", "ENSMUSG00000031904")
+#&gt; ...                                                                                                                                     ...
+#&gt; 20175                                                                                                                                  NULL
+#&gt; 20176                                                                                                                                  NULL
+#&gt; 20177                                                                                                                                  NULL
+#&gt; 20178                                                                                                                                  NULL
+#&gt; 20179                                                                                                                                  NULL</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#note">Note</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
