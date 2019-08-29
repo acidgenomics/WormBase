@@ -33,7 +33,6 @@ Imports:
     data.table (>= 1.12),
     httr (>= 1.4),
     stringr (>= 1.4),
-    tibble (>= 2.1),
     methods,
     stats,
     utils
