@@ -1,6 +1,6 @@
 #' External identifiers
 #'
-#' @note Updated 2019-08-28.
+#' @note Updated 2019-08-29.
 #' @export
 #'
 #' @inheritParams params
@@ -9,14 +9,17 @@
 #'
 #' @examples
 #' ## WormBase REST API must be accessible.
+#' genes <- c("WBGene00000912", "WBGene00004804")
 #' tryCatch(
-#'     expr = externalIDs(c("WBGene00000912", "WBGene00004804")),
+#'     expr = externalIDs(genes),
 #'     error = function(e) e
 #' )
-externalIDs <- function(genes, progress = FALSE) {
+externalIDs <- function(
+    genes,
+    BPPARAM = BiocParallel::bpparam()  # nolint
+) {
     assert(.allAreGenes(genes))
-    pblapply <- .pblapply(progress = progress)
-    list <- lapply(genes, function(gene) {
+    x <- lapply(genes, function(gene) {
         query <- paste(
             "widget",
             "gene",
@@ -24,31 +27,26 @@ externalIDs <- function(genes, progress = FALSE) {
             "external_links",
             sep = "/"
         )
-        data <- .rest(query) %>%
-            .[["fields"]] %>%
-            .[["xrefs"]] %>%
-            .[["data"]]
-        if (is.null(data)) {
-            return(NULL)
-        }
-        xrefs <- pblapply(data, function(x) {
-            x %>%
-                .[[1L]] %>%
-                .[[1L]] %>%
-                unlist() %>%
-                unique() %>%
-                sort()
-        })
-        lapply(xrefs, list) %>%
-            as_tibble() %>%
-            mutate(!!sym("geneID") := !!gene)
+        data <- .rest(query)[["fields"]][["xrefs"]][["data"]]
+        if (is.null(data)) return(NULL)
+        xrefs <- bplapply(
+            X = data,
+            FUN = function(x) {
+                x <- unlist(x[[1L]][[1L]])
+                x <- sort(unique(x))
+                x
+            },
+            BPPARAM = BPPARAM
+        )
+        x <- data.frame(do.call(cbind, lapply(xrefs, list)))
+        x[["geneID"]] <- gene
+        x
     })
-    list <- Filter(Negate(is.null), list)
-    if (!length(list)) {
-        return(NULL)
-    }
-    list %>%
-        bind_rows() %>%
-        camelCase() %>%
-        .[, unique(c("geneID", sort(colnames(.))))]
+    x <- Filter(Negate(is.null), x)
+    if (!hasLength(x)) return(NULL)
+    x <- rbindlist(x, fill = TRUE)
+    x <- as(x, "DataFrame")
+    x <- camelCase(x)
+    x <- x[, unique(c("geneID", sort(colnames(x))))]
+    x
 }
