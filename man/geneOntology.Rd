@@ -4,14 +4,11 @@
 \alias{geneOntology}
 \title{Gene Ontology terms}
 \usage{
-geneOntology(genes, progress = FALSE)
+geneOntology(genes, BPPARAM = BiocParallel::bpparam())
 }
 \arguments{
 \item{genes}{\code{character}.
 Gene identifiers.}
-
-\item{progress}{\code{logical(1)}.
-Show progress using pbapply package.}
 }
 \value{
 \code{DataFrame}.
@@ -20,12 +17,13 @@ Show progress using pbapply package.}
 Gene Ontology terms
 }
 \note{
-Updated 2019-08-28.
+Updated 2019-08-29.
 }
 \examples{
 ## WormBase REST API must be accessible.
+genes <- c("WBGene00000912", "WBGene00004804")
 tryCatch(
-    expr = geneOntology(c("WBGene00000912", "WBGene00004804")),
+    expr = geneOntology(genes),
     error = function(e) e
 )
 }
