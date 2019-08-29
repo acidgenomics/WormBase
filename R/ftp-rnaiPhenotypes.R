@@ -15,7 +15,7 @@
 #' )
 rnaiPhenotypes <- function(
     version = NULL,
-    BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
+    BPPARAM = BiocParallel::bpparam()  # nolint
 ) {
     file <- .transmit(
         subdir = "ONTOLOGY",

@@ -16,7 +16,7 @@
 #' )
 peptides <- function(
     version = NULL,
-    BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
+    BPPARAM = BiocParallel::bpparam()  # nolint
 ) {
     file <- .assemblyFile(pattern = "wormpep_package", version = version)
     tempdir <- tempdir()

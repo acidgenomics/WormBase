@@ -15,7 +15,7 @@
 #' )
 orthologs <- function(
     version = NULL,
-    BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
+    BPPARAM = BiocParallel::bpparam()  # nolint
 ) {
     file <- .annotationFile(pattern = "orthologs", version = version)
     x <- import(file, format = "lines")

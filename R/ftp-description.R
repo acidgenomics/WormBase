@@ -23,7 +23,7 @@
 #' )
 description <- function(
     version = NULL,
-    BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
+    BPPARAM = BiocParallel::bpparam()  # nolint
 ) {
     file <- .annotationFile(
         pattern = "functional_descriptions",
