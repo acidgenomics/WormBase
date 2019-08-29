@@ -1,3 +1,16 @@
+## wormbase 0.2.9 (2019-08-29)
+
+### Major changes
+
+- Functions now return `DataFrame` instead of `tbl_df`.
+- Updated R dependency to 3.6.
+- Reworked internal code to use base R / Bioconductor methods, instead of
+  tidyverse / dplyr approach.
+  
+### Minor changes
+
+- Improved documentation and updated basejump dependency versions.
+
 ## wormbase 0.2.8 (2019-07-24)
 
 - Updated basejump dependency versions.
