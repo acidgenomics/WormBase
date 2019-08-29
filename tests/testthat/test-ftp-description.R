@@ -18,10 +18,5 @@ test_that("description", {
 test_that("stable", {
     x <- description(version = version)
     expect_s4_class(x, "DataFrame")
-    expect_true(all(vapply(
-        X = x,
-        FUN = is.character,
-        FUN.VALUE = logical(1L)
-    )))
     expect_identical(nrow(x), ngene)
 })
