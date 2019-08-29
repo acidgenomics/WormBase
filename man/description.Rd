@@ -5,7 +5,7 @@
 \title{Gene functional descriptions}
 \usage{
 description(version = getOption(x = "wormbase.version", default = NULL),
-  progress = FALSE)
+  BPPARAM = BiocParallel::bpparam())
 }
 \arguments{
 \item{version}{\code{character(1)} or \code{NULL}.
@@ -13,11 +13,17 @@ WormBase version. If \code{NULL} (recommended), defaults to current production
 release version available on the WormBase website. Legacy versions can be
 specified as a character string (e.g. "WS262").}
 
-\item{progress}{\code{logical(1)}.
-Show progress using pbapply package.}
+\item{BPPARAM}{\code{bpparamClass}.
+BiocParallel parameter to specify the desired processor configuration.\cr
+We recommend using one of the following:
+\itemize{
+\item \link[BiocParallel:bpparam]{bpparam}.
+\item \link[BiocParallel:SerialParam]{SerialParam}.
+\item \link[BiocParallel:MulticoreParam]{MulticoreParam}.
+}}
 }
 \value{
-\code{tbl_df}.
+\code{DataFrame}.
 }
 \description{
 Gene functional descriptions
@@ -30,7 +36,7 @@ from the return here, using grep matching to return only \code{WBGene} entries.
 This file is currently malformed on the WormBase FTP server for WS270
 and WS271 releases.
 
-Updated 2019-07-27.
+Updated 2019-08-28.
 }
 \examples{
 ## WormBase FTP server must be accessible.

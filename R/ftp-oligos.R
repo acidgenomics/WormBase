@@ -1,11 +1,12 @@
 #' PCR oligo sequences
 #'
-#' @note Updated 2019-07-27.
+#' @note Updated 2019-08-28.
 #' @export
 #'
 #' @inheritParams params
+#' @inheritParams acidroxygen::params
 #'
-#' @return `tbl_df`.
+#' @return `DataFrame`.
 #'
 #' @examples
 #' ## WormBase FTP server must be accessible.
@@ -15,32 +16,27 @@
 #' )
 oligos <- function(version = NULL) {
     file <- .annotationFile(pattern = "pcr_product2gene", version = version)
-    ## `pcr_product2gene.txt` file is malformed and may produce warnings.
-    suppressWarnings(
-        data <- read_tsv(
-            file = unname(file),
-            col_names = c("oligo", "geneID"),
-            progress = FALSE
-        )
+    ## `pcr_product2gene.txt` file is malformed, so let's parse as lines.
+    x <- import(file, format = "lines")
+    x <- str_match(x, "^([^\t]+)\t(WBGene\\d{8})")
+    x <- x[, c(2L:3L)]
+    x <- as.data.frame(x, stringsAsFactors = FALSE)
+    colnames(x) <- c("oligo", "geneID")
+    x <- aggregate(
+        formula = formula("oligo~geneID"),
+        data = x,
+        FUN = function(x) {
+            x <- unique(x)
+            x <- sort(x)
+            x <- list(x)
+            x
+        }
     )
-    data %>%
-        as_tibble() %>%
-        mutate(
-            !!sym("geneID") := str_extract(!!sym("geneID"), "WBGene\\d{8}")
-        ) %>%
-        aggregate(
-            formula = formula("oligo~geneID"),
-            data = .,
-            FUN = function(x) {
-                x %>%
-                    unique() %>%
-                    sort() %>%
-                    list()
-            }
-        ) %>%
-        as_tibble() %>%
-        filter(grepl(pattern = genePattern, x = !!sym("geneID"))) %>%
-        arrange(!!sym("geneID"))
+    x <- as(x, "DataFrame")
+    keep <- grepl(pattern = genePattern, x = x[["geneID"]])
+    x <- x[keep, , drop = FALSE]
+    x <- x[order(x[["geneID"]]), , drop = FALSE]
+    x
 }
 
 formals(oligos)[["version"]] <- versionArg

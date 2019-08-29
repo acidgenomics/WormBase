@@ -1,11 +1,13 @@
 #' Best BLASTP hits
 #'
-#' @note Updated 2019-07-27.
+#' @note Updated 2019-08-28.
 #' @export
 #'
 #' @inheritParams params
+#' @inheritParams acidroxygen::params
 #'
-#' @return `tbl_df`. Grouped by `wormpep` column.
+#' @return `SplitDataFrameList`.
+#' Split by `wormpep` column.
 #'
 #' @examples
 #' ## WormBase FTP server must be accessible.
@@ -18,19 +20,16 @@ blastp <- function(version = NULL) {
         pattern = "best_blastp_hits",
         version = version
     )
-    file %>%
-        unname() %>%
-        import(colnames = FALSE) %>%
-        as_tibble() %>%
-        .[, c(1L, 4L, 5L)] %>%
-        set_colnames(c("wormpep", "peptide", "eValue")) %>%
-        .[grepl("^ENSEMBL:ENSP\\d{11}$", .[["peptide"]]), , drop = FALSE] %>%
-        .[order(.[["wormpep"]], .[["eValue"]]), ] %>%
-        mutate(
-            !!sym("peptide") := str_sub(!!sym("peptide"), 9L),
-            !!sym("eValue") := as.numeric(!!sym("eValue"))
-        ) %>%
-        group_by(!!sym("wormpep"))
+    x <- import(file, colnames = FALSE)
+    x <- as(x, "DataFrame")
+    x <- x[, c(1L, 4L, 5L)]
+    colnames(x) <- c("wormpep", "peptide", "eValue")
+    keep <- grepl("^ENSEMBL:ENSP\\d{11}$", x[["peptide"]])
+    x <- x[keep, , drop = FALSE]
+    x <- x[order(x[["wormpep"]], x[["eValue"]]), , drop = FALSE]
+    x[["peptide"]] <- str_sub(x[["peptide"]], 9L)
+    x[["eValue"]] <- as.numeric(x[["eValue"]])
+    split(x, f = x[["wormpep"]])
 }
 
 formals(blastp)[["version"]] <- versionArg

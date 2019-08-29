@@ -1,22 +1,26 @@
 #' Gene Ontology terms
 #'
-#' @note Updated 2019-07-27.
+#' @note Updated 2019-08-29.
 #' @export
 #'
 #' @inheritParams params
+#' @inheritParams acidroxygen::params
 #'
-#' @return `tbl_df`.
+#' @return `DataFrame`.
 #'
 #' @examples
 #' ## WormBase REST API must be accessible.
+#' genes <- c("WBGene00000912", "WBGene00004804")
 #' tryCatch(
-#'     expr = geneOntology(c("WBGene00000912", "WBGene00004804")),
+#'     expr = geneOntology(genes),
 #'     error = function(e) e
 #' )
-geneOntology <- function(genes, progress = FALSE) {
+geneOntology <- function(
+    genes,
+    BPPARAM = BiocParallel::bpparam()  # nolint
+) {
     assert(.allAreGenes(genes))
-    pblapply <- .pblapply(progress = progress)
-    list <- lapply(genes, function(gene) {
+    x <- lapply(genes, function(gene) {
         query <- paste(
             "widget",
             "gene",
@@ -24,33 +28,34 @@ geneOntology <- function(genes, progress = FALSE) {
             "gene_ontology",
             sep = "/"
         )
-        data <- .rest(query) %>%
-            .[["fields"]] %>%
-            .[["gene_ontology"]] %>%
-            .[["data"]]
-        if (is.null(data)) {
-            return(NULL)
-        }
-        goTerms <- pblapply(data, function(process) {
-            lapply(seq_along(process), function(x) {
-                id <- process[[x]][["term_description"]][["id"]]
-                label <- process[[x]][["term_description"]][["label"]]
-                paste(id, label, sep = "~")
-            }) %>%
-                unlist() %>%
-                unique() %>%
-                sort()
-        })
-        lapply(goTerms, list) %>%
-            as_tibble() %>%
-            mutate(!!sym("geneID") := !!gene)
+        data <- .rest(query)[["fields"]][["gene_ontology"]][["data"]]
+        if (is.null(data)) return(NULL)
+        goTerms <- bplapply(
+            X = data,
+            FUN = function(process) {
+                x <- lapply(
+                    X = seq_along(process),
+                    FUN = function(x) {
+                        id <- process[[x]][["term_description"]][["id"]]
+                        label <- process[[x]][["term_description"]][["label"]]
+                        paste(id, label, sep = "~")
+                    }
+                )
+                x <- unlist(x)
+                x <- sort(unique(x))
+                x
+            },
+            BPPARAM = BPPARAM
+        )
+        x <- data.frame(do.call(cbind, lapply(goTerms, list)))
+        x[["geneID"]] <- gene
+        x
     })
-    list <- Filter(Negate(is.null), list)
-    if (!length(list)) {
-        return(NULL)
-    }
-    list %>%
-        bind_rows() %>%
-        camelCase() %>%
-        .[, unique(c("geneID", sort(colnames(.))))]
+    x <- Filter(Negate(is.null), x)
+    if (!hasLength(x)) return(NULL)
+    x <- rbindlist(x, fill = TRUE)
+    x <- as(x, "DataFrame")
+    x <- camelCase(x)
+    x <- x[, unique(c("geneID", sort(colnames(x))))]
+    x
 }

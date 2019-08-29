@@ -1,11 +1,12 @@
 #' Orthologs
 #'
-#' @note Updated 2019-07-27.
+#' @note Updated 2019-08-28.
 #' @export
 #'
 #' @inheritParams params
+#' @inheritParams acidroxygen::params
 #'
-#' @return `tbl_df`.
+#' @return `DataFrame`.
 #'
 #' @examples
 #' ## WormBase FTP server must be accessible.
@@ -13,63 +14,64 @@
 #'     expr = orthologs(),
 #'     error = function(e) e
 #' )
-orthologs <- function(version = NULL, progress = FALSE) {
-    pblapply <- .pblapply(progress = progress)
+orthologs <- function(
+    version = NULL,
+    BPPARAM = BiocParallel::bpparam()  # nolint
+) {
     file <- .annotationFile(pattern = "orthologs", version = version)
-
-    message("Parsing lines in file...")
-    lines <- file %>%
-        unname() %>%
-        read_lines(progress = FALSE) %>%
-        ## Remove the comment lines.
-        .[!grepl("^#", .)] %>%
-        gsub("^=$", "\\|\\|", .) %>%
-        paste(collapse = " ") %>%
-        strsplit("\\|\\|") %>%
-        unlist() %>%
-        gsub("^ ", "", .) %>%
-        ## Drop any lines that don't contain a gene identifier.
-        .[grepl(paste0("^", genePattern), .)]
-
-    message("Processing orthologs...")
-    dflist <- pblapply(lines, function(x) {
-        gene <- str_extract(x, genePattern)
-        patterns <- c(
-            homoSapiens = "ENSG\\d{11}",
-            musMusculus = "ENSMUSG\\d{11}",
-            drosophilaMelanogaster = "FBgn\\d{7}",
-            danioRerio = "ENSDARG\\d{11}"
-        )
-        orthologs <- mapply(
-            FUN = function(string, pattern) {
-                x <- str_extract_all(
-                    string = string,
-                    pattern = paste0("\\b", pattern, "\\b")
-                ) %>%
-                    unlist() %>%
-                    unique() %>%
-                    sort()
-                if (!length(x)) {
-                    x <- NULL
-                }
-                x
-            },
-            pattern = patterns,
-            MoreArgs = list(string = x),
-            SIMPLIFY = FALSE,
-            USE.NAMES = TRUE
-        )
-        tbl <- lapply(orthologs, list) %>%
-            as_tibble()
-        tbl[["geneID"]] <- gene
-        tbl
-    })
-
-    dflist %>%
-        bind_rows() %>%
-        select(!!sym("geneID"), everything()) %>%
-        filter(grepl(pattern = genePattern, x = !!sym("geneID"))) %>%
-        arrange(!!sym("geneID"))
+    x <- import(file, format = "lines")
+    ## Remove the comment lines.
+    x <- x[!grepl("^#", x)]
+    x <- gsub("^=$", "\\|\\|", x)
+    x <- paste(x, collapse = " ")
+    x <- strsplit(x, "\\|\\|")
+    x <- unlist(x, recursive = FALSE, use.names = FALSE)
+    x <- gsub("^ ", "", x)
+    ## Drop any lines that don't contain a gene identifier.
+    x <- x[grepl(paste0("^", genePattern), x)]
+    message("Processing orthologs.")
+    x <- bplapply(
+        X = x,
+        FUN = function(x) {
+            gene <- str_extract(x, genePattern)
+            patterns <- c(
+                homoSapiens = "ENSG\\d{11}",
+                musMusculus = "ENSMUSG\\d{11}",
+                drosophilaMelanogaster = "FBgn\\d{7}",
+                danioRerio = "ENSDARG\\d{11}"
+            )
+            orthologs <- mapply(
+                FUN = function(x, pattern) {
+                    pattern <- paste0("\\b", pattern, "\\b")
+                    x <- str_extract_all(x, pattern)
+                    x <- unlist(x)
+                    x <- unique(x)
+                    x <- sort(x)
+                    if (!length(x)) {
+                        x <- NULL
+                    }
+                    x
+                },
+                pattern = patterns,
+                MoreArgs = list(x = x),
+                SIMPLIFY = FALSE,
+                USE.NAMES = FALSE
+            )
+            names(orthologs) <- names(patterns)
+            x <- lapply(orthologs, list)
+            x <- DataFrame(do.call(cbind, x))
+            x[["geneID"]] <- gene
+            x
+        },
+        BPPARAM = BPPARAM
+    )
+    x <- DataFrameList(x)
+    x <- unlist(x, recursive = FALSE, use.names = FALSE)
+    keep <- grepl(pattern = genePattern, x = x[["geneID"]])
+    x <- x[keep, , drop = FALSE]
+    x <- x[order(x[["geneID"]]), , drop = FALSE]
+    x <- x[, unique(c("geneID", sort(colnames(x))))]
+    x
 }
 
 formals(orthologs)[["version"]] <- versionArg

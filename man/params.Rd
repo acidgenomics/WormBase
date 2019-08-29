@@ -7,14 +7,8 @@
 \item{file}{\code{character(1)}.
 Annotation file name.}
 
-\item{gene}{\code{character(1)}.
-Gene identifier.}
-
 \item{genes}{\code{character}.
-Gene identifiers.}
-
-\item{progress}{\code{logical(1)}.
-Show progress using pbapply package.}
+Gene identifiers (e.g. WBGene00004804).}
 
 \item{version}{\code{character(1)} or \code{NULL}.
 WormBase version. If \code{NULL} (recommended), defaults to current production

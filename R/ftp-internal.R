@@ -29,13 +29,16 @@
 
 
 
-## Updated 2019-07-24.
+## Updated 2019-08-12.
 .invalidFTPFile <- function(file) {
-    stop(paste0(
-        "Invalid FTP file detected.\n",
-        "Please submit an issue on the WormBase GitHub",
-        " (https://github.com/wormbase) ",
-        "that the FTP file `", basename(file), "` is malformed."
+    stop(sprintf(
+        fmt = paste0(
+            "Invalid FTP file detected.\n",
+            "Please submit an issue on the WormBase GitHub",
+            " (https://github.com/wormbase) ",
+            "that the FTP file '%s' is malformed."
+        ),
+        basename(file)
     ))
 }
 

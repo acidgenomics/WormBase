@@ -4,12 +4,13 @@
 #'   files available on the WormBase FTP server. These annotations are removed
 #'   from the return here, using grep matching to return only `WBGene` entries.
 #'
-#' @note Updated 2019-07-27.
+#' @note Updated 2019-08-28.
 #' @export
 #'
 #' @inheritParams params
+#' @inheritParams acidroxygen::params
 #'
-#' @return `tbl_df`.
+#' @return `DataFrame`.
 #'
 #' @examples
 #' ## WormBase FTP server must be accessible.
@@ -19,14 +20,14 @@
 #' )
 geneIDs <- function(version = NULL) {
     file <- .annotationFile(pattern = "geneIDs", version = version)
-    file %>%
-        unname() %>%
-        import(colnames = FALSE) %>%
-        as_tibble() %>%
-        .[, 2L:5L] %>%
-        set_colnames(c("geneID", "geneName", "sequence", "status")) %>%
-        filter(grepl(pattern = genePattern, x = !!sym("geneID"))) %>%
-        arrange(!!sym("geneID"))
+    x <- import(file, colnames = FALSE)
+    x <- as(x, "DataFrame")
+    x <- x[, 2L:5L]
+    colnames(x) <- c("geneID", "geneName", "sequence", "status")
+    keep <- grepl(pattern = genePattern, x = x[["geneID"]])
+    x <- x[keep, , drop = FALSE]
+    x <- x[order(x[["geneID"]]), , drop = FALSE]
+    x
 }
 
 formals(geneIDs)[["version"]] <- versionArg

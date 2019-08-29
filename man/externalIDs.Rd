@@ -4,28 +4,35 @@
 \alias{externalIDs}
 \title{External identifiers}
 \usage{
-externalIDs(genes, progress = FALSE)
+externalIDs(genes, BPPARAM = BiocParallel::bpparam())
 }
 \arguments{
 \item{genes}{\code{character}.
-Gene identifiers.}
+Gene identifiers (e.g. WBGene00004804).}
 
-\item{progress}{\code{logical(1)}.
-Show progress using pbapply package.}
+\item{BPPARAM}{\code{bpparamClass}.
+BiocParallel parameter to specify the desired processor configuration.\cr
+We recommend using one of the following:
+\itemize{
+\item \link[BiocParallel:bpparam]{bpparam}.
+\item \link[BiocParallel:SerialParam]{SerialParam}.
+\item \link[BiocParallel:MulticoreParam]{MulticoreParam}.
+}}
 }
 \value{
-\code{tbl_df}.
+\code{DataFrame}.
 }
 \description{
 External identifiers
 }
 \note{
-Updated 2019-07-27.
+Updated 2019-08-29.
 }
 \examples{
 ## WormBase REST API must be accessible.
+genes <- c("WBGene00000912", "WBGene00004804")
 tryCatch(
-    expr = externalIDs(c("WBGene00000912", "WBGene00004804")),
+    expr = externalIDs(genes),
     error = function(e) e
 )
 }

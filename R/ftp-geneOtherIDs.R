@@ -4,12 +4,13 @@
 #'   files available on the WormBase FTP server. These annotations are removed
 #'   from the return here, using grep matching to return only `WBGene` entries.
 #'
-#' @note Updated 2019-07-27.
+#' @note Updated 2019-08-28.
 #' @export
 #'
 #' @inheritParams params
+#' @inheritParams acidroxygen::params
 #'
-#' @return `tbl_df`.
+#' @return `DataFrame`.
 #'
 #' @examples
 #' ## WormBase FTP server must be accessible.
@@ -19,25 +20,29 @@
 #' )
 geneOtherIDs <- function(version = NULL) {
     file <- .annotationFile(pattern = "geneOtherIDs", version = version)
-    file %>%
-        unname() %>%
-        read_lines(progress = FALSE) %>%
-        ## Remove status. Already present in geneIDs file.
-        gsub("\t(Dead|Live)", "", .) %>%
-        ## Remove `CELE_*` identifiers.
-        gsub("\t(CELE_[A-Z0-9\\.]+)", "", .) %>%
-        ## Convert tabs to commas for identifiers.
-        gsub("\t", "|", .) %>%
-        ## Add tab back in to separate \code{gene} for row names.
-        gsub("^(WBGene\\d+)(\\|)?", "\\1\t", .) %>%
-        ## Break out the chain and evaluate.
-        strsplit("\t") %>%
-        do.call(rbind, .) %>%
-        set_colnames(c("geneID", "geneOtherIDs")) %>%
-        as_tibble() %>%
-        filter(grepl(pattern = genePattern, x = !!sym("geneID"))) %>%
-        arrange(!!sym("geneID")) %>%
-        mutate(!!sym("geneOtherIDs") := strsplit(!!sym("geneOtherIDs"), "\\|"))
+    x <- import(file, format = "lines")
+    ## Remove status. Already present in geneIDs file.
+    x <- gsub("\t(Dead|Live)", "", x)
+    ## Remove `CELE_*` identifiers.
+    x <- gsub("\t(CELE_[A-Z0-9\\.]+)", "", x)
+    ## Convert tabs to commas for identifiers.
+    x <- gsub("\t", "|", x)
+    ## Add tab back in to separate \code{gene} for row names.
+    x <- gsub("^(WBGene\\d+)(\\|)?", "\\1\t", x)
+    ## Break out the chain and evaluate.
+    x <- strsplit(x, "\t")
+    x <- do.call(rbind, x)
+    x <- as.data.frame(x, stringsAsFactors = FALSE)
+    x <- as(x, "DataFrame")
+    colnames(x) <- c("geneID", "geneOtherIDs")
+    keep <- grepl(pattern = genePattern, x = x[["geneID"]])
+    x <- x[keep, , drop = FALSE]
+    x <- x[order(x[["geneID"]]), , drop = FALSE]
+    x[["geneOtherIDs"]] <- strsplit(
+        x = as.character(x[["geneOtherIDs"]]),
+        split = "\\|"
+    )
+    x
 }
 
 formals(geneOtherIDs)[["version"]] <- versionArg
