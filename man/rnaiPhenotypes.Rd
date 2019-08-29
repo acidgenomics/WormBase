@@ -12,6 +12,15 @@ rnaiPhenotypes(version = getOption(x = "wormbase.version", default =
 WormBase version. If \code{NULL} (recommended), defaults to current production
 release version available on the WormBase website. Legacy versions can be
 specified as a character string (e.g. "WS262").}
+
+\item{BPPARAM}{\code{bpparamClass}.
+BiocParallel parameter to specify the desired processor configuration.\cr
+We recommend using one of the following:
+\itemize{
+\item \link[BiocParallel:bpparam]{bpparam}.
+\item \link[BiocParallel:SerialParam]{SerialParam}.
+\item \link[BiocParallel:MulticoreParam]{MulticoreParam}.
+}}
 }
 \value{
 \code{DataFrame}.

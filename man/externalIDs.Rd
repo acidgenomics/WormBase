@@ -8,7 +8,16 @@ externalIDs(genes, BPPARAM = BiocParallel::bpparam())
 }
 \arguments{
 \item{genes}{\code{character}.
-Gene identifiers.}
+Gene identifiers (e.g. WBGene00004804).}
+
+\item{BPPARAM}{\code{bpparamClass}.
+BiocParallel parameter to specify the desired processor configuration.\cr
+We recommend using one of the following:
+\itemize{
+\item \link[BiocParallel:bpparam]{bpparam}.
+\item \link[BiocParallel:SerialParam]{SerialParam}.
+\item \link[BiocParallel:MulticoreParam]{MulticoreParam}.
+}}
 }
 \value{
 \code{DataFrame}.

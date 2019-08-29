@@ -34,15 +34,18 @@ Imports:
     httr (>= 1.4),
     stringr (>= 1.4),
     tibble (>= 2.1),
+    methods,
     stats,
     utils
 Suggests:
+    acidroxygen (>= 0.1),
     BiocStyle (>= 2.12),
     knitr (>= 1.23),
     rmarkdown (>= 1.14),
     testthat (>= 2.2),
     tidyverse (>= 1.2)
 Remotes:
+    acidgenomics/acidroxygen,
     acidgenomics/basejump,
     acidgenomics/goalie
 biocViews:
