@@ -5,19 +5,11 @@
 #' @importFrom basejump camelCase import makeNames pasteURL removeNA sanitizeNA
 #'   toStringUnique transmit
 #' @importFrom data.table rbindlist
-#' @importFrom goalie allAreMatchingRegex assert bapply hasNoDuplicates
-#'   isCharacter isFlag isString
+#' @importFrom goalie allAreMatchingRegex assert bapply hasLength
+#'   hasNoDuplicates isCharacter isFlag isString
 #' @importFrom httr content content_type_json GET user_agent
 #' @importFrom stats formula
 #' @importFrom stringr str_extract str_extract_all str_match str_match_all
 #'   str_sub
 #' @importFrom utils globalVariables untar
-#'
-#'
-#'
-#' @importFrom dplyr arrange bind_rows everything filter group_by mutate rename
-#'   select
-#' @importFrom magrittr set_colnames set_names set_rownames
-#' @importFrom rlang !! !!! := sym syms
-#' @importFrom tibble as_tibble
 NULL
