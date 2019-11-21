@@ -4,8 +4,10 @@
 \alias{orthologs}
 \title{Orthologs}
 \usage{
-orthologs(version = getOption(x = "wormbase.version", default = NULL),
-  BPPARAM = BiocParallel::bpparam())
+orthologs(
+  version = getOption(x = "wormbase.version", default = NULL),
+  BPPARAM = BiocParallel::bpparam()
+)
 }
 \arguments{
 \item{version}{\code{character(1)} or \code{NULL}.
