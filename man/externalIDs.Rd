@@ -26,7 +26,7 @@ We recommend using one of the following:
 External identifiers
 }
 \note{
-Updated 2019-08-29.
+Updated 2020-01-03.
 }
 \examples{
 ## WormBase REST API must be accessible.

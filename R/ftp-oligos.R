@@ -11,7 +11,7 @@
 #' @examples
 #' ## WormBase FTP server must be accessible.
 #' tryCatch(
-#'     expr = oligos,
+#'     expr = oligos(),
 #'     error = function(e) e
 #' )
 oligos <- function(version = NULL) {

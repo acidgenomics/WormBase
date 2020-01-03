@@ -1,17 +1,7 @@
 context("ftp : description")
 
-## Currently failing for WS270, WS271.
-test_that("description", {
-    x <- tryCatch(
-        expr = {
-            description(version = NULL)
-        },
-        error = function(e) e
-    )
-    skip_if(
-        is(x, "error") &&
-            grepl("Invalid FTP file detected.", x)
-    )
+test_that("current", {
+    x <- description(version = NULL)
     expect_s4_class(x, "DataFrame")
 })
 

@@ -1,3 +1,13 @@
+## wormbase 0.2.10 (2020-01-03)
+
+### Minor changes
+
+- Working example and unit test updates for `description` function, now that
+  the corresponding file on the WormBase FTP server is no longer malformed.
+  This has been fixed as of WS274.
+- Updated REST API queries to use "https://wormbase.org/rest". Previously, this
+  called "http://api.wormbase.org/rest", which no longer works.
+
 ## wormbase 0.2.9 (2019-08-29)
 
 ### Major changes
