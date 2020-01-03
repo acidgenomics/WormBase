@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">wormbase</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
       </span>
     </div>
 
@@ -119,8 +119,10 @@
     <p>Gene functional descriptions</p>
     </div>
 
-    <pre class="usage"><span class='fu'>description</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wormbase.version"</span>, <span class='kw'>default</span> <span class='kw'>=</span> <span class='kw'>NULL</span>),
-  <span class='kw'>BPPARAM</span> <span class='kw'>=</span> <span class='kw pkg'>BiocParallel</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/register.html'>bpparam</a></span>())</pre>
+    <pre class="usage"><span class='fu'>description</span>(
+  <span class='kw'>version</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wormbase.version"</span>, <span class='kw'>default</span> <span class='kw'>=</span> <span class='kw'>NULL</span>),
+  <span class='kw'>BPPARAM</span> <span class='kw'>=</span> <span class='kw pkg'>BiocParallel</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/register.html'>bpparam</a></span>()
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -132,6 +134,16 @@ WormBase version. If <code>NULL</code> (recommended), defaults to current produc
 release version available on the WormBase website. Legacy versions can be
 specified as a character string (e.g. "WS262").</p></td>
     </tr>
+    <tr>
+      <th>BPPARAM</th>
+      <td><p><code>bpparamClass</code>.
+BiocParallel parameter to specify the desired processor configuration.<br />
+We recommend using one of the following:</p><ul>
+<li><p><a href='https://rdrr.io/pkg/BiocParallel/man/register.html'>bpparam</a>.</p></li>
+<li><p><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a>.</p></li>
+<li><p><a href='https://rdrr.io/pkg/BiocParallel/man/MulticoreParam-class.html'>MulticoreParam</a>.</p></li>
+</ul></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -142,18 +154,17 @@ specified as a character string (e.g. "WS262").</p></td>
     <p>As of WS269 release, some non-N2 gene IDs are included in the flat
 files available on the WormBase FTP server. These annotations are removed
 from the return here, using grep matching to return only <code>WBGene</code> entries.</p>
-<p>This file is currently malformed on the WormBase FTP server for WS270
-and WS271 releases.</p>
-<p>Updated 2019-08-28.</p>
+<p>This file is malformed on the WormBase FTP server for WS270 and WS271
+releases.</p>
+<p>Updated 2020-01-03.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## WormBase FTP server must be accessible.</span>
-<span class='co'>## Currently failing for WS270, WS271 releases.</span>
 <span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
-    <span class='kw'>expr</span> <span class='kw'>=</span> <span class='fu'>description</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"WS269"</span>),
+    <span class='kw'>expr</span> <span class='kw'>=</span> <span class='fu'>description</span>(),
     <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='no'>e</span>
 )</div><div class='output co'>#&gt; <span class='message'>Transmitting files from 'ftp.wormbase.org'.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
-#&gt; <span class='message'>c_elegans.PRJNA13758.WS269.functional_descriptions.txt.gz</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS269.functional_descriptions.txt.gz.</span></div><div class='output co'>#&gt; <span class='message'>Decompressing 'c_elegans.PRJNA13758.WS269.functional_descriptions.txt.gz' in 'tempdir()'.</span></div><div class='output co'>#&gt; <span class='message'>Importing 'c_elegans.PRJNA13758.WS269.functional_descriptions.txt' using 'base::readLines()'.</span></div><div class='output co'>#&gt; <span class='message'>Processing functional descriptions.</span></div><div class='output co'>#&gt; DataFrame with 51254 rows and 6 columns
+#&gt; <span class='message'>c_elegans.PRJNA13758.WS274.functional_descriptions.txt.gz</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS274.functional_descriptions.txt.gz.</span></div><div class='output co'>#&gt; <span class='message'>Decompressing 'c_elegans.PRJNA13758.WS274.functional_descriptions.txt.gz' in 'tempdir()'.</span></div><div class='output co'>#&gt; <span class='message'>Importing 'c_elegans.PRJNA13758.WS274.functional_descriptions.txt.gz' using 'base::readLines()'.</span></div><div class='output co'>#&gt; <span class='message'>Processing functional descriptions.</span></div><div class='output co'>#&gt; DataFrame with 51300 rows and 4 columns
 #&gt;               geneID
 #&gt;             &lt;factor&gt;
 #&gt; 1     WBGene00000001
@@ -162,11 +173,11 @@ and WS271 releases.</p>
 #&gt; 4     WBGene00000004
 #&gt; 5     WBGene00000005
 #&gt; ...              ...
-#&gt; 51250 WBGene00304215
-#&gt; 51251 WBGene00304219
-#&gt; 51252 WBGene00304220
-#&gt; 51253 WBGene00304237
-#&gt; 51254 WBGene00304238
+#&gt; 51296 WBGene00304981
+#&gt; 51297 WBGene00304985
+#&gt; 51298 WBGene00304992
+#&gt; 51299 WBGene00304996
+#&gt; 51300 WBGene00305018
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            conciseDescription
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      &lt;factor&gt;
 #&gt; 1                                                                                                                                      aap-1 encodes the C. elegans ortholog of the phosphoinositide 3-kinase (PI3K) p50/p55 adaptor/regulatory subunit; AAP-1 negatively regulates lifespan and dauer development, and likely functions as the sole adaptor subunit for the AGE-1/p110 PI3K catalytic subunit to which it binds in vitro; although AAP-1 potentiates insulin-like signaling, it is not absolutely required for insulin-like signaling under most conditions.
@@ -175,37 +186,24 @@ and WS271 releases.</p>
 #&gt; 4     aat-3 encodes an amino acid transporter catalytic subunit; when co-expressed in Xenopus oocytes with the ATG-2 glycoprotein subunit, AAT-3 is able to facilitate amino acid uptake and exchange, showing a relatively high affinity for small and some large neutral amino acids; in addition, AAT-3 is able to covalently associate with ATG-2 or ATG-1 to form heterodimers in the Xenopus expression system; when co-expressed with ATG-2, AAT-3 localizes to the cell surface of oocytes, but when expressed alone, or with ATG-1, AAT-3 localizes intracellularly.
 #&gt; 5                                                                                                                                                      aat-4 encodes a predicted amino acid transporter catalytic subunit; unlike catalytic subunits in other organisms, however, AAT-4 does not contain the highly conserved cysteine residue known to facilitate covalent interaction with a glycoprotein subunit, suggesting that AAT-4 does not require this residue for heterodimer formation or, alternatively, does not require the glycoprotein subunit for function.
 #&gt; ...                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ...
-#&gt; 51250                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          none available
-#&gt; 51251                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          none available
-#&gt; 51252                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          none available
-#&gt; 51253                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          none available
-#&gt; 51254                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          none available
-#&gt;       provisionalDescription detailedDescription
-#&gt;                     &lt;factor&gt;            &lt;factor&gt;
-#&gt; 1             none available      none available
-#&gt; 2             none available      none available
-#&gt; 3             none available      none available
-#&gt; 4             none available      none available
-#&gt; 5             none available      none available
-#&gt; ...                      ...                 ...
-#&gt; 51250         none available      none available
-#&gt; 51251         none available      none available
-#&gt; 51252         none available      none available
-#&gt; 51253         none available      none available
-#&gt; 51254         none available      none available
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            automatedDescription
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        &lt;factor&gt;
-#&gt; 1     aap-1 is an ortholog of human PIK3R1 (phosphoinositide-3-kinase regulatory subunit 1), PIK3R2 (phosphoinositide-3-kinase regulatory subunit 2), and PIK3R3 (phosphoinositide-3-kinase regulatory subunit 3); exhibits protein kinase binding activity; is involved in dauer larval development, determination of adult lifespan, and insulin receptor signaling pathway; localizes to the phosphatidylinositol 3-kinase complex; is expressed in the intestine and the nervous system; human orthologs of this gene are implicated in agammaglobulinemia.
-#&gt; 2                                     aat-1 is an ortholog of human SLC7A5 (solute carrier family 7 member 5) and SLC7A8 (solute carrier family 7 member 8); contributes to L-amino acid transmembrane transporter activity; is involved in amino acid transmembrane transport; localizes to the amino acid transport complex; is expressed in several tissues, including the alimentary system, the excretory system, the nervous system, the reproductive system, and the tail; human orthologs of this gene are implicated in lysinuric protein intolerance.
-#&gt; 3                                                                                                                                                                                                                                                                                                                                                                  aat-2 is an ortholog of human SLC7A11 (solute carrier family 7 member 11), SLC7A5, and SLC7A10 (solute carrier family 7 member 10); is predicted to have transmembrane transporter activity.
-#&gt; 4                                                                                                                                                                               aat-3 is an ortholog of human SLC7A5, SLC7A6 (solute carrier family 7 member 6), and SLC7A7 (solute carrier family 7 member 7); contributes to L-amino acid transmembrane transporter activity; is involved in amino acid transmembrane transport; localizes to the amino acid transport complex; human orthologs of this gene are implicated in lysinuric protein intolerance.
-#&gt; 5                                                                                                                                                                                                                                                                                                                                 aat-4 is an ortholog of human SLC7A11 (solute carrier family 7 member 11), SLC7A6 (solute carrier family 7 member 6), and SLC7A7 (solute carrier family 7 member 7); is predicted to have transmembrane transporter activity.
-#&gt; ...                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ...
-#&gt; 51250                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            none available
-#&gt; 51251                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            none available
-#&gt; 51252                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            none available
-#&gt; 51253                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            none available
-#&gt; 51254                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            none available
+#&gt; 51296                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          none available
+#&gt; 51297                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          none available
+#&gt; 51298                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          none available
+#&gt; 51299                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          none available
+#&gt; 51300                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          none available
+#&gt;                                                                                                                                                                                                                                                                                                                                                                                                   automatedDescription
+#&gt;                                                                                                                                                                                                                                                                                                                                                                                                               &lt;factor&gt;
+#&gt; 1     Is an ortholog of human PIK3R3 (phosphoinositide-3-kinase regulatory subunit 3). Exhibits protein kinase binding activity. Is involved in dauer larval development; determination of adult lifespan; and insulin receptor signaling pathway. Localizes to the phosphatidylinositol 3-kinase complex. Is expressed in intestine and neurons. Human ortholog(s) of this gene are implicated in agammaglobulinemia.
+#&gt; 2                                                                           Is an ortholog of human SLC7A8 (solute carrier family 7 member 8). Contributes to L-amino acid transmembrane transporter activity. Is involved in amino acid transmembrane transport. Localizes to the amino acid transport complex. Is expressed in tail. Human ortholog(s) of this gene are implicated in lysinuric protein intolerance.
+#&gt; 3                                                                                                                                                                                             Is an ortholog of human SLC7A7 (solute carrier family 7 member 7). Is predicted to have L-amino acid transmembrane transporter activity. Human ortholog(s) of this gene are implicated in lysinuric protein intolerance.
+#&gt; 4                                                   Is an ortholog of human SLC7A5 (solute carrier family 7 member 5) and SLC7A8 (solute carrier family 7 member 8). Contributes to L-amino acid transmembrane transporter activity. Is involved in amino acid transmembrane transport. Localizes to the amino acid transport complex. Human ortholog(s) of this gene are implicated in lysinuric protein intolerance.
+#&gt; 5                                                                                                                                                                                                                               Is an ortholog of human SLC7A6 (solute carrier family 7 member 6) and SLC7A7 (solute carrier family 7 member 7). Is predicted to have L-amino acid transmembrane transporter activity.
+#&gt; ...                                                                                                                                                                                                                                                                                                                                                                                                                ...
+#&gt; 51296                                                                                                                                                                                                                                                                                                                                                                                                   none available
+#&gt; 51297                                                                                                                                                                                                                                                                                                                                                                                                   none available
+#&gt; 51298                                                                                                                                                                                                                                                                                                                                                                                                   none available
+#&gt; 51299                                                                                                                                                                                                                                                                                                                                                                                                   none available
+#&gt; 51300                                                                                                                                                                                                                                                                                                                                                                                                   none available
 #&gt;                          geneClassDescription
 #&gt;                                      &lt;factor&gt;
 #&gt; 1     phosphoinositide kinase AdAPter subunit
@@ -214,11 +212,11 @@ and WS271 releases.</p>
 #&gt; 4                      Amino Acid Transporter
 #&gt; 5                      Amino Acid Transporter
 #&gt; ...                                       ...
-#&gt; 51250                               not known
-#&gt; 51251                               not known
-#&gt; 51252                               not known
-#&gt; 51253                               not known
-#&gt; 51254                               not known</div></pre>
+#&gt; 51296                               not known
+#&gt; 51297                               not known
+#&gt; 51298                               not known
+#&gt; 51299                               not known
+#&gt; 51300                               not known</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -239,7 +237,7 @@ and WS271 releases.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>
