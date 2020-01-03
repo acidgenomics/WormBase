@@ -35,16 +35,15 @@ As of WS269 release, some non-N2 gene IDs are included in the flat
 files available on the WormBase FTP server. These annotations are removed
 from the return here, using grep matching to return only \code{WBGene} entries.
 
-This file is currently malformed on the WormBase FTP server for WS270
-and WS271 releases.
+This file is malformed on the WormBase FTP server for WS270 and WS271
+releases.
 
-Updated 2019-08-28.
+Updated 2020-01-03.
 }
 \examples{
 ## WormBase FTP server must be accessible.
-## Currently failing for WS270, WS271 releases.
 tryCatch(
-    expr = description(version = "WS269"),
+    expr = description(),
     error = function(e) e
 )
 }

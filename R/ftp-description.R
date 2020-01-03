@@ -4,10 +4,10 @@
 #'   files available on the WormBase FTP server. These annotations are removed
 #'   from the return here, using grep matching to return only `WBGene` entries.
 #'
-#' @note This file is currently malformed on the WormBase FTP server for WS270
-#'   and WS271 releases.
+#' @note This file is malformed on the WormBase FTP server for WS270 and WS271
+#'   releases.
 #'
-#' @note Updated 2019-08-28.
+#' @note Updated 2020-01-03.
 #' @export
 #'
 #' @inheritParams params
@@ -17,9 +17,8 @@
 #'
 #' @examples
 #' ## WormBase FTP server must be accessible.
-#' ## Currently failing for WS270, WS271 releases.
 #' tryCatch(
-#'     expr = description(version = "WS269"),
+#'     expr = description(),
 #'     error = function(e) e
 #' )
 description <- function(
