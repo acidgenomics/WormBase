@@ -1,3 +1,7 @@
+## FIXME Migration: api.wormbase.org to rest.wormbase.org
+
+
+
 #' WormBase REST API query
 #' @note Updated 2019-07-24.
 #' @noRd
