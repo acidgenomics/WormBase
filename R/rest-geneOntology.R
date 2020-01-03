@@ -1,3 +1,9 @@
+## FIXME The REST API is no longer working as expected.
+## Error in curl::curl_fetch_memory(url, handle = handle) :
+## Empty reply from server
+
+
+
 #' Gene Ontology terms
 #'
 #' @note Updated 2019-08-29.
