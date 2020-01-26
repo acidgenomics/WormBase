@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Orthologs — orthologs • wormbase</title>
+<title>Orthologs — orthologs • WormBase</title>
 
 
 <!-- jquery -->
@@ -70,8 +70,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">wormbase</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
+        <a class="navbar-link" href="../index.html">WormBase</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.11</span>
       </span>
     </div>
 
@@ -151,15 +151,14 @@ We recommend using one of the following:</p><ul>
     <p><code>DataFrame</code>.</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>Updated 2019-08-28.</p>
+    <p>Updated 2020-01-26.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## WormBase FTP server must be accessible.</span>
 <span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
     <span class='kw'>expr</span> <span class='kw'>=</span> <span class='fu'>orthologs</span>(),
     <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='no'>e</span>
-)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from 'ftp.wormbase.org'.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
-#&gt; <span class='message'>c_elegans.PRJNA13758.WS274.orthologs.txt.gz</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS274.orthologs.txt.gz.</span></div><div class='output co'>#&gt; <span class='message'>Decompressing 'c_elegans.PRJNA13758.WS274.orthologs.txt.gz' in 'tempdir()'.</span></div><div class='output co'>#&gt; <span class='message'>Importing 'c_elegans.PRJNA13758.WS274.orthologs.txt.gz' using 'base::readLines()'.</span></div><div class='output co'>#&gt; <span class='message'>Processing orthologs.</span></div><div class='output co'>#&gt; DataFrame with 20157 rows and 5 columns
+)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from <span style='color: #0000BB;font-style: italic;'>&lt;ftp.wormbase.org&gt;</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Files matching pattern: </span><span style='color: #0000BB;'>c_elegans.PRJNA13758.WS274.orthologs.txt.gz</span><span></span></div><div class='output co'>#&gt; <span class='message'>→ Downloading </span><span style='color: #0000BB;'>c_elegans.PRJNA13758.WS274.orthologs.txt.gz</span><span>.</span></div><div class='output co'>#&gt; <span class='message'>→ Importing </span><span style='color: #0000BB;'>c_elegans.PRJNA13758.WS274.orthologs.txt.gz</span><span> using </span><span style='color: #0000BB;'>base</span><span>::</span><span style='color: #000000;background-color: #BBBBBB;'>`readLines()`</span><span>.</span></div><div class='output co'>#&gt; <span class='message'>→ Processing orthologs.</span></div><div class='output co'>#&gt; DataFrame with 20157 rows and 5 columns
 #&gt;               geneID
 #&gt;          &lt;character&gt;
 #&gt; 1     WBGene00000001
@@ -173,58 +172,58 @@ We recommend using one of the following:</p><ul>
 #&gt; 20155 WBGene00304992
 #&gt; 20156 WBGene00304996
 #&gt; 20157 WBGene00305018
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                          danioRerio
-#&gt;                                                                                                                                                                                                                                                                                                                                                                                                              &lt;list&gt;
-#&gt; 1                                                                                                                                                                                                                                                                                                                         c("ENSDARG00000018060", "ENSDARG00000034409", "ENSDARG00000038524", "ENSDARG00000103038")
-#&gt; 2                                                                                                                                                                                                           c("ENSDARG00000005894", "ENSDARG00000008100", "ENSDARG00000051730", "ENSDARG00000054343", "ENSDARG00000054423", "ENSDARG00000055226", "ENSDARG00000075831", "ENSDARG00000089192", "ENSDARG00000099265")
-#&gt; 3                                                                                                                                                                                                                                 c("ENSDARG00000005894", "ENSDARG00000008100", "ENSDARG00000051730", "ENSDARG00000054343", "ENSDARG00000054423", "ENSDARG00000055226", "ENSDARG00000075831", "ENSDARG00000089192")
-#&gt; 4     c("ENSDARG00000005894", "ENSDARG00000008100", "ENSDARG00000010816", "ENSDARG00000016439", "ENSDARG00000020278", "ENSDARG00000020645", "ENSDARG00000037097", "ENSDARG00000051730", "ENSDARG00000054343", "ENSDARG00000054423", "ENSDARG00000055226", "ENSDARG00000061566", "ENSDARG00000075831", "ENSDARG00000079231", "ENSDARG00000089192", "ENSDARG00000099111", "ENSDARG00000099265", "ENSDARG00000100227")
-#&gt; 5                           c("ENSDARG00000005894", "ENSDARG00000008100", "ENSDARG00000010816", "ENSDARG00000016439", "ENSDARG00000020645", "ENSDARG00000037097", "ENSDARG00000051730", "ENSDARG00000054343", "ENSDARG00000054423", "ENSDARG00000055226", "ENSDARG00000061566", "ENSDARG00000075831", "ENSDARG00000079231", "ENSDARG00000089192", "ENSDARG00000099111", "ENSDARG00000099265", "ENSDARG00000100227")
-#&gt; ...                                                                                                                                                                                                                                                                                                                                                                                                             ...
-#&gt; 20153                                                                                                                                                                                                                                                                                                                                                                                                          NULL
-#&gt; 20154                                                                                                                                                                                                                                                                                                                                                                                                          NULL
-#&gt; 20155                                                                                                                                                                                                                                                                                                                                                                                                          NULL
-#&gt; 20156                                                                                                                                                                                                                                                                                                                                                                                                          NULL
-#&gt; 20157                                                                                                                                                                                                                                                                                                                                                                                                          NULL
-#&gt;                                                                            drosophilaMelanogaster
-#&gt;                                                                                            &lt;list&gt;
-#&gt; 1                                                                                     FBgn0020622
-#&gt; 2                                                                                     FBgn0039844
-#&gt; 3                                                  c("FBgn0002778", "FBgn0028425", "FBgn0039487")
-#&gt; 4     c("FBgn0031064", "FBgn0032911", "FBgn0036493", "FBgn0036764", "FBgn0037203", "FBgn0039844")
-#&gt; 5                    c("FBgn0030574", "FBgn0031064", "FBgn0036493", "FBgn0036764", "FBgn0037203")
-#&gt; ...                                                                                           ...
-#&gt; 20153                                                                                        NULL
-#&gt; 20154                                                                                        NULL
-#&gt; 20155                                                                                        NULL
-#&gt; 20156                                                                                        NULL
-#&gt; 20157                                                                                        NULL
-#&gt;                                                                                                                                                                                                                                 homoSapiens
-#&gt;                                                                                                                                                                                                                                      &lt;list&gt;
-#&gt; 1                                                                                                                                          c("ENSG00000105647", "ENSG00000117461", "ENSG00000145675", "ENSG00000268173", "ENSG00000278139")
-#&gt; 2                                                                                 c("ENSG00000021488", "ENSG00000092068", "ENSG00000103064", "ENSG00000103257", "ENSG00000130876", "ENSG00000151012", "ENSG00000155465", "ENSG00000164893")
-#&gt; 3                                                                                                    c("ENSG00000021488", "ENSG00000092068", "ENSG00000103064", "ENSG00000130876", "ENSG00000151012", "ENSG00000155465", "ENSG00000164893")
-#&gt; 4     c("ENSG00000003989", "ENSG00000013293", "ENSG00000021488", "ENSG00000092068", "ENSG00000103064", "ENSG00000103257", "ENSG00000130876", "ENSG00000139514", "ENSG00000151012", "ENSG00000155465", "ENSG00000164893", "ENSG00000165349")
-#&gt; 5     c("ENSG00000003989", "ENSG00000013293", "ENSG00000021488", "ENSG00000092068", "ENSG00000103064", "ENSG00000103257", "ENSG00000130876", "ENSG00000139514", "ENSG00000151012", "ENSG00000155465", "ENSG00000164893", "ENSG00000165349")
-#&gt; ...                                                                                                                                                                                                                                     ...
-#&gt; 20153                                                                                                                                                                                                                                  NULL
-#&gt; 20154                                                                                                                                                                                                                                  NULL
-#&gt; 20155                                                                                                                                                                                                                                  NULL
-#&gt; 20156                                                                                                                                                                                                                                  NULL
-#&gt; 20157                                                                                                                                                                                                                                  NULL
-#&gt;                                                                                                                                                                                                                                                                                                                                       musMusculus
-#&gt;                                                                                                                                                                                                                                                                                                                                            &lt;list&gt;
-#&gt; 1                                                                                                                                                                                                                                                       c("ENSMUSG00000028698", "ENSMUSG00000031834", "ENSMUSG00000041417", "ENSMUSG00000111410")
-#&gt; 2                                                                                             c("ENSMUSG00000000958", "ENSMUSG00000020600", "ENSMUSG00000022180", "ENSMUSG00000027737", "ENSMUSG00000030492", "ENSMUSG00000030495", "ENSMUSG00000031904", "ENSMUSG00000039710", "ENSMUSG00000040010", "ENSMUSG00000041052", "ENSMUSG00000054753")
-#&gt; 3                                                                                                                   c("ENSMUSG00000000958", "ENSMUSG00000020600", "ENSMUSG00000022180", "ENSMUSG00000027737", "ENSMUSG00000030492", "ENSMUSG00000030495", "ENSMUSG00000031904", "ENSMUSG00000039710", "ENSMUSG00000041052", "ENSMUSG00000054753")
-#&gt; 4     c("ENSMUSG00000000958", "ENSMUSG00000020600", "ENSMUSG00000022180", "ENSMUSG00000027737", "ENSMUSG00000030492", "ENSMUSG00000030495", "ENSMUSG00000031297", "ENSMUSG00000031596", "ENSMUSG00000031904", "ENSMUSG00000039710", "ENSMUSG00000040010", "ENSMUSG00000041052", "ENSMUSG00000041313", "ENSMUSG00000054753", "ENSMUSG00000069072")
-#&gt; 5     c("ENSMUSG00000000958", "ENSMUSG00000020600", "ENSMUSG00000022180", "ENSMUSG00000027737", "ENSMUSG00000030492", "ENSMUSG00000030495", "ENSMUSG00000031297", "ENSMUSG00000031596", "ENSMUSG00000031904", "ENSMUSG00000039710", "ENSMUSG00000040010", "ENSMUSG00000041052", "ENSMUSG00000041313", "ENSMUSG00000054753", "ENSMUSG00000069072")
-#&gt; ...                                                                                                                                                                                                                                                                                                                                           ...
-#&gt; 20153                                                                                                                                                                                                                                                                                                                                        NULL
-#&gt; 20154                                                                                                                                                                                                                                                                                                                                        NULL
-#&gt; 20155                                                                                                                                                                                                                                                                                                                                        NULL
-#&gt; 20156                                                                                                                                                                                                                                                                                                                                        NULL
-#&gt; 20157                                                                                                                                                                                                                                                                                                                                        NULL</div></pre>
+#&gt;                                                         danioRerio
+#&gt;                                                             &lt;list&gt;
+#&gt; 1     ENSDARG00000018060,ENSDARG00000034409,ENSDARG00000038524,...
+#&gt; 2     ENSDARG00000005894,ENSDARG00000008100,ENSDARG00000051730,...
+#&gt; 3     ENSDARG00000005894,ENSDARG00000008100,ENSDARG00000051730,...
+#&gt; 4     ENSDARG00000005894,ENSDARG00000008100,ENSDARG00000010816,...
+#&gt; 5     ENSDARG00000005894,ENSDARG00000008100,ENSDARG00000010816,...
+#&gt; ...                                                            ...
+#&gt; 20153                                                             
+#&gt; 20154                                                             
+#&gt; 20155                                                             
+#&gt; 20156                                                             
+#&gt; 20157                                                             
+#&gt;                        drosophilaMelanogaster
+#&gt;                                        &lt;list&gt;
+#&gt; 1                                 FBgn0020622
+#&gt; 2                                 FBgn0039844
+#&gt; 3         FBgn0002778,FBgn0028425,FBgn0039487
+#&gt; 4     FBgn0031064,FBgn0032911,FBgn0036493,...
+#&gt; 5     FBgn0030574,FBgn0031064,FBgn0036493,...
+#&gt; ...                                       ...
+#&gt; 20153                                        
+#&gt; 20154                                        
+#&gt; 20155                                        
+#&gt; 20156                                        
+#&gt; 20157                                        
+#&gt;                                               homoSapiens
+#&gt;                                                    &lt;list&gt;
+#&gt; 1     ENSG00000105647,ENSG00000117461,ENSG00000145675,...
+#&gt; 2     ENSG00000021488,ENSG00000092068,ENSG00000103064,...
+#&gt; 3     ENSG00000021488,ENSG00000092068,ENSG00000103064,...
+#&gt; 4     ENSG00000003989,ENSG00000013293,ENSG00000021488,...
+#&gt; 5     ENSG00000003989,ENSG00000013293,ENSG00000021488,...
+#&gt; ...                                                   ...
+#&gt; 20153                                                    
+#&gt; 20154                                                    
+#&gt; 20155                                                    
+#&gt; 20156                                                    
+#&gt; 20157                                                    
+#&gt;                                                        musMusculus
+#&gt;                                                             &lt;list&gt;
+#&gt; 1     ENSMUSG00000028698,ENSMUSG00000031834,ENSMUSG00000041417,...
+#&gt; 2     ENSMUSG00000000958,ENSMUSG00000020600,ENSMUSG00000022180,...
+#&gt; 3     ENSMUSG00000000958,ENSMUSG00000020600,ENSMUSG00000022180,...
+#&gt; 4     ENSMUSG00000000958,ENSMUSG00000020600,ENSMUSG00000022180,...
+#&gt; 5     ENSMUSG00000000958,ENSMUSG00000020600,ENSMUSG00000022180,...
+#&gt; ...                                                            ...
+#&gt; 20153                                                             
+#&gt; 20154                                                             
+#&gt; 20155                                                             
+#&gt; 20156                                                             
+#&gt; 20157                                                             </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

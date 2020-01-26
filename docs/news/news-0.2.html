@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Version 0.2 • wormbase</title>
+<title>Version 0.2 • WormBase</title>
 
 
 <!-- jquery -->
@@ -68,8 +68,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">wormbase</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
+        <a class="navbar-link" href="../index.html">WormBase</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.11</span>
       </span>
     </div>
 
@@ -190,18 +190,18 @@
     <div id="wormbase-0-2-9-2019-08-29" class="section level2">
 <h2 class="hasAnchor">
 <a href="#wormbase-0-2-9-2019-08-29" class="anchor"></a>wormbase 0.2.9 (2019-08-29)</h2>
-<div id="major-changes" class="section level3">
+<div id="major-changes-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#major-changes" class="anchor"></a>Major changes</h3>
+<a href="#major-changes-1" class="anchor"></a>Major changes</h3>
 <ul>
 <li>Functions now return <code>DataFrame</code> instead of <code>tbl_df</code>.</li>
 <li>Updated R dependency to 3.6.</li>
 <li>Reworked internal code to use base R / Bioconductor methods, instead of tidyverse / dplyr approach.</li>
 </ul>
 </div>
-<div id="minor-changes-1" class="section level3">
+<div id="minor-changes-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#minor-changes-1" class="anchor"></a>Minor changes</h3>
+<a href="#minor-changes-2" class="anchor"></a>Minor changes</h3>
 <ul>
 <li>Improved documentation and updated basejump dependency versions.</li>
 </ul>
@@ -210,12 +210,31 @@
     <div id="wormbase-0-2-10-2020-01-03" class="section level2">
 <h2 class="hasAnchor">
 <a href="#wormbase-0-2-10-2020-01-03" class="anchor"></a>wormbase 0.2.10 (2020-01-03)</h2>
+<div id="minor-changes-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#minor-changes-1" class="anchor"></a>Minor changes</h3>
+<ul>
+<li>Working example and unit test updates for <code>description</code> function, now that the corresponding file on the WormBase FTP server is no longer malformed. This has been fixed as of WS274.</li>
+<li>Updated REST API queries to use “<a href="https://wormbase.org/rest" class="uri">https://wormbase.org/rest</a>”. Previously, this called “<a href="http://api.wormbase.org/rest" class="uri">http://api.wormbase.org/rest</a>”, which no longer works.</li>
+</ul>
+</div>
+</div>
+    <div id="wormbase-0-2-11-2020-01-26" class="section level2">
+<h2 class="hasAnchor">
+<a href="#wormbase-0-2-11-2020-01-26" class="anchor"></a>wormbase 0.2.11 (2020-01-26)</h2>
+<div id="major-changes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#major-changes" class="anchor"></a>Major changes</h3>
+<ul>
+<li>Renamed package from “wormbase” to “WormBase”.</li>
+</ul>
+</div>
 <div id="minor-changes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#minor-changes" class="anchor"></a>Minor changes</h3>
 <ul>
-<li>Working example and unit test updates for <code>description</code> function, now that the corresponding file on the WormBase FTP server is no longer malformed. This has been fixed as of WS274.</li>
-<li>Updated REST API queries to use “<a href="https://wormbase.org/rest" class="uri">https://wormbase.org/rest</a>”. Previously, this called “<a href="http://api.wormbase.org/rest" class="uri">http://api.wormbase.org/rest</a>”, which no longer works.</li>
+<li>Updated basejump dependencies.</li>
+<li>Now using cli package to display messages.</li>
 </ul>
 </div>
 </div>
@@ -236,6 +255,7 @@
         <li><a href="#wormbase-0-2-8-2019-07-24">0.2.8</a></li>
         <li><a href="#wormbase-0-2-9-2019-08-29">0.2.9</a></li>
         <li><a href="#wormbase-0-2-10-2020-01-03">0.2.10</a></li>
+        <li><a href="#wormbase-0-2-11-2020-01-26">0.2.11</a></li>
       </ul>
     </div>
   </div>

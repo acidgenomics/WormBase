@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Gene identifiers — geneIDs • wormbase</title>
+<title>Gene identifiers — geneIDs • WormBase</title>
 
 
 <!-- jquery -->
@@ -70,8 +70,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">wormbase</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
+        <a class="navbar-link" href="../index.html">WormBase</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.11</span>
       </span>
     </div>
 
@@ -148,8 +148,7 @@ from the return here, using grep matching to return only <code>WBGene</code> ent
 <span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
     <span class='kw'>expr</span> <span class='kw'>=</span> <span class='fu'>geneIDs</span>(),
     <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='no'>e</span>
-)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from 'ftp.wormbase.org'.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
-#&gt; <span class='message'>c_elegans.PRJNA13758.WS274.geneIDs.txt.gz</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS274.geneIDs.txt.gz.</span></div><div class='output co'>#&gt; <span class='message'>Decompressing 'c_elegans.PRJNA13758.WS274.geneIDs.txt.gz' in 'tempdir()'.</span></div><div class='output co'>#&gt; <span class='message'>Importing 'c_elegans.PRJNA13758.WS274.geneIDs.txt.gz' using 'data.table::fread()'.</span></div><div class='output co'>#&gt; DataFrame with 51300 rows and 4 columns
+)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from <span style='color: #0000BB;font-style: italic;'>&lt;ftp.wormbase.org&gt;</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Files matching pattern: </span><span style='color: #0000BB;'>c_elegans.PRJNA13758.WS274.geneIDs.txt.gz</span><span></span></div><div class='output co'>#&gt; <span class='message'>→ Downloading </span><span style='color: #0000BB;'>c_elegans.PRJNA13758.WS274.geneIDs.txt.gz</span><span>.</span></div><div class='output co'>#&gt; <span class='message'>→ Importing </span><span style='color: #0000BB;'>c_elegans.PRJNA13758.WS274.geneIDs.txt.gz</span><span> using </span><span style='color: #0000BB;'>data.table</span><span>::</span><span style='color: #000000;background-color: #BBBBBB;'>`fread()`</span><span>.</span></div><div class='output co'>#&gt; DataFrame with 51300 rows and 4 columns
 #&gt;               geneID    geneName    sequence      status
 #&gt;          &lt;character&gt; &lt;character&gt; &lt;character&gt; &lt;character&gt;
 #&gt; 1     WBGene00000001       aap-1  Y110A7A.10        Live
@@ -162,7 +161,7 @@ from the return here, using grep matching to return only <code>WBGene</code> ent
 #&gt; 51297 WBGene00304985          NA    D1081.20        Live
 #&gt; 51298 WBGene00304992          NA    F35C12.7        Live
 #&gt; 51299 WBGene00304996          NA   F55A12.18        Live
-#&gt; 51300 WBGene00305018          NA    K07A1.21        Live</div></pre>
+#&gt; 51300 WBGene00305018          NA    K07A1.21        Live</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

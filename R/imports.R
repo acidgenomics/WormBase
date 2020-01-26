@@ -4,6 +4,7 @@
 #' @importFrom S4Vectors DataFrame aggregate head split t tail
 #' @importFrom basejump camelCase import makeNames pasteURL removeNA sanitizeNA
 #'   toStringUnique transmit
+#' @importFrom cli cli_alert
 #' @importFrom data.table rbindlist
 #' @importFrom goalie allAreMatchingRegex assert bapply hasLength
 #'   hasNoDuplicates isCharacter isFlag isString

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Other gene identifiers — geneOtherIDs • wormbase</title>
+<title>Other gene identifiers — geneOtherIDs • WormBase</title>
 
 
 <!-- jquery -->
@@ -70,8 +70,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">wormbase</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
+        <a class="navbar-link" href="../index.html">WormBase</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.11</span>
       </span>
     </div>
 
@@ -148,21 +148,20 @@ from the return here, using grep matching to return only <code>WBGene</code> ent
 <span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
     <span class='kw'>expr</span> <span class='kw'>=</span> <span class='fu'>geneOtherIDs</span>(),
     <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='no'>e</span>
-)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from 'ftp.wormbase.org'.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
-#&gt; <span class='message'>c_elegans.PRJNA13758.WS274.geneOtherIDs.txt.gz</span></div><div class='output co'>#&gt; <span class='message'>Downloading c_elegans.PRJNA13758.WS274.geneOtherIDs.txt.gz.</span></div><div class='output co'>#&gt; <span class='message'>Decompressing 'c_elegans.PRJNA13758.WS274.geneOtherIDs.txt.gz' in 'tempdir()'.</span></div><div class='output co'>#&gt; <span class='message'>Importing 'c_elegans.PRJNA13758.WS274.geneOtherIDs.txt.gz' using 'base::readLines()'.</span></div><div class='output co'>#&gt; DataFrame with 51300 rows and 2 columns
-#&gt;               geneID             geneOtherIDs
-#&gt;          &lt;character&gt;                   &lt;list&gt;
-#&gt; 1     WBGene00000001 c("Y110A7A.10", "aap-1")
-#&gt; 2     WBGene00000002    c("F27C8.1", "aat-1")
-#&gt; 3     WBGene00000003    c("F07C3.7", "aat-2")
-#&gt; 4     WBGene00000004    c("F52H2.2", "aat-3")
-#&gt; 5     WBGene00000005  c("T13A10.10", "aat-4")
-#&gt; ...              ...                      ...
-#&gt; 51296 WBGene00304981                 D1081.19
-#&gt; 51297 WBGene00304985                 D1081.20
-#&gt; 51298 WBGene00304992                 F35C12.7
-#&gt; 51299 WBGene00304996                F55A12.18
-#&gt; 51300 WBGene00305018                 K07A1.21</div></pre>
+)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from <span style='color: #0000BB;font-style: italic;'>&lt;ftp.wormbase.org&gt;</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Files matching pattern: </span><span style='color: #0000BB;'>c_elegans.PRJNA13758.WS274.geneOtherIDs.txt.gz</span><span></span></div><div class='output co'>#&gt; <span class='message'>→ Downloading </span><span style='color: #0000BB;'>c_elegans.PRJNA13758.WS274.geneOtherIDs.txt.gz</span><span>.</span></div><div class='output co'>#&gt; <span class='message'>→ Importing </span><span style='color: #0000BB;'>c_elegans.PRJNA13758.WS274.geneOtherIDs.txt.gz</span><span> using </span><span style='color: #0000BB;'>base</span><span>::</span><span style='color: #000000;background-color: #BBBBBB;'>`readLines()`</span><span>.</span></div><div class='output co'>#&gt; DataFrame with 51300 rows and 2 columns
+#&gt;               geneID     geneOtherIDs
+#&gt;          &lt;character&gt;           &lt;list&gt;
+#&gt; 1     WBGene00000001 Y110A7A.10,aap-1
+#&gt; 2     WBGene00000002    F27C8.1,aat-1
+#&gt; 3     WBGene00000003    F07C3.7,aat-2
+#&gt; 4     WBGene00000004    F52H2.2,aat-3
+#&gt; 5     WBGene00000005  T13A10.10,aat-4
+#&gt; ...              ...              ...
+#&gt; 51296 WBGene00304981         D1081.19
+#&gt; 51297 WBGene00304985         D1081.20
+#&gt; 51298 WBGene00304992         F35C12.7
+#&gt; 51299 WBGene00304996        F55A12.18
+#&gt; 51300 WBGene00305018         K07A1.21</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

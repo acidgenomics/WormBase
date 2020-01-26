@@ -7,7 +7,7 @@
 #' @note This file is malformed on the WormBase FTP server for WS270 and WS271
 #'   releases.
 #'
-#' @note Updated 2020-01-03.
+#' @note Updated 2020-01-26.
 #' @export
 #'
 #' @inheritParams params
@@ -75,7 +75,7 @@ description <- function(
     }
     x <- x[keep]
     ## Parallelize the processing steps here to speed up the return.
-    message("Processing functional descriptions.")
+    cli_alert("Processing functional descriptions.")
     x <- bplapply(
         X = x,
         FUN = function(x) {

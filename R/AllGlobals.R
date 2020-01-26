@@ -2,7 +2,7 @@ globalVariables(".")
 
 bioproject <- "PRJNA13758"
 genePattern <- "WBGene\\d{8}"
-userAgent <- "https://steinbaugh.com/wormbase/"
+userAgent <- "https://wormbase.acidgenomics.com/"
 
 ## WS270, WS271 description files are currently malformed.
 version <- "WS269"
