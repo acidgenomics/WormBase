@@ -1,4 +1,4 @@
-# wormbase
+# WormBase
 
 [![Repo status: active](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 [![Travis CI build status](https://travis-ci.com/acidgenomics/wormbase.svg?branch=master)](https://travis-ci.com/acidgenomics/wormbase)
@@ -16,7 +16,7 @@ if (!requireNamespace("remotes", quietly = TRUE)) {
 }
 Sys.setenv(R_REMOTES_UPGRADE = "always")
 # Set `GITHUB_PAT` in `~/.Renviron` if you get a rate limit error.
-remotes::install_github("acidgenomics/wormbase")
+remotes::install_github("acidgenomics/WormBase")
 ```
 
 Here's how to update to the latest version on GitHub:
