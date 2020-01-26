@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>External identifiers — externalIDs • wormbase</title>
+<title>External identifiers — externalIDs • WormBase</title>
 
 
 <!-- jquery -->
@@ -70,8 +70,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">wormbase</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
+        <a class="navbar-link" href="../index.html">WormBase</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.11</span>
       </span>
     </div>
 
@@ -155,34 +155,22 @@ We recommend using one of the following:</p><ul>
     <span class='kw'>expr</span> <span class='kw'>=</span> <span class='fu'>externalIDs</span>(<span class='no'>genes</span>),
     <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='no'>e</span>
 )</div><div class='output co'>#&gt; DataFrame with 2 rows and 14 columns
-#&gt;           geneID aceView   ncbi          ndb
-#&gt;      &lt;character&gt;  &lt;list&gt; &lt;list&gt;       &lt;list&gt;
-#&gt; 1 WBGene00000912   1L351 172981 CELE_R13H8.1
-#&gt; 2 WBGene00004804   4G416 177343 CELE_T19E7.2
-#&gt;                                                                                                                                                                omim
-#&gt;                                                                                                                                                              &lt;list&gt;
-#&gt; 1 c("136533", "300033", "300292", "300949", "601089", "601092", "601094", "602291", "602294", "602681", "611084", "611085", "611086", "611457", "612351", "615755")
-#&gt; 2                                                                                                                                                              NULL
-#&gt;     panther
-#&gt;      &lt;list&gt;
-#&gt; 1 PTHR45767
-#&gt; 2      NULL
-#&gt;                                                                                                                                                                                                                      refSeq
-#&gt;                                                                                                                                                                                                                      &lt;list&gt;
-#&gt; 1 c("NM_001026422.5", "NM_001026423.5", "NM_001026424.5", "NM_001026425.4", "NM_001026427.5", "NM_001264561.2", "NM_001264563.2", "NM_001313473.2", "NM_001313474.2", "NM_001313504.2", "NM_001313505.2", "NM_001373642.1")
-#&gt; 2                                                                                                                                                          c("NM_001372824.1", "NM_171345.5", "NM_171346.4", "NM_171347.6")
-#&gt;        signaLink swissProt  treefam
-#&gt;           &lt;list&gt;    &lt;list&gt;   &lt;list&gt;
-#&gt; 1 WBGene00000912    O16850 TF315583
-#&gt; 2 WBGene00004804    P34707 TF317782
-#&gt;                                                      trEMBL uniProtGCRP
-#&gt;                                                      &lt;list&gt;      &lt;list&gt;
-#&gt; 1 c("A0A0K3AR63", "A0A0K3AR95", "A0A0K3ATP5", "A0A0K3AWG6")      O16850
-#&gt; 2                                                    V6CLA3      P34707
-#&gt;         wormFlux        wormQTL
-#&gt;           &lt;list&gt;         &lt;list&gt;
-#&gt; 1 WBGene00000912 WBGene00000912
-#&gt; 2 WBGene00004804 WBGene00004804</div></pre>
+#&gt;           geneID aceView   ncbi          ndb                     omim   panther
+#&gt;      &lt;character&gt;  &lt;list&gt; &lt;list&gt;       &lt;list&gt;                   &lt;list&gt;    &lt;list&gt;
+#&gt; 1 WBGene00000912   1L351 172981 CELE_R13H8.1 222100,265380,268220,... PTHR45767
+#&gt; 2 WBGene00004804   4G416 177343 CELE_T19E7.2                                   
+#&gt;                                             refSeq      signaLink swissProt
+#&gt;                                             &lt;list&gt;         &lt;list&gt;    &lt;list&gt;
+#&gt; 1 NP_001021593.1,NP_001021594.1,NP_001021595.1,... WBGene00000912    O16850
+#&gt; 2       NP_001360292.1,NP_741404.1,NP_741405.1,... WBGene00004804    P34707
+#&gt;    treefam                               trEMBL uniProtGCRP       wormFlux
+#&gt;     &lt;list&gt;                               &lt;list&gt;      &lt;list&gt;         &lt;list&gt;
+#&gt; 1 TF315583 A0A0K3AR63,A0A0K3AR95,A0A0K3ATP5,...      O16850 WBGene00000912
+#&gt; 2 TF317782                               V6CLA3      P34707 WBGene00004804
+#&gt;          wormQTL
+#&gt;           &lt;list&gt;
+#&gt; 1 WBGene00000912
+#&gt; 2 WBGene00004804</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

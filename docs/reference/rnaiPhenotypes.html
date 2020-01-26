@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>RNAi phenotypes — rnaiPhenotypes • wormbase</title>
+<title>RNAi phenotypes — rnaiPhenotypes • WormBase</title>
 
 
 <!-- jquery -->
@@ -70,8 +70,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">wormbase</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
+        <a class="navbar-link" href="../index.html">WormBase</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.11</span>
       </span>
     </div>
 
@@ -158,8 +158,7 @@ We recommend using one of the following:</p><ul>
 <span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
     <span class='kw'>expr</span> <span class='kw'>=</span> <span class='fu'>rnaiPhenotypes</span>(),
     <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='no'>e</span>
-)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from 'ftp.wormbase.org'.</span></div><div class='output co'>#&gt; <span class='message'>Files matching pattern:</span>
-#&gt; <span class='message'>rnai_phenotypes_quick.WS274.wb</span></div><div class='output co'>#&gt; <span class='message'>Downloading rnai_phenotypes_quick.WS274.wb.gz.</span></div><div class='output co'>#&gt; <span class='message'>Decompressing 'rnai_phenotypes_quick.WS274.wb.gz' in 'tempdir()'.</span></div><div class='output co'>#&gt; <span class='message'>Importing 'rnai_phenotypes_quick.WS274.wb.gz' using 'data.table::fread()'.</span></div><div class='output co'>#&gt; DataFrame with 7758 rows and 2 columns
+)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from <span style='color: #0000BB;font-style: italic;'>&lt;ftp.wormbase.org&gt;</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Files matching pattern: </span><span style='color: #0000BB;'>rnai_phenotypes_quick.WS274.wb</span><span></span></div><div class='output co'>#&gt; <span class='message'>→ Downloading </span><span style='color: #0000BB;'>rnai_phenotypes_quick.WS274.wb.gz</span><span>.</span></div><div class='output co'>#&gt; <span class='message'>→ Importing </span><span style='color: #0000BB;'>rnai_phenotypes_quick.WS274.wb.gz</span><span> using </span><span style='color: #0000BB;'>data.table</span><span>::</span><span style='color: #000000;background-color: #BBBBBB;'>`fread()`</span><span>.</span></div><div class='output co'>#&gt; DataFrame with 7758 rows and 2 columns
 #&gt;              geneID
 #&gt;         &lt;character&gt;
 #&gt; 1    WBGene00000001
@@ -173,19 +172,19 @@ We recommend using one of the following:</p><ul>
 #&gt; 7756 WBGene00304792
 #&gt; 7757 WBGene00304794
 #&gt; 7758 WBGene00304811
-#&gt;                                                                                                                                             rnaiPhenotypes
-#&gt;                                                                                                                                                     &lt;list&gt;
-#&gt; 1                                                                                                    c("dauer induction variant", "hermaphrodite sterile")
-#&gt; 2                                                                                   c("chemical resistant", "life span variant", "metal response variant")
-#&gt; 3                                                                                                        c("chemical resistant", "metal response variant")
-#&gt; 4                                                                               c("chemical resistant", "fat content increased", "metal response variant")
-#&gt; 5    c("gonad development variant", "male gonad development variant", "male somatic gonad development variant", "pattern of transgene expression variant")
-#&gt; ...                                                                                                                                                    ...
-#&gt; 7754                                   c("blistered", "body vacuole", "everted vulva", "intestinal vacuole", "locomotion variant", "molt defect", "small")
-#&gt; 7755                                                                                                                          transgene expression reduced
-#&gt; 7756                                                                                                                                      embryonic lethal
-#&gt; 7757                                                                                                                           protein aggregation variant
-#&gt; 7758                                                                                                        c("sterile", "transgene expression increased")</div></pre>
+#&gt;                                                                                           rnaiPhenotypes
+#&gt;                                                                                                   &lt;list&gt;
+#&gt; 1                                                          dauer induction variant,hermaphrodite sterile
+#&gt; 2                                            chemical resistant,life span variant,metal response variant
+#&gt; 3                                                              chemical resistant,metal response variant
+#&gt; 4                                        chemical resistant,fat content increased,metal response variant
+#&gt; 5    gonad development variant,male gonad development variant,male somatic gonad development variant,...
+#&gt; ...                                                                                                  ...
+#&gt; 7754                                                            blistered,body vacuole,everted vulva,...
+#&gt; 7755                                                                        transgene expression reduced
+#&gt; 7756                                                                                    embryonic lethal
+#&gt; 7757                                                                         protein aggregation variant
+#&gt; 7758                                                              sterile,transgene expression increased</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
