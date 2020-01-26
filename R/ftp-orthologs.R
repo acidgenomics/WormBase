@@ -1,6 +1,6 @@
 #' Orthologs
 #'
-#' @note Updated 2019-08-28.
+#' @note Updated 2020-01-26.
 #' @export
 #'
 #' @inheritParams params
@@ -29,7 +29,7 @@ orthologs <- function(
     x <- gsub("^ ", "", x)
     ## Drop any lines that don't contain a gene identifier.
     x <- x[grepl(paste0("^", genePattern), x)]
-    message("Processing orthologs.")
+    cli_alert("Processing orthologs.")
     x <- bplapply(
         X = x,
         FUN = function(x) {
