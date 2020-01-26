@@ -18,8 +18,8 @@ Authors@R: c(
 License: MIT + file LICENSE
 URL:
     https://wormbase.acidgenomics.com/,
-    https://github.com/acidgenomics/wormbase/
-BugReports: https://github.com/acidgenomics/wormbase/issues/
+    https://github.com/acidgenomics/WormBase/
+BugReports: https://github.com/acidgenomics/WormBase/issues/
 Encoding: UTF-8
 Depends:
     R (>= 3.6),
