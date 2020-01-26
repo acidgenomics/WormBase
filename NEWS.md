@@ -1,3 +1,14 @@
+## wormbase 0.2.11 (2020-01-26)
+
+### Major changes
+
+- Renamed package from "wormbase" to "WormBase".
+
+### Minor changes
+
+- Updated basejump dependencies.
+- Now using cli package to display messages.
+
 ## wormbase 0.2.10 (2020-01-03)
 
 ### Minor changes
