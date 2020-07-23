@@ -12,8 +12,8 @@ Fetch \emph{Caenorhabditis elegans} genome annotations from WormBase.
 Useful links:
 \itemize{
   \item \url{https://wormbase.acidgenomics.com/}
-  \item \url{https://github.com/acidgenomics/wormbase/}
-  \item Report bugs at \url{https://github.com/acidgenomics/wormbase/issues/}
+  \item \url{https://github.com/acidgenomics/WormBase/}
+  \item Report bugs at \url{https://github.com/acidgenomics/WormBase/issues/}
 }
 
 }

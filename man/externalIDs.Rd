@@ -14,9 +14,9 @@ Gene identifiers (e.g. WBGene00004804).}
 BiocParallel parameter to specify the desired processor configuration.\cr
 We recommend using one of the following:
 \itemize{
-\item \link[BiocParallel:bpparam]{bpparam}.
-\item \link[BiocParallel:SerialParam]{SerialParam}.
-\item \link[BiocParallel:MulticoreParam]{MulticoreParam}.
+\item \link[BiocParallel:register]{bpparam}.
+\item \link[BiocParallel:SerialParam-class]{SerialParam}.
+\item \link[BiocParallel:MulticoreParam-class]{MulticoreParam}.
 }}
 }
 \value{

@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -39,7 +43,6 @@
 
 <meta property="og:title" content="Peptides — peptides" />
 <meta property="og:description" content="Peptides" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -57,7 +60,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -71,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">WormBase</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.12</span>
       </span>
     </div>
 
@@ -92,7 +95,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/acidgenomics/wormbase">
+  <a href="https://github.com/acidgenomics/WormBase/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -111,7 +114,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Peptides</h1>
-    <small class="dont-index">Source: <a href='https://github.com/acidgenomics/wormbase/blob/master/R/ftp-peptides.R'><code>R/ftp-peptides.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/acidgenomics/WormBase/blob/master/R/ftp-peptides.R'><code>R/ftp-peptides.R</code></a></small>
     <div class="hidden name"><code>peptides.Rd</code></div>
     </div>
 
@@ -159,12 +162,12 @@ Split by <code>geneID</code> column.</p>
 <span class='fu'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span>(
     <span class='kw'>expr</span> <span class='kw'>=</span> <span class='fu'>peptides</span>(),
     <span class='kw'>error</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>e</span>) <span class='no'>e</span>
-)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from <span style='color: #0000BB;font-style: italic;'>&lt;ftp.wormbase.org&gt;</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Files matching pattern: </span><span style='color: #0000BB;'>c_elegans.PRJNA13758.WS274.wormpep_package.tar.gz</span><span></span></div><div class='output co'>#&gt; <span class='message'>→ Downloading </span><span style='color: #0000BB;'>c_elegans.PRJNA13758.WS274.wormpep_package.tar.gz</span><span>.</span></div><div class='output co'>#&gt; <span class='message'>→ Importing </span><span style='color: #0000BB;'>wormpep.table274</span><span> using </span><span style='color: #0000BB;'>base</span><span>::</span><span style='color: #000000;background-color: #BBBBBB;'>`readLines()`</span><span>.</span></div><div class='output co'>#&gt; <span class='message'>→ Processing peptides.</span></div><div class='output co'>#&gt; SplitDataFrameList of length 20122
+)</div><div class='output co'>#&gt; <span class='message'>Transmitting files from <span style='color: #0000BB;font-style: italic;'>&lt;ftp.wormbase.org&gt;</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Files matching pattern: </span><span style='color: #0000BB;'>c_elegans.PRJNA13758.WS276.wormpep_package.tar.gz</span><span></span></div><div class='output co'>#&gt; <span class='message'>→ Downloading </span><span style='color: #0000BB;'>c_elegans.PRJNA13758.WS276.wormpep_package.tar.gz</span><span>.</span></div><div class='output co'>#&gt; <span class='message'>→ Importing </span><span style='color: #0000BB;'>wormpep.table276</span><span> using </span><span style='color: #0000BB;'>readr</span><span>::</span><span style='color: #000000;background-color: #BBBBBB;'>`read_lines()`</span><span>.</span></div><div class='output co'>#&gt; <span class='message'>→ Processing peptides.</span></div><div class='output co'>#&gt; SplitDataFrameList of length 19999
 #&gt; $WBGene00007063
 #&gt; DataFrame with 2 rows and 8 columns
 #&gt;           geneID  wormpep    status    uniprot      insdc sequence    locus
 #&gt;         &lt;factor&gt; &lt;factor&gt;  &lt;factor&gt;   &lt;factor&gt;   &lt;factor&gt; &lt;factor&gt; &lt;factor&gt;
-#&gt; 1 WBGene00007063  CE32090 Confirmed     A4F336 CCD61130.1  2L52.1a       NA
+#&gt; 1 WBGene00007063  CE32090 Confirmed A4F336     CCD61130.1  2L52.1a       NA
 #&gt; 2 WBGene00007063  CE50569 Confirmed A0A0K3AWR5 CTQ86426.1  2L52.1b       NA
 #&gt;    product
 #&gt;   &lt;factor&gt;
@@ -175,8 +178,8 @@ Split by <code>geneID</code> column.</p>
 #&gt; DataFrame with 3 rows and 8 columns
 #&gt;           geneID  wormpep    status    uniprot      insdc sequence    locus
 #&gt;         &lt;factor&gt; &lt;factor&gt;  &lt;factor&gt;   &lt;factor&gt;   &lt;factor&gt; &lt;factor&gt; &lt;factor&gt;
-#&gt; 1 WBGene00007064  CE32785 Confirmed     A4F337 CCD61138.1 2RSSE.1a    rga-9
-#&gt; 2 WBGene00007064  CE48524 Confirmed     U4PAK0 CDH92922.1 2RSSE.1b    rga-9
+#&gt; 1 WBGene00007064  CE32785 Confirmed A4F337     CCD61138.1 2RSSE.1a    rga-9
+#&gt; 2 WBGene00007064  CE48524 Confirmed U4PAK0     CDH92922.1 2RSSE.1b    rga-9
 #&gt; 3 WBGene00007064  CE52653 Confirmed A0A2X0T1Z3 SPS41576.1 2RSSE.1c    rga-9
 #&gt;                             product
 #&gt;                            &lt;factor&gt;
@@ -196,17 +199,12 @@ Split by <code>geneID</code> column.</p>
 #&gt; 2 POT1PC domain-containing protein
 #&gt; 
 #&gt; ...
-#&gt; &lt;20119 more elements&gt;</div></span></pre>
+#&gt; &lt;19996 more elements&gt;</div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#note">Note</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -217,7 +215,7 @@ Split by <code>geneID</code> column.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
