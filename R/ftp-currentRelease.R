@@ -13,7 +13,7 @@
 #'     error = function(e) e
 #' )
 currentRelease <- function() {
-    suppressMessages(
+    suppressMessages({
         file <- transmit(
             remoteDir = pasteURL(
                 "ftp.wormbase.org",
@@ -26,6 +26,6 @@ currentRelease <- function() {
             localDir = tempdir(),
             pattern = "^letter"
         )
-    )
+    })
     sub(pattern = "^letter\\.", replacement = "", x = basename(file))
 }
