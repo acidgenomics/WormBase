@@ -2,8 +2,8 @@
 #' @importFrom BiocParallel bplapply
 #' @importFrom IRanges DataFrameList unsplit
 #' @importFrom S4Vectors DataFrame aggregate head split t tail
-#' @importFrom basejump cacheURL camelCase import makeNames pasteURL removeNA
-#'   sanitizeNA toStringUnique transmit
+#' @importFrom basejump camelCase import makeNames pasteURL removeNA sanitizeNA
+#'   toStringUnique transmit
 #' @importFrom cli cli_alert
 #' @importFrom data.table rbindlist
 #' @importFrom goalie allAreMatchingRegex assert bapply hasLength
