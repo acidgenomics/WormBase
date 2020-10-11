@@ -13,5 +13,5 @@
 #' @importFrom stats formula
 #' @importFrom stringr str_extract str_extract_all str_match str_match_all
 #'   str_sub
-#' @importFrom utils globalVariables untar
+#' @importFrom utils untar
 NULL

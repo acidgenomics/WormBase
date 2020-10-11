@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @inheritParams params
-#' @inheritParams acidroxygen::params
+#' @inheritParams AcidRoxygen::params
 #'
 #' @return `DataFrame`.
 #'
