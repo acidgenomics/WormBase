@@ -4,7 +4,7 @@
 #' @export
 #'
 #' @inheritParams params
-#' @inheritParams acidroxygen::params
+#' @inheritParams AcidRoxygen::params
 #'
 #' @return `SplitDataFrameList`.
 #' Split by `wormpep` column.
