@@ -23,4 +23,4 @@ install.packages(
 ```
 
 [r]: https://www.r-project.org/
-[wormbase]: http://www.wormbase.org/
+[wormbase]: https://www.wormbase.org/
