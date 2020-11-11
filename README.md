@@ -1,8 +1,5 @@
 # WormBase
 
-[![Repo status: active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![Travis CI build status](https://travis-ci.com/acidgenomics/wormbase.svg?branch=master)](https://travis-ci.com/acidgenomics/wormbase)
-
 *Caenorhabditis elegans* genome annotations from [WormBase][].
 
 ## Installation
