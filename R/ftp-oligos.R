@@ -21,9 +21,9 @@ oligos <- function(version = NULL) {
     x <- str_match(x, "^([^\t]+)\t(WBGene\\d{8})")
     x <- x[, c(2L:3L)]
     x <- as.data.frame(x, stringsAsFactors = FALSE)
-    colnames(x) <- c("oligo", "geneID")
+    colnames(x) <- c("oligo", "geneId")
     x <- aggregate(
-        formula = formula("oligo~geneID"),
+        formula = formula("oligo~geneId"),
         data = x,
         FUN = function(x) {
             x <- unique(x)
@@ -33,9 +33,9 @@ oligos <- function(version = NULL) {
         }
     )
     x <- as(x, "DataFrame")
-    keep <- grepl(pattern = genePattern, x = x[["geneID"]])
+    keep <- grepl(pattern = genePattern, x = x[["geneId"]])
     x <- x[keep, , drop = FALSE]
-    x <- x[order(x[["geneID"]]), , drop = FALSE]
+    x <- x[order(x[["geneId"]]), , drop = FALSE]
     x
 }
 

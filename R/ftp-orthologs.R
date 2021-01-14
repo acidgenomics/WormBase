@@ -60,17 +60,17 @@ orthologs <- function(
             names(orthologs) <- names(patterns)
             x <- lapply(orthologs, list)
             x <- DataFrame(do.call(cbind, x))
-            x[["geneID"]] <- gene
+            x[["geneId"]] <- gene
             x
         },
         BPPARAM = BPPARAM
     )
     x <- DataFrameList(x)
     x <- unlist(x, recursive = FALSE, use.names = FALSE)
-    keep <- grepl(pattern = genePattern, x = x[["geneID"]])
+    keep <- grepl(pattern = genePattern, x = x[["geneId"]])
     x <- x[keep, , drop = FALSE]
-    x <- x[order(x[["geneID"]]), , drop = FALSE]
-    x <- x[, unique(c("geneID", sort(colnames(x))))]
+    x <- x[order(x[["geneId"]]), , drop = FALSE]
+    x <- x[, unique(c("geneId", sort(colnames(x))))]
     x
 }
 

@@ -10,8 +10,8 @@ test_that("stable", {
     expect_identical(
         object = lapply(x, class),
         expected = list(
-            geneID = "character",
-            oligo = "list"
+            "geneId" = "character",
+            "oligo" = "list"
         )
     )
     expect_s4_class(x, "DataFrame")

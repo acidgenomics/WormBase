@@ -21,7 +21,7 @@
 geneOtherIDs <- function(version = NULL) {
     file <- .annotationFile(pattern = "geneOtherIDs", version = version)
     x <- import(file, format = "lines")
-    ## Remove status. Already present in geneIDs file.
+    ## Remove status. Already present in `geneIDs` file.
     x <- gsub("\t(Dead|Live)", "", x)
     ## Remove `CELE_*` identifiers.
     x <- gsub("\t(CELE_[A-Z0-9\\.]+)", "", x)
@@ -34,12 +34,12 @@ geneOtherIDs <- function(version = NULL) {
     x <- do.call(rbind, x)
     x <- as.data.frame(x, stringsAsFactors = FALSE)
     x <- as(x, "DataFrame")
-    colnames(x) <- c("geneID", "geneOtherIDs")
-    keep <- grepl(pattern = genePattern, x = x[["geneID"]])
+    colnames(x) <- c("geneId", "geneOtherIds")
+    keep <- grepl(pattern = genePattern, x = x[["geneId"]])
     x <- x[keep, , drop = FALSE]
-    x <- x[order(x[["geneID"]]), , drop = FALSE]
-    x[["geneOtherIDs"]] <- strsplit(
-        x = as.character(x[["geneOtherIDs"]]),
+    x <- x[order(x[["geneId"]]), , drop = FALSE]
+    x[["geneOtherIds"]] <- strsplit(
+        x = as.character(x[["geneOtherIds"]]),
         split = "\\|"
     )
     x

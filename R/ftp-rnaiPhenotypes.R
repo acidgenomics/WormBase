@@ -27,7 +27,7 @@ rnaiPhenotypes <- function(
     x <- import(
         file = file,
         format = "tsv",
-        colnames = c("geneID", "sequence", "rnaiPhenotypes")
+        colnames = c("geneId", "sequence", "rnaiPhenotypes")
     )
     ## Using `sequence` from `geneID()` return instead.
     x[["sequence"]] <- NULL
@@ -41,9 +41,9 @@ rnaiPhenotypes <- function(
         BPPARAM = BPPARAM
     )
     x[["rnaiPhenotypes"]] <- pheno
-    keep <- grepl(pattern = genePattern, x = x[["geneID"]])
+    keep <- grepl(pattern = genePattern, x = x[["geneId"]])
     x <- x[keep, , drop = FALSE]
-    x <- x[order(x[["geneID"]]), , drop = FALSE]
+    x <- x[order(x[["geneId"]]), , drop = FALSE]
     x
 }
 

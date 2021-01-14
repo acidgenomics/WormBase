@@ -11,8 +11,8 @@ test_that("stable", {
     expect_identical(
         object = lapply(x, class),
         expected = list(
-            geneID = "character",
-            rnaiPhenotypes = "list"
+            "geneId" = "character",
+            "rnaiPhenotypes" = "list"
         )
     )
     expect_identical(

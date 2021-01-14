@@ -7,7 +7,7 @@
 #' @inheritParams AcidRoxygen::params
 #'
 #' @return `SplitDataFrameList`.
-#' Split by `geneID` column.
+#' Split by `geneId` column.
 #'
 #' @examples
 #' ## WormBase FTP server must be accessible.
@@ -51,14 +51,14 @@ peptides <- function(
     )
     x <- rbindlist(x, fill = TRUE)
     x <- as(x, "DataFrame")
-    colnames(x)[colnames(x) == "gene"] <- "geneID"
-    x <- x[, unique(c("geneID", colnames(x)))]
-    keep <- grepl(pattern = genePattern, x = x[["geneID"]])
+    colnames(x)[colnames(x) == "gene"] <- "geneId"
+    x <- x[, unique(c("geneId", colnames(x)))]
+    keep <- grepl(pattern = genePattern, x = x[["geneId"]])
     x <- x[keep, , drop = FALSE]
     x <- x[
-        order(x[["geneID"]], x[["sequence"]], x[["wormpep"]]), , drop = FALSE
+        order(x[["geneId"]], x[["sequence"]], x[["wormpep"]]), , drop = FALSE
     ]
-    split(x, f = x[["geneID"]])
+    split(x, f = x[["geneId"]])
 }
 
 formals(peptides)[["version"]] <- versionArg

@@ -83,8 +83,8 @@ description <- function(
             pattern <- "^([A-Za-z[:space:]]+)\\:"
             names <- str_match(x, pattern = pattern)[, 2L]
             ## The first 3 columns won't match the pattern, so assign manually.
-            names[seq_len(3L)] <- c("geneID", "geneName", "sequence")
-            names <- camelCase(names)
+            names[seq_len(3L)] <- c("geneId", "geneName", "sequence")
+            names <- camelCase(names, strict = TRUE)
             ## Remove the key prefix (e.g. "Concise description:").
             x <- gsub(paste0(pattern, " "), "", x)
             x <- t(x)
@@ -99,10 +99,10 @@ description <- function(
     )
     x <- rbindlist(x, fill = TRUE)
     x <- as(x, "DataFrame")
-    x <- camelCase(x)
+    x <- camelCase(x, strict = TRUE)
     x <- sanitizeNA(x)
     x <- removeNA(x)
-    x <- x[order(x[["geneID"]]), , drop = FALSE]
+    x <- x[order(x[["geneId"]]), , drop = FALSE]
     x
 }
 

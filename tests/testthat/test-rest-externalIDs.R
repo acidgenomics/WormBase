@@ -3,9 +3,9 @@ context("rest : externalIDs")
 test_that("current", {
     x <- externalIDs(genes)
     expect_s4_class(x, "DataFrame")
-    expect_identical(x[["geneID"]], as.character(genes))
+    expect_identical(x[["geneId"]], as.character(genes))
     extonly <- x
-    extonly[["geneID"]] <- NULL
+    extonly[["geneId"]] <- NULL
     expect_true(all(vapply(
         X = extonly,
         FUN = is.list,

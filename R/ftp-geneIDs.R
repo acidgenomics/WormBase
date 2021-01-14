@@ -23,10 +23,10 @@ geneIDs <- function(version = NULL) {
     x <- import(file, colnames = FALSE)
     x <- as(x, "DataFrame")
     x <- x[, 2L:5L]
-    colnames(x) <- c("geneID", "geneName", "sequence", "status")
-    keep <- grepl(pattern = genePattern, x = x[["geneID"]])
+    colnames(x) <- c("geneId", "geneName", "sequence", "status")
+    keep <- grepl(pattern = genePattern, x = x[["geneId"]])
     x <- x[keep, , drop = FALSE]
-    x <- x[order(x[["geneID"]]), , drop = FALSE]
+    x <- x[order(x[["geneId"]]), , drop = FALSE]
     x
 }
 

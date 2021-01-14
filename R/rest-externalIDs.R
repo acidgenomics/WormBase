@@ -40,14 +40,14 @@ externalIDs <- function(
             BPPARAM = BPPARAM
         )
         x <- data.frame(do.call(cbind, lapply(xrefs, list)))
-        x[["geneID"]] <- gene
+        x[["geneId"]] <- gene
         x
     })
     x <- Filter(Negate(is.null), x)
     if (!hasLength(x)) return(NULL)
     x <- rbindlist(x, fill = TRUE)
     x <- as(x, "DataFrame")
-    x <- camelCase(x)
-    x <- x[, unique(c("geneID", sort(colnames(x))))]
+    x <- camelCase(x, strict = TRUE)
+    x <- x[, unique(c("geneId", sort(colnames(x))))]
     x
 }
