@@ -26,7 +26,7 @@ We recommend using one of the following:
 }
 \value{
 \code{SplitDataFrameList}.
-Split by \code{geneID} column.
+Split by \code{geneId} column.
 }
 \description{
 Peptides
