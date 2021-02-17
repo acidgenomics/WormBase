@@ -28,12 +28,12 @@ orthologs <- function(
     x <- unlist(x, recursive = FALSE, use.names = FALSE)
     x <- gsub("^ ", "", x)
     ## Drop any lines that don't contain a gene identifier.
-    x <- x[grepl(paste0("^", genePattern), x)]
+    x <- x[grepl(paste0("^", .genePattern), x)]
     alert("Processing orthologs.")
     x <- bplapply(
         X = x,
         FUN = function(x) {
-            gene <- str_extract(x, genePattern)
+            gene <- str_extract(x, .genePattern)
             patterns <- c(
                 homoSapiens = "ENSG\\d{11}",
                 musMusculus = "ENSMUSG\\d{11}",
@@ -67,11 +67,11 @@ orthologs <- function(
     )
     x <- DataFrameList(x)
     x <- unlist(x, recursive = FALSE, use.names = FALSE)
-    keep <- grepl(pattern = genePattern, x = x[["geneId"]])
+    keep <- grepl(pattern = .genePattern, x = x[["geneId"]])
     x <- x[keep, , drop = FALSE]
     x <- x[order(x[["geneId"]]), , drop = FALSE]
     x <- x[, unique(c("geneId", sort(colnames(x))))]
     x
 }
 
-formals(orthologs)[["version"]] <- versionArg
+formals(orthologs)[["version"]] <- .versionArg

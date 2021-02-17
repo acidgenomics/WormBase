@@ -9,7 +9,7 @@
     x <- GET(
         url = paste("https://wormbase.org", "rest", query, sep = "/"),
         config = content_type_json(),
-        user_agent = user_agent(userAgent)
+        user_agent = user_agent(.userAgent)
     )
     content(x)
 }

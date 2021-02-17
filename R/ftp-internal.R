@@ -1,12 +1,11 @@
-## Updated 2019-07-24.
+## Updated 2021-02-17.
 .annotationFile <- function(...) {
     .transmit(
-        subdir = paste(
+        subdir = pasteURL(
             "species",
             "c_elegans",
-            bioproject,
-            "annotation",
-            sep = "/"
+            .bioproject,
+            "annotation"
         ),
         ...
     )
@@ -14,14 +13,13 @@
 
 
 
-## Updated 2019-07-24.
+## Updated 2021-02-17.
 .assemblyFile <- function(...) {
     .transmit(
-        subdir = paste(
+        subdir = pasteURL(
             "species",
             "c_elegans",
-            bioproject,
-            sep = "/"
+            .bioproject
         ),
         ...
     )
@@ -58,15 +56,15 @@
     if (is.null(version)) {
         version <- "current-production-release"
     }
-    releaseDir <- paste(
-        "ftp://ftp.wormbase.org",
+    releaseDir <- pasteURL(
+        "ftp.wormbase.org",
         "pub",
         "wormbase",
         "releases",
         version,
-        sep = "/"
+        protocol = "ftp"
     )
-    remoteDir <- paste(releaseDir, subdir, sep = "/")
+    remoteDir <- pasteURL(releaseDir, subdir)
     file <- transmit(
         remoteDir = remoteDir,
         localDir = tempdir(),

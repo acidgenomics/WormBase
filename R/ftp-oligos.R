@@ -33,10 +33,10 @@ oligos <- function(version = NULL) {
         }
     )
     x <- as(x, "DataFrame")
-    keep <- grepl(pattern = genePattern, x = x[["geneId"]])
+    keep <- grepl(pattern = .genePattern, x = x[["geneId"]])
     x <- x[keep, , drop = FALSE]
     x <- x[order(x[["geneId"]]), , drop = FALSE]
     x
 }
 
-formals(oligos)[["version"]] <- versionArg
+formals(oligos)[["version"]] <- .versionArg

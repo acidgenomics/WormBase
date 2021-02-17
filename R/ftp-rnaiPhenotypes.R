@@ -41,10 +41,10 @@ rnaiPhenotypes <- function(
         BPPARAM = BPPARAM
     )
     x[["rnaiPhenotypes"]] <- pheno
-    keep <- grepl(pattern = genePattern, x = x[["geneId"]])
+    keep <- grepl(pattern = .genePattern, x = x[["geneId"]])
     x <- x[keep, , drop = FALSE]
     x <- x[order(x[["geneId"]]), , drop = FALSE]
     x
 }
 
-formals(rnaiPhenotypes)[["version"]] <- versionArg
+formals(rnaiPhenotypes)[["version"]] <- .versionArg

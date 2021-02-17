@@ -24,10 +24,10 @@ geneIDs <- function(version = NULL) {
     x <- as(x, "DataFrame")
     x <- x[, 2L:5L]
     colnames(x) <- c("geneId", "geneName", "sequence", "status")
-    keep <- grepl(pattern = genePattern, x = x[["geneId"]])
+    keep <- grepl(pattern = .genePattern, x = x[["geneId"]])
     x <- x[keep, , drop = FALSE]
     x <- x[order(x[["geneId"]]), , drop = FALSE]
     x
 }
 
-formals(geneIDs)[["version"]] <- versionArg
+formals(geneIDs)[["version"]] <- .versionArg

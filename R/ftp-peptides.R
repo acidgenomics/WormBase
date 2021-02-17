@@ -53,7 +53,7 @@ peptides <- function(
     x <- as(x, "DataFrame")
     colnames(x)[colnames(x) == "gene"] <- "geneId"
     x <- x[, unique(c("geneId", colnames(x)))]
-    keep <- grepl(pattern = genePattern, x = x[["geneId"]])
+    keep <- grepl(pattern = .genePattern, x = x[["geneId"]])
     x <- x[keep, , drop = FALSE]
     x <- x[
         order(x[["geneId"]], x[["sequence"]], x[["wormpep"]]), , drop = FALSE
@@ -61,4 +61,4 @@ peptides <- function(
     split(x, f = x[["geneId"]])
 }
 
-formals(peptides)[["version"]] <- versionArg
+formals(peptides)[["version"]] <- .versionArg

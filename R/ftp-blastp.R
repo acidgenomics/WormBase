@@ -32,4 +32,4 @@ blastp <- function(version = NULL) {
     split(x, f = x[["wormpep"]])
 }
 
-formals(blastp)[["version"]] <- versionArg
+formals(blastp)[["version"]] <- .versionArg

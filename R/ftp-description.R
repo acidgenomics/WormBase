@@ -67,7 +67,7 @@ description <- function(
     keep <- bapply(
         X = x,
         FUN = function(x) {
-            grepl(pattern = genePattern, x = x[[1L]])
+            grepl(pattern = .genePattern, x = x[[1L]])
         }
     )
     if (!any(keep)) {
@@ -106,4 +106,4 @@ description <- function(
     x
 }
 
-formals(description)[["version"]] <- versionArg
+formals(description)[["version"]] <- .versionArg

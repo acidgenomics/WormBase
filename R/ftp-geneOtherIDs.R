@@ -35,7 +35,7 @@ geneOtherIDs <- function(version = NULL) {
     x <- as.data.frame(x, stringsAsFactors = FALSE)
     x <- as(x, "DataFrame")
     colnames(x) <- c("geneId", "geneOtherIds")
-    keep <- grepl(pattern = genePattern, x = x[["geneId"]])
+    keep <- grepl(pattern = .genePattern, x = x[["geneId"]])
     x <- x[keep, , drop = FALSE]
     x <- x[order(x[["geneId"]]), , drop = FALSE]
     x[["geneOtherIds"]] <- strsplit(
@@ -45,4 +45,4 @@ geneOtherIDs <- function(version = NULL) {
     x
 }
 
-formals(geneOtherIDs)[["version"]] <- versionArg
+formals(geneOtherIDs)[["version"]] <- .versionArg
