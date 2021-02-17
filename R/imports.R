@@ -1,5 +1,6 @@
+#' @importFrom BiocParallel bplapply
 #' @importFrom basejump DataFrame DataFrameList aggregate alert camelCase
-#'   formula head import makeNames pasteURL rbindlist removeNA sanitizeNA split
+#'   head import makeNames pasteURL rbindlist removeNA sanitizeNA split
 #'   t tail transmit unlist unsplit
 #' @importFrom goalie allAreMatchingRegex assert bapply hasLength
 #'   hasNoDuplicates isCharacter isFlag isString
