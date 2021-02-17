@@ -32,7 +32,7 @@ Split by \code{geneId} column.
 Peptides
 }
 \note{
-Updated 2020-01-26.
+Updated 2021-02-17.
 }
 \examples{
 ## WormBase FTP server must be accessible.

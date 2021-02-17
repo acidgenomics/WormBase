@@ -1,6 +1,6 @@
 #' Peptides
 #'
-#' @note Updated 2020-01-26.
+#' @note Updated 2021-02-17.
 #' @export
 #'
 #' @inheritParams params
@@ -31,7 +31,7 @@ peptides <- function(
         exdir = tempdir
     )
     x <- import(file = file.path(tempdir, wormpepTable), format = "lines")
-    cli_alert("Processing peptides.")
+    alert("Processing peptides.")
     x <- bplapply(
         X = x,
         FUN = function(x) {

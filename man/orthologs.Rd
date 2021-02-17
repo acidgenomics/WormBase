@@ -31,7 +31,7 @@ We recommend using one of the following:
 Orthologs
 }
 \note{
-Updated 2020-01-26.
+Updated 2021-02-17.
 }
 \examples{
 ## WormBase FTP server must be accessible.

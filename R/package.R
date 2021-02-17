@@ -4,7 +4,7 @@
 #'
 #' @keywords internal
 #'
-#' @importFrom BiocParallel bplapply
+#' @importFrom BiocParallel bplapply bpparam
 #' @importFrom basejump DataFrame DataFrameList aggregate alert camelCase
 #'   formula head import makeNames pasteURL rbindlist removeNA sanitizeNA split
 #'   t tail transmit unlist unsplit untar
