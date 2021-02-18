@@ -7,7 +7,7 @@
 #' @note This file is malformed on the WormBase FTP server for WS270 and WS271
 #'   releases.
 #'
-#' @note Updated 2021-02-17.
+#' @note Updated 2021-02-18.
 #' @export
 #'
 #' @inheritParams params
@@ -16,11 +16,8 @@
 #' @return `DataFrame`.
 #'
 #' @examples
-#' ## WormBase FTP server must be accessible.
-#' tryCatch(
-#'     expr = description(),
-#'     error = function(e) e
-#' )
+#' x <- description()
+#' print(x)
 description <- function(version = NULL) {
     file <- .annotationFile(
         stem = "functional_descriptions.txt.gz",
@@ -64,7 +61,6 @@ description <- function(version = NULL) {
         .invalidFTPFile(file)
     }
     x <- x[keep]
-    alert("Processing functional descriptions.")
     x <- lapply(
         X = x,
         FUN = function(x) {

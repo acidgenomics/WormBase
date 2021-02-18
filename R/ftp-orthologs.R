@@ -21,7 +21,7 @@ orthologs <- function(version = NULL) {
     x <- x[grepl(paste0("^", .genePattern), x)]
     genes <- str_extract(string = x, pattern = .genePattern)
     assert(identical(length(genes), length(x)))
-    l <- lapply(
+    x <- lapply(
         X = x,
         FUN = function(x, patterns) {
             l <- mapply(
@@ -43,9 +43,12 @@ orthologs <- function(version = NULL) {
             "musMusculus" = "\\bENSMUSG\\d{11}\\b"
         )
     )
-    l <- CharacterList(l)
-    names(l) <- genes
-    l <- sort(unique(l))
+    x <- CharacterList(x)
+    names(x) <- genes
+    keep <- grepl(pattern = .genePattern, x = names(x))
+    x <- x[keep]
+    x <- x[sort(names(x))]
+    x <- sort(unique(x))
     l
 }
 
