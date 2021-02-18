@@ -2,20 +2,12 @@ context("rest : externalIDs")
 
 test_that("current", {
     x <- externalIDs(genes)
-    expect_s4_class(x, "DataFrame")
-    expect_identical(x[["geneId"]], as.character(genes))
-    extonly <- x
-    extonly[["geneId"]] <- NULL
-    expect_true(all(vapply(
-        X = extonly,
-        FUN = is.list,
-        FUN.VALUE = logical(1L)
-    )))
+    expect_s4_class(x, "List")
+    expect_s4_class(x[[1L]], "CharacterList")
 })
 
 test_that("NULL return", {
-    expect_identical(
-        externalIDs("WBGene00000000"),
-        NULL
-    )
+    x <- externalIDs("WBGene00000000")
+    expect_s4_class(x, "List")
+    expect_identical(x[[1L]], NULL)
 })
