@@ -6,7 +6,7 @@
 #' @inheritParams params
 #' @inheritParams AcidRoxygen::params
 #'
-#' @return `CharacterList`.
+#' @return `List`.
 #'
 #' @examples
 #' x <- orthologs()
@@ -27,9 +27,10 @@ orthologs <- function(release = NULL) {
         "homoSapiens" = "\\bENSG\\d{11}\\b",
         "musMusculus" = "\\bENSMUSG\\d{11}\\b"
     )
+    ## Attempting to coerce nested lists to CharacterList is slow here.
     x <- lapply(X = x, pattern = patterns, FUN = str_extract_all)
     x <- lapply(X = x, FUN = `names<-`, value = names(patterns))
-    x <- CharacterList(x)
+    x <- List(x)
     names(x) <- genes
     keep <- grepl(pattern = .genePattern, x = names(x))
     x <- x[keep]
