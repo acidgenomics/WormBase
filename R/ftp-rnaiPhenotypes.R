@@ -1,6 +1,6 @@
 #' RNAi phenotypes
 #'
-#' @note Updated 2019-08-28.
+#' @note Updated 2021-02-17.
 #' @export
 #'
 #' @inheritParams params
@@ -14,15 +14,10 @@
 #'     expr = rnaiPhenotypes(),
 #'     error = function(e) e
 #' )
-rnaiPhenotypes <- function(
-    version = NULL,
-    BPPARAM = BiocParallel::bpparam()  # nolint
-) {
-    file <- .transmit(
-        subdir = "ONTOLOGY",
-        pattern = "rnai_phenotypes_quick",
-        version = version,
-        compress = TRUE
+rnaiPhenotypes <- function(version = NULL) {
+    file <- .ontologyFile(
+        stem = "rnai_phenotypes_quick",
+        version = version
     )
     x <- import(
         file = file,
@@ -33,13 +28,8 @@ rnaiPhenotypes <- function(
     x[["sequence"]] <- NULL
     x <- as(x, "DataFrame")
     pheno <- strsplit(x[["rnaiPhenotypes"]], ", ")
-    pheno <- bplapply(
-        X = pheno,
-        FUN = function(x) {
-            sort(unique(x))
-        },
-        BPPARAM = BPPARAM
-    )
+    pheno <- CharacterList(pheno)
+    pheno <- sort(unique(pheno))
     x[["rnaiPhenotypes"]] <- pheno
     keep <- grepl(pattern = .genePattern, x = x[["geneId"]])
     x <- x[keep, , drop = FALSE]

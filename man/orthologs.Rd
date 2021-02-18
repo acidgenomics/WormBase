@@ -4,25 +4,13 @@
 \alias{orthologs}
 \title{Orthologs}
 \usage{
-orthologs(
-  version = getOption(x = "wormbase.version", default = NULL),
-  BPPARAM = BiocParallel::bpparam()
-)
+orthologs(version = getOption(x = "wormbase.version", default = NULL))
 }
 \arguments{
 \item{version}{\code{character(1)} or \code{NULL}.
 WormBase version. If \code{NULL} (recommended), defaults to current production
 release version available on the WormBase website. Legacy versions can be
 specified as a character string (e.g. "WS267").}
-
-\item{BPPARAM}{\code{bpparamClass}.
-BiocParallel parameter to specify the desired processor configuration.\cr
-We recommend using one of the following:
-\itemize{
-\item \link[BiocParallel:register]{bpparam}.
-\item \link[BiocParallel:SerialParam-class]{SerialParam}.
-\item \link[BiocParallel:MulticoreParam-class]{MulticoreParam}.
-}}
 }
 \value{
 \code{DataFrame}.

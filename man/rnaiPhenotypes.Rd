@@ -4,25 +4,13 @@
 \alias{rnaiPhenotypes}
 \title{RNAi phenotypes}
 \usage{
-rnaiPhenotypes(
-  version = getOption(x = "wormbase.version", default = NULL),
-  BPPARAM = BiocParallel::bpparam()
-)
+rnaiPhenotypes(version = getOption(x = "wormbase.version", default = NULL))
 }
 \arguments{
 \item{version}{\code{character(1)} or \code{NULL}.
 WormBase version. If \code{NULL} (recommended), defaults to current production
 release version available on the WormBase website. Legacy versions can be
 specified as a character string (e.g. "WS267").}
-
-\item{BPPARAM}{\code{bpparamClass}.
-BiocParallel parameter to specify the desired processor configuration.\cr
-We recommend using one of the following:
-\itemize{
-\item \link[BiocParallel:register]{bpparam}.
-\item \link[BiocParallel:SerialParam-class]{SerialParam}.
-\item \link[BiocParallel:MulticoreParam-class]{MulticoreParam}.
-}}
 }
 \value{
 \code{DataFrame}.
@@ -31,7 +19,7 @@ We recommend using one of the following:
 RNAi phenotypes
 }
 \note{
-Updated 2019-08-28.
+Updated 2021-02-17.
 }
 \examples{
 ## WormBase FTP server must be accessible.
