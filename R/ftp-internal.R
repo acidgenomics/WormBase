@@ -1,19 +1,11 @@
-## FIXME Can we use BiocFileCache here??
-## FIXME Rethink the URL matching...can we just download directly without
-## using transmit here?
-
-
-
 #' Download an annotation file from WormBase FTP server
 #'
 #' @note Updated 2021-02-17.
 #' @noRd
-.annotationFile <- function(stem, version = NULL) {
-    subdir <- pasteURL("species", "c_elegans", .bioproject, "annotation")
+.annotationFile <- function(...) {
     .transmit(
-        stem = stem,
-        subdir = subdir,
-        version = version
+        subdir = pasteURL("species", "c_elegans", .bioproject, "annotation"),
+        ...
     )
 }
 
@@ -25,11 +17,7 @@
 #' @noRd
 .assemblyFile <- function(...) {
     .transmit(
-        subdir = pasteURL(
-            "species",
-            "c_elegans",
-            .bioproject
-        ),
+        subdir = pasteURL("species", "c_elegans", .bioproject),
         ...
     )
 }

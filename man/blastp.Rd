@@ -10,7 +10,7 @@ blastp(version = getOption(x = "wormbase.version", default = NULL))
 \item{version}{\code{character(1)} or \code{NULL}.
 WormBase version. If \code{NULL} (recommended), defaults to current production
 release version available on the WormBase website. Legacy versions can be
-specified as a character string (e.g. "WS262").}
+specified as a character string (e.g. "WS267").}
 }
 \value{
 \code{SplitDataFrameList}.
@@ -20,7 +20,7 @@ Split by \code{wormpep} column.
 Best BLASTP hits
 }
 \note{
-Updated 2019-08-28.
+Updated 2021-02-17.
 }
 \examples{
 ## WormBase FTP server must be accessible.
