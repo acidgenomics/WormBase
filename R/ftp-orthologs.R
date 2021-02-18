@@ -34,8 +34,7 @@ orthologs <- function(version = NULL) {
     keep <- grepl(pattern = .genePattern, x = names(x))
     x <- x[keep]
     x <- x[sort(names(x))]
-    x <- sort(unique(x))
-    l
+    x
 }
 
 formals(orthologs)[["version"]] <- .versionArg
