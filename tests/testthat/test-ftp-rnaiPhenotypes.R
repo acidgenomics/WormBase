@@ -2,21 +2,21 @@ context("ftp : rnaiPhenotypes")
 
 test_that("current", {
     x <- rnaiPhenotypes(release = NULL)
-    expect_s4_class(x, "DataFrame")
+    expect_s4_class(x, "CharacterList")
 })
 
 test_that("stable", {
     x <- rnaiPhenotypes(release = release)
-    expect_s4_class(x, "DataFrame")
+    expect_s4_class(x, "CharacterList")
     expect_identical(
-        object = lapply(x, class),
-        expected = list(
-            "geneId" = "character",
-            "rnaiPhenotypes" = "list"
-        )
+        object = length(x),
+        expected = 7756L
     )
     expect_identical(
-        object = nrow(x),
-        expected = 7900L
+        object = x[[1L]],
+        expected = c(
+            "dauer induction variant",
+            "hermaphrodite sterile"
+        )
     )
 })
