@@ -14,42 +14,25 @@
 #'     expr = orthologs(),
 #'     error = function(e) e
 #' )
-orthologs <- function(
-    version = NULL,
-    BPPARAM = BiocParallel::bpparam()  # nolint
-) {
-    file <- .annotationFile(pattern = "orthologs", version = version)
-    x <- import(file, format = "lines")
-    ## Remove the comment lines.
-    x <- x[!grepl("^#", x)]
+orthologs <- function(version = NULL) {
+    file <- .annotationFile(stem = "orthologs.txt.gz", version = version)
+    x <- import(file, format = "lines", comment = "#")
     x <- gsub("^=$", "\\|\\|", x)
     x <- paste(x, collapse = " ")
-    x <- strsplit(x, "\\|\\|")
-    x <- unlist(x, recursive = FALSE, use.names = FALSE)
+    x <- strsplit(x, "\\|\\|")[[1L]]
     x <- gsub("^ ", "", x)
-    ## Drop any lines that don't contain a gene identifier.
     x <- x[grepl(paste0("^", .genePattern), x)]
     alert("Processing orthologs.")
-    x <- bplapply(
+    genes <- str_extract(string = x, pattern = .genePattern)
+    assert(identical(length(genes), length(x)))
+    orthologs <- lapply(
         X = x,
-        FUN = function(x) {
-            gene <- str_extract(x, .genePattern)
-            patterns <- c(
-                homoSapiens = "ENSG\\d{11}",
-                musMusculus = "ENSMUSG\\d{11}",
-                drosophilaMelanogaster = "FBgn\\d{7}",
-                danioRerio = "ENSDARG\\d{11}"
-            )
-            orthologs <- mapply(
+        FUN = function(x, patterns) {
+            l <- mapply(
                 FUN = function(x, pattern) {
-                    pattern <- paste0("\\b", pattern, "\\b")
-                    x <- str_extract_all(x, pattern)
-                    x <- unlist(x)
+                    x <- str_extract_all(string = x, pattern = pattern)[[1L]]
                     x <- unique(x)
                     x <- sort(x)
-                    if (!length(x)) {
-                        x <- NULL
-                    }
                     x
                 },
                 pattern = patterns,
@@ -57,20 +40,22 @@ orthologs <- function(
                 SIMPLIFY = FALSE,
                 USE.NAMES = FALSE
             )
-            names(orthologs) <- names(patterns)
-            x <- lapply(orthologs, list)
-            x <- DataFrame(do.call(cbind, x))
-            x[["geneId"]] <- gene
-            x
+            names(l) <- names(patterns)
+            l
         },
-        BPPARAM = BPPARAM
+        patterns = c(
+            "danioRerio" = "\\bENSDARG\\d{11}\\b",
+            "drosophilaMelanogaster" = "\\bFBgn\\d{7}\\b",
+            "homoSapiens" = "\\bENSG\\d{11}\\b",
+            "musMusculus" = "\\bENSMUSG\\d{11}\\b"
+        )
     )
-    x <- DataFrameList(x)
-    x <- unlist(x, recursive = FALSE, use.names = FALSE)
-    keep <- grepl(pattern = .genePattern, x = x[["geneId"]])
-    x <- x[keep, , drop = FALSE]
+    orthologs <- CharacterList(orthologs)
+    x <- DataFrame(
+        "geneId" = genes,
+        "orthologs" = orthologs
+    )
     x <- x[order(x[["geneId"]]), , drop = FALSE]
-    x <- x[, unique(c("geneId", sort(colnames(x))))]
     x
 }
 

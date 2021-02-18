@@ -19,7 +19,7 @@ specified as a character string (e.g. "WS267").}
 PCR oligo sequences
 }
 \note{
-Updated 2019-08-28.
+Updated 2021-02-17.
 }
 \examples{
 ## WormBase FTP server must be accessible.

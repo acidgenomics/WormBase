@@ -1,6 +1,6 @@
 #' PCR oligo sequences
 #'
-#' @note Updated 2019-08-28.
+#' @note Updated 2021-02-17.
 #' @export
 #'
 #' @inheritParams params
