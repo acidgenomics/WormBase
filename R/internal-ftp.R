@@ -60,7 +60,6 @@
         ),
         protocol = "ftp"
     )
-    alert(sprintf("Downloading {.url %s}.", url))
     file <- .cacheIt(url)
     assert(isAFile(file))
     file
