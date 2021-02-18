@@ -1,16 +1,12 @@
-## FIXME Remove bplapply call
-
-
-
 #' External identifiers
 #'
-#' @note Updated 2020-01-03.
+#' @note Updated 2021-02-18.
 #' @export
 #'
 #' @inheritParams params
 #' @inheritParams AcidRoxygen::params
 #'
-#' @return `DataFrame`.
+#' @return `List`.
 #'
 #' @examples
 #' ## WormBase REST API must be accessible.
@@ -19,39 +15,31 @@
 #'     expr = externalIDs(genes),
 #'     error = function(e) e
 #' )
-externalIDs <- function(
-    genes,
-    BPPARAM = BiocParallel::bpparam()  # nolint
-) {
+externalIDs <- function(genes) {
     assert(.allAreGenes(genes))
-    x <- lapply(genes, function(gene) {
-        query <- paste(
+    l <- lapply(genes, function(gene) {
+        q <- pasteURL(
             "widget",
             "gene",
             gene,
-            "external_links",
-            sep = "/"
+            "external_links"
         )
-        data <- .rest(query)[["fields"]][["xrefs"]][["data"]]
-        if (is.null(data)) return(NULL)
-        xrefs <- bplapply(
-            X = data,
+        x <- .rest(q)[["fields"]][["xrefs"]][["data"]]
+        if (is.null(x)) return(NULL)
+        x <- lapply(
+            X = x,
             FUN = function(x) {
-                x <- unlist(x[[1L]][[1L]])
+                x <- x[["gene"]][["ids"]]
+                x <- unlist(x, recursive = FALSE, use.names = FALSE)
                 x <- sort(unique(x))
                 x
-            },
-            BPPARAM = BPPARAM
+            }
         )
-        x <- data.frame(do.call(cbind, lapply(xrefs, list)))
-        x[["geneId"]] <- gene
+        x <- Filter(Negate(is.null), x)
+        x <- CharacterList(x)
         x
     })
-    x <- Filter(Negate(is.null), x)
-    if (!hasLength(x)) return(NULL)
-    x <- rbindlist(x, fill = TRUE)
-    x <- as(x, "DataFrame")
-    x <- camelCase(x, strict = TRUE)
-    x <- x[, unique(c("geneId", sort(colnames(x))))]
-    x
+    l <- List(l)
+    names(l) <- genes
+    l
 }

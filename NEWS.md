@@ -1,3 +1,14 @@
+## WormBase 0.3.0 (2021-02-18)
+
+### Major changes
+
+- Package now uses BiocFileCache (via pipette) internally to cache files
+  from WormBase FTP server.
+- Sped up internal code significantly, making use of `CharacterList`, which
+  helps avoid the need for BiocParallel `bplapply` calls.
+- Reworked NAMESPACE and dependencies to extend on top of basejump v0.14
+  release series.
+
 ## WormBase 0.2.12 (2020-07-23)
 
 ### Minor changes
