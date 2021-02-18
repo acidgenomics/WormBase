@@ -21,28 +21,14 @@ orthologs <- function(version = NULL) {
     x <- x[grepl(paste0("^", .genePattern), x)]
     genes <- str_extract(string = x, pattern = .genePattern)
     assert(identical(length(genes), length(x)))
-    x <- lapply(
-        X = x,
-        FUN = function(x, patterns) {
-            l <- mapply(
-                FUN = function(x, pattern) {
-                    str_extract_all(string = x, pattern = pattern)[[1L]]
-                },
-                pattern = patterns,
-                MoreArgs = list(x = x),
-                SIMPLIFY = FALSE,
-                USE.NAMES = FALSE
-            )
-            names(l) <- names(patterns)
-            l
-        },
-        patterns = c(
-            "danioRerio" = "\\bENSDARG\\d{11}\\b",
-            "drosophilaMelanogaster" = "\\bFBgn\\d{7}\\b",
-            "homoSapiens" = "\\bENSG\\d{11}\\b",
-            "musMusculus" = "\\bENSMUSG\\d{11}\\b"
-        )
+    patterns <- c(
+        "danioRerio" = "\\bENSDARG\\d{11}\\b",
+        "drosophilaMelanogaster" = "\\bFBgn\\d{7}\\b",
+        "homoSapiens" = "\\bENSG\\d{11}\\b",
+        "musMusculus" = "\\bENSMUSG\\d{11}\\b"
     )
+    x <- lapply(X = x, pattern = patterns, FUN = str_extract_all)
+    x <- lapply(X = x, FUN = `names<-`, value = names(patterns))
     x <- CharacterList(x)
     names(x) <- genes
     keep <- grepl(pattern = .genePattern, x = names(x))
