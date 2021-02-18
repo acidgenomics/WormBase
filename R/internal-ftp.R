@@ -1,7 +1,3 @@
-## FIXME RENAME VERSION TO RELEASE.
-
-
-
 #' Download an annotation file from WormBase FTP server
 #'
 #' @note Updated 2021-02-17.
