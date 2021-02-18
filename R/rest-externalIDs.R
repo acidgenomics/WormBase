@@ -13,6 +13,7 @@
 #' genes <- c("WBGene00000912", "WBGene00004804")
 #' x <- externalIDs(genes)
 #' print(x)
+#' print(x[[1L]])
 externalIDs <- function(genes) {
     assert(.allAreGenes(genes))
     l <- lapply(genes, function(gene) {
@@ -34,8 +35,8 @@ externalIDs <- function(genes) {
         )
         x <- Filter(Negate(is.null), x)
         x <- CharacterList(x)
-        x <- sort(unique(x))
         x <- x[sort(names(x))]
+        x <- sort(unique(x))
         x
     })
     l <- List(l)

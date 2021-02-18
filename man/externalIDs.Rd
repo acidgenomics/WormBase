@@ -24,4 +24,5 @@ Updated 2021-02-18.
 genes <- c("WBGene00000912", "WBGene00004804")
 x <- externalIDs(genes)
 print(x)
+print(x[[1L]])
 }
