@@ -1,6 +1,5 @@
-## FIXME NEED TO RETHINK APPROACH TO UNIT TESTS.
-
 release <- "WS279"
+ngene <- 52089L
 
 ## Ensure these aren't sorted by ID to check internal code.
 genes <- c(
