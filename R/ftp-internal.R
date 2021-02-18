@@ -8,15 +8,12 @@
 #'
 #' @note Updated 2021-02-17.
 #' @noRd
-.annotationFile <- function(...) {
+.annotationFile <- function(stem, version = NULL) {
+    subdir <- pasteURL("species", "c_elegans", .bioproject, "annotation")
     .transmit(
-        subdir = pasteURL(
-            "species",
-            "c_elegans",
-            .bioproject,
-            "annotation"
-        ),
-        ...
+        stem = stem,
+        subdir = subdir,
+        version = version
     )
 }
 
@@ -41,36 +38,41 @@
 
 #' Transmit file from WormBase FTP server
 #'
-#' @note Updated 2019-07-24.
+#' @note Updated 2021-02-17.
 #' @noRd
 .transmit <- function(
+    stem,
     subdir,
-    version = NULL,
-    ...
+    version = NULL
 ) {
     assert(
+        isString(stem),
         isString(subdir),
         .isVersion(version)
     )
-    ## Prepare remote directory path for transmit call.
     if (is.null(version)) {
-        version <- "current-production-release"
+        version <- currentRelease()
+        version2 <- "current-production-release"
+    } else {
+        version2 <- version
     }
-    releaseDir <- pasteURL(
+    url <- pasteURL(
         "ftp.wormbase.org",
         "pub",
         "wormbase",
         "releases",
-        version,
+        version2,
+        subdir,
+        paste(
+            "c_elegans",
+            .bioproject,
+            version,
+            stem,
+            sep = "."
+        ),
         protocol = "ftp"
     )
-    remoteDir <- pasteURL(releaseDir, subdir)
-    file <- transmit(
-        remoteDir = remoteDir,
-        localDir = tempdir(),
-        ...
-    )
-    ## Check for single file match.
-    assert(isString(file))
-    unname(file)
+    file <- .cacheIt(url)
+    assert(isAFile(file))
+    file
 }

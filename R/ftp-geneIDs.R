@@ -19,8 +19,8 @@
 #'     error = function(e) e
 #' )
 geneIDs <- function(version = NULL) {
-    file <- .annotationFile(pattern = "geneIDs", version = version)
-    x <- import(file, colnames = FALSE)
+    file <- .annotationFile(stem = "geneIDs.txt.gz", version = version)
+    x <- import(file, format = "csv", colnames = FALSE)
     x <- as(x, "DataFrame")
     x <- x[, 2L:5L]
     colnames(x) <- c("geneId", "geneName", "sequence", "status")
