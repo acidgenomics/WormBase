@@ -23,7 +23,7 @@ As of WS269 release, some non-N2 gene IDs are included in the flat
 files available on the WormBase FTP server. These annotations are removed
 from the return here, using grep matching to return only \code{WBGene} entries.
 
-Updated 2019-08-28.
+Updated 2021-02-17.
 }
 \examples{
 ## WormBase FTP server must be accessible.

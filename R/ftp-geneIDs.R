@@ -4,7 +4,7 @@
 #'   files available on the WormBase FTP server. These annotations are removed
 #'   from the return here, using grep matching to return only `WBGene` entries.
 #'
-#' @note Updated 2019-08-28.
+#' @note Updated 2021-02-17.
 #' @export
 #'
 #' @inheritParams params
