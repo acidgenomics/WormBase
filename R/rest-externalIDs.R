@@ -9,24 +9,23 @@
 #' @return `List`.
 #'
 #' @examples
-#' ## WormBase REST API must be accessible.
 #' genes <- c("WBGene00000912", "WBGene00004804")
 #' x <- externalIDs(genes)
 #' print(x)
 #' print(x[[1L]])
 externalIDs <- function(genes) {
     assert(.allAreGenes(genes))
-    l <- lapply(genes, function(gene) {
-        q <- pasteURL(
+    list <- lapply(genes, function(gene) {
+        query <- pasteURL(
             "widget",
             "gene",
             gene,
             "external_links"
         )
-        x <- .rest(q)[["fields"]][["xrefs"]][["data"]]
-        if (is.null(x)) return(NULL)
+        rest <- .rest(query)[["fields"]][["xrefs"]][["data"]]
+        if (is.null(rest)) return(NULL)
         x <- lapply(
-            X = x,
+            X = rest,
             FUN = function(x) {
                 x <- x[["gene"]][["ids"]]
                 x <- unlist(x, recursive = FALSE, use.names = FALSE)
@@ -39,7 +38,7 @@ externalIDs <- function(genes) {
         x <- sort(unique(x))
         x
     })
-    l <- List(l)
-    names(l) <- genes
-    l
+    list <- List(list)
+    names(list) <- genes
+    list
 }

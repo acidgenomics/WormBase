@@ -4,23 +4,14 @@
 \alias{geneOntology}
 \title{Gene Ontology terms}
 \usage{
-geneOntology(genes, BPPARAM = BiocParallel::bpparam())
+geneOntology(genes)
 }
 \arguments{
 \item{genes}{\code{character}.
 Gene identifiers (e.g. WBGene00004804).}
-
-\item{BPPARAM}{\code{bpparamClass}.
-BiocParallel parameter to specify the desired processor configuration.\cr
-We recommend using one of the following:
-\itemize{
-\item \link[BiocParallel:register]{bpparam}.
-\item \link[BiocParallel:SerialParam-class]{SerialParam}.
-\item \link[BiocParallel:MulticoreParam-class]{MulticoreParam}.
-}}
 }
 \value{
-\code{DataFrame}.
+\code{List}.
 }
 \description{
 Gene Ontology terms
@@ -29,10 +20,7 @@ Gene Ontology terms
 Updated 2021-02-18.
 }
 \examples{
-## WormBase REST API must be accessible.
 genes <- c("WBGene00000912", "WBGene00004804")
-tryCatch(
-    expr = geneOntology(genes),
-    error = function(e) e
-)
+x <- geneOntology(genes)
+print(x)
 }
