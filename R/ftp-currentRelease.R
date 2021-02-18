@@ -23,9 +23,14 @@ currentRelease <- function() {
                 "current-production-release",
                 protocol = "ftp"
             ),
-            localDir = tempdir(),
-            pattern = "^letter"
+            pattern = "^letter",
+            download = FALSE
         )
     })
-    sub(pattern = "^letter\\.", replacement = "", x = basename(file))
+    x <- sub(pattern = "^letter\\.", replacement = "", x = basename(file))
+    assert(
+        isString(x),
+        isMatchingRegex(x, pattern = "^WS\\d{3}$")
+    )
+    x
 }

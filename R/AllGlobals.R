@@ -21,17 +21,23 @@
 #'     Caenorhabditis elegans Hawaiian strain CB4856 genome assembly (2015)
 .bioproject <- "PRJNA13758"
 
+
+
 #' Gene identifier pattern to use for grep matching
 #'
 #' @note Updated 2021-02-17.
 #' @noRd
 .genePattern <- "WBGene\\d{8}"
 
+
+
 #' User agent to use for REST API calls
 #'
 #' @note Updated 2021-02-17.
 #' @noRd
 .userAgent <- "https://r.acidgenomics.com/packages/wormbase/"
+
+
 
 #' Default version argument
 #'

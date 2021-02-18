@@ -9,7 +9,7 @@
 #'   formula head import makeNames pasteURL rbindlist removeNA sanitizeNA split
 #'   t tail transmit unlist unsplit untar
 #' @importFrom goalie allAreMatchingRegex assert bapply hasLength
-#'   hasNoDuplicates isCharacter isFlag isString
+#'   hasNoDuplicates isCharacter isFlag isMatchingRegex isString
 #' @importFrom httr content content_type_json GET user_agent
 #' @importFrom methods as
 #' @importFrom stringr str_extract str_extract_all str_match str_match_all

@@ -1,4 +1,13 @@
-## Updated 2021-02-17.
+## FIXME Can we use BiocFileCache here??
+## FIXME Rethink the URL matching...can we just download directly without
+## using transmit here?
+
+
+
+#' Download an annotation file from WormBase FTP server
+#'
+#' @note Updated 2021-02-17.
+#' @noRd
 .annotationFile <- function(...) {
     .transmit(
         subdir = pasteURL(
@@ -13,7 +22,10 @@
 
 
 
-## Updated 2021-02-17.
+#' Download an assembly file from WormBase FTP server
+#'
+#' @note Updated 2021-02-17.
+#' @noRd
 .assemblyFile <- function(...) {
     .transmit(
         subdir = pasteURL(
@@ -27,22 +39,10 @@
 
 
 
-## Updated 2019-08-12.
-.invalidFTPFile <- function(file) {
-    stop(sprintf(
-        fmt = paste0(
-            "Invalid FTP file detected.\n",
-            "Please submit an issue on the WormBase GitHub",
-            " (https://github.com/wormbase) ",
-            "that the FTP file '%s' is malformed."
-        ),
-        basename(file)
-    ))
-}
-
-
-
-## Updated 2019-07-24.
+#' Transmit file from WormBase FTP server
+#'
+#' @note Updated 2019-07-24.
+#' @noRd
 .transmit <- function(
     subdir,
     version = NULL,
