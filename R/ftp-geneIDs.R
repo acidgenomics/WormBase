@@ -4,7 +4,7 @@
 #'   files available on the WormBase FTP server. These annotations are removed
 #'   from the return here, using grep matching to return only `WBGene` entries.
 #'
-#' @note Updated 2021-02-17.
+#' @note Updated 2021-02-18.
 #' @export
 #'
 #' @inheritParams params
@@ -13,11 +13,8 @@
 #' @return `DataFrame`.
 #'
 #' @examples
-#' ## WormBase FTP server must be accessible.
-#' tryCatch(
-#'     expr = geneIDs(),
-#'     error = function(e) e
-#' )
+#' x <- geneIDs()
+#' print(x)
 geneIDs <- function(version = NULL) {
     file <- .annotationFile(stem = "geneIDs.txt.gz", version = version)
     x <- import(file, format = "csv", colnames = FALSE)

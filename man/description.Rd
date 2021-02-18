@@ -26,12 +26,9 @@ from the return here, using grep matching to return only \code{WBGene} entries.
 This file is malformed on the WormBase FTP server for WS270 and WS271
 releases.
 
-Updated 2021-02-17.
+Updated 2021-02-18.
 }
 \examples{
-## WormBase FTP server must be accessible.
-tryCatch(
-    expr = description(),
-    error = function(e) e
-)
+x <- description()
+print(x)
 }

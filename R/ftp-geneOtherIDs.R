@@ -4,20 +4,17 @@
 #'   files available on the WormBase FTP server. These annotations are removed
 #'   from the return here, using grep matching to return only `WBGene` entries.
 #'
-#' @note Updated 2021-02-17.
+#' @note Updated 2021-02-18.
 #' @export
 #'
 #' @inheritParams params
 #' @inheritParams AcidRoxygen::params
 #'
-#' @return `DataFrame`.
+#' @return `CharacterList`.
 #'
 #' @examples
-#' ## WormBase FTP server must be accessible.
-#' tryCatch(
-#'     expr = geneOtherIDs(),
-#'     error = function(e) e
-#' )
+#' x <- geneOtherIDs()
+#' print(x)
 geneOtherIDs <- function(version = NULL) {
     file <- .annotationFile(stem = "geneOtherIDs.txt.gz", version = version)
     x <- import(file, format = "lines")
@@ -32,16 +29,19 @@ geneOtherIDs <- function(version = NULL) {
     ## Break out the chain and evaluate.
     x <- strsplit(x, "\t")
     x <- CharacterList(x)
-    x <- do.call(rbind, x)
-    x <- as(x, "DataFrame")
-    colnames(x) <- c("geneId", "geneOtherIds")
-    keep <- grepl(pattern = .genePattern, x = x[["geneId"]])
-    x <- x[keep, , drop = FALSE]
-    x <- x[order(x[["geneId"]]), , drop = FALSE]
-    x[["geneOtherIds"]] <- CharacterList(strsplit(
-        x = as.character(x[["geneOtherIds"]]),
+    df <- DataFrame(do.call(rbind, x))
+    colnames(df) <- c("geneId", "geneOtherIds")
+    keep <- grepl(pattern = .genePattern, x = df[["geneId"]])
+    df <- df[keep, , drop = FALSE]
+    x <- CharacterList(strsplit(
+        x = as.character(df[["geneOtherIds"]]),
         split = "\\|"
     ))
+    names(x) <- df[["geneId"]]
+    keep <- grepl(pattern = .genePattern, x = names(x))
+    x <- x[keep]
+    x <- x[sort(names(x))]
+    x <- sort(unique(x))
     x
 }
 

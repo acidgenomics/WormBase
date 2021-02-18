@@ -13,7 +13,7 @@ release version available on the WormBase website. Legacy versions can be
 specified as a character string (e.g. "WS267").}
 }
 \value{
-\code{DataFrame}.
+\code{CharacterList}.
 }
 \description{
 Other gene identifiers
@@ -23,12 +23,9 @@ As of WS269 release, some non-N2 gene IDs are included in the flat
 files available on the WormBase FTP server. These annotations are removed
 from the return here, using grep matching to return only \code{WBGene} entries.
 
-Updated 2021-02-17.
+Updated 2021-02-18.
 }
 \examples{
-## WormBase FTP server must be accessible.
-tryCatch(
-    expr = geneOtherIDs(),
-    error = function(e) e
-)
+x <- geneOtherIDs()
+print(x)
 }

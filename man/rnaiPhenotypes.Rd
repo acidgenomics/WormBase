@@ -13,7 +13,7 @@ release version available on the WormBase website. Legacy versions can be
 specified as a character string (e.g. "WS267").}
 }
 \value{
-\code{DataFrame}.
+\code{CharacterList}.
 }
 \description{
 RNAi phenotypes
