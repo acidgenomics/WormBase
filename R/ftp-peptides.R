@@ -15,24 +15,18 @@
 #'     expr = peptides(),
 #'     error = function(e) e
 #' )
-peptides <- function(
-    version = NULL,
-    BPPARAM = BiocParallel::bpparam()  # nolint
-) {
-    file <- .assemblyFile(pattern = "wormpep_package", version = version)
+peptides <- function(version = NULL) {
+    file <- .assemblyFile(stem = "wormpep_package.tar.gz", version = version)
     tempdir <- tempdir()
     ## Grep the verion number.
     versionNumber <- str_match(file, "WS([[:digit:]]{3})")[1L, 2L]
     ## Extract the individual table.
     wormpepTable <- paste0("wormpep.table", versionNumber)
-    untar(
-        tarfile = file,
-        files = wormpepTable,
-        exdir = tempdir
-    )
+    status <- untar(tarfile = file, files = wormpepTable, exdir = tempdir)
+    assert(identical(status, 0L))
     x <- import(file = file.path(tempdir, wormpepTable), format = "lines")
     alert("Processing peptides.")
-    x <- bplapply(
+    x <- lapply(
         X = x,
         FUN = function(x) {
             sequence <- str_match(x, "^>([A-Za-z0-9\\.]+)")[[2L]]
@@ -45,12 +39,10 @@ peptides <- function(
             out <- c(pairs[, 3L])
             names(out) <- pairs[, 2L]
             out[["sequence"]] <- sequence
-            as.data.frame(t(out), stringsAsFactors = TRUE)
-        },
-        BPPARAM = BPPARAM
+            out
+        }
     )
-    x <- rbindlist(x, fill = TRUE)
-    x <- as(x, "DataFrame")
+    x <- unlistToDataFrame(x = lapply(X = x, FUN = t))
     colnames(x)[colnames(x) == "gene"] <- "geneId"
     x <- x[, unique(c("geneId", colnames(x)))]
     keep <- grepl(pattern = .genePattern, x = x[["geneId"]])
@@ -58,7 +50,9 @@ peptides <- function(
     x <- x[
         order(x[["geneId"]], x[["sequence"]], x[["wormpep"]]), , drop = FALSE
     ]
-    split(x, f = x[["geneId"]])
+    x <- split(x, f = x[["geneId"]])
+    assert(is(x, "SplitDataFrameList"))
+    x
 }
 
 formals(peptides)[["version"]] <- .versionArg

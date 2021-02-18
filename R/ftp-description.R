@@ -83,7 +83,7 @@ description <- function(version = NULL) {
         }
     )
     assert(is(x, "list"))
-    x <- unlistToDataFrame(x = lapply(x, t))
+    x <- unlistToDataFrame(x = lapply(X = x, FUN = t))
     colnames(x) <- camelCase(colnames(x), strict = TRUE)
     assert(
         is(x, "DataFrame"),
