@@ -6,9 +6,9 @@
 #'
 #' @importFrom BiocParallel bplapply bpparam
 #' @importFrom basejump CharacterList DataFrame DataFrameList aggregate alert
-#'   cacheURL camelCase formula head import lapply makeNames pasteURL rbindlist
-#'   removeNA sanitizeNA split t tail transmit unlist unlistToDataFrame unsplit
-#'   untar
+#'   cacheURL camelCase do.call formula head import lapply makeNames pasteURL
+#'   rbindlist removeNA sanitizeNA split t tail transmit unlist
+#'   unlistToDataFrame unsplit untar
 #' @importFrom goalie allAreMatchingRegex assert bapply hasLength
 #'   hasNoDuplicates isAFile isAURL isCharacter isFlag isMatchingRegex isString
 #'   isSubset

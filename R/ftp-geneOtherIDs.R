@@ -4,7 +4,7 @@
 #'   files available on the WormBase FTP server. These annotations are removed
 #'   from the return here, using grep matching to return only `WBGene` entries.
 #'
-#' @note Updated 2019-08-28.
+#' @note Updated 2021-02-17.
 #' @export
 #'
 #' @inheritParams params
@@ -19,7 +19,7 @@
 #'     error = function(e) e
 #' )
 geneOtherIDs <- function(version = NULL) {
-    file <- .annotationFile(pattern = "geneOtherIDs", version = version)
+    file <- .annotationFile(stem = "geneOtherIDs.txt.gz", version = version)
     x <- import(file, format = "lines")
     ## Remove status. Already present in `geneIDs` file.
     x <- gsub("\t(Dead|Live)", "", x)
@@ -31,17 +31,17 @@ geneOtherIDs <- function(version = NULL) {
     x <- gsub("^(WBGene\\d+)(\\|)?", "\\1\t", x)
     ## Break out the chain and evaluate.
     x <- strsplit(x, "\t")
+    x <- CharacterList(x)
     x <- do.call(rbind, x)
-    x <- as.data.frame(x, stringsAsFactors = FALSE)
     x <- as(x, "DataFrame")
     colnames(x) <- c("geneId", "geneOtherIds")
     keep <- grepl(pattern = .genePattern, x = x[["geneId"]])
     x <- x[keep, , drop = FALSE]
     x <- x[order(x[["geneId"]]), , drop = FALSE]
-    x[["geneOtherIds"]] <- strsplit(
+    x[["geneOtherIds"]] <- CharacterList(strsplit(
         x = as.character(x[["geneOtherIds"]]),
         split = "\\|"
-    )
+    ))
     x
 }
 
