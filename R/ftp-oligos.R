@@ -15,12 +15,12 @@
 #'     error = function(e) e
 #' )
 oligos <- function(version = NULL) {
-    file <- .annotationFile(pattern = "pcr_product2gene", version = version)
-    ## `pcr_product2gene.txt` file is malformed, so let's parse as lines.
+    file <- .annotationFile(stem = "pcr_product2gene.txt.gz", version = version)
+    ## File is malformed, so let's parse as lines.
     x <- import(file, format = "lines")
     x <- str_match(x, "^([^\t]+)\t(WBGene\\d{8})")
     x <- x[, c(2L:3L)]
-    x <- as.data.frame(x, stringsAsFactors = FALSE)
+    x <- as(x, "DataFrame")
     colnames(x) <- c("oligo", "geneId")
     x <- aggregate(
         formula = formula("oligo~geneId"),
@@ -33,6 +33,7 @@ oligos <- function(version = NULL) {
         }
     )
     x <- as(x, "DataFrame")
+    x[["oligo"]] <- CharacterList(x[["oligo"]])
     keep <- grepl(pattern = .genePattern, x = x[["geneId"]])
     x <- x[keep, , drop = FALSE]
     x <- x[order(x[["geneId"]]), , drop = FALSE]
