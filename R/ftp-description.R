@@ -18,10 +18,10 @@
 #' @examples
 #' x <- description()
 #' print(x)
-description <- function(version = NULL) {
+description <- function(release = NULL) {
     file <- .annotationFile(
         stem = "functional_descriptions.txt.gz",
-        version = version
+        release = release
     )
     ## Process file by reading lines in directly.
     x <- import(file, format = "lines", comment = "#")
@@ -92,4 +92,4 @@ description <- function(version = NULL) {
     x
 }
 
-formals(description)[["version"]] <- .versionArg
+formals(description)[["release"]] <- .releaseArg

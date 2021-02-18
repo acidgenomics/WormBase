@@ -1,12 +1,12 @@
 context("ftp : rnaiPhenotypes")
 
 test_that("current", {
-    x <- rnaiPhenotypes(version = NULL)
+    x <- rnaiPhenotypes(release = NULL)
     expect_s4_class(x, "DataFrame")
 })
 
 test_that("stable", {
-    x <- rnaiPhenotypes(version = version)
+    x <- rnaiPhenotypes(release = release)
     expect_s4_class(x, "DataFrame")
     expect_identical(
         object = lapply(x, class),

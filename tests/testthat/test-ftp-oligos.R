@@ -1,12 +1,12 @@
 context("ftp : oligos")
 
 test_that("current", {
-    x <- oligos(version = NULL)
+    x <- oligos(release = NULL)
     expect_s4_class(x, "DataFrame")
 })
 
 test_that("stable", {
-    x <- oligos(version = version)
+    x <- oligos(release = release)
     expect_identical(
         object = lapply(x, class),
         expected = list(

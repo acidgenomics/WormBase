@@ -11,8 +11,8 @@
 #' @examples
 #' x <- orthologs()
 #' print(x)
-orthologs <- function(version = NULL) {
-    file <- .annotationFile(stem = "orthologs.txt.gz", version = version)
+orthologs <- function(release = NULL) {
+    file <- .annotationFile(stem = "orthologs.txt.gz", release = release)
     x <- import(file, format = "lines", comment = "#")
     x <- gsub("^=$", "\\|\\|", x)
     x <- paste(x, collapse = " ")
@@ -37,4 +37,4 @@ orthologs <- function(version = NULL) {
     x
 }
 
-formals(orthologs)[["version"]] <- .versionArg
+formals(orthologs)[["release"]] <- .releaseArg

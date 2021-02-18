@@ -15,8 +15,8 @@
 #' @examples
 #' x <- geneOtherIDs()
 #' print(x)
-geneOtherIDs <- function(version = NULL) {
-    file <- .annotationFile(stem = "geneOtherIDs.txt.gz", version = version)
+geneOtherIDs <- function(release = NULL) {
+    file <- .annotationFile(stem = "geneOtherIDs.txt.gz", release = release)
     x <- import(file, format = "lines")
     ## Remove status. Already present in `geneIDs` file.
     x <- gsub("\t(Dead|Live)", "", x)
@@ -45,4 +45,4 @@ geneOtherIDs <- function(version = NULL) {
     x
 }
 
-formals(geneOtherIDs)[["version"]] <- .versionArg
+formals(geneOtherIDs)[["release"]] <- .releaseArg

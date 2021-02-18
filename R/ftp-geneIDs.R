@@ -15,8 +15,8 @@
 #' @examples
 #' x <- geneIDs()
 #' print(x)
-geneIDs <- function(version = NULL) {
-    file <- .annotationFile(stem = "geneIDs.txt.gz", version = version)
+geneIDs <- function(release = NULL) {
+    file <- .annotationFile(stem = "geneIDs.txt.gz", release = release)
     x <- import(file, format = "csv", colnames = FALSE)
     x <- as(x, "DataFrame")
     x <- x[, 2L:5L]
@@ -28,4 +28,4 @@ geneIDs <- function(version = NULL) {
     x
 }
 
-formals(geneIDs)[["version"]] <- .versionArg
+formals(geneIDs)[["release"]] <- .releaseArg

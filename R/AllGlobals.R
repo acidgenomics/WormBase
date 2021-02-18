@@ -39,8 +39,8 @@
 
 
 
-#' Default version argument
+#' Default release argument
 #'
 #' @note Updated 2021-02-17.
 #' @noRd
-.versionArg <- quote(getOption(x = "wormbase.version", default = NULL))
+.releaseArg <- quote(getOption(x = "wormbase.release", default = NULL))

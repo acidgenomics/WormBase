@@ -35,11 +35,11 @@
 
 
 
-#' Is the input a WormBase release version?
+#' Is the input a WormBase release?
 #'
 #' @note Updated 2021-02-17.
 #' @noRd
-.isVersion <- function(x) {
+.isRelease <- function(x) {
     if (is.null(x)) return(TRUE)
     ok <- isString(x)
     if (!isTRUE(ok)) return(FALSE)

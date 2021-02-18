@@ -12,13 +12,13 @@
 #' @examples
 #' x <- peptides()
 #' print(x)
-peptides <- function(version = NULL) {
-    file <- .assemblyFile(stem = "wormpep_package.tar.gz", version = version)
+peptides <- function(release = NULL) {
+    file <- .assemblyFile(stem = "wormpep_package.tar.gz", release = release)
     tempdir <- tempdir()
     ## Grep the verion number.
-    versionNumber <- str_match(file, "WS([[:digit:]]{3})")[1L, 2L]
+    releaseNumber <- str_match(file, "WS([[:digit:]]{3})")[1L, 2L]
     ## Extract the individual table.
-    wormpepTable <- paste0("wormpep.table", versionNumber)
+    wormpepTable <- paste0("wormpep.table", releaseNumber)
     status <- untar(tarfile = file, files = wormpepTable, exdir = tempdir)
     assert(identical(status, 0L))
     x <- import(file = file.path(tempdir, wormpepTable), format = "lines")
@@ -51,4 +51,4 @@ peptides <- function(version = NULL) {
     x
 }
 
-formals(peptides)[["version"]] <- .versionArg
+formals(peptides)[["release"]] <- .releaseArg

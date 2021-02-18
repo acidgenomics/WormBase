@@ -11,8 +11,8 @@
 #' @examples
 #' x <- oligos()
 #' print(x)
-oligos <- function(version = NULL) {
-    file <- .annotationFile(stem = "pcr_product2gene.txt.gz", version = version)
+oligos <- function(release = NULL) {
+    file <- .annotationFile(stem = "pcr_product2gene.txt.gz", release = release)
     ## File is malformed, so let's parse as lines.
     x <- import(file, format = "lines")
     x <- str_match(x, "^([^\t]+)\t(WBGene\\d{8})")
@@ -32,4 +32,4 @@ oligos <- function(version = NULL) {
     x
 }
 
-formals(oligos)[["version"]] <- .versionArg
+formals(oligos)[["release"]] <- .releaseArg

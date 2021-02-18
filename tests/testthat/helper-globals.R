@@ -6,7 +6,7 @@ genes <- c(
     "daf-16" = "WBGene00000912"
 )
 
-## Version-specific checks.
+## Release-specific checks.
 ## WS260: 51031.
 ## WS269
 ngene <- 51254L

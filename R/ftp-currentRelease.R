@@ -4,7 +4,7 @@
 #' @export
 #'
 #' @return `character(1)`.
-#'   WormBase release version (e.g. WS271).
+#'   WormBase release release (e.g. WS271).
 #'
 #' @examples
 #' currentRelease()

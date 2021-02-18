@@ -1,12 +1,12 @@
 context("ftp : geneOtherIDs")
 
 test_that("current", {
-    x <- geneOtherIDs(version = NULL)
+    x <- geneOtherIDs(release = NULL)
     expect_s4_class(x, "DataFrame")
 })
 
 test_that("stable", {
-    x <- geneOtherIDs(version = version)
+    x <- geneOtherIDs(release = release)
     expect_s4_class(x, "DataFrame")
     expect_identical(
         object = lapply(x, class),

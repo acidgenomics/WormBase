@@ -8,6 +8,8 @@
   helps avoid the need for BiocParallel `bplapply` calls.
 - Reworked NAMESPACE and dependencies to extend on top of basejump v0.14
   release series.
+- Renamed `version` argument to `release`, for better consistency with naming
+  conventions used in basejump packages, such as AcidGenomes.
 
 ## WormBase 0.2.12 (2020-07-23)
 

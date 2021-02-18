@@ -11,8 +11,8 @@
 #' @examples
 #' x <- rnaiPhenotypes()
 #' print(x)
-rnaiPhenotypes <- function(version = NULL) {
-    file <- .ontologyFile(stem = "rnai_phenotypes_quick", version = version)
+rnaiPhenotypes <- function(release = NULL) {
+    file <- .ontologyFile(stem = "rnai_phenotypes_quick", release = release)
     x <- import(
         file = file,
         format = "tsv",
@@ -29,4 +29,4 @@ rnaiPhenotypes <- function(version = NULL) {
     x
 }
 
-formals(rnaiPhenotypes)[["version"]] <- .versionArg
+formals(rnaiPhenotypes)[["release"]] <- .releaseArg

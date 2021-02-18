@@ -7,12 +7,12 @@
 #' @note Updated 2021-02-17.
 #' @noRd
 .annotationFile <-
-    function(stem, version) {
+    function(stem, release) {
         .transmit(
             basename = paste(
                 "c_elegans",
                 .bioproject,
-                "{{version}}",
+                "{{release}}",
                 stem,
                 sep = "."
             ),
@@ -22,7 +22,7 @@
                 .bioproject,
                 "annotation"
             ),
-            version = version
+            release = release
         )
     }
 
@@ -33,17 +33,17 @@
 #' @note Updated 2021-02-17.
 #' @noRd
 .assemblyFile <-
-    function(stem, version) {
+    function(stem, release) {
         .transmit(
             basename = paste(
                 "c_elegans",
                 .bioproject,
-                "{{version}}",
+                "{{release}}",
                 stem,
                 sep = "."
             ),
             subdir = pasteURL("species", "c_elegans", .bioproject),
-            version = version
+            release = release
         )
     }
 
@@ -54,11 +54,11 @@
 #' @note Updated 2021-02-17.
 #' @noRd
 .ontologyFile <-
-    function(stem, version) {
+    function(stem, release) {
         .transmit(
-            basename = paste0(stem, ".{{version}}.wb"),
+            basename = paste0(stem, ".{{release}}.wb"),
             subdir = "ONTOLOGY",
-            version = version
+            release = release
         )
     }
 
@@ -71,32 +71,32 @@
 .transmit <- function(
     basename,
     subdir,
-    version
+    release
 ) {
     assert(
         isString(basename),
         isString(subdir),
-        .isVersion(version)
+        .isRelease(release)
     )
-    if (is.null(version)) {
-        version <- currentRelease()
-        version2 <- "current-production-release"
+    if (is.null(release)) {
+        release <- currentRelease()
+        release2 <- "current-production-release"
     } else {
-        version2 <- version
+        release2 <- release
     }
     url <- pasteURL(
         "ftp.wormbase.org",
         "pub",
         "wormbase",
         "releases",
-        version2,
+        release2,
         subdir,
         basename,
         protocol = "ftp"
     )
     url <- gsub(
-        pattern = "{{version}}",
-        replacement = version,
+        pattern = "{{release}}",
+        replacement = release,
         x = url,
         fixed = TRUE
     )

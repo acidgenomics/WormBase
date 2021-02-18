@@ -12,10 +12,10 @@
 #' @examples
 #' x <- blastp()
 #' print(x)
-blastp <- function(version = NULL) {
+blastp <- function(release = NULL) {
     file <- .assemblyFile(
         stem = "best_blastp_hits.txt.gz",
-        version = version
+        release = release
     )
     x <- import(file, format = "csv", colnames = FALSE)
     x <- as(x, "DataFrame")
@@ -31,4 +31,4 @@ blastp <- function(version = NULL) {
     x
 }
 
-formals(blastp)[["version"]] <- .versionArg
+formals(blastp)[["release"]] <- .releaseArg
