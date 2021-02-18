@@ -21,18 +21,14 @@ oligos <- function(version = NULL) {
     agg <- aggregate(
         formula = formula("oligo~geneId"),
         data = x,
-        FUN = function(x) {
-            x <- unique(x)
-            x <- sort(x)
-            x <- list(x)
-            x
-        }
+        FUN = list
     )
     x <- CharacterList(agg[["oligo"]])
     names(x) <- agg[["geneId"]]
     keep <- grepl(pattern = .genePattern, x = names(x))
     x <- x[keep]
     x <- x[sort(names(x))]
+    x <- sort(unique(x))
     x
 }
 

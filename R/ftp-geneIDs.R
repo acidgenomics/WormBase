@@ -24,6 +24,7 @@ geneIDs <- function(version = NULL) {
     keep <- grepl(pattern = .genePattern, x = x[["geneId"]])
     x <- x[keep, , drop = FALSE]
     x <- x[order(x[["geneId"]]), , drop = FALSE]
+    rownames(x) <- x[["geneId"]]
     x
 }
 

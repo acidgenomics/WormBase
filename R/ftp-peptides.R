@@ -22,7 +22,6 @@ peptides <- function(version = NULL) {
     status <- untar(tarfile = file, files = wormpepTable, exdir = tempdir)
     assert(identical(status, 0L))
     x <- import(file = file.path(tempdir, wormpepTable), format = "lines")
-    alert("Processing peptides.")
     x <- lapply(
         X = x,
         FUN = function(x) {

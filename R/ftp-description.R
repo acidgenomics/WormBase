@@ -88,6 +88,7 @@ description <- function(version = NULL) {
     x <- sanitizeNA(x)
     x <- removeNA(x)
     x <- x[order(x[["geneId"]]), , drop = FALSE]
+    rownames(x) <- x[["geneId"]]
     x
 }
 
