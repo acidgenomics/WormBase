@@ -31,12 +31,13 @@ externalIDs <- function(genes) {
             FUN = function(x) {
                 x <- x[["gene"]][["ids"]]
                 x <- unlist(x, recursive = FALSE, use.names = FALSE)
-                x <- sort(unique(x))
                 x
             }
         )
         x <- Filter(Negate(is.null), x)
         x <- CharacterList(x)
+        x <- sort(unique(x))
+        x <- x[sort(names(x))]
         x
     })
     l <- List(l)
