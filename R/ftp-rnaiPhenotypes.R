@@ -6,31 +6,25 @@
 #' @inheritParams params
 #' @inheritParams AcidRoxygen::params
 #'
-#' @return `DataFrame`.
+#' @return `CharacterList`.
 #'
 #' @examples
 #' x <- rnaiPhenotypes()
 #' print(x)
 rnaiPhenotypes <- function(version = NULL) {
-    file <- .ontologyFile(
-        stem = "rnai_phenotypes_quick",
-        version = version
-    )
+    file <- .ontologyFile(stem = "rnai_phenotypes_quick", version = version)
     x <- import(
         file = file,
         format = "tsv",
         colnames = c("geneId", "sequence", "rnaiPhenotypes")
     )
-    ## Using `sequence` from `geneID()` return instead.
-    x[["sequence"]] <- NULL
-    x <- as(x, "DataFrame")
-    pheno <- strsplit(x[["rnaiPhenotypes"]], ", ")
-    pheno <- CharacterList(pheno)
-    pheno <- sort(unique(pheno))
-    x[["rnaiPhenotypes"]] <- pheno
-    keep <- grepl(pattern = .genePattern, x = x[["geneId"]])
-    x <- x[keep, , drop = FALSE]
-    x <- x[order(x[["geneId"]]), , drop = FALSE]
+    genes <- x[["geneId"]]
+    x <- strsplit(x[["rnaiPhenotypes"]], ", ")
+    x <- CharacterList(x)
+    names(x) <- genes
+    keep <- grepl(pattern = .genePattern, x = names(x))
+    x <- x[keep]
+    x <- x[sort(names(x))]
     x
 }
 
