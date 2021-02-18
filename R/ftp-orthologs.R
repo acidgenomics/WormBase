@@ -1,19 +1,16 @@
 #' Orthologs
 #'
-#' @note Updated 2021-02-17.
+#' @note Updated 2021-02-18.
 #' @export
 #'
 #' @inheritParams params
 #' @inheritParams AcidRoxygen::params
 #'
-#' @return `DataFrame`.
+#' @return `CharacterList`.
 #'
 #' @examples
-#' ## WormBase FTP server must be accessible.
-#' tryCatch(
-#'     expr = orthologs(),
-#'     error = function(e) e
-#' )
+#' x <- orthologs()
+#' print(x)
 orthologs <- function(version = NULL) {
     file <- .annotationFile(stem = "orthologs.txt.gz", version = version)
     x <- import(file, format = "lines", comment = "#")
@@ -22,18 +19,14 @@ orthologs <- function(version = NULL) {
     x <- strsplit(x, "\\|\\|")[[1L]]
     x <- gsub("^ ", "", x)
     x <- x[grepl(paste0("^", .genePattern), x)]
-    alert("Processing orthologs.")
     genes <- str_extract(string = x, pattern = .genePattern)
     assert(identical(length(genes), length(x)))
-    orthologs <- lapply(
+    l <- lapply(
         X = x,
         FUN = function(x, patterns) {
             l <- mapply(
                 FUN = function(x, pattern) {
-                    x <- str_extract_all(string = x, pattern = pattern)[[1L]]
-                    x <- unique(x)
-                    x <- sort(x)
-                    x
+                    str_extract_all(string = x, pattern = pattern)[[1L]]
                 },
                 pattern = patterns,
                 MoreArgs = list(x = x),
@@ -50,13 +43,10 @@ orthologs <- function(version = NULL) {
             "musMusculus" = "\\bENSMUSG\\d{11}\\b"
         )
     )
-    orthologs <- CharacterList(orthologs)
-    x <- DataFrame(
-        "geneId" = genes,
-        "orthologs" = orthologs
-    )
-    x <- x[order(x[["geneId"]]), , drop = FALSE]
-    x
+    l <- CharacterList(l)
+    names(l) <- genes
+    l <- sort(unique(l))
+    l
 }
 
 formals(orthologs)[["version"]] <- .versionArg

@@ -19,12 +19,9 @@ specified as a character string (e.g. "WS267").}
 RNAi phenotypes
 }
 \note{
-Updated 2021-02-17.
+Updated 2021-02-18.
 }
 \examples{
-## WormBase FTP server must be accessible.
-tryCatch(
-    expr = rnaiPhenotypes(),
-    error = function(e) e
-)
+x <- rnaiPhenotypes()
+print(x)
 }

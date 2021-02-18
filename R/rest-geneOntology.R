@@ -4,7 +4,7 @@
 
 #' Gene Ontology terms
 #'
-#' @note Updated 2020-01-03.
+#' @note Updated 2021-02-18.
 #' @export
 #'
 #' @inheritParams params

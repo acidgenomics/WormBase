@@ -11,10 +11,8 @@
 #' @examples
 #' ## WormBase REST API must be accessible.
 #' genes <- c("WBGene00000912", "WBGene00004804")
-#' tryCatch(
-#'     expr = externalIDs(genes),
-#'     error = function(e) e
-#' )
+#' x <- externalIDs(genes)
+#' print(x)
 externalIDs <- function(genes) {
     assert(.allAreGenes(genes))
     l <- lapply(genes, function(gene) {

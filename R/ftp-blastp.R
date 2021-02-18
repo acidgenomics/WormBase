@@ -1,6 +1,6 @@
 #' Best BLASTP hits
 #'
-#' @note Updated 2021-02-17.
+#' @note Updated 2021-02-18.
 #' @export
 #'
 #' @inheritParams params
@@ -10,11 +10,8 @@
 #' Split by `wormpep` column.
 #'
 #' @examples
-#' ## WormBase FTP server must be accessible.
-#' tryCatch(
-#'     expr = blastp(),
-#'     error = function(e) e
-#' )
+#' x <- blastp()
+#' print(x)
 blastp <- function(version = NULL) {
     file <- .assemblyFile(
         stem = "best_blastp_hits.txt.gz",

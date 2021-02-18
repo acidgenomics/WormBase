@@ -26,7 +26,7 @@ We recommend using one of the following:
 Gene Ontology terms
 }
 \note{
-Updated 2020-01-03.
+Updated 2021-02-18.
 }
 \examples{
 ## WormBase REST API must be accessible.

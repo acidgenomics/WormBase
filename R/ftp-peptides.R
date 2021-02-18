@@ -1,6 +1,6 @@
 #' Peptides
 #'
-#' @note Updated 2021-02-17.
+#' @note Updated 2021-02-18.
 #' @export
 #'
 #' @inheritParams params
@@ -10,11 +10,8 @@
 #' Split by `geneId` column.
 #'
 #' @examples
-#' ## WormBase FTP server must be accessible.
-#' tryCatch(
-#'     expr = peptides(),
-#'     error = function(e) e
-#' )
+#' x <- peptides()
+#' print(x)
 peptides <- function(version = NULL) {
     file <- .assemblyFile(stem = "wormpep_package.tar.gz", version = version)
     tempdir <- tempdir()

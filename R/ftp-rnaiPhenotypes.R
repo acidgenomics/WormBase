@@ -1,6 +1,6 @@
 #' RNAi phenotypes
 #'
-#' @note Updated 2021-02-17.
+#' @note Updated 2021-02-18.
 #' @export
 #'
 #' @inheritParams params
@@ -9,11 +9,8 @@
 #' @return `DataFrame`.
 #'
 #' @examples
-#' ## WormBase FTP server must be accessible.
-#' tryCatch(
-#'     expr = rnaiPhenotypes(),
-#'     error = function(e) e
-#' )
+#' x <- rnaiPhenotypes()
+#' print(x)
 rnaiPhenotypes <- function(version = NULL) {
     file <- .ontologyFile(
         stem = "rnai_phenotypes_quick",

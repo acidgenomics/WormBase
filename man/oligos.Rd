@@ -13,18 +13,15 @@ release version available on the WormBase website. Legacy versions can be
 specified as a character string (e.g. "WS267").}
 }
 \value{
-\code{DataFrame}.
+\code{CharacterList}.
 }
 \description{
 PCR oligo sequences
 }
 \note{
-Updated 2021-02-17.
+Updated 2021-02-18.
 }
 \examples{
-## WormBase FTP server must be accessible.
-tryCatch(
-    expr = oligos(),
-    error = function(e) e
-)
+x <- oligos()
+print(x)
 }
