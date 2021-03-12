@@ -1,3 +1,7 @@
+## FIXME Now this is processingly slowly again...
+
+
+
 #' Gene functional descriptions
 #'
 #' @note As of WS269 release, some non-N2 gene IDs are included in the flat
@@ -7,7 +11,7 @@
 #' @note This file is malformed on the WormBase FTP server for WS270 and WS271
 #'   releases.
 #'
-#' @note Updated 2021-02-18.
+#' @note Updated 2021-03-12.
 #' @export
 #'
 #' @inheritParams params
@@ -79,7 +83,8 @@ description <- function(release = NULL) {
         }
     )
     assert(is(x, "list"))
-    x <- unlistToDataFrame(x = lapply(X = x, FUN = t))
+    ## This step is currently slow and could be optimized.
+    x <- rbindToDataFrame(x)
     colnames(x) <- camelCase(colnames(x), strict = TRUE)
     assert(
         is(x, "DataFrame"),

@@ -20,7 +20,7 @@ Split by \code{geneId} column.
 Peptides
 }
 \note{
-Updated 2021-02-18.
+Updated 2021-03-12.
 }
 \examples{
 x <- peptides()

@@ -6,9 +6,9 @@
 #'
 #' @importFrom basejump CharacterList DataFrame DataFrameList List aggregate
 #'   alert cacheURL camelCase do.call formula head import lapply makeNames
-#'   packageName pasteURL rbindlist removeNA sanitizeNA split str_extract
+#'   packageName pasteURL rbindToDataFrame removeNA sanitizeNA split str_extract
 #'   str_extract_all str_match str_match_all str_sub t tail transmit unlist
-#'   unlistToDataFrame unsplit untar
+#'   unsplit untar
 #' @importFrom goalie allAreMatchingRegex assert bapply hasLength
 #'   hasNoDuplicates isAFile isAURL isCharacter isFlag isMatchingRegex isString
 #'   isSubset
