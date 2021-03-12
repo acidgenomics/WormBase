@@ -23,11 +23,10 @@ BugReports: https://github.com/acidgenomics/r-wormbase/issues/
 Encoding: UTF-8
 Depends: R (>= 4.0)
 Imports:
-    basejump (>= 0.14.9),
-    goalie (>= 0.4.14),
+    basejump (>= 0.14.17),
+    goalie (>= 0.5.1),
     httr (>= 1.4),
-    methods,
-    stringr (>= 1.4)
+    methods
 Suggests:
     testthat
 biocViews:
