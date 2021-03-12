@@ -1,6 +1,6 @@
 #' Peptides
 #'
-#' @note Updated 2021-02-18.
+#' @note Updated 2021-03-12.
 #' @export
 #'
 #' @inheritParams params
@@ -38,7 +38,8 @@ peptides <- function(release = NULL) {
             out
         }
     )
-    x <- unlistToDataFrame(x = lapply(X = x, FUN = t))
+    ## This step may need to be optimized.
+    x <- rbindToDataFrame(x)
     colnames(x)[colnames(x) == "gene"] <- "geneId"
     x <- x[, unique(c("geneId", colnames(x)))]
     keep <- grepl(pattern = .genePattern, x = x[["geneId"]])
