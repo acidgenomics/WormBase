@@ -1,7 +1,3 @@
-## FIXME Now this is processingly slowly again...
-
-
-
 #' Gene functional descriptions
 #'
 #' @note As of WS269 release, some non-N2 gene IDs are included in the flat
