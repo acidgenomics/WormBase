@@ -7,8 +7,8 @@
 #'   Annotation file name.
 #' @param genes `character`.
 #'   Gene identifiers (e.g. WBGene00004804).
-#' @param version `character(1)` or `NULL`.
-#'   WormBase version. If `NULL` (recommended), defaults to current production
-#'   release version available on the WormBase website. Legacy versions can be
-#'   specified as a character string (e.g. "WS262").
+#' @param release `character(1)` or `NULL`.
+#'   WormBase release. If `NULL` (recommended), defaults to current production
+#'   release release available on the WormBase website. Legacy releases can be
+#'   specified as a character string (e.g. "WS267").
 NULL

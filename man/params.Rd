@@ -10,10 +10,10 @@ Annotation file name.}
 \item{genes}{\code{character}.
 Gene identifiers (e.g. WBGene00004804).}
 
-\item{version}{\code{character(1)} or \code{NULL}.
-WormBase version. If \code{NULL} (recommended), defaults to current production
-release version available on the WormBase website. Legacy versions can be
-specified as a character string (e.g. "WS262").}
+\item{release}{\code{character(1)} or \code{NULL}.
+WormBase release. If \code{NULL} (recommended), defaults to current production
+release release available on the WormBase website. Legacy releases can be
+specified as a character string (e.g. "WS267").}
 }
 \description{
 Parameters

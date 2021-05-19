@@ -4,39 +4,24 @@
 \alias{rnaiPhenotypes}
 \title{RNAi phenotypes}
 \usage{
-rnaiPhenotypes(
-  version = getOption(x = "wormbase.version", default = NULL),
-  BPPARAM = BiocParallel::bpparam()
-)
+rnaiPhenotypes(release = getOption(x = "wormbase.release", default = NULL))
 }
 \arguments{
-\item{version}{\code{character(1)} or \code{NULL}.
-WormBase version. If \code{NULL} (recommended), defaults to current production
-release version available on the WormBase website. Legacy versions can be
-specified as a character string (e.g. "WS262").}
-
-\item{BPPARAM}{\code{bpparamClass}.
-BiocParallel parameter to specify the desired processor configuration.\cr
-We recommend using one of the following:
-\itemize{
-\item \link[BiocParallel:register]{bpparam}.
-\item \link[BiocParallel:SerialParam-class]{SerialParam}.
-\item \link[BiocParallel:MulticoreParam-class]{MulticoreParam}.
-}}
+\item{release}{\code{character(1)} or \code{NULL}.
+WormBase release. If \code{NULL} (recommended), defaults to current production
+release release available on the WormBase website. Legacy releases can be
+specified as a character string (e.g. "WS267").}
 }
 \value{
-\code{DataFrame}.
+\code{CharacterList}.
 }
 \description{
 RNAi phenotypes
 }
 \note{
-Updated 2019-08-28.
+Updated 2021-02-18.
 }
 \examples{
-## WormBase FTP server must be accessible.
-tryCatch(
-    expr = rnaiPhenotypes(),
-    error = function(e) e
-)
+x <- rnaiPhenotypes()
+print(x)
 }

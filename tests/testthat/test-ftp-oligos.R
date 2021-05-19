@@ -1,22 +1,23 @@
 context("ftp : oligos")
 
 test_that("current", {
-    x <- oligos(version = NULL)
-    expect_s4_class(x, "DataFrame")
+    x <- oligos(release = NULL)
+    expect_s4_class(x, "CharacterList")
 })
 
 test_that("stable", {
-    x <- oligos(version = version)
+    x <- oligos(release = release)
+    expect_s4_class(x, "CharacterList")
     expect_identical(
-        object = lapply(x, class),
-        expected = list(
-            geneID = "character",
-            oligo = "list"
-        )
+        object = length(x),
+        expected = 18447L
     )
-    expect_s4_class(x, "DataFrame")
     expect_identical(
-        object = nrow(x),
-        expected = 18675L
+        object = x[[1L]],
+        expected = c(
+            "cenix:90-h3",
+            "mv_Y110A7A.10",
+            "sjj_Y110A7A.k"
+        )
     )
 })

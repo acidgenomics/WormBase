@@ -4,7 +4,7 @@
 #'   files available on the WormBase FTP server. These annotations are removed
 #'   from the return here, using grep matching to return only `WBGene` entries.
 #'
-#' @note Updated 2019-08-28.
+#' @note Updated 2021-02-18.
 #' @export
 #'
 #' @inheritParams params
@@ -13,21 +13,19 @@
 #' @return `DataFrame`.
 #'
 #' @examples
-#' ## WormBase FTP server must be accessible.
-#' tryCatch(
-#'     expr = geneIDs(),
-#'     error = function(e) e
-#' )
-geneIDs <- function(version = NULL) {
-    file <- .annotationFile(pattern = "geneIDs", version = version)
-    x <- import(file, colnames = FALSE)
+#' x <- geneIDs()
+#' print(x)
+geneIDs <- function(release = NULL) {
+    file <- .annotationFile(stem = "geneIDs.txt.gz", release = release)
+    x <- import(file, format = "csv", colnames = FALSE)
     x <- as(x, "DataFrame")
     x <- x[, 2L:5L]
-    colnames(x) <- c("geneID", "geneName", "sequence", "status")
-    keep <- grepl(pattern = genePattern, x = x[["geneID"]])
+    colnames(x) <- c("geneId", "geneName", "sequence", "status")
+    keep <- grepl(pattern = .genePattern, x = x[["geneId"]])
     x <- x[keep, , drop = FALSE]
-    x <- x[order(x[["geneID"]]), , drop = FALSE]
+    x <- x[order(x[["geneId"]]), , drop = FALSE]
+    rownames(x) <- x[["geneId"]]
     x
 }
 
-formals(geneIDs)[["version"]] <- versionArg
+formals(geneIDs)[["release"]] <- .releaseArg

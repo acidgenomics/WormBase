@@ -1,53 +1,44 @@
 #' External identifiers
 #'
-#' @note Updated 2020-01-03.
+#' @note Updated 2021-02-18.
 #' @export
 #'
 #' @inheritParams params
 #' @inheritParams AcidRoxygen::params
 #'
-#' @return `DataFrame`.
+#' @return `List`.
 #'
 #' @examples
-#' ## WormBase REST API must be accessible.
 #' genes <- c("WBGene00000912", "WBGene00004804")
-#' tryCatch(
-#'     expr = externalIDs(genes),
-#'     error = function(e) e
-#' )
-externalIDs <- function(
-    genes,
-    BPPARAM = BiocParallel::bpparam()  # nolint
-) {
+#' x <- externalIDs(genes)
+#' print(x)
+#' print(x[[1L]])
+externalIDs <- function(genes) {
     assert(.allAreGenes(genes))
-    x <- lapply(genes, function(gene) {
-        query <- paste(
+    list <- lapply(genes, function(gene) {
+        query <- pasteURL(
             "widget",
             "gene",
             gene,
-            "external_links",
-            sep = "/"
+            "external_links"
         )
-        data <- .rest(query)[["fields"]][["xrefs"]][["data"]]
-        if (is.null(data)) return(NULL)
-        xrefs <- bplapply(
-            X = data,
+        rest <- .rest(query)[["fields"]][["xrefs"]][["data"]]
+        if (is.null(rest)) return(NULL)
+        x <- lapply(
+            X = rest,
             FUN = function(x) {
-                x <- unlist(x[[1L]][[1L]])
-                x <- sort(unique(x))
+                x <- x[["gene"]][["ids"]]
+                x <- unlist(x, recursive = FALSE, use.names = FALSE)
                 x
-            },
-            BPPARAM = BPPARAM
+            }
         )
-        x <- data.frame(do.call(cbind, lapply(xrefs, list)))
-        x[["geneID"]] <- gene
+        x <- Filter(Negate(is.null), x)
+        x <- CharacterList(x)
+        x <- x[sort(names(x))]
+        x <- sort(unique(x))
         x
     })
-    x <- Filter(Negate(is.null), x)
-    if (!hasLength(x)) return(NULL)
-    x <- rbindlist(x, fill = TRUE)
-    x <- as(x, "DataFrame")
-    x <- camelCase(x)
-    x <- x[, unique(c("geneID", sort(colnames(x))))]
-    x
+    list <- List(list)
+    names(list) <- genes
+    list
 }

@@ -4,13 +4,13 @@
 \alias{blastp}
 \title{Best BLASTP hits}
 \usage{
-blastp(version = getOption(x = "wormbase.version", default = NULL))
+blastp(release = getOption(x = "wormbase.release", default = NULL))
 }
 \arguments{
-\item{version}{\code{character(1)} or \code{NULL}.
-WormBase version. If \code{NULL} (recommended), defaults to current production
-release version available on the WormBase website. Legacy versions can be
-specified as a character string (e.g. "WS262").}
+\item{release}{\code{character(1)} or \code{NULL}.
+WormBase release. If \code{NULL} (recommended), defaults to current production
+release release available on the WormBase website. Legacy releases can be
+specified as a character string (e.g. "WS267").}
 }
 \value{
 \code{SplitDataFrameList}.
@@ -20,12 +20,9 @@ Split by \code{wormpep} column.
 Best BLASTP hits
 }
 \note{
-Updated 2019-08-28.
+Updated 2021-02-18.
 }
 \examples{
-## WormBase FTP server must be accessible.
-tryCatch(
-    expr = blastp(),
-    error = function(e) e
-)
+x <- blastp()
+print(x)
 }

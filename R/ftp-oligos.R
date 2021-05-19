@@ -1,42 +1,35 @@
 #' PCR oligo sequences
 #'
-#' @note Updated 2019-08-28.
+#' @note Updated 2021-02-18.
 #' @export
 #'
 #' @inheritParams params
 #' @inheritParams AcidRoxygen::params
 #'
-#' @return `DataFrame`.
+#' @return `CharacterList`.
 #'
 #' @examples
-#' ## WormBase FTP server must be accessible.
-#' tryCatch(
-#'     expr = oligos(),
-#'     error = function(e) e
-#' )
-oligos <- function(version = NULL) {
-    file <- .annotationFile(pattern = "pcr_product2gene", version = version)
-    ## `pcr_product2gene.txt` file is malformed, so let's parse as lines.
+#' x <- oligos()
+#' print(x)
+oligos <- function(release = NULL) {
+    file <- .annotationFile(stem = "pcr_product2gene.txt.gz", release = release)
+    ## File is malformed, so let's parse as lines.
     x <- import(file, format = "lines")
     x <- str_match(x, "^([^\t]+)\t(WBGene\\d{8})")
     x <- x[, c(2L:3L)]
-    x <- as.data.frame(x, stringsAsFactors = FALSE)
-    colnames(x) <- c("oligo", "geneID")
-    x <- aggregate(
-        formula = formula("oligo~geneID"),
+    colnames(x) <- c("oligo", "geneId")
+    agg <- aggregate(
+        formula = formula("oligo~geneId"),
         data = x,
-        FUN = function(x) {
-            x <- unique(x)
-            x <- sort(x)
-            x <- list(x)
-            x
-        }
+        FUN = list
     )
-    x <- as(x, "DataFrame")
-    keep <- grepl(pattern = genePattern, x = x[["geneID"]])
-    x <- x[keep, , drop = FALSE]
-    x <- x[order(x[["geneID"]]), , drop = FALSE]
+    x <- CharacterList(agg[["oligo"]])
+    names(x) <- agg[["geneId"]]
+    keep <- grepl(pattern = .genePattern, x = names(x))
+    x <- x[keep]
+    x <- x[sort(names(x))]
+    x <- sort(unique(x))
     x
 }
 
-formals(oligos)[["version"]] <- versionArg
+formals(oligos)[["release"]] <- .releaseArg

@@ -1,50 +1,32 @@
 #' RNAi phenotypes
 #'
-#' @note Updated 2019-08-28.
+#' @note Updated 2021-02-18.
 #' @export
 #'
 #' @inheritParams params
 #' @inheritParams AcidRoxygen::params
 #'
-#' @return `DataFrame`.
+#' @return `CharacterList`.
 #'
 #' @examples
-#' ## WormBase FTP server must be accessible.
-#' tryCatch(
-#'     expr = rnaiPhenotypes(),
-#'     error = function(e) e
-#' )
-rnaiPhenotypes <- function(
-    version = NULL,
-    BPPARAM = BiocParallel::bpparam()  # nolint
-) {
-    file <- .transmit(
-        subdir = "ONTOLOGY",
-        pattern = "rnai_phenotypes_quick",
-        version = version,
-        compress = TRUE
-    )
+#' x <- rnaiPhenotypes()
+#' print(x)
+rnaiPhenotypes <- function(release = NULL) {
+    file <- .ontologyFile(stem = "rnai_phenotypes_quick", release = release)
     x <- import(
         file = file,
         format = "tsv",
-        colnames = c("geneID", "sequence", "rnaiPhenotypes")
+        colnames = c("geneId", "sequence", "rnaiPhenotypes")
     )
-    ## Using `sequence` from `geneID()` return instead.
-    x[["sequence"]] <- NULL
-    x <- as(x, "DataFrame")
-    pheno <- strsplit(x[["rnaiPhenotypes"]], ", ")
-    pheno <- bplapply(
-        X = pheno,
-        FUN = function(x) {
-            sort(unique(x))
-        },
-        BPPARAM = BPPARAM
-    )
-    x[["rnaiPhenotypes"]] <- pheno
-    keep <- grepl(pattern = genePattern, x = x[["geneID"]])
-    x <- x[keep, , drop = FALSE]
-    x <- x[order(x[["geneID"]]), , drop = FALSE]
+    genes <- x[["geneId"]]
+    x <- strsplit(x[["rnaiPhenotypes"]], ", ")
+    x <- CharacterList(x)
+    names(x) <- genes
+    keep <- grepl(pattern = .genePattern, x = names(x))
+    x <- x[keep]
+    x <- x[sort(names(x))]
+    x <- sort(unique(x))
     x
 }
 
-formals(rnaiPhenotypes)[["version"]] <- versionArg
+formals(rnaiPhenotypes)[["release"]] <- .releaseArg

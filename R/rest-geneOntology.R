@@ -1,37 +1,30 @@
 #' Gene Ontology terms
 #'
-#' @note Updated 2020-01-03.
+#' @note Updated 2021-02-18.
 #' @export
 #'
 #' @inheritParams params
 #' @inheritParams AcidRoxygen::params
 #'
-#' @return `DataFrame`.
+#' @return `List`.
 #'
 #' @examples
-#' ## WormBase REST API must be accessible.
 #' genes <- c("WBGene00000912", "WBGene00004804")
-#' tryCatch(
-#'     expr = geneOntology(genes),
-#'     error = function(e) e
-#' )
-geneOntology <- function(
-    genes,
-    BPPARAM = BiocParallel::bpparam()  # nolint
-) {
+#' x <- geneOntology(genes)
+#' print(x)
+geneOntology <- function(genes) {
     assert(.allAreGenes(genes))
-    x <- lapply(genes, function(gene) {
-        query <- paste(
+    list <- lapply(genes, function(gene) {
+        query <- pasteURL(
             "widget",
             "gene",
             gene,
-            "gene_ontology",
-            sep = "/"
+            "gene_ontology"
         )
-        data <- .rest(query)[["fields"]][["gene_ontology"]][["data"]]
-        if (is.null(data)) return(NULL)
-        goTerms <- bplapply(
-            X = data,
+        rest <- .rest(query)[["fields"]][["gene_ontology"]][["data"]]
+        if (is.null(rest)) return(NULL)
+        goTerms <- lapply(
+            X = rest,
             FUN = function(process) {
                 x <- lapply(
                     X = seq_along(process),
@@ -41,21 +34,17 @@ geneOntology <- function(
                         paste(id, label, sep = "~")
                     }
                 )
-                x <- unlist(x)
+                x <- unlist(x, recursive = FALSE, use.names = FALSE)
                 x <- sort(unique(x))
                 x
-            },
-            BPPARAM = BPPARAM
+            }
         )
-        x <- data.frame(do.call(cbind, lapply(goTerms, list)))
-        x[["geneID"]] <- gene
-        x
+        goTerms <- CharacterList(goTerms)
+        names(goTerms) <- camelCase(names(goTerms), strict = TRUE)
+        goTerms <- goTerms[sort(names(goTerms))]
+        goTerms
     })
-    x <- Filter(Negate(is.null), x)
-    if (!hasLength(x)) return(NULL)
-    x <- rbindlist(x, fill = TRUE)
-    x <- as(x, "DataFrame")
-    x <- camelCase(x)
-    x <- x[, unique(c("geneID", sort(colnames(x))))]
-    x
+    names(list) <- genes
+    list <- List(list)
+    list
 }

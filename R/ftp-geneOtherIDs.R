@@ -4,24 +4,21 @@
 #'   files available on the WormBase FTP server. These annotations are removed
 #'   from the return here, using grep matching to return only `WBGene` entries.
 #'
-#' @note Updated 2019-08-28.
+#' @note Updated 2021-02-18.
 #' @export
 #'
 #' @inheritParams params
 #' @inheritParams AcidRoxygen::params
 #'
-#' @return `DataFrame`.
+#' @return `CharacterList`.
 #'
 #' @examples
-#' ## WormBase FTP server must be accessible.
-#' tryCatch(
-#'     expr = geneOtherIDs(),
-#'     error = function(e) e
-#' )
-geneOtherIDs <- function(version = NULL) {
-    file <- .annotationFile(pattern = "geneOtherIDs", version = version)
+#' x <- geneOtherIDs()
+#' print(x)
+geneOtherIDs <- function(release = NULL) {
+    file <- .annotationFile(stem = "geneOtherIDs.txt.gz", release = release)
     x <- import(file, format = "lines")
-    ## Remove status. Already present in geneIDs file.
+    ## Remove status. Already present in `geneIDs` file.
     x <- gsub("\t(Dead|Live)", "", x)
     ## Remove `CELE_*` identifiers.
     x <- gsub("\t(CELE_[A-Z0-9\\.]+)", "", x)
@@ -31,18 +28,21 @@ geneOtherIDs <- function(version = NULL) {
     x <- gsub("^(WBGene\\d+)(\\|)?", "\\1\t", x)
     ## Break out the chain and evaluate.
     x <- strsplit(x, "\t")
-    x <- do.call(rbind, x)
-    x <- as.data.frame(x, stringsAsFactors = FALSE)
-    x <- as(x, "DataFrame")
-    colnames(x) <- c("geneID", "geneOtherIDs")
-    keep <- grepl(pattern = genePattern, x = x[["geneID"]])
-    x <- x[keep, , drop = FALSE]
-    x <- x[order(x[["geneID"]]), , drop = FALSE]
-    x[["geneOtherIDs"]] <- strsplit(
-        x = as.character(x[["geneOtherIDs"]]),
+    x <- CharacterList(x)
+    df <- DataFrame(do.call(rbind, x))
+    colnames(df) <- c("geneId", "geneOtherIds")
+    keep <- grepl(pattern = .genePattern, x = df[["geneId"]])
+    df <- df[keep, , drop = FALSE]
+    x <- CharacterList(strsplit(
+        x = as.character(df[["geneOtherIds"]]),
         split = "\\|"
-    )
+    ))
+    names(x) <- df[["geneId"]]
+    keep <- grepl(pattern = .genePattern, x = names(x))
+    x <- x[keep]
+    x <- x[sort(names(x))]
+    x <- sort(unique(x))
     x
 }
 
-formals(geneOtherIDs)[["version"]] <- versionArg
+formals(geneOtherIDs)[["release"]] <- .releaseArg

@@ -1,6 +1,6 @@
 #' Best BLASTP hits
 #'
-#' @note Updated 2019-08-28.
+#' @note Updated 2021-02-18.
 #' @export
 #'
 #' @inheritParams params
@@ -10,17 +10,14 @@
 #' Split by `wormpep` column.
 #'
 #' @examples
-#' ## WormBase FTP server must be accessible.
-#' tryCatch(
-#'     expr = blastp(),
-#'     error = function(e) e
-#' )
-blastp <- function(version = NULL) {
+#' x <- blastp()
+#' print(x)
+blastp <- function(release = NULL) {
     file <- .assemblyFile(
-        pattern = "best_blastp_hits",
-        version = version
+        stem = "best_blastp_hits.txt.gz",
+        release = release
     )
-    x <- import(file, colnames = FALSE)
+    x <- import(file, format = "csv", colnames = FALSE)
     x <- as(x, "DataFrame")
     x <- x[, c(1L, 4L, 5L)]
     colnames(x) <- c("wormpep", "peptide", "eValue")
@@ -29,7 +26,9 @@ blastp <- function(version = NULL) {
     x <- x[order(x[["wormpep"]], x[["eValue"]]), , drop = FALSE]
     x[["peptide"]] <- str_sub(x[["peptide"]], 9L)
     x[["eValue"]] <- as.numeric(x[["eValue"]])
-    split(x, f = x[["wormpep"]])
+    x <- split(x, f = x[["wormpep"]])
+    assert(is(x, "SplitDataFrameList"))
+    x
 }
 
-formals(blastp)[["version"]] <- versionArg
+formals(blastp)[["release"]] <- .releaseArg

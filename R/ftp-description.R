@@ -7,7 +7,7 @@
 #' @note This file is malformed on the WormBase FTP server for WS270 and WS271
 #'   releases.
 #'
-#' @note Updated 2020-01-26.
+#' @note Updated 2021-03-12.
 #' @export
 #'
 #' @inheritParams params
@@ -16,31 +16,18 @@
 #' @return `DataFrame`.
 #'
 #' @examples
-#' ## WormBase FTP server must be accessible.
-#' tryCatch(
-#'     expr = description(),
-#'     error = function(e) e
-#' )
-description <- function(
-    version = NULL,
-    BPPARAM = BiocParallel::bpparam()  # nolint
-) {
+#' x <- description()
+#' print(x)
+description <- function(release = NULL) {
     file <- .annotationFile(
-        pattern = "functional_descriptions",
-        version = version
+        stem = "functional_descriptions.txt.gz",
+        release = release
     )
     ## Process file by reading lines in directly.
-    x <- import(file, format = "lines")
-    ## The first 3 lines contain comments.
-    x <- tail(x, n = -3L)
+    x <- import(file, format = "lines", comment = "#")
     ## Genes are separated by a line containing `=`.
     x <- gsub(pattern = "^=$", replacement = "\\|\\|", x = x)
-    ## Add a tab delimiter before our keys of interest:
-    ## - Concise description
-    ## - Provisional description
-    ## - Detailed description
-    ## - Automated description
-    ## - Gene class description
+    ## Add a tab delimiter before our keys of interest.
     x <- gsub(
         pattern = paste0(
             "(Concise|Provisional|Detailed|Automated|Gene class)",
@@ -51,8 +38,7 @@ description <- function(
     )
     ## Now collapse to a single line and split by the gene separator (`||`).
     x <- paste(x, collapse = " ")
-    x <- strsplit(x, "\\|\\|")
-    x <- unlist(x)
+    x <- strsplit(x, "\\|\\|")[[1L]]
     ## Clean up spaces and tabs.
     x <- gsub("  ", " ", x)
     x <- gsub("^ ", "", x)
@@ -61,49 +47,50 @@ description <- function(
     x <- gsub("\t ", "\t", x)
     ## Now split by the tab delimiters.
     x <- strsplit(x, "\t")
+    x <- CharacterList(x)
     ## Before we process the list, remove non-N2 annotations.
     ## These were added in WS269.
     ## For example, drop these: "PRJEB28388_chrIII_pilon.g6684".
     keep <- bapply(
         X = x,
         FUN = function(x) {
-            grepl(pattern = genePattern, x = x[[1L]])
+            grepl(pattern = .genePattern, x = x[[1L]])
         }
     )
     if (!any(keep)) {
         .invalidFTPFile(file)
     }
     x <- x[keep]
-    ## Parallelize the processing steps here to speed up the return.
-    cli_alert("Processing functional descriptions.")
-    x <- bplapply(
+    x <- lapply(
         X = x,
         FUN = function(x) {
             ## This step checks for columns such as "Concise description:".
             pattern <- "^([A-Za-z[:space:]]+)\\:"
             names <- str_match(x, pattern = pattern)[, 2L]
             ## The first 3 columns won't match the pattern, so assign manually.
-            names[seq_len(3L)] <- c("geneID", "geneName", "sequence")
-            names <- camelCase(names)
+            names[seq_len(3L)] <- c("geneId", "geneName", "sequence")
+            names(x) <- names
             ## Remove the key prefix (e.g. "Concise description:").
             x <- gsub(paste0(pattern, " "), "", x)
-            x <- t(x)
-            x <- as.data.frame(x)
-            colnames(x) <- names
             ## Ensure the user uses the values from `geneIDs()` return instead.
-            keep <- setdiff(colnames(x), c("geneName", "sequence"))
-            x <- x[, keep, drop = FALSE]
+            keep <- setdiff(names(x), c("geneName", "sequence"))
+            x <- x[keep]
             x
-        },
-        BPPARAM = BPPARAM
+        }
     )
-    x <- rbindlist(x, fill = TRUE)
-    x <- as(x, "DataFrame")
-    x <- camelCase(x)
+    assert(is(x, "list"))
+    ## This step is currently slow and could be optimized.
+    x <- rbindToDataFrame(x)
+    colnames(x) <- camelCase(colnames(x), strict = TRUE)
+    assert(
+        is(x, "DataFrame"),
+        isSubset("geneId", colnames(x))
+    )
     x <- sanitizeNA(x)
     x <- removeNA(x)
-    x <- x[order(x[["geneID"]]), , drop = FALSE]
+    x <- x[order(x[["geneId"]]), , drop = FALSE]
+    rownames(x) <- x[["geneId"]]
     x
 }
 
-formals(description)[["version"]] <- versionArg
+formals(description)[["release"]] <- .releaseArg

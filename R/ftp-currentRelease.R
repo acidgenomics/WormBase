@@ -1,17 +1,13 @@
 #' Current WormBase release
 #'
-#' @note Updated 2019-07-27.
+#' @note Updated 2021-02-18.
 #' @export
 #'
 #' @return `character(1)`.
-#'   WormBase release version (e.g. WS271).
+#'   WormBase release release (e.g. WS271).
 #'
 #' @examples
-#' ## WormBase FTP server must be accessible.
-#' tryCatch(
-#'     expr = currentRelease(),
-#'     error = function(e) e
-#' )
+#' currentRelease()
 currentRelease <- function() {
     suppressMessages({
         file <- transmit(
@@ -23,9 +19,14 @@ currentRelease <- function() {
                 "current-production-release",
                 protocol = "ftp"
             ),
-            localDir = tempdir(),
-            pattern = "^letter"
+            pattern = "^letter",
+            download = FALSE
         )
     })
-    sub(pattern = "^letter\\.", replacement = "", x = basename(file))
+    x <- sub(pattern = "^letter\\.", replacement = "", x = basename(file))
+    assert(
+        isString(x),
+        isMatchingRegex(x, pattern = "^WS\\d{3}$")
+    )
+    x
 }
