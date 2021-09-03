@@ -19,16 +19,16 @@
 
 #' Error message for invalid FTP file
 #'
-#' @note Updated 2019-08-12.
+#' @note Updated 2021-09-03.
 #' @noRd
 .invalidFTPFile <- function(file) {
-    stop(sprintf(
+    abort(sprintf(
         fmt = paste0(
             "Invalid FTP file detected.\n",
-            "Please submit an issue on the WormBase GitHub",
-            " (https://github.com/wormbase) ",
-            "that the FTP file '%s' is malformed."
+            "Please submit an issue on the WormBase GitHub {.url %s} ",
+            "that the FTP file {.file %s} is malformed."
         ),
+        "https://github.com/wormbase",
         basename(file)
     ))
 }
