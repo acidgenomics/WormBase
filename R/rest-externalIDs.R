@@ -23,7 +23,9 @@ externalIDs <- function(genes) {
             "external_links"
         )
         rest <- .rest(query)[["fields"]][["xrefs"]][["data"]]
-        if (is.null(rest)) return(NULL)
+        if (is.null(rest)) {
+            return(NULL)
+        }
         x <- lapply(
             X = rest,
             FUN = function(x) {

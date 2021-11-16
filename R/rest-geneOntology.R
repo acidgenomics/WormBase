@@ -22,7 +22,9 @@ geneOntology <- function(genes) {
             "gene_ontology"
         )
         rest <- .rest(query)[["fields"]][["gene_ontology"]][["data"]]
-        if (is.null(rest)) return(NULL)
+        if (is.null(rest)) {
+            return(NULL)
+        }
         goTerms <- lapply(
             X = rest,
             FUN = function(process) {
