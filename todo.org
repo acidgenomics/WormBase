@@ -1,0 +1,8 @@
+#+TITLE: WormBase
+#+STARTUP: content
+* Development
+** TODO Look into switching to rest.wormbase.org.
+** TODO Check that description still doesn't work on FTP with current release.
+    File an issue with WormBase.
+** TODO Consider adding native GenomicRanges support here, via WormBase GTF files.
+** TODO Modify functions that fetch from FTP to write files to `tempdir()`, and remove `dir` argument.
