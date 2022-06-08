@@ -32,6 +32,6 @@ NULL
 #' @importFrom methods as is
 #' @importFrom pipette cacheURL transmit
 #' @importFrom stringi stri_extract_all_regex stri_extract_first_regex
-#' stri_match_first_regex stri_sub
+#' stri_match_all_regex stri_match_first_regex stri_sub
 #' @importFrom utils packageName untar
 NULL
