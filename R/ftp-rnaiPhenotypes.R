@@ -1,6 +1,6 @@
 #' RNAi phenotypes
 #'
-#' @note Updated 2021-02-18.
+#' @note Updated 2022-06-08.
 #' @export
 #'
 #' @inheritParams params
@@ -12,8 +12,35 @@
 #' x <- rnaiPhenotypes()
 #' print(x)
 rnaiPhenotypes <- function(release = NULL) {
-    ## FIXME This file has been removed starting in WS281, arg...
-    file <- .ontologyFile(stem = "rnai_phenotypes_quick", release = release)
+    ## Starting with WS280, moved from ontology to annotation on FTP server.
+    where <- "annotation"
+    if (!is.null(release)) {
+        releaseInt <- as.integer(sub(
+            pattern = "^WS",
+            replacement = "",
+            x = release
+        ))
+        if (releaseInt < 280L) {
+            where <- "ontology"
+        }
+    }
+    file <- switch(
+        EXPR = where,
+        "annotation" = {
+            ## Starting with WS280.
+            .annotationFile(
+                stem = "rnai_phenotypes_quick.wb.gz",
+                release = release
+            )
+        },
+        "ontology" = {
+            ## Ending with WS279.
+            .ontologyFile(
+                stem = "rnai_phenotypes_quick",
+                release = release
+            )
+        }
+    )
     x <- import(
         file = file,
         format = "tsv",
