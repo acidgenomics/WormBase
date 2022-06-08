@@ -10,10 +10,10 @@ test_that("stable", {
     expect_identical(
         object = x[[1L]],
         expected = list(
-            "danioRerio" = character(),
+            "danioRerio" = NA_character_,
             "drosophilaMelanogaster" = "FBgn0020622",
-            "homoSapiens" = character(),
-            "musMusculus" = character()
+            "homoSapiens" = NA_character_,
+            "musMusculus" = NA_character_
         )
     )
 })
