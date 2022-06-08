@@ -12,6 +12,7 @@
 #' x <- rnaiPhenotypes()
 #' print(x)
 rnaiPhenotypes <- function(release = NULL) {
+    ## FIXME This file has been removed starting in WS281, arg...
     file <- .ontologyFile(stem = "rnai_phenotypes_quick", release = release)
     x <- import(
         file = file,
