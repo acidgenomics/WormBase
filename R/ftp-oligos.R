@@ -19,7 +19,7 @@ oligos <- function(release = NULL) {
     x <- x[, 2L:3L]
     colnames(x) <- c("oligo", "geneId")
     agg <- aggregate(
-        formula = formula("oligo~geneId"),
+        x = formula("oligo~geneId"),
         data = x,
         FUN = list
     )
