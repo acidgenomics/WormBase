@@ -16,7 +16,7 @@ oligos <- function(release = NULL) {
     ## File is malformed, so let's parse as lines.
     x <- import(file, format = "lines")
     x <- stri_match_first_regex(str = x, pattern = "^([^\t]+)\t(WBGene\\d{8})")
-    x <- x[, c(2L:3L)]
+    x <- x[, 2L:3L]
     colnames(x) <- c("oligo", "geneId")
     agg <- aggregate(
         formula = formula("oligo~geneId"),

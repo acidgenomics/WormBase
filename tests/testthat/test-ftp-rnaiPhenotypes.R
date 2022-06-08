@@ -6,10 +6,7 @@ test_that("current", {
 test_that("stable", {
     x <- rnaiPhenotypes(release = release)
     expect_s4_class(x, "CharacterList")
-    expect_identical(
-        object = length(x),
-        expected = 7756L
-    )
+    expect_length(x, 7756L)
     expect_identical(
         object = x[[1L]],
         expected = c(

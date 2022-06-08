@@ -6,7 +6,7 @@ test_that("current", {
 test_that("stable", {
     x <- orthologs(release = release)
     expect_s4_class(x, "SimpleList")
-    expect_identical(length(x), 20121L)
+    expect_length(x, 20121L)
     expect_identical(
         object = x[[1L]],
         expected = list(

@@ -7,5 +7,5 @@ test_that("current", {
 test_that("NULL return", {
     x <- externalIDs("WBGene00000000")
     expect_s4_class(x, "List")
-    expect_identical(x[[1L]], NULL)
+    expect_null(x[[1L]])
 })

@@ -6,7 +6,7 @@ test_that("current", {
 test_that("stable", {
     x <- blastp(release = release)
     expect_s4_class(x, "SplitDataFrameList")
-    expect_identical(length(x), 14620L)
+    expect_length(x, 14620L)
     expect_identical(
         object = x[[1L]],
         expected = DataFrame(
