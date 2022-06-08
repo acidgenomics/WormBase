@@ -1,8 +1,8 @@
 Package: WormBase
 Title: WormBase Annotation Data
 Description: Fetch Caenorhabditis elegans genome annotations from WormBase.
-Version: 0.3.1.9000
-Date: 2021-09-03
+Version: 0.4.0
+Date: 2022-06-08
 Authors@R: c(
     person(
         given = "Michael",
@@ -21,14 +21,24 @@ URL:
     https://github.com/acidgenomics/r-wormbase/
 BugReports: https://github.com/acidgenomics/r-wormbase/issues/
 Encoding: UTF-8
-Depends: R (>= 4.0)
+Depends: R (>= 4.2)
 Imports:
-    basejump (>= 0.14.21.9000),
-    goalie (>= 0.5.4),
-    httr (>= 1.4.2),
-    methods
+    AcidBase,
+    AcidCLI,
+    AcidPlyr,
+    BiocGenerics,
+    IRanges,
+    S4Vectors,
+    goalie,
+    httr,
+    methods,
+    pipette,
+    stringi,
+    syntactic,
+    utils
 Suggests:
-    testthat
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+    testthat (>= 3.0.0)
 Additional_repositories: https://r.acidgenomics.com
+Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.0

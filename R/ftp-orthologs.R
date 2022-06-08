@@ -1,6 +1,6 @@
 #' Orthologs
 #'
-#' @note Updated 2021-02-18.
+#' @note Updated 2022-06-08.
 #' @export
 #'
 #' @inheritParams params
@@ -19,7 +19,7 @@ orthologs <- function(release = NULL) {
     x <- strsplit(x, "\\|\\|")[[1L]]
     x <- gsub("^ ", "", x)
     x <- x[grepl(paste0("^", .genePattern), x)]
-    genes <- str_extract(string = x, pattern = .genePattern)
+    genes <- stri_extract_first_regex(str = x, pattern = .genePattern)
     assert(identical(length(genes), length(x)))
     patterns <- c(
         "danioRerio" = "\\bENSDARG\\d{11}\\b",
@@ -28,7 +28,7 @@ orthologs <- function(release = NULL) {
         "musMusculus" = "\\bENSMUSG\\d{11}\\b"
     )
     ## Attempting to coerce nested lists to CharacterList is slow here.
-    x <- lapply(X = x, pattern = patterns, FUN = str_extract_all)
+    x <- lapply(X = x, pattern = patterns, FUN = stri_extract_all_regex)
     x <- lapply(X = x, FUN = `names<-`, value = names(patterns))
     x <- List(x)
     names(x) <- genes

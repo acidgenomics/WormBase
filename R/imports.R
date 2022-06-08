@@ -1,7 +1,3 @@
-## FIXME Need to update NAMESPACE to use AcidGenerics.
-
-
-
 ## S4 generics and methods =====================================================
 
 #' @importFrom AcidGenerics camelCase makeNames rbindToDataFrame removeNA
@@ -25,7 +21,7 @@ NULL
 
 ## Standard functions ==========================================================
 
-#' @importFrom AcidBase pasteURL
+#' @importFrom AcidBase pasteURL tempdir2 unlink2
 #' @importFrom AcidCLI abort alert
 #' @importFrom goalie allAreMatchingRegex assert bapply hasLength
 #' hasNoDuplicates isAFile isAURL isCharacter isFlag isMatchingRegex isString
@@ -35,13 +31,7 @@ NULL
 #' @importFrom httr content content_type_json GET user_agent
 #' @importFrom methods as is
 #' @importFrom pipette cacheURL transmit
+#' @importFrom stringi stri_extract_all_regex stri_extract_first_regex
+#' stri_match_first_regex stri_sub
 #' @importFrom utils packageName untar
-NULL
-
-
-
-## FIXME Consider reworking with stringi
-
-#' @importFrom stringr str_extract str_extract_all str_match str_match_all
-#' str_sub
 NULL

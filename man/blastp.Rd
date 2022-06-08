@@ -20,7 +20,7 @@ Split by \code{wormpep} column.
 Best BLASTP hits
 }
 \note{
-Updated 2021-02-18.
+Updated 2022-06-08.
 }
 \examples{
 x <- blastp()

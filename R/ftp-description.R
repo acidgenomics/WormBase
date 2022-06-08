@@ -66,7 +66,7 @@ description <- function(release = NULL) {
         FUN = function(x) {
             ## This step checks for columns such as "Concise description:".
             pattern <- "^([A-Za-z[:space:]]+)\\:"
-            names <- str_match(x, pattern = pattern)[, 2L]
+            names <- stri_match_first_regex(str = x, pattern = pattern)[, 2L]
             ## The first 3 columns won't match the pattern, so assign manually.
             names[seq_len(3L)] <- c("geneId", "geneName", "sequence")
             names(x) <- names

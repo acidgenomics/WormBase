@@ -1,6 +1,6 @@
 #' PCR oligo sequences
 #'
-#' @note Updated 2021-02-18.
+#' @note Updated 2022-06-08.
 #' @export
 #'
 #' @inheritParams params
@@ -15,7 +15,7 @@ oligos <- function(release = NULL) {
     file <- .annotationFile(stem = "pcr_product2gene.txt.gz", release = release)
     ## File is malformed, so let's parse as lines.
     x <- import(file, format = "lines")
-    x <- str_match(x, "^([^\t]+)\t(WBGene\\d{8})")
+    x <- stri_match_first_regex(str = x, pattern = "^([^\t]+)\t(WBGene\\d{8})")
     x <- x[, c(2L:3L)]
     colnames(x) <- c("oligo", "geneId")
     agg <- aggregate(
