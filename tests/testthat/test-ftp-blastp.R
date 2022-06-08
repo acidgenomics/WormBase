@@ -1,5 +1,3 @@
-context("ftp : blastp")
-
 test_that("current", {
     x <- blastp(release = NULL)
     expect_s4_class(x, "SplitDataFrameList")

@@ -1,5 +1,3 @@
-context("ftp : peptides")
-
 test_that("current", {
     x <- peptides(release = NULL)
     expect_s4_class(x, "SplitDataFrameList")

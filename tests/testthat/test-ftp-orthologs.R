@@ -1,5 +1,3 @@
-context("ftp : orthologs")
-
 test_that("current", {
     x <- orthologs(release = NULL)
     expect_s4_class(x, "SimpleList")

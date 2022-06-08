@@ -1,5 +1,3 @@
-context("ftp : geneIDs")
-
 test_that("current", {
     x <- geneIDs(release = NULL)
     expect_s4_class(x, "DataFrame")

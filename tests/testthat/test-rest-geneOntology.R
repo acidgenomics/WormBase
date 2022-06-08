@@ -1,5 +1,3 @@
-context("rest : geneOntology")
-
 test_that("current", {
     x <- geneOntology(genes)
     expect_s4_class(x, "SimpleList")

@@ -1,5 +1,3 @@
-context("ftp : description")
-
 test_that("current", {
     x <- description(release = NULL)
     expect_s4_class(x, "DataFrame")

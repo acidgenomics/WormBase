@@ -1,5 +1,3 @@
-context("ftp : oligos")
-
 test_that("current", {
     x <- oligos(release = NULL)
     expect_s4_class(x, "CharacterList")

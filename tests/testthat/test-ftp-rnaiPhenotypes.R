@@ -1,5 +1,3 @@
-context("ftp : rnaiPhenotypes")
-
 test_that("current", {
     x <- rnaiPhenotypes(release = NULL)
     expect_s4_class(x, "CharacterList")

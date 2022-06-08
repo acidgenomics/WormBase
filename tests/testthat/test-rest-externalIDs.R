@@ -1,5 +1,3 @@
-context("rest : externalIDs")
-
 test_that("current", {
     x <- externalIDs(genes)
     expect_s4_class(x, "List")
