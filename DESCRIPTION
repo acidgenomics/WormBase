@@ -25,6 +25,7 @@ Depends: R (>= 4.2)
 Imports:
     AcidBase,
     AcidCLI,
+    AcidGenerics,
     AcidPlyr,
     BiocGenerics,
     IRanges,
