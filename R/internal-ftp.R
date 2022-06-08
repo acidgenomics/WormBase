@@ -64,39 +64,38 @@
 #'
 #' @note Updated 2021-02-17.
 #' @noRd
-.transmit <- function(
-    basename,
-    subdir,
-    release
-) {
-    assert(
-        isString(basename),
-        isString(subdir),
-        .isRelease(release)
-    )
-    if (is.null(release)) {
-        release <- currentRelease()
-        release2 <- "current-production-release"
-    } else {
-        release2 <- release
+.transmit <-
+    function(basename,
+             subdir,
+             release) {
+        assert(
+            isString(basename),
+            isString(subdir),
+            .isRelease(release)
+        )
+        if (is.null(release)) {
+            release <- currentRelease()
+            release2 <- "current-production-release"
+        } else {
+            release2 <- release
+        }
+        url <- pasteURL(
+            "ftp.wormbase.org",
+            "pub",
+            "wormbase",
+            "releases",
+            release2,
+            subdir,
+            basename,
+            protocol = "ftp"
+        )
+        url <- gsub(
+            pattern = "{{release}}",
+            replacement = release,
+            x = url,
+            fixed = TRUE
+        )
+        file <- .cacheIt(url)
+        assert(isAFile(file))
+        file
     }
-    url <- pasteURL(
-        "ftp.wormbase.org",
-        "pub",
-        "wormbase",
-        "releases",
-        release2,
-        subdir,
-        basename,
-        protocol = "ftp"
-    )
-    url <- gsub(
-        pattern = "{{release}}",
-        replacement = release,
-        x = url,
-        fixed = TRUE
-    )
-    file <- .cacheIt(url)
-    assert(isAFile(file))
-    file
-}

@@ -1,8 +1,8 @@
 #' Other gene identifiers
 #'
 #' @note As of WS269 release, some non-N2 gene IDs are included in the flat
-#'   files available on the WormBase FTP server. These annotations are removed
-#'   from the return here, using grep matching to return only `WBGene` entries.
+#' files available on the WormBase FTP server. These annotations are removed
+#' from the return here, using grep matching to return only `WBGene` entries.
 #'
 #' @note Updated 2021-02-18.
 #' @export

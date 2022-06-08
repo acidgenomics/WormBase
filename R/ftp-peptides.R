@@ -14,7 +14,8 @@
 #' print(x)
 peptides <- function(release = NULL) {
     file <- .assemblyFile(stem = "wormpep_package.tar.gz", release = release)
-    tempdir <- tempdir()
+    ## FIXME Need to import tempdir2 into NAMESPACE.
+    tempdir <- AcidBase::tempdir2()
     ## Grep the verion number.
     releaseNumber <- str_match(file, "WS([[:digit:]]{3})")[1L, 2L]
     ## Extract the individual table.
@@ -45,7 +46,8 @@ peptides <- function(release = NULL) {
     keep <- grepl(pattern = .genePattern, x = x[["geneId"]])
     x <- x[keep, , drop = FALSE]
     x <- x[
-        order(x[["geneId"]], x[["sequence"]], x[["wormpep"]]), , drop = FALSE
+        order(x[["geneId"]], x[["sequence"]], x[["wormpep"]]), ,
+        drop = FALSE
     ]
     x <- split(x, f = x[["geneId"]])
     assert(is(x, "SplitDataFrameList"))

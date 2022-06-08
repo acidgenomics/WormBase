@@ -5,7 +5,7 @@
 #' @noRd
 #'
 #' @return `character(1)`.
-#'   Local file path
+#' Local file path
 #'
 #' @examples
 #' file <- pasteURL(AcidGenomesTestsURL, "ensembl.gtf")
