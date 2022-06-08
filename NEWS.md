@@ -5,6 +5,9 @@
 - Now requiring R 4.2 / Bioconductor 3.15.
 - Split out basejump imports into component packages.
 - Reworked internal code to use stringi instead of stringr.
+- `rnaiPhenotypes`: Addressed FTP server reorganization of
+  `rna_phenotypes_quick.wb` files, which was previously located in ontologies
+  directory, but was moved to annotations directory starting with WS280.
 
 ## Minor changes
 
