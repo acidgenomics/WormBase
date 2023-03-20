@@ -42,7 +42,7 @@ rnaiPhenotypes <- function(release = NULL) {
         }
     )
     x <- import(
-        file = file,
+        con = file,
         format = "tsv",
         colnames = c("geneId", "sequence", "rnaiPhenotypes")
     )
