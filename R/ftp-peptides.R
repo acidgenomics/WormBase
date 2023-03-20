@@ -24,7 +24,7 @@ peptides <- function(release = NULL) {
     wormpepTable <- paste0("wormpep.table", releaseNumber)
     status <- untar(tarfile = file, files = wormpepTable, exdir = tempdir)
     assert(identical(status, 0L))
-    x <- import(file = file.path(tempdir, wormpepTable), format = "lines")
+    x <- import(con = file.path(tempdir, wormpepTable), format = "lines")
     unlink2(tempdir)
     x <- lapply(
         X = x,
