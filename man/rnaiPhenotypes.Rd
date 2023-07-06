@@ -19,7 +19,7 @@ specified as a character string (e.g. "WS267").}
 RNAi phenotypes
 }
 \note{
-Updated 2021-02-18.
+Updated 2022-06-08.
 }
 \examples{
 x <- rnaiPhenotypes()
