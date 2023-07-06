@@ -10,5 +10,6 @@
     req <- request(url)
     resp <- req_perform(req)
     json <- resp_body_json(resp)
+    assert(is.list(json))
     json
 }
