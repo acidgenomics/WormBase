@@ -35,7 +35,3 @@ NULL
 #' stri_match_all_regex stri_match_first_regex stri_sub
 #' @importFrom utils packageName untar
 NULL
-
-## FIXME Need to migrate this code to httr2:
-## #' @importFrom httr content content_type_json GET user_agent
-NULL
