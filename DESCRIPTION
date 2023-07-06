@@ -23,22 +23,22 @@ BugReports: https://github.com/acidgenomics/r-wormbase/issues/
 Encoding: UTF-8
 Depends: R (>= 4.2)
 Imports:
-    AcidBase,
-    AcidCLI,
-    AcidGenerics,
-    AcidPlyr,
-    BiocGenerics,
-    IRanges,
-    S4Vectors,
-    goalie,
-    httr,
+    AcidBase (>= 0.6.16),
+    AcidCLI (>= 0.2.7),
+    AcidGenerics (>= 0.6.7),
+    AcidPlyr (>= 0.3.10),
+    BiocGenerics (>= 0.44.0),
+    IRanges (>= 2.32.0),
+    S4Vectors (>= 0.36.0),
+    goalie (>= 0.6.10),
+    httr2 (>= 0.2.3),
+    pipette (>= 0.10.10),
+    stringi (>= 1.7.12),
+    syntactic (>= 0.6.6),
     methods,
-    pipette,
-    stringi,
-    syntactic,
     utils
 Suggests:
-    testthat (>= 3.0.0)
+    testthat (>= 3.1.9)
 Additional_repositories: https://r.acidgenomics.com
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
