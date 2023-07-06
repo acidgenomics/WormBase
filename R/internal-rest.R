@@ -3,6 +3,12 @@
 #' @noRd
 #' @note Updated 2023-07-06.
 #'
+#' @param query `character`.
+#' URL query.
+#'
+#' @return `list`.
+#' JSON list.
+#'
 #' @seealso
 #' - https://wormbase.org/about/userguide/for_developers/API-REST
 .rest <- function(query) {
