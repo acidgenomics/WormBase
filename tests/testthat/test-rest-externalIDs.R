@@ -4,8 +4,9 @@ test_that("current", {
     expect_s4_class(x[[1L]], "CharacterList")
 })
 
-test_that("NULL return", {
-    x <- externalIDs("WBGene00000000")
-    expect_s4_class(x, "List")
-    expect_null(x[[1L]])
+test_that("Invalid gene", {
+    expect_error(
+        object = externalIDs("WBGene00000000"),
+        regex = "HTTP 500 Internal Server Error."
+    )
 })
