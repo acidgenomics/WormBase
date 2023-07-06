@@ -12,9 +12,9 @@ test_that("current", {
     )
 })
 
-test_that("NULL return", {
-    genes <- "WBGene00000000"
-    x <- geneOntology(genes)
-    expect_named(x, unname(genes))
-    expect_null(x[[1L]])
+test_that("Invalid gene", {
+    expect_error(
+        object = geneOntology("WBGene00000000"),
+        regex = "HTTP 500 Internal Server Error."
+    )
 })
