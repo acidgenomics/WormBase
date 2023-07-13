@@ -1,5 +1,7 @@
 # WormBase
 
+[![Install with Bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat)](http://bioconda.github.io/recipes/r-wormbase/README.html)
+
 *Caenorhabditis elegans* genome annotations from [WormBase][].
 
 ## Installation
@@ -20,5 +22,19 @@ install.packages(
 )
 ```
 
+### [Conda][] method
+
+Configure [Conda][] to use the [Bioconda][] channels.
+
+```sh
+# Don't install recipe into base environment.
+name='r-wormbase'
+conda create --name="$name" "$name"
+conda activate "$name"
+R
+```
+
+[bioconda]: https://bioconda.github.io/
+[conda]: https://conda.io/
 [r]: https://www.r-project.org/
 [wormbase]: https://wormbase.org/
