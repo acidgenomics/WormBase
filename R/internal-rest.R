@@ -1,7 +1,7 @@
 #' WormBase REST API query
 #'
 #' @noRd
-#' @note Updated 2023-07-06.
+#' @note Updated 2023-08-11.
 #'
 #' @param query `character`.
 #' URL query.
@@ -14,9 +14,7 @@
 .rest <- function(query) {
     assert(isCharacter(query))
     url <- paste("https://wormbase.org", "rest", query, sep = "/")
-    req <- request(url)
-    resp <- req_perform(req)
-    json <- resp_body_json(resp)
+    json <- getJSON(url)
     assert(is.list(json))
     json
 }

@@ -28,9 +28,8 @@ NULL
 #' isSubset
 #' @importFrom IRanges CharacterList DataFrameList
 #' @importFrom S4Vectors DataFrame List
-#' @importFrom httr2 req_perform request resp_body_json
 #' @importFrom methods as is
-#' @importFrom pipette cacheURL transmit
+#' @importFrom pipette cacheURL getJSON transmit
 #' @importFrom stringi stri_extract_all_regex stri_extract_first_regex
 #' stri_match_all_regex stri_match_first_regex stri_sub
 #' @importFrom utils packageName untar
