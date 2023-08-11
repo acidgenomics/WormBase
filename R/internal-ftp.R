@@ -90,7 +90,7 @@
             protocol = "ftp"
         )
         url <- gsub(
-            pattern = "{{release}}",
+            pattern = URLencode("{{release}}"),
             replacement = release,
             x = url,
             fixed = TRUE
