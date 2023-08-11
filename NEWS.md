@@ -1,3 +1,11 @@
+## WormBase 0.4.2 (2023-08-11)
+
+Minor changes:
+
+- Needed to add a `URLencode` step to URL parsing of our `{{release}}`
+  placeholder. Our change to `pasteURL` in AcidBase broke this approach.
+- Enabled testthat unit tests to run in parallel.
+
 ## WormBase 0.4.1 (2023-07-06)
 
 Major changes:
