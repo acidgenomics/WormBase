@@ -25,8 +25,6 @@
 
 
 
-## FIXME This isn't working with transmit update.
-
 #' Download an assembly file from WormBase FTP server
 #'
 #' @note Updated 2023-09-25.
