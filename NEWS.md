@@ -5,6 +5,7 @@ Minor changes:
 - Reworked internal string splitting to use base R approach via AcidBase instead
   of relying on compiled C code in stringi package.
 - Reworked internal code to not use `pasteURL` for incomplete URLs.
+- Updated unit tests for invalid REST API URLs.
 
 ## WormBase 0.4.2 (2023-08-11)
 
