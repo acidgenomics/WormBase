@@ -7,6 +7,6 @@ test_that("current", {
 test_that("Invalid gene", {
     expect_error(
         object = externalIDs("WBGene00000000"),
-        regex = "HTTP 500 Internal Server Error."
+        regex = "isAnExistingURL"
     )
 })
