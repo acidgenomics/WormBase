@@ -1,6 +1,6 @@
 #' External identifiers
 #'
-#' @note Updated 2021-02-18.
+#' @note Updated 2023-09-25.
 #' @export
 #'
 #' @inheritParams params
@@ -16,11 +16,12 @@
 externalIDs <- function(genes) {
     assert(.allAreGenes(genes))
     list <- lapply(genes, function(gene) {
-        query <- pasteURL(
+        query <- paste(
             "widget",
             "gene",
             gene,
-            "external_links"
+            "external_links",
+            sep = "/"
         )
         rest <- .rest(query)[["fields"]][["xrefs"]][["data"]]
         if (is.null(rest)) {

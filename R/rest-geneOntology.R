@@ -1,6 +1,6 @@
 #' Gene Ontology terms
 #'
-#' @note Updated 2021-02-18.
+#' @note Updated 2023-09-25.
 #' @export
 #'
 #' @inheritParams params
@@ -15,11 +15,12 @@
 geneOntology <- function(genes) {
     assert(.allAreGenes(genes))
     list <- lapply(genes, function(gene) {
-        query <- pasteURL(
+        query <- paste(
             "widget",
             "gene",
             gene,
-            "gene_ontology"
+            "gene_ontology",
+            sep = "/"
         )
         rest <- .rest(query)[["fields"]][["gene_ontology"]][["data"]]
         if (is.null(rest)) {
