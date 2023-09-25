@@ -23,7 +23,7 @@ BugReports: https://github.com/acidgenomics/r-wormbase/issues/
 Encoding: UTF-8
 Depends: R (>= 4.3)
 Imports:
-    AcidBase (>= 0.6.24),
+    AcidBase (>= 0.7.0),
     AcidCLI (>= 0.2.8),
     AcidGenerics (>= 0.6.13),
     AcidPlyr (>= 0.4.2),

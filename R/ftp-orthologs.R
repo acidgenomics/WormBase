@@ -14,12 +14,12 @@
 orthologs <- function(release = NULL) {
     file <- .annotationFile(stem = "orthologs.txt.gz", release = release)
     x <- import(file, format = "lines", comment = "#")
-    x <- gsub("^=$", "\\|\\|", x)
+    x <- gsub(pattern = "^=$", replacement = "\\|\\|", x = x)
     x <- paste(x, collapse = " ")
-    x <- strsplit(x, "\\|\\|")[[1L]]
-    x <- gsub("^ ", "", x)
-    x <- x[grepl(paste0("^", .genePattern), x)]
-    genes <- strMatch(x = x, pattern = .genePattern, fixed = FALSE)[, 1L]
+    x <- strsplit(x, split = "||", fixed = TRUE)[[1L]]
+    x <- gsub(pattern = "^ ", replacement = "", x = x)
+    x <- x[grepl(pattern = paste0("^", .genePattern), x = x)]
+    genes <- strExtract(x = x, pattern = .genePattern, fixed = FALSE)
     assert(
         identical(length(genes), length(x)),
         allAreMatchingRegex(x = genes, pattern = .genePattern)
@@ -35,11 +35,9 @@ orthologs <- function(release = NULL) {
         patterns = patterns,
         FUN = function(x, patterns) {
             Map(
-                x = x,
+                f = strExtract,
                 pattern = patterns,
-                f = function(x, pattern) {
-                    strMatch(x = x, pattern = pattern, fixed = FALSE)[1L, 1L]
-                },
+                MoreArgs = list("x" = x),
                 USE.NAMES = FALSE
             )
         }
@@ -47,8 +45,6 @@ orthologs <- function(release = NULL) {
     x <- lapply(X = x, FUN = `names<-`, value = names(patterns))
     x <- List(x)
     names(x) <- genes
-    keep <- grepl(pattern = .genePattern, x = names(x))
-    x <- x[keep]
     x <- x[sort(names(x))]
     x
 }

@@ -31,7 +31,7 @@ NULL
 
 ## Standard functions ==========================================================
 
-#' @importFrom AcidBase pasteURL strMatch tempdir2 unlink2
+#' @importFrom AcidBase pasteURL strExtract strMatch tempdir2 unlink2
 #' @importFrom AcidCLI abort alert
 #' @importFrom goalie allAreMatchingRegex assert bapply hasLength
 #' hasNoDuplicates isAFile isAURL isCharacter isFlag isMatchingRegex isString
