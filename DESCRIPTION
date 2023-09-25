@@ -1,8 +1,8 @@
 Package: WormBase
 Title: WormBase Annotation Data
 Description: Fetch Caenorhabditis elegans genome annotations from WormBase.
-Version: 0.4.2
-Date: 2023-08-11
+Version: 0.4.3.9000
+Date: 2023-09-25
 Authors@R: c(
     person(
         given = "Michael",
@@ -23,17 +23,16 @@ BugReports: https://github.com/acidgenomics/r-wormbase/issues/
 Encoding: UTF-8
 Depends: R (>= 4.3)
 Imports:
-    AcidBase (>= 0.6.18),
+    AcidBase (>= 0.6.24),
     AcidCLI (>= 0.2.8),
-    AcidGenerics (>= 0.6.7),
-    AcidPlyr (>= 0.3.11),
+    AcidGenerics (>= 0.6.13),
+    AcidPlyr (>= 0.4.2),
     BiocGenerics (>= 0.46.0),
     IRanges (>= 2.34.0),
     S4Vectors (>= 0.38.0),
-    goalie (>= 0.6.14),
-    pipette (>= 0.11.1),
-    stringi (>= 1.7.12),
-    syntactic (>= 0.6.6),
+    goalie (>= 0.6.19),
+    pipette (>= 0.14.0),
+    syntactic (>= 0.6.7),
     methods,
     utils
 Suggests:
@@ -44,3 +43,4 @@ Config/testthat/edition: 3
 Config/testthat/parallel: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+biocViews: Caenorhabditis_elegans
