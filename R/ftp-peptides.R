@@ -1,6 +1,6 @@
 #' Peptides
 #'
-#' @note Updated 2022-06-08.
+#' @note Updated 2023-09-25.
 #' @export
 #'
 #' @inheritParams params
@@ -15,11 +15,10 @@
 peptides <- function(release = NULL) {
     file <- .assemblyFile(stem = "wormpep_package.tar.gz", release = release)
     tempdir <- tempdir2()
-    ## Grep the verion number.
-    ## FIXME Rework using strMatch.
-    releaseNumber <- stri_match_first_regex(
-        str = file,
-        pattern = "WS([[:digit:]]{3})"
+    releaseNumber <- strMatch(
+        x = file,
+        pattern = "WS([[:digit:]]{3})",
+        fixed = FALSE
     )[1L, 2L]
     ## Extract the individual table.
     wormpepTable <- paste0("wormpep.table", releaseNumber)
@@ -27,19 +26,21 @@ peptides <- function(release = NULL) {
     assert(identical(status, 0L))
     x <- import(con = file.path(tempdir, wormpepTable), format = "lines")
     unlink2(tempdir)
-    ## FIXME Rework using strMatch.
-    x <- lapply(
+    x <- mclapply(
         X = x,
         FUN = function(x) {
-            sequence <- stri_match_first_regex(
-                str = x,
-                pattern = "^>([A-Za-z0-9\\.]+)"
-            )[[2L]]
+            sequence <- strMatch(
+                x = x,
+                pattern = "^>([A-Za-z0-9\\.]+)",
+                fixed = FALSE
+            )[1L, 2L]
             ## Attempt to match quoted values first (e.g. product).
             pattern <- "([a-z]+)=(\"[^\"]+\"|[^\\s]+)"
             ## Set up our matrix of key value pairs.
             ## FIXME Rework using strMatch.
-            pairs <- stri_match_all_regex(str = x, pattern = pattern)[[1L]]
+            pairs <- stringi::stri_match_all_regex(str = x, pattern = pattern)[[1L]]
+            ## FIXME How to do this with our matching function?
+            ## > pairs <- strMatch(x = x, pattern = pattern, fixed = FALSE)
             ## Remove any escaped quotes.
             pairs <- gsub("\"", "", pairs)
             out <- c(pairs[, 3L])
@@ -48,7 +49,6 @@ peptides <- function(release = NULL) {
             out
         }
     )
-    ## This step may need to be optimized.
     x <- rbindToDataFrame(x)
     colnames(x)[colnames(x) == "gene"] <- "geneId"
     x <- x[, unique(c("geneId", colnames(x)))]

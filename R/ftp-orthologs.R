@@ -1,5 +1,3 @@
-## FIXME Work this using AcidBase.
-
 #' Orthologs
 #'
 #' @note Updated 2023-09-25.
