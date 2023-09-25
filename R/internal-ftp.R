@@ -1,6 +1,6 @@
 #' Download an annotation file from WormBase FTP server
 #'
-#' @note Updated 2021-02-17.
+#' @note Updated 2023-09-25.
 #' @noRd
 .annotationFile <-
     function(stem, release) {
@@ -12,11 +12,12 @@
                 stem,
                 sep = "."
             ),
-            subdir = pasteURL(
+            subdir = paste(
                 "species",
                 "c_elegans",
                 .bioproject,
-                "annotation"
+                "annotation",
+                sep = "/"
             ),
             release = release
         )
@@ -24,9 +25,11 @@
 
 
 
+## FIXME This isn't working with transmit update.
+
 #' Download an assembly file from WormBase FTP server
 #'
-#' @note Updated 2021-02-17.
+#' @note Updated 2023-09-25.
 #' @noRd
 .assemblyFile <-
     function(stem, release) {
@@ -38,7 +41,12 @@
                 stem,
                 sep = "."
             ),
-            subdir = pasteURL("species", "c_elegans", .bioproject),
+            subdir = paste(
+                "species",
+                "c_elegans",
+                .bioproject,
+                sep = "/"
+            ),
             release = release
         )
     }
