@@ -13,7 +13,7 @@
 #' @inheritParams params
 #' @inheritParams AcidRoxygen::params
 #'
-#' @return `DataFrame`.
+#' @return `DFrame`.
 #'
 #' @examples
 #' x <- description()
@@ -26,9 +26,9 @@ description <- function(release = NULL) {
     ## Process file by reading lines in directly.
     x <- import(file, format = "lines", comment = "#")
     ## Genes are separated by a line containing `=`.
-    x <- gsub(pattern = "^=$", replacement = "\\|\\|", x = x)
+    x <- sub(pattern = "^=$", replacement = "||", x = x)
     ## Add a tab delimiter before our keys of interest.
-    x <- gsub(
+    x <- sub(
         pattern = paste0(
             "(Concise|Provisional|Detailed|Automated|Gene class)",
             " description\\:"
@@ -38,18 +38,18 @@ description <- function(release = NULL) {
     )
     ## Now collapse to a single line and split by the gene separator (`||`).
     x <- paste(x, collapse = " ")
-    x <- strsplit(x, "\\|\\|")[[1L]]
+    x <- strsplit(x, split = "||", fixed = TRUE)[[1L]]
     ## Clean up spaces and tabs.
-    x <- gsub("  ", " ", x)
-    x <- gsub("^ ", "", x)
-    x <- gsub(" $", "", x)
-    x <- gsub(" \t", "\t", x)
-    x <- gsub("\t ", "\t", x)
+    x <- sub(pattern = "^ ", replacement = "", x = x)
+    x <- sub(pattern = " $", replacement = "", x = x)
+    x <- gsub(pattern = "  ", replacement = " ", x = x)
+    x <- gsub(pattern = " \t", replacement = "\t", x = x)
+    x <- gsub(pattern = "\t ", replacement = "\t", x = x)
     ## Now split by the tab delimiters.
-    x <- strsplit(x, "\t")
+    x <- strsplit(x, split = "\t")
+    assert(all(lengths(x) == 6L))
     x <- CharacterList(x)
-    ## Before we process the list, remove non-N2 annotations.
-    ## These were added in WS269.
+    ## Before we process the list, remove non-N2 annotations. Added in WS269.
     ## For example, drop these: "PRJEB28388_chrIII_pilon.g6684".
     keep <- bapply(
         X = x,
@@ -64,24 +64,25 @@ description <- function(release = NULL) {
     x <- mclapply(
         X = x,
         FUN = function(x) {
-            ## This step checks for columns such as "Concise description:".
-            pattern <- "^([A-Za-z[:space:]]+)\\:.+$"
-            names <- strMatch(x = x, pattern = pattern, fixed = FALSE)[, 2L]
-            ## The first 3 columns won't match the pattern, so assign manually.
-            names[seq_len(3L)] <- c("geneId", "geneName", "sequence")
-            names(x) <- names
-            ## Remove the key prefix (e.g. "Concise description:").
-            x <- gsub(paste0(pattern, " "), "", x)
+            x[[1L]] <- paste0("geneId: ", x[[1L]])
+            x[[2L]] <- paste0("geneName: ", x[[2L]])
+            x[[3L]] <- paste0("sequence: ", x[[3L]])
+            ## e.g. WBGene00000160 gene class description is empty.
+            x <- sub(pattern = ":$", replacement = ": not known", x = x)
+            x <- strSplit(x = x, split = ": ", fixed = TRUE, n = 2L)
+            out <- x[, 2L]
+            names(out) <- x[, 1L]
             ## Ensure the user uses the values from `geneIDs()` return instead.
-            keep <- setdiff(names(x), c("geneName", "sequence"))
-            x <- x[keep]
-            x
+            keep <- setdiff(names(out), c("geneName", "sequence"))
+            out <- out[keep]
+            out
         }
     )
+    assert(all(lengths(x) == 4L))
     x <- rbindToDataFrame(x)
     colnames(x) <- camelCase(colnames(x), strict = TRUE)
     assert(
-        is(x, "DataFrame"),
+        is(x, "DFrame"),
         isSubset("geneId", colnames(x))
     )
     x <- sanitizeNA(x)
