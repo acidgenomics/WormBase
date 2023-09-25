@@ -19,7 +19,7 @@ specified as a character string (e.g. "WS267").}
 Orthologs
 }
 \note{
-Updated 2022-06-08.
+Updated 2023-09-25.
 }
 \examples{
 x <- orthologs()

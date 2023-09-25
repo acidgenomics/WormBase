@@ -1,6 +1,8 @@
+## FIXME Work this using AcidBase.
+
 #' Orthologs
 #'
-#' @note Updated 2022-06-08.
+#' @note Updated 2023-09-25.
 #' @export
 #'
 #' @inheritParams params
@@ -19,18 +21,31 @@ orthologs <- function(release = NULL) {
     x <- strsplit(x, "\\|\\|")[[1L]]
     x <- gsub("^ ", "", x)
     x <- x[grepl(paste0("^", .genePattern), x)]
-    ## FIXME Rework using strMatch.
-    genes <- stri_extract_first_regex(str = x, pattern = .genePattern)
-    assert(identical(length(genes), length(x)))
+    genes <- strMatch(x = x, pattern = .genePattern, fixed = FALSE)[, 1L]
+    assert(
+        identical(length(genes), length(x)),
+        allAreMatchingRegex(x = genes, pattern = .genePattern)
+    )
     patterns <- c(
         "danioRerio" = "\\bENSDARG\\d{11}\\b",
         "drosophilaMelanogaster" = "\\bFBgn\\d{7}\\b",
         "homoSapiens" = "\\bENSG\\d{11}\\b",
         "musMusculus" = "\\bENSMUSG\\d{11}\\b"
     )
-    ## Attempting to coerce nested lists to CharacterList is slow here.
-    ## FIXME Rework using strMatch.
-    x <- lapply(X = x, pattern = patterns, FUN = stri_extract_all_regex)
+    x <- mclapply(
+        X = x,
+        patterns = patterns,
+        FUN = function(x, patterns) {
+            Map(
+                x = x,
+                pattern = patterns,
+                f = function(x, pattern) {
+                    strMatch(x = x, pattern = pattern, fixed = FALSE)[1L, 1L]
+                },
+                USE.NAMES = FALSE
+            )
+        }
+    )
     x <- lapply(X = x, FUN = `names<-`, value = names(patterns))
     x <- List(x)
     names(x) <- genes
