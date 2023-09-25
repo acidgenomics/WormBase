@@ -1,6 +1,6 @@
 #' Best BLASTP hits
 #'
-#' @note Updated 2022-06-08.
+#' @note Updated 2023-09-25.
 #' @export
 #'
 #' @inheritParams params
@@ -24,7 +24,11 @@ blastp <- function(release = NULL) {
     keep <- grepl("^ENSEMBL:ENSP\\d{11}$", x[["peptide"]])
     x <- x[keep, , drop = FALSE]
     x <- x[order(x[["wormpep"]], x[["eValue"]]), , drop = FALSE]
-    x[["peptide"]] <- stri_sub(x[["peptide"]], from = 9L)
+    x[["peptide"]] <- substr(
+        x = x[["peptide"]],
+        start = 9L,
+        stop = nchar(x[["peptide"]][[1L]])
+    )
     x[["eValue"]] <- as.numeric(x[["eValue"]])
     x <- split(x, f = x[["wormpep"]])
     assert(is(x, "SplitDataFrameList"))
