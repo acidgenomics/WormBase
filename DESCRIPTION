@@ -34,6 +34,7 @@ Imports:
     pipette (>= 0.14.0),
     syntactic (>= 0.6.7),
     methods,
+    parallel,
     utils
 Suggests:
     httr2 (>= 0.2.3),

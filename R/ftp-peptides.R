@@ -16,6 +16,7 @@ peptides <- function(release = NULL) {
     file <- .assemblyFile(stem = "wormpep_package.tar.gz", release = release)
     tempdir <- tempdir2()
     ## Grep the verion number.
+    ## FIXME Rework using strMatch.
     releaseNumber <- stri_match_first_regex(
         str = file,
         pattern = "WS([[:digit:]]{3})"
@@ -26,6 +27,7 @@ peptides <- function(release = NULL) {
     assert(identical(status, 0L))
     x <- import(con = file.path(tempdir, wormpepTable), format = "lines")
     unlink2(tempdir)
+    ## FIXME Rework using strMatch.
     x <- lapply(
         X = x,
         FUN = function(x) {
@@ -35,7 +37,8 @@ peptides <- function(release = NULL) {
             )[[2L]]
             ## Attempt to match quoted values first (e.g. product).
             pattern <- "([a-z]+)=(\"[^\"]+\"|[^\\s]+)"
-            # Set up our matrix of key value pairs.
+            ## Set up our matrix of key value pairs.
+            ## FIXME Rework using strMatch.
             pairs <- stri_match_all_regex(str = x, pattern = pattern)[[1L]]
             ## Remove any escaped quotes.
             pairs <- gsub("\"", "", pairs)

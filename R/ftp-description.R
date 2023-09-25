@@ -7,7 +7,7 @@
 #' @note This file is malformed on the WormBase FTP server for WS270 and WS271
 #' releases.
 #'
-#' @note Updated 2021-03-12.
+#' @note Updated 2023-09-25.
 #' @export
 #'
 #' @inheritParams params
@@ -61,12 +61,12 @@ description <- function(release = NULL) {
         .invalidFTPFile(file)
     }
     x <- x[keep]
-    x <- lapply(
+    x <- mclapply(
         X = x,
         FUN = function(x) {
             ## This step checks for columns such as "Concise description:".
-            pattern <- "^([A-Za-z[:space:]]+)\\:"
-            names <- stri_match_first_regex(str = x, pattern = pattern)[, 2L]
+            pattern <- "^([A-Za-z[:space:]]+)\\:.+$"
+            names <- strMatch(x = x, pattern = pattern, fixed = FALSE)[, 2L]
             ## The first 3 columns won't match the pattern, so assign manually.
             names[seq_len(3L)] <- c("geneId", "geneName", "sequence")
             names(x) <- names
@@ -78,8 +78,6 @@ description <- function(release = NULL) {
             x
         }
     )
-    assert(is(x, "list"))
-    ## This step is currently slow and could be optimized.
     x <- rbindToDataFrame(x)
     colnames(x) <- camelCase(colnames(x), strict = TRUE)
     assert(

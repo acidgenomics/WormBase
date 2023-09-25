@@ -19,6 +19,7 @@ orthologs <- function(release = NULL) {
     x <- strsplit(x, "\\|\\|")[[1L]]
     x <- gsub("^ ", "", x)
     x <- x[grepl(paste0("^", .genePattern), x)]
+    ## FIXME Rework using strMatch.
     genes <- stri_extract_first_regex(str = x, pattern = .genePattern)
     assert(identical(length(genes), length(x)))
     patterns <- c(
@@ -28,6 +29,7 @@ orthologs <- function(release = NULL) {
         "musMusculus" = "\\bENSMUSG\\d{11}\\b"
     )
     ## Attempting to coerce nested lists to CharacterList is slow here.
+    ## FIXME Rework using strMatch.
     x <- lapply(X = x, pattern = patterns, FUN = stri_extract_all_regex)
     x <- lapply(X = x, FUN = `names<-`, value = names(patterns))
     x <- List(x)

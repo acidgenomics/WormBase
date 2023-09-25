@@ -31,7 +31,7 @@ NULL
 
 ## Standard functions ==========================================================
 
-#' @importFrom AcidBase pasteURL tempdir2 unlink2
+#' @importFrom AcidBase pasteURL strMatch tempdir2 unlink2
 #' @importFrom AcidCLI abort alert
 #' @importFrom goalie allAreMatchingRegex assert bapply hasLength
 #' hasNoDuplicates isAFile isAURL isCharacter isFlag isMatchingRegex isString
@@ -39,6 +39,7 @@ NULL
 #' @importFrom IRanges CharacterList DataFrameList
 #' @importFrom S4Vectors DataFrame List
 #' @importFrom methods as is
+#' @importFrom parallel mclapply
 #' @importFrom pipette cacheURL getJSON transmit
 #' @importFrom utils URLencode packageName untar
 NULL
