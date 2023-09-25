@@ -26,25 +26,25 @@ peptides <- function(release = NULL) {
     assert(identical(status, 0L))
     x <- import(con = file.path(tempdir, wormpepTable), format = "lines")
     unlink2(tempdir)
-    x <- mclapply(
+    ## FIXME Switch back to mclapply when working.
+    ## [1] ">2RSSE.1a wormpep=CE32785 gene=WBGene00007064 locus=rga-9 status=Confirmed uniprot=A4F337 insdc=CCD61138.1 product=\"Rho-GAP domain-containing protein\""
+    x <- lapply(
         X = x,
         FUN = function(x) {
+            ## FIXME Need to skip on no pattern.
+            print(x)
+            ## FIXME Need to handle empty string.
+            seqPattern <- "^>([A-Za-z0-9\\.]+)\\s"
             sequence <- strMatch(
                 x = x,
-                pattern = "^>([A-Za-z0-9\\.]+)",
+                pattern = seqPattern,
                 fixed = FALSE
             )[1L, 2L]
-            ## Attempt to match quoted values first (e.g. product).
-            pattern <- "([a-z]+)=(\"[^\"]+\"|[^\\s]+)"
-            ## Set up our matrix of key value pairs.
-            ## FIXME Rework using strMatch.
-            pairs <- stringi::stri_match_all_regex(str = x, pattern = pattern)[[1L]]
-            ## FIXME How to do this with our matching function?
-            ## > pairs <- strMatch(x = x, pattern = pattern, fixed = FALSE)
-            ## Remove any escaped quotes.
-            pairs <- gsub("\"", "", pairs)
-            out <- c(pairs[, 3L])
-            names(out) <- pairs[, 2L]
+            x <- sub(pattern = seqPattern, replacement = "", x = x)
+            x <- strsplit(x, split = " ")[[1L]]
+            x <- AcidBase::strSplit(x = x, split = "=")
+            out <- x[, 2L]
+            names(out) <- x[, 1L]
             out[["sequence"]] <- sequence
             out
         }
