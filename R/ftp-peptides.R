@@ -37,7 +37,7 @@ peptides <- function(release = NULL) {
                 pattern = "\\b([a-z]+)=(\"[^\"]+\"|[^ ]+\\b)",
                 fixed = FALSE
             )[[1L]]
-            x[, 3L] <-  gsub(pattern = "\"", replacement = "", x = x[, 3L])
+            x[, 3L] <- gsub(pattern = "\"", replacement = "", x = x[, 3L])
             out <- x[, 3L]
             names(out) <- x[, 2L]
             out[["sequence"]] <- sequence
