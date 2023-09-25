@@ -1,11 +1,11 @@
 test_that("current", {
     x <- geneIDs(release = NULL)
-    expect_s4_class(x, "DataFrame")
+    expect_s4_class(x, "DFrame")
 })
 
 test_that("stable", {
     x <- geneIDs(release = release)
-    expect_s4_class(x, "DataFrame")
+    expect_s4_class(x, "DFrame")
     expect_true(all(vapply(
         X = x,
         FUN = is.character,

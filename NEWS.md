@@ -1,3 +1,11 @@
+## WormBase 0.4.3 (UNRELEASED)
+
+Minor changes:
+
+- Reworked internal string splitting to use base R approach via AcidBase instead
+  of relying on compiled C code in stringi package.
+- Reworked internal code to not use `pasteURL` for incomplete URLs.
+
 ## WormBase 0.4.2 (2023-08-11)
 
 Minor changes:

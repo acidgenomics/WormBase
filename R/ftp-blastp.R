@@ -18,7 +18,7 @@ blastp <- function(release = NULL) {
         release = release
     )
     x <- import(file, format = "csv", colnames = FALSE)
-    x <- as(x, "DataFrame")
+    x <- as(x, "DFrame")
     x <- x[, c(1L, 4L, 5L)]
     colnames(x) <- c("wormpep", "peptide", "eValue")
     keep <- grepl("^ENSEMBL:ENSP\\d{11}$", x[["peptide"]])
