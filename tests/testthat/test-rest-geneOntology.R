@@ -15,6 +15,6 @@ test_that("current", {
 test_that("Invalid gene", {
     expect_error(
         object = geneOntology("WBGene00000000"),
-        regex = "isAnExistingURL"
+        regex = "isAnExistingUrl"
     )
 })

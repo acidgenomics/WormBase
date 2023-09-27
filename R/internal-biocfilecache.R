@@ -8,13 +8,13 @@
 #' Local file path
 #'
 #' @examples
-#' file <- pasteURL(AcidGenomesTestsURL, "ensembl.gtf")
+#' file <- pasteUrl(AcidGenomesTestsUrl, "ensembl.gtf")
 #' tmpfile <- .cacheIt(file)
 #' print(tmpfile)
 .cacheIt <- function(file) {
     assert(isString(file))
-    if (isAURL(file)) {
-        x <- cacheURL(url = file, pkg = packageName())
+    if (isAUrl(file)) {
+        x <- cacheUrl(url = file, pkg = packageName())
     } else {
         x <- file
     }

@@ -10,10 +10,10 @@
 #'
 #' @examples
 #' genes <- c("WBGene00000912", "WBGene00004804")
-#' x <- externalIDs(genes)
+#' x <- externalIds(genes)
 #' print(x)
 #' print(x[[1L]])
-externalIDs <- function(genes) {
+externalIds <- function(genes) {
     assert(.allAreGenes(genes))
     list <- lapply(genes, function(gene) {
         query <- paste(

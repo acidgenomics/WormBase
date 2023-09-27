@@ -1,8 +1,8 @@
 Package: WormBase
 Title: WormBase Annotation Data
 Description: Fetch Caenorhabditis elegans genome annotations from WormBase.
-Version: 0.4.3.9000
-Date: 2023-09-25
+Version: 0.5.0.9000
+Date: 2023-09-27
 Authors@R: c(
     person(
         given = "Michael",

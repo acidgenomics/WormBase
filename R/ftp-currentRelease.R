@@ -11,7 +11,7 @@
 currentRelease <- function() {
     suppressMessages({
         file <- transmit(
-            remoteDir = pasteURL(
+            remoteDir = pasteUrl(
                 "ftp.wormbase.org",
                 "pub",
                 "wormbase",

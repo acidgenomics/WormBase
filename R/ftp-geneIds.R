@@ -13,10 +13,10 @@
 #' @return `DataFrame`.
 #'
 #' @examples
-#' x <- geneIDs()
+#' x <- geneIds()
 #' print(x)
-geneIDs <- function(release = NULL) {
-    file <- .annotationFile(stem = "geneIDs.txt.gz", release = release)
+geneIds <- function(release = NULL) {
+    file <- .annotationFile(stem = "geneIds.txt.gz", release = release)
     x <- import(file, format = "csv", colnames = FALSE)
     x <- as(x, "DFrame")
     x <- x[, 2L:5L]
@@ -28,4 +28,4 @@ geneIDs <- function(release = NULL) {
     x
 }
 
-formals(geneIDs)[["release"]] <- .releaseArg
+formals(geneIds)[["release"]] <- .releaseArg

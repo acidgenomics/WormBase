@@ -13,7 +13,7 @@ release release available on the WormBase website. Legacy releases can be
 specified as a character string (e.g. "WS267").}
 }
 \value{
-\code{DataFrame}.
+\code{DFrame}.
 }
 \description{
 Gene functional descriptions

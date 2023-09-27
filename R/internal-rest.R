@@ -14,7 +14,7 @@
 .rest <- function(query) {
     assert(isCharacter(query))
     url <- paste("https://wormbase.org", "rest", query, sep = "/")
-    json <- getJSON(url)
+    json <- getJson(url)
     assert(is.list(json))
     json
 }

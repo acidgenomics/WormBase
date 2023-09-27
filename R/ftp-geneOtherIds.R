@@ -13,12 +13,12 @@
 #' @return `CharacterList`.
 #'
 #' @examples
-#' x <- geneOtherIDs()
+#' x <- geneOtherIds()
 #' print(x)
-geneOtherIDs <- function(release = NULL) {
-    file <- .annotationFile(stem = "geneOtherIDs.txt.gz", release = release)
+geneOtherIds <- function(release = NULL) {
+    file <- .annotationFile(stem = "geneOtherIds.txt.gz", release = release)
     x <- import(file, format = "lines")
-    ## Remove status. Already present in `geneIDs` file.
+    ## Remove status. Already present in `geneIds` file.
     x <- gsub("\t(Dead|Live)", "", x)
     ## Remove `CELE_*` identifiers.
     x <- gsub("\t(CELE_[A-Z0-9\\.]+)", "", x)
@@ -45,4 +45,4 @@ geneOtherIDs <- function(release = NULL) {
     x
 }
 
-formals(geneOtherIDs)[["release"]] <- .releaseArg
+formals(geneOtherIds)[["release"]] <- .releaseArg

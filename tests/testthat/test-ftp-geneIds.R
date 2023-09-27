@@ -1,10 +1,10 @@
 test_that("current", {
-    x <- geneIDs(release = NULL)
+    x <- geneIds(release = NULL)
     expect_s4_class(x, "DFrame")
 })
 
 test_that("stable", {
-    x <- geneIDs(release = release)
+    x <- geneIds(release = release)
     expect_s4_class(x, "DFrame")
     expect_true(all(vapply(
         X = x,

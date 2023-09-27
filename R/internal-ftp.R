@@ -85,7 +85,7 @@
         } else {
             release2 <- release
         }
-        url <- pasteURL(
+        url <- pasteUrl(
             "ftp.wormbase.org",
             "pub",
             "wormbase",

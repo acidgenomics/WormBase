@@ -72,7 +72,7 @@ description <- function(release = NULL) {
             x <- strSplit(x = x, split = ": ", fixed = TRUE, n = 2L)
             out <- x[, 2L]
             names(out) <- x[, 1L]
-            ## Ensure the user uses the values from `geneIDs()` return instead.
+            ## Ensure the user uses the values from `geneIds()` return instead.
             keep <- setdiff(names(out), c("geneName", "sequence"))
             out <- out[keep]
             out
@@ -85,8 +85,8 @@ description <- function(release = NULL) {
         is(x, "DFrame"),
         isSubset("geneId", colnames(x))
     )
-    x <- sanitizeNA(x)
-    x <- removeNA(x)
+    x <- sanitizeNa(x)
+    x <- removeNa(x)
     x <- x[order(x[["geneId"]]), , drop = FALSE]
     rownames(x) <- x[["geneId"]]
     x

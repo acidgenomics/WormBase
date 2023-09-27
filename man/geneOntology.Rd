@@ -17,7 +17,7 @@ Gene identifiers (e.g. WBGene00004804).}
 Gene Ontology terms
 }
 \note{
-Updated 2021-02-18.
+Updated 2023-09-25.
 }
 \examples{
 genes <- c("WBGene00000912", "WBGene00004804")
