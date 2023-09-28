@@ -16,7 +16,7 @@
 #' x <- geneIds()
 #' print(x)
 geneIds <- function(release = NULL) {
-    file <- .annotationFile(stem = "geneIds.txt.gz", release = release)
+    file <- .annotationFile(stem = "geneIDs.txt.gz", release = release)
     x <- import(file, format = "csv", colnames = FALSE)
     x <- as(x, "DFrame")
     x <- x[, 2L:5L]

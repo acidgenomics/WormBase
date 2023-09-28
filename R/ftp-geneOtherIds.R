@@ -16,7 +16,7 @@
 #' x <- geneOtherIds()
 #' print(x)
 geneOtherIds <- function(release = NULL) {
-    file <- .annotationFile(stem = "geneOtherIds.txt.gz", release = release)
+    file <- .annotationFile(stem = "geneOtherIDs.txt.gz", release = release)
     x <- import(file, format = "lines")
     ## Remove status. Already present in `geneIds` file.
     x <- gsub("\t(Dead|Live)", "", x)
