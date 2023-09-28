@@ -1,4 +1,12 @@
-## WormBase 0.4.3 (UNRELEASED)
+## WormBase 0.5.0 (2023-09-28)
+
+Major changes:
+
+- Now enforcing strict camel case for function names. Renamed `geneIDs` to
+  `geneIds` and `geneOtherIDs` to `geneOtherIds`.
+- `description`: Reworked internal sanitization of the input data file.
+- Removed stringi dependency in favor of using our string splitting functions
+  in AcidBase instead.
 
 Minor changes:
 
@@ -6,6 +14,7 @@ Minor changes:
   of relying on compiled C code in stringi package.
 - Reworked internal code to not use `pasteURL` for incomplete URLs.
 - Updated unit tests for invalid REST API URLs.
+- Classing internally on `DFrame` instead of `DataFrame` virtual class.
 
 ## WormBase 0.4.2 (2023-08-11)
 
